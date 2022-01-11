@@ -1,0 +1,27 @@
+.top-header.top-header-theme .header-contact li a{
+    color: #fff;
+}
+
+.auth-icon-list .list-group-item>a>img{
+    width: 46px;
+}
+.auth-icon-list .list-group-item{
+    border: none;
+    background: none;
+}
+
+.login-page .theme-card .theme-form input.phone-number{
+    font-size: 20px;
+}
+
+.theme-card .slide-ads{
+    padding-bottom: 0;
+    margin: 0;
+}
+
+
+.theme-card .slide-ads img.ads{
+    height: 375px;
+    padding: 10px;
+    object-fit: cover;
+}
