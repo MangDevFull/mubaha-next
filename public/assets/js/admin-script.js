@@ -19,6 +19,14 @@ $('.loader-wrapper').fadeOut('slow', function() {
     $(this).remove();
 });
 
+$(document).ready(function() {
+    $('#summernote').summernote({
+        height: 300,                 // set editor height
+  minHeight: null,             // set minimum height of editor
+  maxHeight: null,
+    });
+});
+
 $(window).on('scroll', function() {
     if ($(this).scrollTop() > 600) {
         $('.tap-top').fadeIn();

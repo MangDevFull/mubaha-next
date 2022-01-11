@@ -41,11 +41,11 @@ export default function Footer({ }) {
                     ut labore et dolore magna aliqua. Ut enim ad minim veniam,</p>
                   <div className="footer-social">
                     <ul>
-                      <li><a href="#"><i className="fa fa-facebook" aria-hidden="true" /></a></li>
-                      <li><a href="#"><i className="fa fa-google-plus" aria-hidden="true" /></a></li>
-                      <li><a href="#"><i className="fa fa-twitter" aria-hidden="true" /></a></li>
-                      <li><a href="#"><i className="fa fa-instagram" aria-hidden="true" /></a></li>
-                      <li><a href="#"><i className="fa fa-rss" aria-hidden="true" /></a></li>
+                      <li><a href="true"><i className="fa fa-facebook" aria-hidden="true" /></a></li>
+                      <li><a href="true"><i className="fa fa-google-plus" aria-hidden="true" /></a></li>
+                      <li><a href="true"><i className="fa fa-twitter" aria-hidden="true" /></a></li>
+                      <li><a href="true"><i className="fa fa-instagram" aria-hidden="true" /></a></li>
+                      <li><a href="true"><i className="fa fa-rss" aria-hidden="true" /></a></li>
                     </ul>
                   </div>
                 </div>
@@ -57,11 +57,11 @@ export default function Footer({ }) {
                   </div>
                   <div className="footer-contant">
                     <ul>
-                      <li><a href="#">mens</a></li>
-                      <li><a href="#">womens</a></li>
-                      <li><a href="#">clothing</a></li>
-                      <li><a href="#">accessories</a></li>
-                      <li><a href="#">featured</a></li>
+                      <li><a href="true">mens</a></li>
+                      <li><a href="true">womens</a></li>
+                      <li><a href="true">clothing</a></li>
+                      <li><a href="true">accessories</a></li>
+                      <li><a href="true">featured</a></li>
                     </ul>
                   </div>
                 </div>
@@ -73,11 +73,11 @@ export default function Footer({ }) {
                   </div>
                   <div className="footer-contant">
                     <ul>
-                      <li><a href="#">shipping &amp; return</a></li>
-                      <li><a href="#">secure shopping</a></li>
-                      <li><a href="#">gallary</a></li>
-                      <li><a href="#">affiliates</a></li>
-                      <li><a href="#">contacts</a></li>
+                      <li><a href="true">shipping &amp; return</a></li>
+                      <li><a href="true">secure shopping</a></li>
+                      <li><a href="true">gallary</a></li>
+                      <li><a href="true">affiliates</a></li>
+                      <li><a href="true">contacts</a></li>
                     </ul>
                   </div>
                 </div>
@@ -114,19 +114,19 @@ export default function Footer({ }) {
                 <div className="payment-card-bottom">
                   <ul>
                     <li>
-                      <a href="#"><img src="/assets/images/icon/visa.png" alt="" /></a>
+                      <a href="true"><img src="/assets/images/icon/visa.png" alt="" /></a>
                     </li>
                     <li>
-                      <a href="#"><img src="/assets/images/icon/mastercard.png" alt="" /></a>
+                      <a href="true"><img src="/assets/images/icon/mastercard.png" alt="" /></a>
                     </li>
                     <li>
-                      <a href="#"><img src="/assets/images/icon/paypal.png" alt="" /></a>
+                      <a href="true"><img src="/assets/images/icon/paypal.png" alt="" /></a>
                     </li>
                     <li>
-                      <a href="#"><img src="/assets/images/icon/american-express.png" alt="" /></a>
+                      <a href="true"><img src="/assets/images/icon/american-express.png" alt="" /></a>
                     </li>
                     <li>
-                      <a href="#"><img src="/assets/images/icon/discover.png" alt="" /></a>
+                      <a href="true"><img src="/assets/images/icon/discover.png" alt="" /></a>
                     </li>
                   </ul>
                 </div>

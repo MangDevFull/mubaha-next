@@ -19,7 +19,7 @@ export default function Home() {
                       <div className="slider-contain">
                         <div>
                           <h4>for men</h4>
-                          <h1 className="font-fraunces">spring collection</h1><a href="#" className="btn btn-solid ">shop now</a>
+                          <h1 className="font-fraunces">spring collection</h1><a href="true" className="btn btn-solid ">shop now</a>
                         </div>
                       </div>
                     </div>
@@ -36,7 +36,7 @@ export default function Home() {
                       <div className="slider-contain">
                         <div>
                           <h4>for kids</h4>
-                          <h1 className="font-fraunces">spring collection</h1><a href="#" className="btn btn-solid">shop now</a>
+                          <h1 className="font-fraunces">spring collection</h1><a href="true" className="btn btn-solid">shop now</a>
                         </div>
                       </div>
                     </div>
@@ -53,7 +53,7 @@ export default function Home() {
                       <div className="slider-contain">
                         <div>
                           <h4>for kids</h4>
-                          <h1 className="font-fraunces">spring collection</h1><a href="#" className="btn btn-solid">shop now</a>
+                          <h1 className="font-fraunces">spring collection</h1><a href="true" className="btn btn-solid">shop now</a>
                         </div>
                       </div>
                     </div>
@@ -167,9 +167,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/20.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -201,9 +201,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/21.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -236,9 +236,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/28.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -250,9 +250,9 @@ export default function Home() {
                       </a>
                       <h4>$500.00</h4>
                       <ul className="image-swatch mb-0">
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
                       </ul>
                       <div className="progress-section">
                         <div className="progress">
@@ -271,9 +271,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/24.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -306,9 +306,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/14.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -341,9 +341,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/29.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -376,9 +376,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/19.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -423,9 +423,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/40.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -456,9 +456,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/36.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -470,9 +470,9 @@ export default function Home() {
                       </a>
                       <h4>$500.00</h4>
                       <ul className="image-swatch mb-0">
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
                       </ul>
                     </div>
                   </div>
@@ -485,9 +485,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/39.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -513,9 +513,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/13.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -548,9 +548,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/6.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -577,9 +577,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/6.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -685,9 +685,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/20.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -713,9 +713,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/21.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -742,9 +742,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/28.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -756,9 +756,9 @@ export default function Home() {
                       </a>
                       <h4>$500.00</h4>
                       <ul className="image-swatch mb-0">
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
                       </ul>
                     </div>
                   </div>
@@ -771,9 +771,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/24.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -800,9 +800,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/14.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -829,9 +829,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/29.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -858,9 +858,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/19.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -957,7 +957,7 @@ export default function Home() {
               <div className="col-lg-4 center-slider border-0 ratio2_3">
                 <div className="row">
                   <div className="col-md-12">
-                    <a href="#">
+                    <a href="true">
                       <div className="collection-banner mb-4 p-right text-end">
                         <div className="img-part">
                           <img src="/assets/images/marketplace/banner/21.jpg" alt="" className="img-fluid blur-up lazyload bg-img" />
@@ -972,7 +972,7 @@ export default function Home() {
                     </a>
                   </div>
                   <div className="col-md-12">
-                    <a href="#">
+                    <a href="true">
                       <div className="collection-banner p-right text-end">
                         <div className="img-part">
                           <img src="/assets/images/marketplace/banner/22.jpg" alt="" className="img-fluid blur-up lazyload bg-img" />
@@ -1083,9 +1083,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/12.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1107,9 +1107,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/24.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1136,9 +1136,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/31.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1150,9 +1150,9 @@ export default function Home() {
                       </a>
                       <h4>$500.00</h4>
                       <ul className="image-swatch mb-0">
-                        <li><a href="#" tabIndex={0}><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#" tabIndex={0}><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#" tabIndex={0}><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true" tabIndex={0}><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true" tabIndex={0}><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true" tabIndex={0}><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
                       </ul>
                     </div>
                   </div>
@@ -1165,9 +1165,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/29.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1194,9 +1194,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/11.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1234,9 +1234,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/20.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1262,9 +1262,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/21.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1291,9 +1291,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/28.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1305,9 +1305,9 @@ export default function Home() {
                       </a>
                       <h4>$500.00</h4>
                       <ul className="image-swatch mb-0">
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
-                        <li><a href="#"><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-001.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-002.jpg" alt="" className="img-fluid" /></a></li>
+                        <li><a href="true"><img src="/assets/images/fashion/pro/m-003.jpg" alt="" className="img-fluid" /></a></li>
                       </ul>
                     </div>
                   </div>
@@ -1320,9 +1320,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/24.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1349,9 +1349,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/14.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1378,9 +1378,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/29.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1407,9 +1407,9 @@ export default function Home() {
                         <a href="product-page(no-sidebar).html"><img src="/assets/images/marketplace/pro/19.jpg" className="img-fluid blur-up lazyload bg-img" alt="" /></a>
                       </div>
                       <div className="cart-info cart-wrap bg-color-cls sm-box">
-                        <button onclick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
-                        <a href="javascript:void(0)" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
+                        <button onClick="openCart()" title="Add to cart"><i className="ti-shopping-cart" /></button>
+                        <a href="true" title="Add to Wishlist"><i className="ti-heart" aria-hidden="true" /></a>
+                        <a href="true" data-bs-toggle="modal" data-bs-target="#quick-view" title="Quick View"><i className="ti-search" aria-hidden="true" /></a>
                         <a href="compare.html" title="Compare"><i className="ti-reload" aria-hidden="true" /></a>
                       </div>
                     </div>
@@ -1436,56 +1436,56 @@ export default function Home() {
                 <Slider slidesToShow={6} className="brand-6 no-arrow">
                   <div>
                     <div className="logo-block">
-                      <a href="#">
+                      <a href="true">
                         <img src="/assets/images/logos/9.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="#">
+                      <a href="true">
                         <img src="/assets/images/logos/10.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="#">
+                      <a href="true">
                         <img src="/assets/images/logos/11.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="#">
+                      <a href="true">
                         <img src="/assets/images/logos/12.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="#">
+                      <a href="true">
                         <img src="/assets/images/logos/13.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="#">
+                      <a href="true">
                         <img src="/assets/images/logos/14.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="#">
+                      <a href="true">
                         <img src="/assets/images/logos/15.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="#">
+                      <a href="true">
                         <img src="/assets/images/logos/16.png" alt="" />
                       </a>
                     </div>
@@ -1504,56 +1504,56 @@ export default function Home() {
                 <h2 className="title-borderless"># instagram</h2>
                 <Slider slidesToShow={7} className="slide-7 no-arrow slick-instagram">
                   <div>
-                    <a href="#">
+                    <a href="true">
                       <div className="instagram-box"><img src="/assets/images/furniture/insta/1.jpg" className="bg-img" alt="img" />
                         <div className="overlay"><i className="fa fa-instagram" aria-hidden="true" /></div>
                       </div>
                     </a>
                   </div>
                   <div>
-                    <a href="#">
+                    <a href="true">
                       <div className="instagram-box"><img src="/assets/images/furniture/insta/2.jpg" className="bg-img" alt="img" />
                         <div className="overlay"><i className="fa fa-instagram" aria-hidden="true" /></div>
                       </div>
                     </a>
                   </div>
                   <div>
-                    <a href="#">
+                    <a href="true">
                       <div className="instagram-box"><img src="/assets/images/furniture/insta/3.jpg" className="bg-img" alt="img" />
                         <div className="overlay"><i className="fa fa-instagram" aria-hidden="true" /></div>
                       </div>
                     </a>
                   </div>
                   <div>
-                    <a href="#">
+                    <a href="true">
                       <div className="instagram-box"><img src="/assets/images/furniture/insta/4.jpg" className="bg-img" alt="img" />
                         <div className="overlay"><i className="fa fa-instagram" aria-hidden="true" /></div>
                       </div>
                     </a>
                   </div>
                   <div>
-                    <a href="#">
+                    <a href="true">
                       <div className="instagram-box"><img src="/assets/images/furniture/insta/5.jpg" className="bg-img" alt="img" />
                         <div className="overlay"><i className="fa fa-instagram" aria-hidden="true" /></div>
                       </div>
                     </a>
                   </div>
                   <div>
-                    <a href="#">
+                    <a href="true">
                       <div className="instagram-box"><img src="/assets/images/furniture/insta/6.jpg" className="bg-img" alt="img" />
                         <div className="overlay"><i className="fa fa-instagram" aria-hidden="true" /></div>
                       </div>
                     </a>
                   </div>
                   <div>
-                    <a href="#">
+                    <a href="true">
                       <div className="instagram-box"><img src="/assets/images/furniture/insta/7.jpg" className="bg-img" alt="img" />
                         <div className="overlay"><i className="fa fa-instagram" aria-hidden="true" /></div>
                       </div>
                     </a>
                   </div>
                   <div>
-                    <a href="#">
+                    <a href="true">
                       <div className="instagram-box"><img src="/assets/images/furniture/insta/8.jpg" className="bg-img" alt="img" />
                         <div className="overlay"><i className="fa fa-instagram" aria-hidden="true" /></div>
                       </div>

@@ -1,4 +1,8 @@
 
+import logo from '../public/images/logo-white.svg'
+import Image from 'next/image'
+
+
 export default function MainNavbar({ }) {
   return (
     <>
@@ -18,7 +22,7 @@ export default function MainNavbar({ }) {
               </div>
               <div className="col-lg-6 text-end">
                 <ul className="header-dropdown">
-                  <li className="mobile-wishlist"><a href="#"><i className="fa fa-heart" aria-hidden="true" /></a>
+                  <li className="mobile-wishlist"><a href="true"><i className="fa fa-heart" aria-hidden="true" /></a>
                   </li>
                   <li className="onhover-dropdown mobile-account"> <i className="fa fa-user" aria-hidden="true" />
                     My Account
@@ -38,13 +42,15 @@ export default function MainNavbar({ }) {
               <div className="main-menu">
                 <div className="menu-left">
                   <div className="navbar d-block d-xl-none">
-                    <a href="javascript:void(0)">
+                    <a href="">
                       <div className="bar-style" id="toggle-sidebar-res"><i className="fa fa-bars sidebar-bar" aria-hidden="true" />
                       </div>
                     </a>
                   </div>
-                  <div className="brand-logo">
-                    <a href="index.html"><img src="/assets/images/icon/logo/f11.png" className="img-fluid blur-up lazyload" alt="" /></a>
+                  <div className="brand-logo" style={{ maxWidth: '260px', width: '260px' }}>
+                    <a href="index.html">
+                      <Image src={logo} alt='' layout='responsive' />
+                    </a>
                   </div>
                 </div>
                 <div>
@@ -63,9 +69,9 @@ export default function MainNavbar({ }) {
                     <div className="icon-nav">
                       <ul>
                         <li className="onhover-div mobile-search d-xl-none d-inline-block">
-                          <div><img src="/assets/images/icon/search.png" onclick="openSearch()" className="img-fluid blur-up lazyload" alt="" /> <i className="ti-search" onclick="openSearch()" /></div>
+                          <div><img src="/assets/images/icon/search.png" onClick="openSearch()" className="img-fluid blur-up lazyload" alt="" /> <i className="ti-search" onClick="openSearch()" /></div>
                           <div id="search-overlay" className="search-overlay">
-                            <div> <span className="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
+                            <div> <span className="closebtn" onClick="closeSearch()" title="Close Overlay">×</span>
                               <div className="overlay-content">
                                 <div className="container">
                                   <div className="row">
@@ -91,15 +97,15 @@ export default function MainNavbar({ }) {
                           <div className="show-div setting">
                             <h6>language</h6>
                             <ul>
-                              <li><a href="#">english</a></li>
-                              <li><a href="#">french</a></li>
+                              <li><a href="true">english</a></li>
+                              <li><a href="true">french</a></li>
                             </ul>
                             <h6>currency</h6>
                             <ul className="list-inline">
-                              <li><a href="#">euro</a></li>
-                              <li><a href="#">rupees</a></li>
-                              <li><a href="#">pound</a></li>
-                              <li><a href="#">doller</a></li>
+                              <li><a href="true">euro</a></li>
+                              <li><a href="true">rupees</a></li>
+                              <li><a href="true">pound</a></li>
+                              <li><a href="true">doller</a></li>
                             </ul>
                           </div>
                         </li>
@@ -109,27 +115,27 @@ export default function MainNavbar({ }) {
                           <ul className="show-div shopping-cart">
                             <li>
                               <div className="media">
-                                <a href="#"><img alt="" className="me-3" src="/assets/images/fashion/product/1.jpg" /></a>
+                                <a href="true"><img alt="" className="me-3" src="/assets/images/fashion/product/1.jpg" /></a>
                                 <div className="media-body">
-                                  <a href="#">
+                                  <a href="true">
                                     <h4>item name</h4>
                                   </a>
                                   <h4><span>1 x $ 299.00</span></h4>
                                 </div>
                               </div>
-                              <div className="close-circle"><a href="#"><i className="fa fa-times" aria-hidden="true" /></a></div>
+                              <div className="close-circle"><a href="true"><i className="fa fa-times" aria-hidden="true" /></a></div>
                             </li>
                             <li>
                               <div className="media">
-                                <a href="#"><img alt="" className="me-3" src="/assets/images/fashion/product/2.jpg" /></a>
+                                <a href="true"><img alt="" className="me-3" src="/assets/images/fashion/product/2.jpg" /></a>
                                 <div className="media-body">
-                                  <a href="#">
+                                  <a href="true">
                                     <h4>item name</h4>
                                   </a>
                                   <h4><span>1 x $ 299.00</span></h4>
                                 </div>
                               </div>
-                              <div className="close-circle"><a href="#"><i className="fa fa-times" aria-hidden="true" /></a></div>
+                              <div className="close-circle"><a href="true"><i className="fa fa-times" aria-hidden="true" /></a></div>
                             </li>
                             <li>
                               <div className="total">
@@ -138,7 +144,7 @@ export default function MainNavbar({ }) {
                             </li>
                             <li>
                               <div className="buttons"><a href="cart.html" className="view-cart">view
-                                cart</a> <a href="#" className="checkout">checkout</a></div>
+                                cart</a> <a href="true" className="checkout">checkout</a></div>
                             </li>
                           </ul>
                         </li>
@@ -166,7 +172,7 @@ export default function MainNavbar({ }) {
                       <div className="sidebar-back text-start d-xl-none d-block"><i className="fa fa-angle-left pe-2" aria-hidden="true" /> Back</div>
                     </div>
                     <ul id="sub-menu" className="sm pixelstrap sm-vertical">
-                      <li> <a href="#">TV &amp; Audio</a>
+                      <li> <a href="true">TV &amp; Audio</a>
                         <ul className="mega-menu clothing-menu">
                           <li>
                             <div className="row m-0">
@@ -174,17 +180,17 @@ export default function MainNavbar({ }) {
                                 <div className="link-section">
                                   <h5>women's fashion</h5>
                                   <ul>
-                                    <li><a href="#">dresses</a></li>
-                                    <li><a href="#">skirts</a></li>
-                                    <li><a href="#">westarn wear</a></li>
-                                    <li><a href="#">ethic wear</a></li>
-                                    <li><a href="#">sport wear</a></li>
+                                    <li><a href="true">dresses</a></li>
+                                    <li><a href="true">skirts</a></li>
+                                    <li><a href="true">westarn wear</a></li>
+                                    <li><a href="true">ethic wear</a></li>
+                                    <li><a href="true">sport wear</a></li>
                                   </ul>
                                   <h5>men's fashion</h5>
                                   <ul>
-                                    <li><a href="#">sports wear</a></li>
-                                    <li><a href="#">western wear</a></li>
-                                    <li><a href="#">ethic wear</a></li>
+                                    <li><a href="true">sports wear</a></li>
+                                    <li><a href="true">western wear</a></li>
+                                    <li><a href="true">ethic wear</a></li>
                                   </ul>
                                 </div>
                               </div>
@@ -192,99 +198,99 @@ export default function MainNavbar({ }) {
                                 <div className="link-section">
                                   <h5>accessories</h5>
                                   <ul>
-                                    <li><a href="#">fashion jewellery</a></li>
-                                    <li><a href="#">caps and hats</a></li>
-                                    <li><a href="#">precious jewellery</a></li>
-                                    <li><a href="#">necklaces</a></li>
-                                    <li><a href="#">earrings</a></li>
-                                    <li><a href="#">wrist wear</a></li>
-                                    <li><a href="#">ties</a></li>
-                                    <li><a href="#">cufflinks</a></li>
-                                    <li><a href="#">pockets squares</a></li>
+                                    <li><a href="true">fashion jewellery</a></li>
+                                    <li><a href="true">caps and hats</a></li>
+                                    <li><a href="true">precious jewellery</a></li>
+                                    <li><a href="true">necklaces</a></li>
+                                    <li><a href="true">earrings</a></li>
+                                    <li><a href="true">wrist wear</a></li>
+                                    <li><a href="true">ties</a></li>
+                                    <li><a href="true">cufflinks</a></li>
+                                    <li><a href="true">pockets squares</a></li>
                                   </ul>
                                 </div>
                               </div>
                               <div className="col-xl-4">
-                                <a href="#" className="mega-menu-banner"><img src="/assets/images/mega-menu/fashion.jpg" alt="" className="img-fluid blur-up lazyload" /></a>
+                                <a href="true" className="mega-menu-banner"><img src="/assets/images/mega-menu/fashion.jpg" alt="" className="img-fluid blur-up lazyload" /></a>
                               </div>
                             </div>
                           </li>
                         </ul>
                       </li>
-                      <li> <a href="#">air conditioners</a>
+                      <li> <a href="true">air conditioners</a>
                         <ul>
-                          <li><a href="#">makeup</a></li>
-                          <li><a href="#">skincare</a></li>
-                          <li><a href="#">premium beaty</a></li>
-                          <li> <a href="#">more</a>
+                          <li><a href="true">makeup</a></li>
+                          <li><a href="true">skincare</a></li>
+                          <li><a href="true">premium beaty</a></li>
+                          <li> <a href="true">more</a>
                             <ul>
-                              <li><a href="#">fragrances</a></li>
-                              <li><a href="#">luxury beauty</a></li>
-                              <li><a href="#">hair care</a></li>
-                              <li><a href="#">tools &amp; brushes</a></li>
+                              <li><a href="true">fragrances</a></li>
+                              <li><a href="true">luxury beauty</a></li>
+                              <li><a href="true">hair care</a></li>
+                              <li><a href="true">tools &amp; brushes</a></li>
                             </ul>
                           </li>
                         </ul>
                       </li>
-                      <li> <a href="#">Refrigerators</a>
+                      <li> <a href="true">Refrigerators</a>
                         <ul>
-                          <li><a href="#">shopper bags</a></li>
-                          <li><a href="#">laptop bags</a></li>
-                          <li><a href="#">clutches</a></li>
-                          <li> <a href="#">purses</a>
+                          <li><a href="true">shopper bags</a></li>
+                          <li><a href="true">laptop bags</a></li>
+                          <li><a href="true">clutches</a></li>
+                          <li> <a href="true">purses</a>
                             <ul>
-                              <li><a href="#">purses</a></li>
-                              <li><a href="#">wallets</a></li>
-                              <li><a href="#">leathers</a></li>
-                              <li><a href="#">satchels</a></li>
+                              <li><a href="true">purses</a></li>
+                              <li><a href="true">wallets</a></li>
+                              <li><a href="true">leathers</a></li>
+                              <li><a href="true">satchels</a></li>
                             </ul>
                           </li>
                         </ul>
                       </li>
-                      <li> <a href="#">Washing Machines</a>
+                      <li> <a href="true">Washing Machines</a>
                         <ul>
-                          <li><a href="#">sport shoes</a></li>
-                          <li><a href="#">formal shoes</a></li>
-                          <li><a href="#">casual shoes</a></li>
+                          <li><a href="true">sport shoes</a></li>
+                          <li><a href="true">formal shoes</a></li>
+                          <li><a href="true">casual shoes</a></li>
                         </ul>
                       </li>
-                      <li><a href="#">Kitchen &amp; Home</a></li>
-                      <li><a href="#">Gaming Consoles</a></li>
-                      <li> <a href="#">cameras</a>
+                      <li><a href="true">Kitchen &amp; Home</a></li>
+                      <li><a href="true">Gaming Consoles</a></li>
+                      <li> <a href="true">cameras</a>
                         <ul>
-                          <li><a href="#">fashion jewellery</a></li>
-                          <li><a href="#">caps and hats</a></li>
-                          <li><a href="#">precious jewellery</a></li>
-                          <li> <a href="#">more..</a>
+                          <li><a href="true">fashion jewellery</a></li>
+                          <li><a href="true">caps and hats</a></li>
+                          <li><a href="true">precious jewellery</a></li>
+                          <li> <a href="true">more..</a>
                             <ul>
-                              <li><a href="#">necklaces</a></li>
-                              <li><a href="#">earrings</a></li>
-                              <li><a href="#">wrist wear</a></li>
-                              <li> <a href="#">accessories</a>
+                              <li><a href="true">necklaces</a></li>
+                              <li><a href="true">earrings</a></li>
+                              <li><a href="true">wrist wear</a></li>
+                              <li> <a href="true">accessories</a>
                                 <ul>
-                                  <li><a href="#">ties</a></li>
-                                  <li><a href="#">cufflinks</a></li>
-                                  <li><a href="#">pockets squares</a></li>
-                                  <li><a href="#">helmets</a></li>
-                                  <li><a href="#">scarves</a></li>
-                                  <li> <a href="#">more...</a>
+                                  <li><a href="true">ties</a></li>
+                                  <li><a href="true">cufflinks</a></li>
+                                  <li><a href="true">pockets squares</a></li>
+                                  <li><a href="true">helmets</a></li>
+                                  <li><a href="true">scarves</a></li>
+                                  <li> <a href="true">more...</a>
                                     <ul>
-                                      <li><a href="#">accessory gift sets</a></li>
-                                      <li><a href="#">travel accessories</a></li>
-                                      <li><a href="#">phone cases</a></li>
+                                      <li><a href="true">accessory gift sets</a></li>
+                                      <li><a href="true">travel accessories</a></li>
+                                      <li><a href="true">phone cases</a></li>
                                     </ul>
                                   </li>
                                 </ul>
                               </li>
-                              <li><a href="#">belts &amp; more</a></li>
-                              <li><a href="#">wearable</a></li>
+                              <li><a href="true">belts &amp; more</a></li>
+                              <li><a href="true">wearable</a></li>
                             </ul>
                           </li>
                         </ul>
                       </li>
-                      <li><a href="#">Heating &amp; Cooling</a></li>
-                      <li><a href="#">All accessories </a></li>
-                      <li><a href="#">All Electronics </a></li>
+                      <li><a href="true">Heating &amp; Cooling</a></li>
+                      <li><a href="true">All accessories </a></li>
+                      <li><a href="true">All Electronics </a></li>
                     </ul>
                   </nav>
                 </div>
@@ -299,7 +305,7 @@ export default function MainNavbar({ }) {
                       </li>
                       <li><a href="index.html">Home</a></li>
                       <li className="mega" id="hover-cls">
-                        <a href="#">feature <div className="lable-nav">new</div></a>
+                        <a href="true">feature <div className="lable-nav">new</div></a>
                         <ul className="mega-menu full-mega-menu">
                           <li>
                             <div className="container">
@@ -440,7 +446,7 @@ export default function MainNavbar({ }) {
                         </ul>
                       </li>
                       <li>
-                        <a href="#">shop</a>
+                        <a href="true">shop</a>
                         <ul>
                           <li><a href="category-page(top-filter).html">top filter<span className="new-tag">new</span></a></li>
                           <li><a href="category-page(modern).html">modern<span className="new-tag">new</span></a></li>
@@ -459,13 +465,13 @@ export default function MainNavbar({ }) {
                         </ul>
                       </li>
                       <li>
-                        <a href="#">product</a>
+                        <a href="true">product</a>
                         <ul>
                           <li><a href="product-page(360-view).html">360 view <span className="new-tag">new</span></a></li>
                           <li><a href="product-page(video-thumbnail).html">video
                             thumbnail<span className="new-tag">new</span></a></li>
                           <li>
-                            <a href="#">sidebar</a>
+                            <a href="true">sidebar</a>
                             <ul>
                               <li><a href="product-page.html">left sidebar</a></li>
                               <li><a href="product-page(right-sidebar).html">right
@@ -476,7 +482,7 @@ export default function MainNavbar({ }) {
                             </ul>
                           </li>
                           <li>
-                            <a href="#">thumbnail image</a>
+                            <a href="true">thumbnail image</a>
                             <ul>
                               <li><a href="product-page(left-image).html">left image</a>
                               </li>
@@ -487,7 +493,7 @@ export default function MainNavbar({ }) {
                             </ul>
                           </li>
                           <li>
-                            <a href="#">three column</a>
+                            <a href="true">three column</a>
                             <ul>
                               <li><a href="product-page(3-col-left).html">thumbnail
                                 left</a>
@@ -508,10 +514,10 @@ export default function MainNavbar({ }) {
                           <li><a href="product-page(vertical-tab).html">vertical tab</a></li>
                         </ul>
                       </li>
-                      <li><a href="#">pages</a>
+                      <li><a href="true">pages</a>
                         <ul>
                           <li>
-                            <a href="#">vendor</a>
+                            <a href="true">vendor</a>
                             <ul>
                               <li><a href="vendor-dashboard.html">vendor dashboard</a>
                               </li>
@@ -520,7 +526,7 @@ export default function MainNavbar({ }) {
                             </ul>
                           </li>
                           <li>
-                            <a href="#">account</a>
+                            <a href="true">account</a>
                             <ul>
                               <li><a href="wishlist.html">wishlist</a></li>
                               <li><a href="cart.html">cart</a></li>
@@ -536,9 +542,9 @@ export default function MainNavbar({ }) {
                             </ul>
                           </li>
                           <li>
-                            <a href="#">portfolio</a>
+                            <a href="true">portfolio</a>
                             <ul>
-                              <li><a href>grid</a>
+                              <li><a href="true">grid</a>
                                 <ul>
                                   <li><a href="grid-2-col.html">grid
                                     2</a></li>
@@ -548,7 +554,7 @@ export default function MainNavbar({ }) {
                                     4</a></li>
                                 </ul>
                               </li>
-                              <li><a href>masonry</a>
+                              <li><a href="true">masonry</a>
                                 <ul>
                                   <li><a href="masonary-2-grid.html">grid 2</a></li>
                                   <li><a href="masonary-3-grid.html">grid 3</a></li>
@@ -564,7 +570,7 @@ export default function MainNavbar({ }) {
                           <li><a href="review.html">review</a>
                           </li>
                           <li>
-                            <a href="#">compare</a>
+                            <a href="true">compare</a>
                             <ul>
                               <li><a href="compare.html">compare</a></li>
                               <li><a href="compare-2.html">compare-2</a></li>
@@ -580,7 +586,7 @@ export default function MainNavbar({ }) {
                         </ul>
                       </li>
                       <li>
-                        <a href="#">blog</a>
+                        <a href="true">blog</a>
                         <ul>
                           <li><a href="blog-page.html">left sidebar</a></li>
                           <li><a href="blog(right-sidebar).html">right sidebar</a></li>
