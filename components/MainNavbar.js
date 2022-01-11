@@ -1,6 +1,7 @@
 
 import logo from '../public/images/logo-white.svg'
 import Image from 'next/image'
+import Link from 'next/link'
 
 
 export default function MainNavbar({ }) {
@@ -48,9 +49,11 @@ export default function MainNavbar({ }) {
                     </a>
                   </div>
                   <div className="brand-logo" style={{ maxWidth: '260px', width: '260px' }}>
-                    <a href="index.html">
-                      <Image src={logo} alt='' layout='responsive' />
-                    </a>
+                    <Link href="/">
+                      <a>
+                        <Image src={logo} alt='' layout='responsive' />
+                      </a>
+                    </Link>
                   </div>
                 </div>
                 <div>
