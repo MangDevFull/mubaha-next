@@ -27,6 +27,7 @@ class MyDocument extends Document {
           <link rel="stylesheet" type="text/css" href="/assets/css/vendors/animate.css" />
 
           <link rel="stylesheet" type="text/css" href="/assets/css/vendors/themify-icons.css" />
+          <link rel="stylesheet" type="text/css" href="/assets/css/vendors/bootstrap.css" />
 
           <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
           <link rel="stylesheet" type="text/css" href="/assets/css/mubaha.css"></link>
