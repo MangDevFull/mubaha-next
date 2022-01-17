@@ -3,9 +3,6 @@ import Image from "next/image";
 import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
 import SideProductCart from "../components/SideProductCart";
-import SlideSevenInstagram from "../components/SlideSevenInstagram";
-import SlideSixBrand from "../components/SlideSixBrand";
-import SlideImageHeader from "../components/SlideImageHeader";
 import data from "./products.json";
 
 export default function Home() {
@@ -17,7 +14,80 @@ export default function Home() {
       <div>
         {/* Home slider */}
         <section className="p-0 layout-7">
-          <SlideImageHeader />
+          <Slider className="slide-1 home-slider">
+            <div>
+              <div className="home">
+                <img
+                  src="/assets/images/marketplace/home-slider/7.jpg"
+                  alt=""
+                  className="bg-img blur-up lazyload"
+                />
+                <div className="container">
+                  <div className="row">
+                    <div className="col">
+                      <div className="slider-contain">
+                        <div>
+                          <h4>for men</h4>
+                          <h1 className="font-fraunces">spring collection</h1>
+                          <a href="true" className="btn btn-solid ">
+                            shop now
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="home">
+                <img
+                  src="/assets/images/marketplace/home-slider/5.jpg"
+                  alt=""
+                  className="bg-img blur-up lazyload"
+                />
+                <div className="container">
+                  <div className="row">
+                    <div className="col">
+                      <div className="slider-contain">
+                        <div>
+                          <h4>for kids</h4>
+                          <h1 className="font-fraunces">spring collection</h1>
+                          <a href="true" className="btn btn-solid">
+                            shop now
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="home">
+                <img
+                  src="/assets/images/marketplace/home-slider/6.jpg"
+                  alt=""
+                  className="bg-img blur-up lazyload"
+                />
+                <div className="container">
+                  <div className="row">
+                    <div className="col">
+                      <div className="slider-contain">
+                        <div>
+                          <h4>for kids</h4>
+                          <h1 className="font-fraunces">spring collection</h1>
+                          <a href="true" className="btn btn-solid">
+                            shop now
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Slider>
         </section>
         {/* Home slider end */}
         {/* service section start */}
@@ -408,7 +478,72 @@ export default function Home() {
         </section>
         {/* product section end*/}
         {/* logo section */}
-        <SlideSixBrand />
+        <section className="tools-brand">
+          <div className="container">
+            <div className="row bg-light">
+              <div className="col-md-12">
+                <Slider slidesToShow={6} className="brand-6 no-arrow">
+                  <div>
+                    <div className="logo-block">
+                      <a href="true">
+                        <img src="/assets/images/logos/9.png" alt="" />
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="logo-block">
+                      <a href="true">
+                        <img src="/assets/images/logos/10.png" alt="" />
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="logo-block">
+                      <a href="true">
+                        <img src="/assets/images/logos/11.png" alt="" />
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="logo-block">
+                      <a href="true">
+                        <img src="/assets/images/logos/12.png" alt="" />
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="logo-block">
+                      <a href="true">
+                        <img src="/assets/images/logos/13.png" alt="" />
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="logo-block">
+                      <a href="true">
+                        <img src="/assets/images/logos/14.png" alt="" />
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="logo-block">
+                      <a href="true">
+                        <img src="/assets/images/logos/15.png" alt="" />
+                      </a>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="logo-block">
+                      <a href="true">
+                        <img src="/assets/images/logos/16.png" alt="" />
+                      </a>
+                    </div>
+                  </div>
+                </Slider>
+              </div>
+            </div>
+          </div>
+        </section>
         {/* logo section end */}
         {/* instagram section */}
         <section className="instagram ratio_square">
@@ -416,7 +551,123 @@ export default function Home() {
             <div className="row">
               <div className="col-md-12 p-0">
                 <h2 className="title-borderless"># instagram</h2>
-                <SlideSevenInstagram />
+                <Slider
+                  slidesToShow={7}
+                  className="slide-7 no-arrow slick-instagram"
+                >
+                  <div>
+                    <a href="true">
+                      <div className="instagram-box">
+                        <img
+                          src="/assets/images/furniture/insta/1.jpg"
+                          className="bg-img"
+                          alt="img"
+                        />
+                        <div className="overlay">
+                          <i className="fa fa-instagram" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div>
+                    <a href="true">
+                      <div className="instagram-box">
+                        <img
+                          src="/assets/images/furniture/insta/2.jpg"
+                          className="bg-img"
+                          alt="img"
+                        />
+                        <div className="overlay">
+                          <i className="fa fa-instagram" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div>
+                    <a href="true">
+                      <div className="instagram-box">
+                        <img
+                          src="/assets/images/furniture/insta/3.jpg"
+                          className="bg-img"
+                          alt="img"
+                        />
+                        <div className="overlay">
+                          <i className="fa fa-instagram" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div>
+                    <a href="true">
+                      <div className="instagram-box">
+                        <img
+                          src="/assets/images/furniture/insta/4.jpg"
+                          className="bg-img"
+                          alt="img"
+                        />
+                        <div className="overlay">
+                          <i className="fa fa-instagram" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div>
+                    <a href="true">
+                      <div className="instagram-box">
+                        <img
+                          src="/assets/images/furniture/insta/5.jpg"
+                          className="bg-img"
+                          alt="img"
+                        />
+                        <div className="overlay">
+                          <i className="fa fa-instagram" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div>
+                    <a href="true">
+                      <div className="instagram-box">
+                        <img
+                          src="/assets/images/furniture/insta/6.jpg"
+                          className="bg-img"
+                          alt="img"
+                        />
+                        <div className="overlay">
+                          <i className="fa fa-instagram" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div>
+                    <a href="true">
+                      <div className="instagram-box">
+                        <img
+                          src="/assets/images/furniture/insta/7.jpg"
+                          className="bg-img"
+                          alt="img"
+                        />
+                        <div className="overlay">
+                          <i className="fa fa-instagram" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div>
+                    <a href="true">
+                      <div className="instagram-box">
+                        <img
+                          src="/assets/images/furniture/insta/8.jpg"
+                          className="bg-img"
+                          alt="img"
+                        />
+                        <div className="overlay">
+                          <i className="fa fa-instagram" aria-hidden="true" />
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </Slider>
               </div>
             </div>
           </div>
