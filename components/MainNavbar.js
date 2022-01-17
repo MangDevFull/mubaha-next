@@ -15,8 +15,8 @@ export default function MainNavbar({ }) {
               <div className="col-lg-6">
                 <div className="header-contact">
                   <ul>
-                    <li>Welcome to Our store MUBAHA</li>
-                    <li><i className="fa fa-phone" aria-hidden="true" />Call Us: 123 - 456 - 7890</li>
+                    <li>Chào mừng đến với MUBAHA</li>
+                    <li><i className="fa fa-phone" aria-hidden="true" />Liên hệ: 123 - 456 - 7890</li>
                   </ul>
                 </div>
               </div>
@@ -25,10 +25,10 @@ export default function MainNavbar({ }) {
                   <li className="mobile-wishlist"><a href="true"><i className="fa fa-heart" aria-hidden="true" /></a>
                   </li>
                   <li className="onhover-dropdown mobile-account"> <i className="fa fa-user" aria-hidden="true" />
-                    My Account
+                    Tài khoản của tôi
                     <ul className="onhover-show-div">
-                      <li><a href="login.html">Login</a></li>
-                      <li><a href="register.html">register</a></li>
+                      <li className="login"><a href="true">Đăng nhập</a></li>
+                      <li className="register"><a href="true">Đăng kí</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -48,7 +48,7 @@ export default function MainNavbar({ }) {
                     </a>
                   </div>
                   <div className="brand-logo" style={{ maxWidth: '260px', width: '260px' }}>
-                    <a href="index.html">
+                    <a href="true">
                       <Image src={logo} alt='' layout='responsive' />
                     </a>
                   </div>
@@ -90,7 +90,7 @@ export default function MainNavbar({ }) {
                           </div>
                         </li>
                         <li className="onhover-div d-sm-inline-block d-none">
-                          <a href="compare.html"><img src="/assets/images/icon/rotate.png" className="img-fluid blur-up lazyload" title="compare" alt="" /></a>
+                          <a href="true"><img src="/assets/images/icon/rotate.png" className="img-fluid blur-up lazyload" title="compare" alt="" /></a>
                         </li>
                         <li className="onhover-div mobile-setting">
                           <div><img src="/assets/images/icon/setting.png" className="img-fluid blur-up lazyload" alt="" /> <i className="ti-settings" /></div>
@@ -143,7 +143,7 @@ export default function MainNavbar({ }) {
                               </div>
                             </li>
                             <li>
-                              <div className="buttons"><a href="cart.html" className="view-cart">view
+                              <div className="buttons"><a href="true" className="view-cart">view
                                 cart</a> <a href="true" className="checkout">checkout</a></div>
                             </li>
                           </ul>
@@ -342,9 +342,9 @@ export default function MainNavbar({ }) {
                                     </div>
                                     <div className="menu-content">
                                       <ul>
-                                        <li><a href="index.html">Newsletter</a>
+                                        <li><a href="true">Newsletter</a>
                                         </li>
-                                        <li><a href="index.html">exit<i className="ms-2 fa fa-bolt icon-trend" aria-hidden="true" /></a>
+                                        <li><a href="true">exit<i className="ms-2 fa fa-bolt icon-trend" aria-hidden="true" /></a>
                                         </li>
                                         <li><a href="christmas.html">christmas</a>
                                         </li>
@@ -365,11 +365,11 @@ export default function MainNavbar({ }) {
                                     </div>
                                     <div className="menu-content">
                                       <ul>
-                                        <li><a href="index.html">bottom<i className="ms-2 fa fa-bolt icon-trend" aria-hidden="true" /></a>
+                                        <li><a href="true">bottom<i className="ms-2 fa fa-bolt icon-trend" aria-hidden="true" /></a>
                                         </li>
-                                        <li><a href="fashion-4.html">bottom
+                                        <li><a href="true">bottom
                                           left</a></li>
-                                        <li><a href="bicycle.html">bottom
+                                        <li><a href="true">bottom
                                           right</a></li>
                                       </ul>
                                     </div>
