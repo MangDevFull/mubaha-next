@@ -2,6 +2,7 @@ import Image from "next/image";
 import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
 import SideProductCart from "../components/SideProductCart";
+import Link from "next/link";
 
 export default function Home({ data }) {
   return (
@@ -674,12 +675,12 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch('http://127.0.0.1:3001/api/v1/')
-  const data = await res.json()
+  const res = await fetch("http://192.168.1.20:3001/api/v1/");
+  const data = await res.json();
 
   return {
     props: {
-      data: data.data
+      data: data.data,
     }, // will be passed to the page component as props
-  }
+  };
 }

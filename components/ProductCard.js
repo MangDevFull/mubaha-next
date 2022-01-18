@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 export default function ProductCard({ product }) {
   return (
@@ -6,22 +7,22 @@ export default function ProductCard({ product }) {
         <div className="product-box product-wrap">
           <div className="img-wrapper">
             <div className="front">
-              <a href="true">
+              <Link href={`/${product.slug}`}>
                 <img
                   src={product.media.featuredImage}
                   className="img-fluid blur-up lazyload bg-img"
                   alt=""
                 />
-              </a>
+              </Link>
             </div>
             <div className="back">
-              <a href="true">
+              <Link href={`/${product.slug}`}>
                 <img
                   src={product.media.featuredImage}
                   className="img-fluid blur-up lazyload bg-img"
                   alt=""
                 />
-              </a>
+              </Link>
             </div>
             <div className="cart-info cart-wrap bg-color-cls sm-box">
               <button onClick="openCart()" title="Add to cart">
@@ -49,9 +50,9 @@ export default function ProductCard({ product }) {
               <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
               <i className="fa fa-star" />
             </div>
-            <a href="product-page(no-sidebar).html">
+            <Link href={`/${product.slug}`}>
               <h6>{product.name}</h6>
-            </a>
+            </Link>
             <h4>${product.price}</h4>
             <ul className="color-variant quantity-variant box-l">
               <li className="bg-light">2kg</li>
