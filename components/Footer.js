@@ -1,4 +1,4 @@
-export default function Footer({}) {
+export default function Footer({ }) {
   return (
     <>
       {/* footer start */}
@@ -189,8 +189,8 @@ export default function Footer({}) {
               <div className="col-xl-6 col-md-6 col-sm-12">
                 <div className="footer-end">
                   <p>
-                    <i className="fa fa-copyright" aria-hidden="true" /> 2017-18
-                    themeforest powered by pixelstrap
+                    <i className="fa fa-copyright" aria-hidden="true" /> 2022 - TMP Software.
+                    All rights reserved.
                   </p>
                 </div>
               </div>

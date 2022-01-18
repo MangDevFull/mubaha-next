@@ -2,11 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import SideProductCart from "../components/SideProductCart";
-import data from "./products.json";
 import { Row, Col, Media } from "reactstrap";
+import { useRouter } from "next/router";
+import product from "./products.json";
 
-export default function ProductDetail() {
-  const products = data.products.splice(0, 20);
+export default function ProductDetail({ data }) {
+  const router = useRouter();
+  const { slug } = router.query;
+
+  const products = product.products.splice(0, 20);
 
   const [state, setState] = useState({ nav1: null, nav2: null });
   const slider1 = useRef();
@@ -88,34 +92,14 @@ export default function ProductDetail() {
                         ref={(slider) => (slider1.current = slider)}
                         className="product-slick"
                       >
-                        <div>
+                        {data.media.data.map((item) => (
                           <Media
-                            src="../assets/images/pro3/1.jpg"
+                            key={item._id}
+                            src={item.path}
                             alt=""
-                            className="img-fluid blur-up lazyload image_zoom_cls-0"
+                            className="img-fluid blur-up lazyload"
                           />
-                        </div>
-                        <div>
-                          <Media
-                            src="../assets/images/pro3/2.jpg"
-                            alt=""
-                            className="img-fluid blur-up lazyload image_zoom_cls-1"
-                          />
-                        </div>
-                        <div>
-                          <Media
-                            src="../assets/images/pro3/27.jpg"
-                            alt=""
-                            className="img-fluid blur-up lazyload image_zoom_cls-2"
-                          />
-                        </div>
-                        <div>
-                          <Media
-                            src="../assets/images/pro3/27.jpg"
-                            alt=""
-                            className="img-fluid blur-up lazyload image_zoom_cls-3"
-                          />
-                        </div>
+                        ))}
                       </Slider>
                       <Slider
                         className="slider-nav"
@@ -123,34 +107,14 @@ export default function ProductDetail() {
                         asNavFor={nav1}
                         ref={(slider) => (slider2.current = slider)}
                       >
-                        <div>
+                        {data.media.data.map((item) => (
                           <Media
-                            src="../assets/images/pro3/1.jpg"
+                            key={item._id}
+                            src={item.path}
                             alt=""
                             className="img-fluid blur-up lazyload"
                           />
-                        </div>
-                        <div>
-                          <Media
-                            src="../assets/images/pro3/2.jpg"
-                            alt=""
-                            className="img-fluid blur-up lazyload"
-                          />
-                        </div>
-                        <div>
-                          <Media
-                            src="../assets/images/pro3/27.jpg"
-                            alt=""
-                            className="img-fluid blur-up lazyload"
-                          />
-                        </div>
-                        <div>
-                          <Media
-                            src="../assets/images/pro3/27.jpg"
-                            alt=""
-                            className="img-fluid blur-up lazyload"
-                          />
-                        </div>
+                        ))}
                       </Slider>
                     </Col>
 
@@ -182,7 +146,7 @@ export default function ProductDetail() {
                             </li>
                           </ul>
                         </div>
-                        <h2>Women Pink Shirt</h2>
+                        <h2>{data.name}</h2>
                         <div className="rating-section">
                           <div className="rating">
                             <i className="fa fa-star" />{" "}
@@ -200,8 +164,13 @@ export default function ProductDetail() {
                           <span className="label-text">in fashion</span>
                         </div>
                         <h3 className="price-detail">
-                          $32.96 <del>$459.00</del>
-                          <span>55% off</span>
+                          {data.currentPrice}
+                          {data.currencySymbol}{" "}
+                          {data.discountPercent > 0 && (
+                            <del>
+                              {data.price} {data.currencySymbol}
+                            </del>
+                          )}
                         </h3>
                         <ul className="color-variant">
                           <li className="bg-light0 active" />
@@ -349,17 +318,7 @@ export default function ProductDetail() {
                         <div className="border-product">
                           <h6 className="product-title">Product Detail</h6>
 
-                          <p id="demo">
-                            It is a long established fact that a reader will be
-                            distracted by the readable content of a page when
-                            looking at its layout. The point of using Lorem
-                            Ipsum is that it has a more-or-less normal
-                            distribution of letters,It is a long established
-                            fact that a reader will be distracted by the
-                            readable content of a page when looking at its
-                            layout. The point of using Lorem Ipsum is that it
-                            has a more-or-less normal distribution of letters.
-                          </p>
+                          <p id="demo">{data.description}</p>
                         </div>
                         <div className="border-product">
                           <h6 className="product-title">shipping info</h6>
@@ -827,4 +786,16 @@ export default function ProductDetail() {
       {/* Section ends */}
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { slug } = context.query;
+  const res = await fetch(`http://192.168.1.20:3001/api/v1/products/${slug}`);
+  const data = await res.json();
+
+  return {
+    props: {
+      data: data.data,
+    }, // will be passed to the page component as props
+  };
 }

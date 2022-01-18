@@ -22,7 +22,7 @@ export default function SideProductCart({ product }) {
             <a href="product-page(no-sidebar).html">
               <h6>{product.name}</h6>
             </a>
-            <h4>{product.price}</h4>
+            <h4>${product.price}</h4>
           </div>
         </div>
       </div>
