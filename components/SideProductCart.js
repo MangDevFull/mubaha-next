@@ -1,6 +1,7 @@
 import Slider from "react-slick";
 
-export default function ProductCard2({ product }) {
+export default function SideProductCart({ product }) {
+  console.log("product", product.media.featuredImage);
   return (
     <>
       <div>
@@ -9,7 +10,7 @@ export default function ProductCard2({ product }) {
             <img
               alt=""
               className="img-fluid blur-up lazyload"
-              src={product.media.featuredImage}
+              src="https://mubaha.hn.ss.bfcplatform.vn/data/118230377_109738244185899_5156288428963243418_n.jpeg"
             />
           </a>
           <div className="media-body align-self-center">
