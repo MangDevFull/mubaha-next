@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "json-server --watch products.json",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
