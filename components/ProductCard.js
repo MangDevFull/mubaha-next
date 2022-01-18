@@ -1,4 +1,3 @@
-import Slider from "react-slick";
 
 export default function ProductCard({ product }) {
   return (
@@ -53,7 +52,7 @@ export default function ProductCard({ product }) {
             <a href="product-page(no-sidebar).html">
               <h6>{product.name}</h6>
             </a>
-            <h4>{product.price}</h4>
+            <h4>${product.price}</h4>
             <ul className="color-variant quantity-variant box-l">
               <li className="bg-light">2kg</li>
               <li className="bg-light">5kg</li>

@@ -1,14 +1,9 @@
-import Head from "next/head";
 import Image from "next/image";
 import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
 import SideProductCart from "../components/SideProductCart";
-import data from "./products.json";
 
-export default function Home() {
-  const products = data.products.splice(0, 20);
-  console.log(products);
-
+export default function Home({ data }) {
   return (
     <>
       <div>
@@ -274,8 +269,8 @@ export default function Home() {
                   slidesToScroll={2}
                   className="slide-6-product product-m no-arrow"
                 >
-                  {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                  {data.dealsOfTheDay.map((product) => (
+                    <ProductCard key={product._id} product={product} />
                   ))}
                 </Slider>
               </div>
@@ -303,8 +298,8 @@ export default function Home() {
                   slidesToScroll={2}
                   className="slide-6-product product-m no-arrow"
                 >
-                  {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                  {data.top5Products.map((product) => (
+                    <ProductCard key={product._id} product={product} />
                   ))}
                 </Slider>
               </div>
@@ -326,8 +321,8 @@ export default function Home() {
                   <div className="theme-card card-border bg-light border-0">
                     <h5 className="title-border">new product</h5>
                     <Slider slidesPerRow={2} className="offer-slider slide-1">
-                      {products.map((product) => (
-                        <SideProductCart key={product.id} product={product} />
+                      {data.firstNewProducts.map((product) => (
+                        <SideProductCart key={product._id} product={product} />
                       ))}
                     </Slider>
                   </div>
@@ -353,8 +348,8 @@ export default function Home() {
                 slidesToShow={6}
                 className="slide-6-product product-m no-arrow"
               >
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {data.dontMissTheseProducts.map((product) => (
+                  <ProductCard key={product._id} product={product} />
                 ))}
               </Slider>
             </div>
@@ -369,8 +364,8 @@ export default function Home() {
                 <div className="theme-card card-border bg-light border-0">
                   <h5 className="title-border">new product</h5>
                   <Slider slidesPerRow={3} className="offer-slider slide-1">
-                    {products.map((product) => (
-                      <SideProductCart key={product.id} product={product} />
+                    {data.leftNewProducts.map((product) => (
+                      <SideProductCart key={product._id} product={product} />
                     ))}
                   </Slider>
                 </div>
@@ -421,8 +416,8 @@ export default function Home() {
                 <div className="theme-card card-border bg-light border-0">
                   <h5 className="title-border">feature product</h5>
                   <Slider slidesPerRow={3} className="offer-slider slide-1">
-                    {products.map((product) => (
-                      <SideProductCart key={product.id} product={product} />
+                    {data.rightFeatureProducts.map((product) => (
+                      <SideProductCart key={product._id} product={product} />
                     ))}
                   </Slider>
                 </div>
@@ -450,8 +445,8 @@ export default function Home() {
                   slidesToScroll={2}
                   className="slide-6-product product-m no-arrow"
                 >
-                  {products.map((product) => (
-                    <ProductCard key={product.id} product={product} />
+                  {data.top5Products.map((product) => (
+                    <ProductCard key={product._id} product={product} />
                   ))}
                 </Slider>
               </div>
@@ -469,8 +464,8 @@ export default function Home() {
                 slidesToShow={6}
                 className="slide-6-product product-m no-arrow"
               >
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {data.dealsOfTheDay.map((product) => (
+                  <ProductCard key={product._id} product={product} />
                 ))}
               </Slider>
             </div>
@@ -676,4 +671,15 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await fetch('http://127.0.0.1:3001/api/v1/')
+  const data = await res.json()
+
+  return {
+    props: {
+      data: data.data
+    }, // will be passed to the page component as props
+  }
 }
