@@ -3,33 +3,11 @@ import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
 import SideProductCart from "../components/SideProductCart";
 import Link from "next/link";
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import API from "../services/api";
+import axios from "axios";
 
-export default function Home() {
-  const [loading,setLoading] = useState(false);
-  const [dealsOfTheDay,setDealsOfTheDay] = useState([]);
-  const [dontMissTheseProducts,setDontMissTheseProducts] = useState([]);
-  const [firstNewProducts,setFirstNewProducts] = useState([]);
-  const [leftNewProducts,setLeftNewProducts] = useState([]);
-  const [rightFeatureProducts,setRightFeatureProducts] = useState([]);
-  const [top5Products,setTop5Products] = useState([])
-  useEffect(() => {
-    setLoading(true);
-    API.getListProduct().then(response =>{
-      const data = response.data.data;
-      setDealsOfTheDay(data.dealsOfTheDay);
-      setDontMissTheseProducts(data.dontMissTheseProducts);
-      setFirstNewProducts(data.firstNewProducts);
-      setLeftNewProducts(data.leftNewProducts);
-      setRightFeatureProducts(data.rightFeatureProducts);
-      setTop5Products(data.top5Products);
-      setLoading(false);
-    }).catch(err =>{
-      console.log(err);
-      setLoading(false);
-    })
-  },[]);
+export default function Home({ dealsOfTheDay, dontMissTheseProducts, firstNewProducts, leftNewProducts, rightFeatureProducts, top5Products }) {
   return (
     <>
       <div>
@@ -700,12 +678,16 @@ export default function Home() {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch("https://api-dev.mubaha.com/api/v1/");
-  const data = await res.json();
-
+  const response = await API.getListProduct();
+  const data = response.data.data
   return {
     props: {
-      data: data.data,
-    }, // will be passed to the page component as props
+      dealsOfTheDay: data.dealsOfTheDay,
+      dontMissTheseProducts:data.dontMissTheseProducts,
+      firstNewProducts: data.firstNewProducts,
+      leftNewProducts: data.leftNewProducts,
+      rightFeatureProducts: data.rightFeatureProducts,
+      top5Products: data.top5Products,
+    }, 
   };
 }

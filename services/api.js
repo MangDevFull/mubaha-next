@@ -7,7 +7,11 @@ const getInstance = () => {
   });
   instance.interceptors.request.use(
     async (config) => {
-      let token =  localStorage.getItem("token");
+      let token = "";
+      if(typeof window !== "undefined"){
+        if(localStorage.getItem("token")) return localStorage.getItem("token")
+        return ""
+      }
       if (!token) {
         return config;
       }
