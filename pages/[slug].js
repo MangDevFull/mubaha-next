@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import SideProductCart from "../components/SideProductCart";
-import { Row, Col, Media } from "reactstrap";
+import ProductCard from "../components/ProductCard";
+import { Row, Col, Media, Collapse } from "reactstrap";
 import { useRouter } from "next/router";
 import product from "./products.json";
 
-export default function ProductDetail({ data }) {
+export default function ProductDetail({ data, data1 }) {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -22,6 +23,10 @@ export default function ProductDetail({ data }) {
     });
   }, []);
   const { nav1, nav2 } = state;
+
+  // Handle Brand
+  const [isBrandOpen, setIsBrandOpen] = useState(true);
+  const toggleBrand = () => setIsBrandOpen(!isBrandOpen);
 
   let propertySlider = {
     slidesToShow: 1,
@@ -66,7 +71,7 @@ export default function ProductDetail({ data }) {
       {/* breadcrumb start end */}
 
       {/* section start */}
-      <section className="section-b-space">
+      <section>
         <div className="collection-wrapper">
           <div className="container">
             <div className="row">
@@ -236,16 +241,16 @@ export default function ProductDetail({ data }) {
                           <div className="size-box">
                             <ul>
                               <li>
-                                <a href="javascript:void(0)">s</a>
+                                <a href="#">s</a>
                               </li>
                               <li>
-                                <a href="javascript:void(0)">m</a>
+                                <a href="#">m</a>
                               </li>
                               <li>
-                                <a href="javascript:void(0)">l</a>
+                                <a href="#">l</a>
                               </li>
                               <li>
-                                <a href="javascript:void(0)">xl</a>
+                                <a href="#">xl</a>
                               </li>
                             </ul>
                           </div>
@@ -282,24 +287,41 @@ export default function ProductDetail({ data }) {
                           </div>
                         </div>
                         <div className="product-buttons">
-                          <a
-                            href="javascript:void(0)"
-                            id="cartEffect"
-                            className="btn btn-solid hover-solid btn-animation"
+                          <button
+                            style={{
+                              background: "transparent",
+                              border: "0px",
+                              padding: "0px",
+                            }}
+                            onClick={() => addtocart()}
                           >
-                            <i
-                              className="fa fa-shopping-cart me-1"
-                              aria-hidden="true"
-                            />{" "}
-                            add to cart
-                          </a>{" "}
-                          <a href="#" className="btn btn-solid">
-                            <i
-                              className="fa fa-bookmark fz-16 me-2"
-                              aria-hidden="true"
-                            />
-                            wishlist
-                          </a>
+                            <a
+                              style={{ margin: "0px" }}
+                              id="cartEffect"
+                              className="btn btn-solid btn-animation"
+                            >
+                              <i
+                                className="fa fa-shopping-cart me-1"
+                                aria-hidden="true"
+                              />
+                              add to cart
+                            </a>
+                          </button>
+                          <button
+                            style={{
+                              background: "transparent",
+                              border: "0px",
+                              padding: "1px 6px 1px 0px",
+                            }}
+                          >
+                            <a href="#" className="btn btn-solid">
+                              <i
+                                className="fa fa-bookmark fz-16 me-2"
+                                aria-hidden="true"
+                              />
+                              Buy now
+                            </a>
+                          </button>
                         </div>
                         <div className="product-count">
                           <ul>
@@ -619,28 +641,32 @@ export default function ProductDetail({ data }) {
                     </span>
                   </div>
                   <div className="collection-collapse-block border-0 open">
-                    <h3 className="collapse-block-title">brand</h3>
-                    <div className="collection-collapse-block-content">
-                      <div className="collection-brand-filter">
-                        <ul className="category-list">
-                          <li>
-                            <a href="#">clothing</a>
-                          </li>
-                          <li>
-                            <a href="#">bags</a>
-                          </li>
-                          <li>
-                            <a href="#">footwear</a>
-                          </li>
-                          <li>
-                            <a href="#">watches</a>
-                          </li>
-                          <li>
-                            <a href="#">accessories</a>
-                          </li>
-                        </ul>
+                    <h3 className="collapse-block-title" onClick={toggleBrand}>
+                      brand
+                    </h3>
+                    <Collapse isOpen={isBrandOpen}>
+                      <div className="collection-collapse-block-content">
+                        <div className="collection-brand-filter">
+                          <ul className="category-list">
+                            <li>
+                              <a href="#">clothing</a>
+                            </li>
+                            <li>
+                              <a href="#">bags</a>
+                            </li>
+                            <li>
+                              <a href="#">footwear</a>
+                            </li>
+                            <li>
+                              <a href="#">watches</a>
+                            </li>
+                            <li>
+                              <a href="#">accessories</a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                    </div>
+                    </Collapse>
                   </div>
                 </div>
                 <div className="collection-filter-block">
@@ -784,6 +810,26 @@ export default function ProductDetail({ data }) {
         </div>
       </section>
       {/* Section ends */}
+      {/* product section start*/}
+      <section className="section-b-space ratio_asos">
+        <div className="container">
+          <div className="row">
+            <div className="product-related col">
+              <h2>RELATED PRODUCTS</h2>
+            </div>
+
+            <Slider
+              slidesToShow={6}
+              className="slide-6-product product-m no-arrow"
+            >
+              {products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </Slider>
+          </div>
+        </div>
+      </section>
+      {/* product section end*/}
     </>
   );
 }
