@@ -675,7 +675,7 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch("http://192.168.1.20:3001/api/v1/");
+  const res = await fetch("http://192.168.1.24:3001/api/v1/");
   const data = await res.json();
 
   return {

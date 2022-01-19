@@ -790,7 +790,7 @@ export default function ProductDetail({ data }) {
 
 export async function getServerSideProps(context) {
   const { slug } = context.query;
-  const res = await fetch(`http://192.168.1.20:3001/api/v1/products/${slug}`);
+  const res = await fetch(`http://192.168.1.24:3001/api/v1/products/${slug}`);
   const data = await res.json();
 
   return {
