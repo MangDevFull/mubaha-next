@@ -3,8 +3,33 @@ import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
 import SideProductCart from "../components/SideProductCart";
 import Link from "next/link";
+import React,{useState,useEffect} from 'react'
+import API from "../services/api";
 
-export default function Home({ data }) {
+export default function Home() {
+  const [loading,setLoading] = useState(false);
+  const [dealsOfTheDay,setDealsOfTheDay] = useState([]);
+  const [dontMissTheseProducts,setDontMissTheseProducts] = useState([]);
+  const [firstNewProducts,setFirstNewProducts] = useState([]);
+  const [leftNewProducts,setLeftNewProducts] = useState([]);
+  const [rightFeatureProducts,setRightFeatureProducts] = useState([]);
+  const [top5Products,setTop5Products] = useState([])
+  useEffect(() => {
+    setLoading(true);
+    API.getListProduct().then(response =>{
+      const data = response.data.data;
+      setDealsOfTheDay(data.dealsOfTheDay);
+      setDontMissTheseProducts(data.dontMissTheseProducts);
+      setFirstNewProducts(data.firstNewProducts);
+      setLeftNewProducts(data.leftNewProducts);
+      setRightFeatureProducts(data.rightFeatureProducts);
+      setTop5Products(data.top5Products);
+      setLoading(false);
+    }).catch(err =>{
+      console.log(err);
+      setLoading(false);
+    })
+  },[]);
   return (
     <>
       <div>
@@ -270,7 +295,7 @@ export default function Home({ data }) {
                   slidesToScroll={2}
                   className="slide-6-product product-m no-arrow"
                 >
-                  {data.dealsOfTheDay.map((product) => (
+                  {dealsOfTheDay.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </Slider>
@@ -299,7 +324,7 @@ export default function Home({ data }) {
                   slidesToScroll={2}
                   className="slide-6-product product-m no-arrow"
                 >
-                  {data.top5Products.map((product) => (
+                  {top5Products.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </Slider>
@@ -322,7 +347,7 @@ export default function Home({ data }) {
                   <div className="theme-card card-border bg-light border-0">
                     <h5 className="title-border">new product</h5>
                     <Slider slidesPerRow={2} className="offer-slider slide-1">
-                      {data.firstNewProducts.map((product) => (
+                      {firstNewProducts.map((product) => (
                         <SideProductCart key={product._id} product={product} />
                       ))}
                     </Slider>
@@ -349,7 +374,7 @@ export default function Home({ data }) {
                 slidesToShow={6}
                 className="slide-6-product product-m no-arrow"
               >
-                {data.dontMissTheseProducts.map((product) => (
+                {dontMissTheseProducts.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </Slider>
@@ -365,7 +390,7 @@ export default function Home({ data }) {
                 <div className="theme-card card-border bg-light border-0">
                   <h5 className="title-border">new product</h5>
                   <Slider slidesPerRow={3} className="offer-slider slide-1">
-                    {data.leftNewProducts.map((product) => (
+                    {leftNewProducts.map((product) => (
                       <SideProductCart key={product._id} product={product} />
                     ))}
                   </Slider>
@@ -417,7 +442,7 @@ export default function Home({ data }) {
                 <div className="theme-card card-border bg-light border-0">
                   <h5 className="title-border">feature product</h5>
                   <Slider slidesPerRow={3} className="offer-slider slide-1">
-                    {data.rightFeatureProducts.map((product) => (
+                    {rightFeatureProducts.map((product) => (
                       <SideProductCart key={product._id} product={product} />
                     ))}
                   </Slider>
@@ -446,7 +471,7 @@ export default function Home({ data }) {
                   slidesToScroll={2}
                   className="slide-6-product product-m no-arrow"
                 >
-                  {data.top5Products.map((product) => (
+                  {top5Products.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </Slider>
@@ -465,7 +490,7 @@ export default function Home({ data }) {
                 slidesToShow={6}
                 className="slide-6-product product-m no-arrow"
               >
-                {data.dealsOfTheDay.map((product) => (
+                {dealsOfTheDay.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </Slider>
@@ -675,7 +700,7 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch("http://192.168.1.20:3001/api/v1/");
+  const res = await fetch("https://api-dev.mubaha.com/api/v1/");
   const data = await res.json();
 
   return {

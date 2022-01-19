@@ -1,0 +1,37 @@
+import axios from 'axios';
+import URL from './../utils/api_url'
+const getInstance = () => {
+  const instance = axios.create({
+    baseURL: URL.baseUrl,
+    timeout: 30000
+  });
+  instance.interceptors.request.use(
+    async (config) => {
+      let token =  localStorage.getItem("token");
+      if (!token) {
+        return config;
+      }
+      let header = {
+        ...config.headers, Authorization: token
+      };
+
+      config.headers = header;
+
+      return config;
+    },
+    (err) => {
+      console.log('err: ' + err);
+      return Promise.reject(err);
+    }
+  );
+  return instance;
+};
+
+const API = {
+  instance: getInstance()
+};
+API.getListProduct = () => {
+  return API.instance.get(`/v1/`);
+};
+
+export default API;
