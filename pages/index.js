@@ -352,7 +352,7 @@ export default function Home({
                 <div className="title-basic">
                   <h2 className="title font-fraunces">
                     <i className="ti-bolt" />
-                    Don't Miss These
+                    Don&apos;t Miss These
                   </h2>
                 </div>
               </div>

@@ -463,26 +463,30 @@ export default function ProductDetail({ data }) {
                             <div className="part">
                               <p>
                                 The Model is wearing a white blouse from our
-                                stylist's collection, see the img for a mock-up
-                                of what the actual blouse would look like.it has
-                                text written on it in a black cursive language
-                                which looks great on a white color.
+                                stylist&#39;s collection, see the img for a
+                                mock-up of what the actual blouse would look
+                                like.it has text written on it in a black
+                                cursive language which looks great on a white
+                                color.
                               </p>
                             </div>
                             <div className="part">
                               <h5 className="inner-title">fabric:</h5>
                               <p>
                                 Art silk is manufactured by synthetic fibres
-                                like rayon. It's light in weight and is soft on
-                                the skin for comfort in summers.Art silk is
+                                like rayon. It&#39;s light in weight and is soft
+                                on the skin for comfort in summers.Art silk is
                                 manufactured by synthetic fibres like rayon.
-                                It's light in weight and is soft on the skin for
-                                comfort in summers.
+                                It&#39;s light in weight and is soft on the skin
+                                for comfort in summers.
                               </p>
                             </div>
                             <div className="part">
                               <h5 className="inner-title">size &amp; fit:</h5>
-                              <p>The model (height 5'8") is wearing a size S</p>
+                              <p>
+                                The model (height 5&#39;8&rdquo;) is wearing a
+                                size S
+                              </p>
                             </div>
                             <div className="part">
                               <h5 className="inner-title">
@@ -502,9 +506,9 @@ export default function ProductDetail({ data }) {
                         >
                           <p>
                             The Model is wearing a white blouse from our
-                            stylist's collection, see the img for a mock-up of
-                            what the actual blouse would look like.it has text
-                            written on it in a black cursive language which
+                            stylist&#39;s collection, see the img for a mock-up
+                            of what the actual blouse would look like.it has
+                            text written on it in a black cursive language which
                             looks great on a white color.
                           </p>
                           <div className="single-product-tables">

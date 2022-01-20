@@ -309,7 +309,7 @@ export default function MainNavbar({}) {
                             <div className="row m-0">
                               <div className="col-xl-4">
                                 <div className="link-section">
-                                  <h5>women's fashion</h5>
+                                  <h5>women&#39;s fashion</h5>
                                   <ul>
                                     <li>
                                       <a>dresses</a>
@@ -327,7 +327,7 @@ export default function MainNavbar({}) {
                                       <a>sport wear</a>
                                     </li>
                                   </ul>
-                                  <h5>men's fashion</h5>
+                                  <h5>men&#39;s fashion</h5>
                                   <ul>
                                     <li>
                                       <a>sports wear</a>
