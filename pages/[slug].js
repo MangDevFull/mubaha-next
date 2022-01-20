@@ -57,7 +57,7 @@ export default function ProductDetail({ data, data1 }) {
               <nav aria-label="breadcrumb" className="theme-breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="index.html">Home</a>
+                    <a>Home</a>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
                     product
@@ -97,7 +97,7 @@ export default function ProductDetail({ data, data1 }) {
                         ref={(slider) => (slider1.current = slider)}
                         className="product-slick"
                       >
-                        {data.media.data.map((item) => (
+                        {data.detailProduct.media.data.map((item) => (
                           <Media
                             key={item._id}
                             src={item.path}
@@ -112,7 +112,7 @@ export default function ProductDetail({ data, data1 }) {
                         asNavFor={nav1}
                         ref={(slider) => (slider2.current = slider)}
                       >
-                        {data.media.data.map((item) => (
+                        {data.detailProduct.media.data.map((item) => (
                           <Media
                             key={item._id}
                             src={item.path}
@@ -151,7 +151,7 @@ export default function ProductDetail({ data, data1 }) {
                             </li>
                           </ul>
                         </div>
-                        <h2>{data.name}</h2>
+                        <h2>{data.detailProduct.name}</h2>
                         <div className="rating-section">
                           <div className="rating">
                             <i className="fa fa-star" />{" "}
@@ -169,11 +169,12 @@ export default function ProductDetail({ data, data1 }) {
                           <span className="label-text">in fashion</span>
                         </div>
                         <h3 className="price-detail">
-                          {data.currentPrice}
-                          {data.currencySymbol}{" "}
-                          {data.discountPercent > 0 && (
+                          {data.detailProduct.currentPrice}
+                          {data.detailProduct.currencySymbol}{" "}
+                          {data.detailProduct.discountPercent > 0 && (
                             <del>
-                              {data.price} {data.currencySymbol}
+                              {data.detailProduct.price}{" "}
+                              {data.detailProduct.currencySymbol}
                             </del>
                           )}
                         </h3>
@@ -190,7 +191,6 @@ export default function ProductDetail({ data, data1 }) {
                             select size{" "}
                             <span>
                               <a
-                                href
                                 data-bs-toggle="modal"
                                 data-bs-target="#sizemodal"
                               >
@@ -241,16 +241,16 @@ export default function ProductDetail({ data, data1 }) {
                           <div className="size-box">
                             <ul>
                               <li>
-                                <a href="#">s</a>
+                                <a>s</a>
                               </li>
                               <li>
-                                <a href="#">m</a>
+                                <a>m</a>
                               </li>
                               <li>
-                                <a href="#">l</a>
+                                <a>l</a>
                               </li>
                               <li>
-                                <a href="#">xl</a>
+                                <a>xl</a>
                               </li>
                             </ul>
                           </div>
@@ -268,10 +268,11 @@ export default function ProductDetail({ data, data1 }) {
                                 </button>{" "}
                               </span>
                               <input
-                                type="text"
+                                type="number"
                                 name="quantity"
                                 className="form-control input-number"
                                 defaultValue={1}
+                                min="1"
                               />{" "}
                               <span className="input-group-prepend">
                                 <button
@@ -293,7 +294,6 @@ export default function ProductDetail({ data, data1 }) {
                               border: "0px",
                               padding: "0px",
                             }}
-                            onClick={() => addtocart()}
                           >
                             <a
                               style={{ margin: "0px" }}
@@ -314,7 +314,7 @@ export default function ProductDetail({ data, data1 }) {
                               padding: "1px 6px 1px 0px",
                             }}
                           >
-                            <a href="#" className="btn btn-solid">
+                            <a className="btn btn-solid">
                               <i
                                 className="fa fa-bookmark fz-16 me-2"
                                 aria-hidden="true"
@@ -340,7 +340,7 @@ export default function ProductDetail({ data, data1 }) {
                         <div className="border-product">
                           <h6 className="product-title">Product Detail</h6>
 
-                          <p id="demo">{data.description}</p>
+                          <p id="demo">{data.detailProduct.description}</p>
                         </div>
                         <div className="border-product">
                           <h6 className="product-title">shipping info</h6>
@@ -356,27 +356,27 @@ export default function ProductDetail({ data, data1 }) {
                           <div className="product-icon">
                             <ul className="product-social">
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-facebook" />
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-google-plus" />
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-twitter" />
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-instagram" />
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-rss" />
                                 </a>
                               </li>
@@ -400,7 +400,6 @@ export default function ProductDetail({ data, data1 }) {
                             className="nav-link active"
                             id="top-home-tab"
                             data-bs-toggle="tab"
-                            href="#top-home"
                             role="tab"
                             aria-selected="true"
                           >
@@ -414,7 +413,6 @@ export default function ProductDetail({ data, data1 }) {
                             className="nav-link"
                             id="profile-top-tab"
                             data-bs-toggle="tab"
-                            href="#top-profile"
                             role="tab"
                             aria-selected="false"
                           >
@@ -428,7 +426,6 @@ export default function ProductDetail({ data, data1 }) {
                             className="nav-link"
                             id="contact-top-tab"
                             data-bs-toggle="tab"
-                            href="#top-contact"
                             role="tab"
                             aria-selected="false"
                           >
@@ -442,7 +439,6 @@ export default function ProductDetail({ data, data1 }) {
                             className="nav-link"
                             id="review-top-tab"
                             data-bs-toggle="tab"
-                            href="#top-review"
                             role="tab"
                             aria-selected="false"
                           >
@@ -541,7 +537,7 @@ export default function ProductDetail({ data, data1 }) {
                             </table>
                           </div>
                         </div>
-                        <div
+                        {/* <div
                           className="tab-pane fade"
                           id="top-contact"
                           role="tabpanel"
@@ -556,7 +552,7 @@ export default function ProductDetail({ data, data1 }) {
                               allowFullScreen
                             />
                           </div>
-                        </div>
+                        </div> */}
                         <div
                           className="tab-pane fade"
                           id="top-review"
@@ -649,19 +645,19 @@ export default function ProductDetail({ data, data1 }) {
                         <div className="collection-brand-filter">
                           <ul className="category-list">
                             <li>
-                              <a href="#">clothing</a>
+                              <a>clothing</a>
                             </li>
                             <li>
-                              <a href="#">bags</a>
+                              <a>bags</a>
                             </li>
                             <li>
-                              <a href="#">footwear</a>
+                              <a>footwear</a>
                             </li>
                             <li>
-                              <a href="#">watches</a>
+                              <a>watches</a>
                             </li>
                             <li>
-                              <a href="#">accessories</a>
+                              <a>accessories</a>
                             </li>
                           </ul>
                         </div>
@@ -798,7 +794,7 @@ export default function ProductDetail({ data, data1 }) {
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
                     {products.map((product) => {
                       return (
-                        <SideProductCart key={product.id} product={product} />
+                        <SideProductCart key={product._id} product={product} />
                       );
                     })}
                   </Slider>
@@ -825,6 +821,10 @@ export default function ProductDetail({ data, data1 }) {
               {products.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
+              {/* <ProductCard
+                  key={data.relatedProducts._id}
+                  product={data.relatedProducts}
+                /> */}
             </Slider>
           </div>
         </div>
@@ -836,7 +836,7 @@ export default function ProductDetail({ data, data1 }) {
 
 export async function getServerSideProps(context) {
   const { slug } = context.query;
-  const res = await fetch(`http://192.168.1.24:3001/api/v1/products/${slug}`);
+  const res = await fetch(`https://api-dev.mubaha.com/api/v1/products/${slug}`);
   const data = await res.json();
 
   return {

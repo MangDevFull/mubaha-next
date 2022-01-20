@@ -79,13 +79,12 @@ class MyDocument extends Document {
 
           <script src="/assets/js/lazysizes.min.js"></script>
 
-          <script src="/assets/js/slick.js"></script>
-
           <script src="/assets/js/bootstrap.bundle.min.js"></script>
 
           <script src="/assets/js/feather.min.js "></script>
 
           <script src="/assets/js/bootstrap-notify.min.js"></script>
+          <script src="/assets/js/slick.js"></script>
           <script src="/assets/js/script.js"></script>
         </body>
       </Html>

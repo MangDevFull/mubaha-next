@@ -3,13 +3,14 @@ import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
 import SideProductCart from "../components/SideProductCart";
 import Link from "next/link";
+import { Col, Container, Row } from "reactstrap";
 
 export default function Home({ data }) {
   return (
     <>
       <div>
         {/* Home slider */}
-        <section className="p-0 layout-7">
+        <section className="p-0">
           <Slider className="slide-1 home-slider">
             <div>
               <div className="home">
@@ -374,7 +375,7 @@ export default function Home({ data }) {
               <div className="col-lg-4 center-slider border-0 ratio2_3">
                 <div className="row">
                   <div className="col-md-12">
-                    <a href="true">
+                    <a>
                       <div className="collection-banner mb-4 p-right text-end">
                         <div className="img-part">
                           <img
@@ -393,7 +394,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div className="col-md-12">
-                    <a href="true">
+                    <a>
                       <div className="collection-banner p-right text-end">
                         <div className="img-part">
                           <img
@@ -481,56 +482,56 @@ export default function Home({ data }) {
                 <Slider slidesToShow={6} className="brand-6 no-arrow">
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/9.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/10.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/11.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/12.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/13.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/14.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/15.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/16.png" alt="" />
                       </a>
                     </div>
@@ -552,7 +553,7 @@ export default function Home({ data }) {
                   className="slide-7 no-arrow slick-instagram"
                 >
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/1.jpg"
@@ -566,7 +567,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/2.jpg"
@@ -580,7 +581,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/3.jpg"
@@ -594,7 +595,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/4.jpg"
@@ -608,7 +609,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/5.jpg"
@@ -622,7 +623,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/6.jpg"
@@ -636,7 +637,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/7.jpg"
@@ -650,7 +651,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/8.jpg"
@@ -675,7 +676,7 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch("http://192.168.1.24:3001/api/v1/");
+  const res = await fetch("https://api-dev.mubaha.com/api/v1/");
   const data = await res.json();
 
   return {

@@ -29,21 +29,20 @@ export default function ProductCard({ product }) {
               </Link>
             </div>
             <div className="cart-info cart-wrap bg-color-cls sm-box">
-              <button onClick="openCart()" title="Add to cart">
+              <button title="Add to cart">
                 <i className="ti-shopping-cart" />
               </button>
-              <a href="true" title="Add to Wishlist">
+              <a title="Add to Wishlist">
                 <i className="ti-heart" aria-hidden="true" />
               </a>
               <a
-                href="true"
                 data-bs-toggle="modal"
                 data-bs-target="#quick-view"
                 title="Quick View"
               >
                 <i className="ti-search" aria-hidden="true" />
               </a>
-              <a href="compare.html" title="Compare">
+              <a title="Compare">
                 <i className="ti-reload" aria-hidden="true" />
               </a>
             </div>

@@ -76,7 +76,7 @@ export default function Category() {
                           </a>
                         </li>
                         <li>
-                          <a href="#">
+                          <a>
                             <i
                               className="https://www.instagram.com/accounts/login/"
                               aria-hidden="true"
@@ -86,9 +86,7 @@ export default function Category() {
                       </ul>
                     </div>
                     <h6>If You Have Any Query:</h6>
-                    <a href="#" className="btn btn-solid btn-sm">
-                      Contact Seller
-                    </a>
+                    <a className="btn btn-solid btn-sm">Contact Seller</a>
                   </div>
                 </div>
               </div>
@@ -350,7 +348,7 @@ export default function Category() {
 
                 {/* side-bar banner start here */}
                 <div className="collection-sidebar-banner">
-                  <a href="#">
+                  <a>
                     <img
                       src="../assets/images/side-banner.png"
                       className="img-fluid blur-up lazyloaded"
@@ -365,7 +363,7 @@ export default function Category() {
                   <div className="row">
                     <div className="col-sm-12">
                       <div className="top-banner-wrapper">
-                        <a href="#">
+                        <a>
                           <img
                             src="../assets/images/mega-menu/2.jpg"
                             className="img-fluid blur-up lazyloaded"
@@ -488,7 +486,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -508,7 +505,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -534,17 +530,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -554,7 +546,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -571,7 +563,7 @@ export default function Category() {
                                       <i className="fa fa-star" />{" "}
                                       <i className="fa fa-star" />
                                     </div>
-                                    <a href="product-page(no-sidebar).html">
+                                    <a>
                                       <h6>Slim Fit Cotton Shirt</h6>
                                     </a>
                                     <p>
@@ -597,7 +589,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -617,7 +608,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -643,17 +633,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -663,7 +649,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -679,7 +665,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -704,7 +690,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -724,7 +709,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -750,17 +734,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -770,7 +750,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -786,7 +766,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -811,7 +791,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -831,7 +810,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -857,17 +835,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -877,7 +851,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -893,7 +867,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -918,7 +892,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -938,7 +911,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -964,17 +936,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -984,7 +952,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -1000,7 +968,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -1025,7 +993,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1045,7 +1012,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1071,17 +1037,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -1091,7 +1053,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -1107,7 +1069,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -1132,7 +1094,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1152,7 +1113,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1178,17 +1138,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -1198,7 +1154,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -1214,7 +1170,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -1239,7 +1195,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1259,7 +1214,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1285,17 +1239,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -1305,7 +1255,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -1321,7 +1271,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -1346,7 +1296,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1366,7 +1315,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1392,17 +1340,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -1412,7 +1356,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -1428,7 +1372,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -1453,7 +1397,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1473,7 +1416,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1499,17 +1441,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -1519,7 +1457,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -1535,7 +1473,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -1560,7 +1498,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1580,7 +1517,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1606,17 +1542,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -1626,7 +1558,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -1642,7 +1574,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -1667,7 +1599,6 @@ export default function Category() {
                                 <div className="img-wrapper">
                                   <div className="front">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1687,7 +1618,6 @@ export default function Category() {
                                   </div>
                                   <div className="back">
                                     <a
-                                      href="#"
                                       className="bg-size blur-up lazyloaded"
                                       style={{
                                         backgroundImage:
@@ -1713,17 +1643,13 @@ export default function Category() {
                                     >
                                       <i className="ti-shopping-cart" />
                                     </button>{" "}
-                                    <a
-                                      href="javascript:void(0)"
-                                      title="Add to Wishlist"
-                                    >
+                                    <a title="Add to Wishlist">
                                       <i
                                         className="ti-heart"
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
                                     <a
-                                      href="#"
                                       data-bs-toggle="modal"
                                       data-bs-target="#quick-view"
                                       title="Quick View"
@@ -1733,7 +1659,7 @@ export default function Category() {
                                         aria-hidden="true"
                                       />
                                     </a>{" "}
-                                    <a href="compare.html" title="Compare">
+                                    <a>
                                       <i
                                         className="ti-reload"
                                         aria-hidden="true"
@@ -1749,7 +1675,7 @@ export default function Category() {
                                     <i className="fa fa-star" />{" "}
                                     <i className="fa fa-star" />
                                   </div>
-                                  <a href="product-page(no-sidebar).html">
+                                  <a>
                                     <h6>Slim Fit Cotton Shirt</h6>
                                   </a>
                                   <p>
@@ -1780,7 +1706,6 @@ export default function Category() {
                                     <li className="page-item">
                                       <a
                                         className="page-link"
-                                        href="#"
                                         aria-label="Previous"
                                       >
                                         <span aria-hidden="true">
@@ -1795,24 +1720,17 @@ export default function Category() {
                                       </a>
                                     </li>
                                     <li className="page-item active">
-                                      <a className="page-link" href="#">
-                                        1
-                                      </a>
+                                      <a className="page-link">1</a>
                                     </li>
                                     <li className="page-item">
-                                      <a className="page-link" href="#">
-                                        2
-                                      </a>
+                                      <a className="page-link">2</a>
                                     </li>
                                     <li className="page-item">
-                                      <a className="page-link" href="#">
-                                        3
-                                      </a>
+                                      <a className="page-link">3</a>
                                     </li>
                                     <li className="page-item">
                                       <a
                                         className="page-link"
-                                        href="#"
                                         aria-label="Next"
                                       >
                                         <span aria-hidden="true">
