@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
+import Head from "next/head";
 import Image from "next/image";
 import SideProductCart from "../components/SideProductCart";
 import ProductCard from "../components/ProductCard";
@@ -49,6 +50,9 @@ export default function ProductDetail({
   };
   return (
     <>
+      <Head>
+        <title>{detailProduct.name}</title>
+      </Head>
       {/* breadcrumb start */}
       <div className="breadcrumb-section">
         <div className="container">
