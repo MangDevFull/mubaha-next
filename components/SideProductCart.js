@@ -6,15 +6,17 @@ export default function SideProductCart({ product }) {
     <>
       <div>
         <div className="media">
+
           <Link href={`/${product.slug}`}>
             <a>
-              <img
-                alt=""
-                className="img-fluid blur-up lazyload"
-                src={product.media.featuredImage}
-              />
-            </a>
+            <img
+              alt=""
+              className="img-fluid blur-up lazyload"
+              src={product.media.featuredImage}
+            />
+          </a>
           </Link>
+
           <div className="media-body align-self-center">
             <div className="rating">
               <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
