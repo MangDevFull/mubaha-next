@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import SideProductCart from "../components/SideProductCart";
-import { Row, Col, Media } from "reactstrap";
+import ProductCard from "../components/ProductCard";
+import { Row, Col, Media, Collapse } from "reactstrap";
 import { useRouter } from "next/router";
 import product from "./products.json";
 
-export default function ProductDetail({ data }) {
+export default function ProductDetail({ data, data1 }) {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -22,6 +23,10 @@ export default function ProductDetail({ data }) {
     });
   }, []);
   const { nav1, nav2 } = state;
+
+  // Handle Brand
+  const [isBrandOpen, setIsBrandOpen] = useState(true);
+  const toggleBrand = () => setIsBrandOpen(!isBrandOpen);
 
   let propertySlider = {
     slidesToShow: 1,
@@ -52,7 +57,7 @@ export default function ProductDetail({ data }) {
               <nav aria-label="breadcrumb" className="theme-breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="index.html">Home</a>
+                    <a>Home</a>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
                     product
@@ -66,7 +71,7 @@ export default function ProductDetail({ data }) {
       {/* breadcrumb start end */}
 
       {/* section start */}
-      <section className="section-b-space">
+      <section>
         <div className="collection-wrapper">
           <div className="container">
             <div className="row">
@@ -92,7 +97,7 @@ export default function ProductDetail({ data }) {
                         ref={(slider) => (slider1.current = slider)}
                         className="product-slick"
                       >
-                        {data.media.data.map((item) => (
+                        {data.detailProduct.media.data.map((item) => (
                           <Media
                             key={item._id}
                             src={item.path}
@@ -107,7 +112,7 @@ export default function ProductDetail({ data }) {
                         asNavFor={nav1}
                         ref={(slider) => (slider2.current = slider)}
                       >
-                        {data.media.data.map((item) => (
+                        {data.detailProduct.media.data.map((item) => (
                           <Media
                             key={item._id}
                             src={item.path}
@@ -146,7 +151,7 @@ export default function ProductDetail({ data }) {
                             </li>
                           </ul>
                         </div>
-                        <h2>{data.name}</h2>
+                        <h2>{data.detailProduct.name}</h2>
                         <div className="rating-section">
                           <div className="rating">
                             <i className="fa fa-star" />{" "}
@@ -164,11 +169,12 @@ export default function ProductDetail({ data }) {
                           <span className="label-text">in fashion</span>
                         </div>
                         <h3 className="price-detail">
-                          {data.currentPrice}
-                          {data.currencySymbol}{" "}
-                          {data.discountPercent > 0 && (
+                          {data.detailProduct.currentPrice}
+                          {data.detailProduct.currencySymbol}{" "}
+                          {data.detailProduct.discountPercent > 0 && (
                             <del>
-                              {data.price} {data.currencySymbol}
+                              {data.detailProduct.price}{" "}
+                              {data.detailProduct.currencySymbol}
                             </del>
                           )}
                         </h3>
@@ -185,7 +191,6 @@ export default function ProductDetail({ data }) {
                             select size{" "}
                             <span>
                               <a
-                                href
                                 data-bs-toggle="modal"
                                 data-bs-target="#sizemodal"
                               >
@@ -236,16 +241,16 @@ export default function ProductDetail({ data }) {
                           <div className="size-box">
                             <ul>
                               <li>
-                                <a href="javascript:void(0)">s</a>
+                                <a>s</a>
                               </li>
                               <li>
-                                <a href="javascript:void(0)">m</a>
+                                <a>m</a>
                               </li>
                               <li>
-                                <a href="javascript:void(0)">l</a>
+                                <a>l</a>
                               </li>
                               <li>
-                                <a href="javascript:void(0)">xl</a>
+                                <a>xl</a>
                               </li>
                             </ul>
                           </div>
@@ -263,10 +268,11 @@ export default function ProductDetail({ data }) {
                                 </button>{" "}
                               </span>
                               <input
-                                type="text"
+                                type="number"
                                 name="quantity"
                                 className="form-control input-number"
                                 defaultValue={1}
+                                min="1"
                               />{" "}
                               <span className="input-group-prepend">
                                 <button
@@ -282,24 +288,40 @@ export default function ProductDetail({ data }) {
                           </div>
                         </div>
                         <div className="product-buttons">
-                          <a
-                            href="javascript:void(0)"
-                            id="cartEffect"
-                            className="btn btn-solid hover-solid btn-animation"
+                          <button
+                            style={{
+                              background: "transparent",
+                              border: "0px",
+                              padding: "0px",
+                            }}
                           >
-                            <i
-                              className="fa fa-shopping-cart me-1"
-                              aria-hidden="true"
-                            />{" "}
-                            add to cart
-                          </a>{" "}
-                          <a href="#" className="btn btn-solid">
-                            <i
-                              className="fa fa-bookmark fz-16 me-2"
-                              aria-hidden="true"
-                            />
-                            wishlist
-                          </a>
+                            <a
+                              style={{ margin: "0px" }}
+                              id="cartEffect"
+                              className="btn btn-solid btn-animation"
+                            >
+                              <i
+                                className="fa fa-shopping-cart me-1"
+                                aria-hidden="true"
+                              />
+                              add to cart
+                            </a>
+                          </button>
+                          <button
+                            style={{
+                              background: "transparent",
+                              border: "0px",
+                              padding: "1px 6px 1px 0px",
+                            }}
+                          >
+                            <a className="btn btn-solid">
+                              <i
+                                className="fa fa-bookmark fz-16 me-2"
+                                aria-hidden="true"
+                              />
+                              Buy now
+                            </a>
+                          </button>
                         </div>
                         <div className="product-count">
                           <ul>
@@ -318,7 +340,7 @@ export default function ProductDetail({ data }) {
                         <div className="border-product">
                           <h6 className="product-title">Product Detail</h6>
 
-                          <p id="demo">{data.description}</p>
+                          <p id="demo">{data.detailProduct.description}</p>
                         </div>
                         <div className="border-product">
                           <h6 className="product-title">shipping info</h6>
@@ -334,27 +356,27 @@ export default function ProductDetail({ data }) {
                           <div className="product-icon">
                             <ul className="product-social">
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-facebook" />
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-google-plus" />
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-twitter" />
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-instagram" />
                                 </a>
                               </li>
                               <li>
-                                <a href="#">
+                                <a>
                                   <i className="fa fa-rss" />
                                 </a>
                               </li>
@@ -378,7 +400,6 @@ export default function ProductDetail({ data }) {
                             className="nav-link active"
                             id="top-home-tab"
                             data-bs-toggle="tab"
-                            href="#top-home"
                             role="tab"
                             aria-selected="true"
                           >
@@ -392,7 +413,6 @@ export default function ProductDetail({ data }) {
                             className="nav-link"
                             id="profile-top-tab"
                             data-bs-toggle="tab"
-                            href="#top-profile"
                             role="tab"
                             aria-selected="false"
                           >
@@ -406,7 +426,6 @@ export default function ProductDetail({ data }) {
                             className="nav-link"
                             id="contact-top-tab"
                             data-bs-toggle="tab"
-                            href="#top-contact"
                             role="tab"
                             aria-selected="false"
                           >
@@ -420,7 +439,6 @@ export default function ProductDetail({ data }) {
                             className="nav-link"
                             id="review-top-tab"
                             data-bs-toggle="tab"
-                            href="#top-review"
                             role="tab"
                             aria-selected="false"
                           >
@@ -519,7 +537,7 @@ export default function ProductDetail({ data }) {
                             </table>
                           </div>
                         </div>
-                        <div
+                        {/* <div
                           className="tab-pane fade"
                           id="top-contact"
                           role="tabpanel"
@@ -534,7 +552,7 @@ export default function ProductDetail({ data }) {
                               allowFullScreen
                             />
                           </div>
-                        </div>
+                        </div> */}
                         <div
                           className="tab-pane fade"
                           id="top-review"
@@ -619,28 +637,32 @@ export default function ProductDetail({ data }) {
                     </span>
                   </div>
                   <div className="collection-collapse-block border-0 open">
-                    <h3 className="collapse-block-title">brand</h3>
-                    <div className="collection-collapse-block-content">
-                      <div className="collection-brand-filter">
-                        <ul className="category-list">
-                          <li>
-                            <a href="#">clothing</a>
-                          </li>
-                          <li>
-                            <a href="#">bags</a>
-                          </li>
-                          <li>
-                            <a href="#">footwear</a>
-                          </li>
-                          <li>
-                            <a href="#">watches</a>
-                          </li>
-                          <li>
-                            <a href="#">accessories</a>
-                          </li>
-                        </ul>
+                    <h3 className="collapse-block-title" onClick={toggleBrand}>
+                      brand
+                    </h3>
+                    <Collapse isOpen={isBrandOpen}>
+                      <div className="collection-collapse-block-content">
+                        <div className="collection-brand-filter">
+                          <ul className="category-list">
+                            <li>
+                              <a>clothing</a>
+                            </li>
+                            <li>
+                              <a>bags</a>
+                            </li>
+                            <li>
+                              <a>footwear</a>
+                            </li>
+                            <li>
+                              <a>watches</a>
+                            </li>
+                            <li>
+                              <a>accessories</a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                    </div>
+                    </Collapse>
                   </div>
                 </div>
                 <div className="collection-filter-block">
@@ -772,7 +794,7 @@ export default function ProductDetail({ data }) {
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
                     {products.map((product) => {
                       return (
-                        <SideProductCart key={product.id} product={product} />
+                        <SideProductCart key={product._id} product={product} />
                       );
                     })}
                   </Slider>
@@ -784,6 +806,30 @@ export default function ProductDetail({ data }) {
         </div>
       </section>
       {/* Section ends */}
+      {/* product section start*/}
+      <section className="section-b-space ratio_asos">
+        <div className="container">
+          <div className="row">
+            <div className="product-related col">
+              <h2>RELATED PRODUCTS</h2>
+            </div>
+
+            <Slider
+              slidesToShow={6}
+              className="slide-6-product product-m no-arrow"
+            >
+              {products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+              {/* <ProductCard
+                  key={data.relatedProducts._id}
+                  product={data.relatedProducts}
+                /> */}
+            </Slider>
+          </div>
+        </div>
+      </section>
+      {/* product section end*/}
     </>
   );
 }
