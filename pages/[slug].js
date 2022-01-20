@@ -6,8 +6,9 @@ import ProductCard from "../components/ProductCard";
 import { Row, Col, Media, Collapse } from "reactstrap";
 import { useRouter } from "next/router";
 import product from "./products.json";
+import API from "../services/api";
 
-export default function ProductDetail({ data, data1 }) {
+export default function ProductDetail({ data }) {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -836,12 +837,12 @@ export default function ProductDetail({ data, data1 }) {
 
 export async function getServerSideProps(context) {
   const { slug } = context.query;
-  const res = await fetch(`https://api-dev.mubaha.com/api/v1/products/${slug}`);
-  const data = await res.json();
+  const response = await API.instance.get(`/products/${slug}`);
+  const data = response.data.data;
 
   return {
     props: {
-      data: data.data,
+      data: data,
     }, // will be passed to the page component as props
   };
 }
