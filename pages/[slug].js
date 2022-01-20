@@ -8,7 +8,11 @@ import { useRouter } from "next/router";
 import product from "./products.json";
 import API from "../services/api";
 
-export default function ProductDetail({ data }) {
+export default function ProductDetail({
+  detailProduct,
+  relatedProducts,
+  newProducts,
+}) {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -98,7 +102,7 @@ export default function ProductDetail({ data }) {
                         ref={(slider) => (slider1.current = slider)}
                         className="product-slick"
                       >
-                        {data.detailProduct.media.data.map((item) => (
+                        {detailProduct.media.data.map((item) => (
                           <Media
                             key={item._id}
                             src={item.path}
@@ -113,7 +117,7 @@ export default function ProductDetail({ data }) {
                         asNavFor={nav1}
                         ref={(slider) => (slider2.current = slider)}
                       >
-                        {data.detailProduct.media.data.map((item) => (
+                        {detailProduct.media.data.map((item) => (
                           <Media
                             key={item._id}
                             src={item.path}
@@ -152,7 +156,7 @@ export default function ProductDetail({ data }) {
                             </li>
                           </ul>
                         </div>
-                        <h2>{data.detailProduct.name}</h2>
+                        <h2>{detailProduct.name}</h2>
                         <div className="rating-section">
                           <div className="rating">
                             <i className="fa fa-star" />{" "}
@@ -170,12 +174,12 @@ export default function ProductDetail({ data }) {
                           <span className="label-text">in fashion</span>
                         </div>
                         <h3 className="price-detail">
-                          {data.detailProduct.currentPrice}
-                          {data.detailProduct.currencySymbol}{" "}
-                          {data.detailProduct.discountPercent > 0 && (
+                          {detailProduct.currentPrice}
+                          {detailProduct.currencySymbol}{" "}
+                          {detailProduct.discountPercent > 0 && (
                             <del>
-                              {data.detailProduct.price}{" "}
-                              {data.detailProduct.currencySymbol}
+                              {detailProduct.price}{" "}
+                              {detailProduct.currencySymbol}
                             </del>
                           )}
                         </h3>
@@ -341,7 +345,7 @@ export default function ProductDetail({ data }) {
                         <div className="border-product">
                           <h6 className="product-title">Product Detail</h6>
 
-                          <p id="demo">{data.detailProduct.description}</p>
+                          <p id="demo">{detailProduct.description}</p>
                         </div>
                         <div className="border-product">
                           <h6 className="product-title">shipping info</h6>
@@ -797,7 +801,7 @@ export default function ProductDetail({ data }) {
                     ))}
                   </Slider> */}
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
-                    {products.map((product) => {
+                    {newProducts.map((product) => {
                       return (
                         <SideProductCart key={product._id} product={product} />
                       );
@@ -823,7 +827,7 @@ export default function ProductDetail({ data }) {
               slidesToShow={6}
               className="slide-6-product product-m no-arrow"
             >
-              {products.map((product) => (
+              {relatedProducts.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
               {/* <ProductCard
@@ -846,7 +850,9 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      data: data,
+      detailProduct: data.detailProduct,
+      relatedProducts: data.relatedProducts,
+      newProducts: data.newProducts,
     }, // will be passed to the page component as props
   };
 }
