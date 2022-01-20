@@ -1,5 +1,6 @@
 import Slider from "react-slick";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function SideProductCart({ product }) {
   return (
@@ -12,6 +13,7 @@ export default function SideProductCart({ product }) {
                 alt=""
                 className="img-fluid blur-up lazyload"
                 src={product.media.featuredImage}
+                layout="responsive"
               />
             </a>
           </Link>
