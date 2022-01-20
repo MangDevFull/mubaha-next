@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Head from "next/head";
 import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
 import SideProductCart from "../components/SideProductCart";
@@ -18,6 +19,9 @@ export default function Home({
 }) {
   return (
     <>
+      <Head>
+        <title>Trang chủ</title>
+      </Head>
       <div>
         {/* Home slider */}
         <section className="p-0">
