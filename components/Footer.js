@@ -1,4 +1,4 @@
-export default function Footer({ }) {
+export default function Footer({}) {
   return (
     <>
       {/* footer start */}
@@ -73,27 +73,27 @@ export default function Footer({ }) {
                   <div className="footer-social">
                     <ul>
                       <li>
-                        <a href="true">
+                        <a>
                           <i className="fa fa-facebook" aria-hidden="true" />
                         </a>
                       </li>
                       <li>
-                        <a href="true">
+                        <a>
                           <i className="fa fa-google-plus" aria-hidden="true" />
                         </a>
                       </li>
                       <li>
-                        <a href="true">
+                        <a>
                           <i className="fa fa-twitter" aria-hidden="true" />
                         </a>
                       </li>
                       <li>
-                        <a href="true">
+                        <a>
                           <i className="fa fa-instagram" aria-hidden="true" />
                         </a>
                       </li>
                       <li>
-                        <a href="true">
+                        <a>
                           <i className="fa fa-rss" aria-hidden="true" />
                         </a>
                       </li>
@@ -109,19 +109,19 @@ export default function Footer({ }) {
                   <div className="footer-contant">
                     <ul>
                       <li>
-                        <a href="true">mens</a>
+                        <a>mens</a>
                       </li>
                       <li>
-                        <a href="true">womens</a>
+                        <a>womens</a>
                       </li>
                       <li>
-                        <a href="true">clothing</a>
+                        <a>clothing</a>
                       </li>
                       <li>
-                        <a href="true">accessories</a>
+                        <a>accessories</a>
                       </li>
                       <li>
-                        <a href="true">featured</a>
+                        <a>featured</a>
                       </li>
                     </ul>
                   </div>
@@ -135,19 +135,19 @@ export default function Footer({ }) {
                   <div className="footer-contant">
                     <ul>
                       <li>
-                        <a href="true">shipping &amp; return</a>
+                        <a>shipping &amp; return</a>
                       </li>
                       <li>
-                        <a href="true">secure shopping</a>
+                        <a>secure shopping</a>
                       </li>
                       <li>
-                        <a href="true">gallary</a>
+                        <a>gallary</a>
                       </li>
                       <li>
-                        <a href="true">affiliates</a>
+                        <a>affiliates</a>
                       </li>
                       <li>
-                        <a href="true">contacts</a>
+                        <a>contacts</a>
                       </li>
                     </ul>
                   </div>
@@ -189,8 +189,8 @@ export default function Footer({ }) {
               <div className="col-xl-6 col-md-6 col-sm-12">
                 <div className="footer-end">
                   <p>
-                    <i className="fa fa-copyright" aria-hidden="true" /> 2022 - TMP Software.
-                    All rights reserved.
+                    <i className="fa fa-copyright" aria-hidden="true" /> 2022 -
+                    TMP Software. All rights reserved.
                   </p>
                 </div>
               </div>
@@ -198,22 +198,22 @@ export default function Footer({ }) {
                 <div className="payment-card-bottom">
                   <ul>
                     <li>
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/icon/visa.png" alt="" />
                       </a>
                     </li>
                     <li>
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/icon/mastercard.png" alt="" />
                       </a>
                     </li>
                     <li>
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/icon/paypal.png" alt="" />
                       </a>
                     </li>
                     <li>
-                      <a href="true">
+                      <a>
                         <img
                           src="/assets/images/icon/american-express.png"
                           alt=""
@@ -221,7 +221,7 @@ export default function Footer({ }) {
                       </a>
                     </li>
                     <li>
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/icon/discover.png" alt="" />
                       </a>
                     </li>

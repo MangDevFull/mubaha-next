@@ -3,13 +3,24 @@ import Slider from "react-slick";
 import ProductCard from "../components/ProductCard";
 import SideProductCart from "../components/SideProductCart";
 import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import API from "../services/api";
+import axios from "axios";
+import { Col, Container, Row } from "reactstrap";
 
-export default function Home({ data }) {
+export default function Home({
+  dealsOfTheDay,
+  dontMissTheseProducts,
+  firstNewProducts,
+  leftNewProducts,
+  rightFeatureProducts,
+  top5Products,
+}) {
   return (
     <>
       <div>
         {/* Home slider */}
-        <section className="p-0 layout-7">
+        <section className="p-0">
           <Slider className="slide-1 home-slider">
             <div>
               <div className="home">
@@ -270,7 +281,7 @@ export default function Home({ data }) {
                   slidesToScroll={2}
                   className="slide-6-product product-m no-arrow"
                 >
-                  {data.dealsOfTheDay.map((product) => (
+                  {dealsOfTheDay.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </Slider>
@@ -299,7 +310,7 @@ export default function Home({ data }) {
                   slidesToScroll={2}
                   className="slide-6-product product-m no-arrow"
                 >
-                  {data.top5Products.map((product) => (
+                  {top5Products.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </Slider>
@@ -322,7 +333,7 @@ export default function Home({ data }) {
                   <div className="theme-card card-border bg-light border-0">
                     <h5 className="title-border">new product</h5>
                     <Slider slidesPerRow={2} className="offer-slider slide-1">
-                      {data.firstNewProducts.map((product) => (
+                      {firstNewProducts.map((product) => (
                         <SideProductCart key={product._id} product={product} />
                       ))}
                     </Slider>
@@ -349,7 +360,7 @@ export default function Home({ data }) {
                 slidesToShow={6}
                 className="slide-6-product product-m no-arrow"
               >
-                {data.dontMissTheseProducts.map((product) => (
+                {dontMissTheseProducts.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </Slider>
@@ -365,7 +376,7 @@ export default function Home({ data }) {
                 <div className="theme-card card-border bg-light border-0">
                   <h5 className="title-border">new product</h5>
                   <Slider slidesPerRow={3} className="offer-slider slide-1">
-                    {data.leftNewProducts.map((product) => (
+                    {leftNewProducts.map((product) => (
                       <SideProductCart key={product._id} product={product} />
                     ))}
                   </Slider>
@@ -374,7 +385,7 @@ export default function Home({ data }) {
               <div className="col-lg-4 center-slider border-0 ratio2_3">
                 <div className="row">
                   <div className="col-md-12">
-                    <a href="true">
+                    <a>
                       <div className="collection-banner mb-4 p-right text-end">
                         <div className="img-part">
                           <img
@@ -393,7 +404,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div className="col-md-12">
-                    <a href="true">
+                    <a>
                       <div className="collection-banner p-right text-end">
                         <div className="img-part">
                           <img
@@ -417,7 +428,7 @@ export default function Home({ data }) {
                 <div className="theme-card card-border bg-light border-0">
                   <h5 className="title-border">feature product</h5>
                   <Slider slidesPerRow={3} className="offer-slider slide-1">
-                    {data.rightFeatureProducts.map((product) => (
+                    {rightFeatureProducts.map((product) => (
                       <SideProductCart key={product._id} product={product} />
                     ))}
                   </Slider>
@@ -446,7 +457,7 @@ export default function Home({ data }) {
                   slidesToScroll={2}
                   className="slide-6-product product-m no-arrow"
                 >
-                  {data.top5Products.map((product) => (
+                  {top5Products.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </Slider>
@@ -465,7 +476,7 @@ export default function Home({ data }) {
                 slidesToShow={6}
                 className="slide-6-product product-m no-arrow"
               >
-                {data.dealsOfTheDay.map((product) => (
+                {dealsOfTheDay.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
               </Slider>
@@ -481,56 +492,56 @@ export default function Home({ data }) {
                 <Slider slidesToShow={6} className="brand-6 no-arrow">
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/9.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/10.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/11.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/12.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/13.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/14.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/15.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div>
                     <div className="logo-block">
-                      <a href="true">
+                      <a>
                         <img src="/assets/images/logos/16.png" alt="" />
                       </a>
                     </div>
@@ -552,7 +563,7 @@ export default function Home({ data }) {
                   className="slide-7 no-arrow slick-instagram"
                 >
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/1.jpg"
@@ -566,7 +577,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/2.jpg"
@@ -580,7 +591,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/3.jpg"
@@ -594,7 +605,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/4.jpg"
@@ -608,7 +619,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/5.jpg"
@@ -622,7 +633,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/6.jpg"
@@ -636,7 +647,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/7.jpg"
@@ -650,7 +661,7 @@ export default function Home({ data }) {
                     </a>
                   </div>
                   <div>
-                    <a href="true">
+                    <a>
                       <div className="instagram-box">
                         <img
                           src="/assets/images/furniture/insta/8.jpg"
@@ -675,12 +686,17 @@ export default function Home({ data }) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch("http://192.168.1.20:3001/api/v1/");
-  const data = await res.json();
+  const response = await API.instance.get("/");
+  const data = response.data.data;
 
   return {
     props: {
-      data: data.data,
-    }, // will be passed to the page component as props
+      dealsOfTheDay: data.dealsOfTheDay,
+      dontMissTheseProducts: data.dontMissTheseProducts,
+      firstNewProducts: data.firstNewProducts,
+      leftNewProducts: data.leftNewProducts,
+      rightFeatureProducts: data.rightFeatureProducts,
+      top5Products: data.top5Products,
+    },
   };
 }

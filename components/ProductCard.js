@@ -8,38 +8,41 @@ export default function ProductCard({ product }) {
           <div className="img-wrapper">
             <div className="front">
               <Link href={`/${product.slug}`}>
-                <img
-                  src={product.media.featuredImage}
-                  className="img-fluid blur-up lazyload bg-img"
-                  alt=""
-                />
+                <a>
+                  <img
+                    src={product.media.featuredImage}
+                    className="img-fluid blur-up lazyload bg-img"
+                    alt=""
+                  />
+                </a>
               </Link>
             </div>
             <div className="back">
               <Link href={`/${product.slug}`}>
-                <img
-                  src={product.media.featuredImage}
-                  className="img-fluid blur-up lazyload bg-img"
-                  alt=""
-                />
+                <a>
+                  <img
+                    src={product.media.featuredImage}
+                    className="img-fluid blur-up lazyload bg-img"
+                    alt=""
+                  />
+                </a>
               </Link>
             </div>
             <div className="cart-info cart-wrap bg-color-cls sm-box">
-              <button onClick="openCart()" title="Add to cart">
+              <button title="Add to cart">
                 <i className="ti-shopping-cart" />
               </button>
-              <a href="true" title="Add to Wishlist">
+              <a title="Add to Wishlist">
                 <i className="ti-heart" aria-hidden="true" />
               </a>
               <a
-                href="true"
                 data-bs-toggle="modal"
                 data-bs-target="#quick-view"
                 title="Quick View"
               >
                 <i className="ti-search" aria-hidden="true" />
               </a>
-              <a href="compare.html" title="Compare">
+              <a title="Compare">
                 <i className="ti-reload" aria-hidden="true" />
               </a>
             </div>
@@ -51,7 +54,9 @@ export default function ProductCard({ product }) {
               <i className="fa fa-star" />
             </div>
             <Link href={`/${product.slug}`}>
-              <h6>{product.name}</h6>
+              <a>
+                <h6>{product.name}</h6>
+              </a>
             </Link>
             <h4>${product.price}</h4>
             <ul className="color-variant quantity-variant box-l">
