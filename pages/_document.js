@@ -63,6 +63,7 @@ class MyDocument extends Document {
           />
 
           <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+          <link rel="stylesheet" type="text/css" href="/mubaha/css/style.css" />
           <link
             rel="stylesheet"
             type="text/css"
