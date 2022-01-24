@@ -1,13 +1,24 @@
-import Image from "next/image";
+
 import Head from "next/head";
 import Slider from "react-slick";
-import ProductCard from "../components/ProductCard";
-import SideProductCart from "../components/SideProductCart";
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
 import API from "../services/api";
-import axios from "axios";
-import { Col, Container, Row } from "reactstrap";
+import MasterBanner from "../components/MasterBanner";
+import MainServiceCollections from "../components/MainServiceCollections";
+
+const Data = [
+  {
+    img: "home39",
+    title: "save 10%",
+    desc: "fresh vegetables",
+    link: "#",
+  },
+  {
+    img: "home38",
+    title: "save upto 10%",
+    desc: "fresh vegetables",
+    link: "#",
+  },
+];
 
 export default function Home({
   dealsOfTheDay,
@@ -20,8 +31,25 @@ export default function Home({
   return (
     <>
       <Head>
-        <title>Trang chủ</title>
+        <title>Trang chủ | Mubaha</title>
       </Head>
+      <section className="p-0">
+        <Slider className="slide-1 home-slider">
+          {Data.map((data, i) => {
+            return (
+              <MasterBanner
+                key={i}
+                img={data.img}
+                link={data.link}
+                title={data.title}
+                desc={data.desc}
+                classes={data.classes}
+              />
+            );
+          })}
+        </Slider>
+      </section>
+      <MainServiceCollections />
     </>
   );
 }
