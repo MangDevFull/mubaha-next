@@ -21,14 +21,18 @@ export default function TopBarDark({ topClass, fluid }) {
           <Col lg="6" className="text-right">
             <ul className="header-dropdown">
               <li>
-                <Link href="/page/account/wishlist">
+                <Link href="/">
                   <a>
                     Đăng ký
                   </a>
                 </Link>
               </li>
               <li>
-                Đăng nhập
+                <Link href="/">
+                  <a>
+                    Đăng nhập
+                  </a>
+                </Link>
               </li>
             </ul>
           </Col>

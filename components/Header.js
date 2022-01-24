@@ -62,9 +62,9 @@ export default function Header({ }) {
                     </Link>
                   </div>
                 </div>
-                <div className="flex-grow-1" style={{maxWidth: '700px'}}>
+                <div className="flex-grow-1" style={{ maxWidth: '700px' }}>
                   <InputGroup>
-                    <Input type="search" />
+                    <Input type="search" placeholder="Săn sale #MUBAHASALES" />
                     <Button>
                       <i className="fa fa-search"></i>
                     </Button>

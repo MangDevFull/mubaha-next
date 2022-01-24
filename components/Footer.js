@@ -103,7 +103,7 @@ export default function Footer({ }) {
                     <div className="footer-logo">
                       <Link href="/">
                         <a>
-                          <div style={{ width: '260px', maxWidth: '260px' }}>
+                          <div style={{ width: '200px', maxWidth: '200px' }}>
                             <Image src={logo} alt="Mubaha" layout="responsive" />
                           </div>
                         </a>
