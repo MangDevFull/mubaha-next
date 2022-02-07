@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import API from "../services/api";
 import MasterBanner from "../components/MasterBanner";
 import MainServiceCollections from "../components/MainServiceCollections";
+import DealsOfTheDay from "../components/deals-of-the-day";
 
 const Data = [
   {
@@ -50,6 +51,7 @@ export default function Home({
         </Slider>
       </section>
       <MainServiceCollections />
+      <DealsOfTheDay data={dealsOfTheDay} />
     </>
   );
 }
