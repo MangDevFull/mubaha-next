@@ -1,15 +1,25 @@
 import Link from 'next/link'
 import { useState,useCallback } from 'react';
 import Otp from '../../components/Otp.js'
+import Head from "next/head";
 
 export default function loginWithOtp(){
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
+  const [isVerify,setVerify] = useState(false);
+
   const handleClose = useCallback(() => {
-     setShow(false);
-  },[show]);
+    setVerify(false);
+ },[isVerify]);
+
+  const checkPhone = () =>{
+    setVerify(true)
+  }
+
+
   return (
     <>
+      <Head>
+        <title>Đăng nhập với SMS</title>
+      </Head>
        {/* breadcrumb start */}
        <div className="breadcrumb-section">
           <div className="container">
@@ -33,7 +43,8 @@ export default function loginWithOtp(){
         {/* breadcrumb End */}
         {/*section start*/}
 
-        <Otp show = {show}  handleClose={handleClose}  />
+     <Otp show={isVerify} handleClose={handleClose} />
+
   
         <section className="login-page section-b-space">
           <div className="container">
@@ -53,7 +64,7 @@ export default function loginWithOtp(){
                       </div>
                     </div>
                     <div className="d-flex justify-content-between">
-                      <button className="btn btn-solid" onClick={handleShow}>Tiếp tục</button>
+                      <button className="btn btn-solid" onClick={checkPhone}>Tiếp tục</button>
                       <Link href="/auth/login">
         <a  className="btn btn-solid">Đăng nhập với SMS</a>
          

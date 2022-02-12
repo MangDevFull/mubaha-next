@@ -3,6 +3,7 @@ import { Button,Modal } from 'react-bootstrap';
 import { useEffect } from 'react';
 import Link from 'next/link'
 export default function Otp({show,handleClose}) {
+
   return(
   <Modal show={show} onHide={handleClose}>
   <Modal.Header closeButton>

@@ -1,11 +1,14 @@
 import Link from 'next/link'
-
+import Head from "next/head";
 
 
 
 export default function loginPage() {
     return (
       <>
+            <Head>
+        <title>Đăng nhập với mật khẩu</title>
+      </Head>
           {/* breadcrumb start */}
           <div className="breadcrumb-section">
           <div className="container">

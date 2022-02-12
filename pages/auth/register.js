@@ -1,14 +1,22 @@
 import Link from 'next/link'
+import Head from "next/head";
 import { useState,useCallback } from 'react';
 import Otp from '../../components/Otp.js'
 export default function registerPage (){
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
+  const [isVerify,setVerify] = useState(false);
+
   const handleClose = useCallback(() => {
-     setShow(false);
-  },[show]);
+    setVerify(false);
+ },[isVerify]);
+
+  const checkPhone = () =>{
+    setVerify(true)
+  }
   return(
     <>
+          <Head>
+        <title>Đăng ký</title>
+      </Head>
        {/* breadcrumb start */}
        <div className="breadcrumb-section">
           <div className="container">
@@ -31,7 +39,7 @@ export default function registerPage (){
         </div>
         {/* breadcrumb End */}
         {/*section start*/}
-        <Otp show = {show}  handleClose={handleClose}  />
+        <Otp show={isVerify} handleClose={handleClose} />
         <section className="register-page section-b-space">
           <div className="container">
             <div className="row">
@@ -53,7 +61,7 @@ export default function registerPage (){
                         <label htmlFor="fname">Số điện thoại *</label>
                         <input type="text" className="form-control" id="fname" name="phone" placeholder="Nhập số điện thoại" required />
                         <div className="d-flex justify-content-between">
-                        <button  className="btn btn-solid w-auto"  onClick={handleShow}>Tiếp tục</button>
+                        <button  className="btn btn-solid w-auto"  onClick={checkPhone}>Tiếp tục</button>
                         <Link href="/auth/login">
         <a  className="btn btn-solid">Quay lại đăng nhập</a>
          
