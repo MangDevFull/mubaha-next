@@ -2,7 +2,7 @@
   "name": "client",
   "private": true,
   "scripts": {
-    "dev": "next -p 3001",
+    "dev": "next -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

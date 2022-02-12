@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import Otp from '../../components/Otp.js'
 import Head from "next/head";
 import libphone from 'google-libphonenumber';
-
+import API from '../../services/api.js'
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
@@ -18,22 +18,33 @@ export default function loginWithOtp() {
   }, [isVerifyPhone, phone]);
 
   const checkPhone = (phone) => {
-    if (phone.length < 2 || phone == null) {
+    var reg = /^\d+$/;
+    if(!reg.test(phone)) {
       setisNotValidPhone(true);
-    } else {
-      const number = phoneUtil.parse(phone, 'VN');
-      if (!phoneUtil.isValidNumber(number)) {
+    }else{
+      if (phone.length < 2 || phone == null) {
         setisNotValidPhone(true);
       } else {
-        const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164);
-        setPhone(phoneNumber);
-        setisNotValidPhone(false)
+        const number = phoneUtil.parse(phone, 'VN');
+        if (!phoneUtil.isValidNumber(number)) {
+          setisNotValidPhone(true);
+        } else {
+          const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164);
+          setPhone(phoneNumber);
+          setisNotValidPhone(false)
+        }
       }
     }
   }
 
-  const getOtp = () => {
-    setisVerifyPhone(true);
+  const getOtp = async () => {
+    const params = {
+      phone:phone
+    }
+    console.log(params);
+    const data = await API.instance.post('/auth//login-otp',params)
+    console.log(data)
+    // setisVerifyPhone(true);
   }
   return (
     <>
