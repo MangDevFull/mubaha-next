@@ -10,6 +10,7 @@ import axios from "axios";
 import { Col, Container, Row } from "reactstrap";
 
 export default function Home({
+
   dealsOfTheDay,
   dontMissTheseProducts,
   firstNewProducts,
@@ -17,6 +18,7 @@ export default function Home({
   rightFeatureProducts,
   top5Products,
 }) {
+  console.log(localStorage)
   return (
     <>
       <Head>

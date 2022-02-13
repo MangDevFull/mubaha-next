@@ -1,12 +1,14 @@
 import OtpInput from 'react-otp-input';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal,Alert } from 'react-bootstrap';
 import Link from 'next/link'
 import {useState} from 'react'
 import API from '../services/api.js'
-
+import { useRouter } from 'next/router'
 
 export default function Otp({ show, handleClose,phone }) {
+  const router = useRouter()
     const [otp,setOtp] = useState('')
+    const [isInvalidOtp, setInvalidOtp] = useState(false);
     const handleOtp = async () =>{
       const params = {
         phone,
@@ -14,14 +16,20 @@ export default function Otp({ show, handleClose,phone }) {
       }
       const response = await API.instance.post('/auth/verify-login-otp',params)
       const data = response.data
-      console.log(data)
+      if(data.status==200) {
+        localStorage.setItem("userId", data.data.userId);
+        localStorage.setItem("token", data.data.token);
+        router.push('/')
+      }else{
+        setInvalidOtp(true)
+        setOtp('')
+      }
     }
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
           Vui Lòng Nhập Mã Xác Minh
-
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -29,8 +37,12 @@ export default function Otp({ show, handleClose,phone }) {
         <p style={{textAlign: 'center'}}>
           Mã xác minh của bạn sẽ được gửi bằng tin nhắn đến số điện thoại
           </p>
-
            <p style={{fontSize:'20',textAlign:'center'}}><b>({phone})</b></p>
+           {isInvalidOtp &&
+           <Alert style={{textAlign:'center',height:'60px'}} variant={'danger'}>
+          Mã xác minh không hợp lệ
+          </Alert>
+        }
         <div style={{ marginTop: '50px' }} className='container'>
           <OtpInput
             inputStyle={{

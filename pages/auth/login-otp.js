@@ -13,7 +13,6 @@ export default function loginWithOtp() {
   const [isNotValidPhone, setisNotValidPhone] = useState(true);
   const [phone, setPhone] = useState('')
   const [isVerifyPhone, setisVerifyPhone] = useState(false);
-  const [isVerifyOtp, setisVerifyOtp] = useState(false);
   const handleClose = useCallback(() => {
     setisVerifyPhone(false);
   }, [isVerifyPhone, phone]);
