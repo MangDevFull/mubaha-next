@@ -13,6 +13,7 @@ export default function loginWithOtp() {
   const [isNotValidPhone, setisNotValidPhone] = useState(true);
   const [phone, setPhone] = useState('')
   const [isVerifyPhone, setisVerifyPhone] = useState(false);
+  const [isVerifyOtp, setisVerifyOtp] = useState(false);
   const handleClose = useCallback(() => {
     setisVerifyPhone(false);
   }, [isVerifyPhone, phone]);
@@ -41,10 +42,9 @@ export default function loginWithOtp() {
     const params = {
       phone:phone
     }
-    console.log(params);
-    const data = await API.instance.post('/auth//login-otp',params)
-    console.log(data)
-    // setisVerifyPhone(true);
+    const response = await API.instance.post('/auth//login-otp',params)
+   const data = response.data
+    if(data.status==200) setisVerifyPhone(true);
   }
   return (
     <>

@@ -1,10 +1,21 @@
 import OtpInput from 'react-otp-input';
 import { Button, Modal } from 'react-bootstrap';
 import Link from 'next/link'
+import {useState} from 'react'
+import API from '../services/api.js'
 
 
 export default function Otp({ show, handleClose,phone }) {
-  console.log(phone)
+    const [otp,setOtp] = useState('')
+    const handleOtp = async () =>{
+      const params = {
+        phone,
+        code:otp
+      }
+      const response = await API.instance.post('/auth/verify-login-otp',params)
+      const data = response.data
+      console.log(data)
+    }
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -32,6 +43,11 @@ export default function Otp({ show, handleClose,phone }) {
               marginLeft: "90px",
               marginBottom: "20px",
             }}
+            value={otp}
+                  onChange={(number) => {
+                    // setOTP(number.target.value);
+                    setOtp(number);
+                  }}
             numInputs={4}
             separator={<span>-</span>}
           />
@@ -61,8 +77,8 @@ export default function Otp({ show, handleClose,phone }) {
         <Button variant="secondary" onClick={handleClose}>
           Đóng
         </Button>
-        <Button variant="primary" onClick={handleClose}>
-          Đăng nhập
+        <Button variant="primary" onClick={handleOtp}>
+          Xác thực
         </Button>
 
       </Modal.Footer>
