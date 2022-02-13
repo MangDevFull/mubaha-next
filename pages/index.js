@@ -18,7 +18,6 @@ export default function Home({
   rightFeatureProducts,
   top5Products,
 }) {
-  console.log(localStorage)
   return (
     <>
       <Head>

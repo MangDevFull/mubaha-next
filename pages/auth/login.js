@@ -1,25 +1,31 @@
 import Link from 'next/link'
 import Head from "next/head";
 import API from '../../services/api.js'
-import { useRef } from "react";
-
+import { useRef,useState } from "react";
+import {useRouter} from 'next/router';
+import {Alert} from 'react-bootstrap'
 export default function loginPage() {
+  const [isInvalid,setInvalid] = useState(false)
+  const [message,setMessage] = useState('')
   const inputPhone = useRef();
   const inputPassword = useRef();
-  
-   const getValueForm = () => {
+  const router = useRouter();
+   const getValueForm = async () => {
     const params ={
       phone: inputPhone.current.value,
       password: inputPassword.current.value
     }
-     API.instance.post('/auth/login', params)
-     .then((response) => {
-       console.log(response);
-     })
-     .catch((error) => {
-       console.log(error);
-     });
-
+     const response = await API.instance.post('/auth/login', params)
+    const data = response.data
+    if(data.status==200) {
+      localStorage.setItem("userId", data.data.userId);
+      localStorage.setItem("token", data.data.token);
+      router.push('/')
+    }else{
+      console.log(data)
+      setInvalid(true);
+      setMessage(data.message);
+    }
   }
 
   return (
@@ -58,6 +64,11 @@ export default function loginPage() {
                 <h6 className="title-font">Đăng nhập với mật khẩu</h6>
                 <div className="theme-form">
                   <div className="form-group">
+                  {isInvalid &&
+           <Alert style={{textAlign:'center',height:'50px'}} variant={'danger'}>
+          {message}
+          </Alert>
+        }
                     <div>
                       <input type="tel"
                        name="phone" className="form-control phone-number" 
