@@ -4,6 +4,7 @@ import Otp from '../../components/Otp.js'
 import Head from "next/head";
 import libphone from 'google-libphonenumber';
 import API from '../../services/api.js'
+import {Alert} from 'react-bootstrap'
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
@@ -13,6 +14,8 @@ export default function loginWithOtp() {
   const [isNotValidPhone, setisNotValidPhone] = useState(true);
   const [phone, setPhone] = useState('')
   const [isVerifyPhone, setisVerifyPhone] = useState(false);
+  const [message, setMessage] = useState('')
+  const [isNotRegistered, setIsNotRegistered] = useState(false);
   const handleClose = useCallback(() => {
     setisVerifyPhone(false);
   }, [isVerifyPhone, phone]);
@@ -43,7 +46,14 @@ export default function loginWithOtp() {
     }
     const response = await API.instance.post('/auth//login-otp',params)
    const data = response.data
-    if(data.status==200) setisVerifyPhone(true);
+    if(data.status==200){
+      setisVerifyPhone(true);
+      setMessage('')
+      setIsNotRegistered(false)
+    }else{
+        setMessage(data.message);
+        setIsNotRegistered(true)
+    }
   }
   return (
     <>
@@ -87,6 +97,11 @@ export default function loginWithOtp() {
                 <br />
 
                 <div className="theme-form">
+          { isNotRegistered &&
+           <Alert style={{textAlign:'center',height:'50px'}} variant={'danger'}>
+          {message}
+          </Alert>
+        }
                   <div className="form-group">
                     <div>
                     <input type="tel" name="username" className="form-control phone-number"

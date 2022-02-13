@@ -9,6 +9,9 @@ export default function Otp({ show, handleClose,phone }) {
   const router = useRouter()
     const [otp,setOtp] = useState('')
     const [isInvalidOtp, setInvalidOtp] = useState(false);
+    const emptyOtp = () =>{
+      setOtp('')
+    }
     const handleOtp = async () =>{
       const params = {
         phone,
@@ -26,7 +29,7 @@ export default function Otp({ show, handleClose,phone }) {
       }
     }
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={()=>{handleClose();emptyOtp()}}>
       <Modal.Header closeButton>
         <Modal.Title>
           Vui Lòng Nhập Mã Xác Minh
@@ -86,7 +89,7 @@ export default function Otp({ show, handleClose,phone }) {
       </Modal.Body>
       <Modal.Footer>
 
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={()=>{handleClose();emptyOtp();}}>
           Đóng
         </Button>
         <Button variant="primary" onClick={handleOtp}>

@@ -3,8 +3,8 @@ import Head from "next/head";
 import { useState,useCallback } from 'react';
 import Otp from '../../components/Otp.js'
 import libphone from 'google-libphonenumber';
-
-
+import API from '../../services/api.js'
+import {Alert} from 'react-bootstrap'
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
@@ -12,6 +12,8 @@ export default function registerPage (){
   const [isNotValidPhone, setisNotValidPhone] = useState(true);
   const [phone, setPhone] = useState('')
   const [isVerifyPhone, setisVerifyPhone] = useState(false);
+  const [isRegisted,setIsRegisted] = useState(false)
+  const [message, setMessage] = useState('')
   const handleClose = useCallback(() => {
     setisVerifyPhone(false);
   }, [isVerifyPhone, phone]);
@@ -31,8 +33,19 @@ export default function registerPage (){
     }
   }
 
-  const getOtp = () => {
-    setisVerifyPhone(true);
+  const getOtp = async () => {
+    const params ={
+      phone
+    }
+    const response = await API.instance.post('/auth/register-otp',params)
+    const data = response.data
+    console.log(data);
+    if(data.status == 200){
+      setisVerifyPhone(true);
+    }else{
+      setMessage(data.message)
+      setIsRegisted(true);
+    }
   }
   return(
     <>
@@ -68,7 +81,7 @@ export default function registerPage (){
               <div className="col-lg-12">
                 <h3>Tạo tài khoản</h3>
                 <div className="theme-card">
-                  <form className="theme-form" method="POST">
+                  <div className="theme-form" method="POST">
                     <div className="form-row row">
                       <div className="col-md-6">
                         <div className="subscribe">
@@ -80,6 +93,11 @@ export default function registerPage (){
                         </div>
                       </div>
                       <div className="col-md-6">
+                      { isRegisted &&
+                      <Alert style={{textAlign:'center',height:'50px'}} variant={'danger'}>
+                      {message}
+                      </Alert>
+                     }
                         <label htmlFor="fname">Số điện thoại *</label>
                         <input type="tel" name="username" className="form-control phone-number"
                         onChange={(e) => {
@@ -95,7 +113,7 @@ export default function registerPage (){
                         </div>
                       </div>
                     </div>
-                  </form></div>
+                  </div></div>
               </div>
             </div>
           </div>
