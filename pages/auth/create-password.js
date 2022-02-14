@@ -1,13 +1,26 @@
 import Link from 'next/link'
-import {Button,Modal} from 'react-bootstrap'
+import {Modal} from 'react-bootstrap'
 import {useState,useRef} from 'react'
+import API from '../../services/api.js'
+import {useRouter} from 'next/router'
 export default function CreatePassWord (){
   const [show, setShow] = useState(false);
   const inputPassword = useRef();
+  const router = useRouter();
   const handleCreatePass = async () => {
     const params = {
       password: inputPassword.current.value
     }
+   
+    const response = await API.instance.put('/auth/create-password',params)
+
+    const data = response.data
+
+    if(data.status == 200){
+      setShow(true);
+      router.push('/')
+    }
+
   }
   return(
     <>
@@ -48,8 +61,8 @@ export default function CreatePassWord (){
               <div className="theme-form" style={{marginTop:"10px"}}>
                 <div className="form-row row">
                   <div className="col-md-12">
-                    <input type="text" className="form-control"  placeholder="Nhập mật khẩu của bạn" required />
-                  </div><a href="#" className="btn btn-solid w-auto">Tạo</a>
+                    <input type="text" ref={inputPassword} className="form-control"  placeholder="Nhập mật khẩu của bạn" required />
+                  </div><a className="btn btn-solid w-auto" onClick={handleCreatePass}>Tạo</a>
                 </div>
               </div>
             </div>

@@ -22,9 +22,14 @@ export default function loginPage() {
       localStorage.setItem("token", data.data.token);
       router.push('/')
     }else{
-      console.log(data)
-      setInvalid(true);
+      if(data.errors[0]=='isCreatPassword'){
+        setInvalid(true);
       setMessage(data.message);
+      router.push('/auth/create-password')
+      }else{
+        setInvalid(true);
+        setMessage(data.message);
+      }
     }
   }
 

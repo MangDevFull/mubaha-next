@@ -78,7 +78,7 @@ export default function Otp({ show, handleClose,phone,type }) {
                     setOtp(number);
                   }}
             numInputs={4}
-            separator={<span>-</span>}
+            separator={<span style={{marginLeft:'10px'}}></span>}
           />
         </div>
         <div style={{ marginTop: '60px' }} className="container">
