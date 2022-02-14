@@ -4,6 +4,7 @@ import Link from 'next/link'
 import {useState} from 'react'
 import API from '../services/api.js'
 import { useRouter } from 'next/router'
+import otpEnums from '../utils/otpEnums.js';
 
 export default function Otp({ show, handleClose,phone,type }) {
   const router = useRouter()
@@ -17,18 +18,18 @@ export default function Otp({ show, handleClose,phone,type }) {
         phone,
         code:otp
       }
-      if(type=='REG'){
+      if(type==otpEnums.REGISTRATION){
         const response = await API.instance.post('/auth/verify-register-otp',params)
         const data = response.data
         if(data.status==200) {
           localStorage.setItem("userId", data.data.userId);
           localStorage.setItem("token", data.data.token);
-          router.push('/')
+          router.push('/auth/create-password')
         }else{
           setInvalidOtp(true)
           setOtp('')
         }
-      }else if(type=='LOG'){
+      }else if(type==otpEnums.LOGIN){
         const response = await API.instance.post('/auth/verify-login-otp',params)
         const data = response.data
         if(data.status==200) {

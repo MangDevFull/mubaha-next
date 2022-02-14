@@ -5,7 +5,7 @@ import Head from "next/head";
 import libphone from 'google-libphonenumber';
 import API from '../../services/api.js'
 import {Alert} from 'react-bootstrap'
-
+import otpEnums from '../../utils/otpEnums.js'
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
@@ -83,7 +83,7 @@ export default function loginWithOtp() {
       {/* breadcrumb End */}
       {/*section start*/}
 
-      <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} type="LOG" />
+      <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} type={otpEnums.LOGIN} />
 
 
       <section className="login-page section-b-space">

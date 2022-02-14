@@ -6,6 +6,7 @@ import libphone from 'google-libphonenumber';
 import API from '../../services/api.js'
 import {Alert} from 'react-bootstrap'
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
+import otpEnums from '../../utils/otpEnums.js';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 export default function registerPage (){
@@ -74,7 +75,7 @@ export default function registerPage (){
         </div>
         {/* breadcrumb End */}
         {/*section start*/}
-        <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} type={'REG'} />
+        <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} type={otpEnums.REGISTRATION} />
         <section className="register-page section-b-space">
           <div className="container">
             <div className="row">
