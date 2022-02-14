@@ -1,238 +1,298 @@
-export default function Footer({}) {
+import { useEffect, useState } from "react";
+import Image from 'next/image'
+import Link from 'next/link'
+
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Button,
+  Collapse,
+} from 'reactstrap'
+
+import logo from '../assets/images/logo-color.svg'
+import Copyright from './common/copyright.js'
+
+export default function Footer({ }) {
+  const [isOpen, setIsOpen] = useState();
+  const [collapse, setCollapse] = useState(0);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    setWidth(window.innerWidth < 750);
+    const changeCollapse = () => {
+      setWidth(window.innerWidth < 750);
+      if (window.innerWidth < 750) {
+        setCollapse(0);
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
+    };
+
+    window.addEventListener("resize", changeCollapse);
+
+    return () => {
+      window.removeEventListener('resize', changeCollapse)
+    }
+
+  }, []);
+
   return (
-    <>
-      {/* footer start */}
+    <div>
       <footer className="footer-light">
-        <div className="light-layout">
-          <div className="container">
+        <div className="light-layout upper-footer">
+          <Container fluid="">
             <section className="small-section border-section border-top-0">
-              <div className="row">
-                <div className="col-lg-6">
+              <Row>
+                <Col lg="6">
                   <div className="subscribe">
                     <div>
-                      <h4>KNOW IT ALL FIRST!</h4>
+                      <h4>KHUYẾN MÃI, ƯU ĐÃI TRÀN NGẬP</h4>
                       <p>
-                        Never Miss Anything From MUBAHA By Signing Up To Our
-                        Newsletter.
+                        Đăng ký để nhận thông tin các chương trình khuyến mãi của Mubaha.
                       </p>
                     </div>
                   </div>
-                </div>
-                <div className="col-lg-6">
-                  <form
-                    action="https://pixelstrap.us19.list-manage.com/subscribe/post?u=5a128856334b598b395f1fc9b&id=082f74cbda"
-                    className="form-inline subscribe-form auth-form needs-validation"
-                    method="post"
-                    id="mc-embedded-subscribe-form"
-                    name="mc-embedded-subscribe-form"
-                    target="_blank"
-                  >
-                    <div className="form-group mx-sm-3">
-                      <input
+                </Col>
+                <Col lg="6">
+                  <Form className="form-inline subscribe-form">
+                    <FormGroup className="mx-sm-3">
+                      <Input
                         type="text"
                         className="form-control"
-                        name="EMAIL"
-                        id="mce-EMAIL"
-                        placeholder="Enter your email"
-                        required="required"
+                        id="exampleFormControlInput1"
+                        placeholder="Nhập email của bạn"
                       />
-                    </div>
-                    <button
-                      type="submit"
-                      className="btn btn-solid"
-                      id="mc-submit"
-                    >
-                      subscribe
-                    </button>
-                  </form>
-                </div>
-              </div>
+                    </FormGroup>
+                    <Button type="submit" className="btn btn-solid">
+                      Đăng ký
+                    </Button>
+                  </Form>
+                </Col>
+              </Row>
             </section>
-          </div>
+          </Container>
         </div>
+
         <section className="section-b-space light-layout">
-          <div className="container">
-            <div className="row footer-theme partition-f">
-              <div className="col-lg-4 col-md-6">
-                <div className="footer-title footer-mobile-title">
-                  <h4>about</h4>
+          <Container fluid="">
+            <Row className="footer-theme partition-f">
+              <Col lg="4" md="6">
+                <div
+                  className={`footer-title ${isOpen && collapse == 1 ? "active" : ""
+                    } footer-mobile-title`}
+                >
+                  <h4
+                    onClick={() => {
+                      setCollapse(1);
+                      setIsOpen(!isOpen);
+                    }}
+                  >
+                    about
+                    <span className="according-menu"></span>
+                  </h4>
                 </div>
-                <div className="footer-contant">
-                  <div className="footer-logo">
-                    <img src="/assets/images/icon/logo/32.png" alt="" />
-                  </div>
-                  <p>
-                    Với hàng triệu sản phẩm từ các thương hiệu, cửa hàng uy tín,
-                    hàng nghìn loại mặt hàng từ Điện thoại smartphone tới Rau củ
-                    quả tươi, kèm theo dịch vụ giao hàng siêu tốc Muhaba mang
-                    đến cho bạn một trải nghiệm mua sắm online bắt đầu bằng chữ
-                    tín. Thêm vào đó, ở Mubaha bạn có thể dễ dàng sử dụng vô vàn
-                    các tiện ích khác như mua thẻ cào, thanh toán hoá đơn điện
-                    nước, các dịch vụ bảo hiểm.
-                  </p>
-                  <div className="footer-social">
-                    <ul>
-                      <li>
-                        <a>
-                          <i className="fa fa-facebook" aria-hidden="true" />
-                        </a>
-                      </li>
-                      <li>
-                        <a>
-                          <i className="fa fa-google-plus" aria-hidden="true" />
-                        </a>
-                      </li>
-                      <li>
-                        <a>
-                          <i className="fa fa-twitter" aria-hidden="true" />
-                        </a>
-                      </li>
-                      <li>
-                        <a>
-                          <i className="fa fa-instagram" aria-hidden="true" />
-                        </a>
-                      </li>
-                      <li>
-                        <a>
-                          <i className="fa fa-rss" aria-hidden="true" />
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="col offset-xl-1">
-                <div className="sub-title">
-                  <div className="footer-title">
-                    <h4>my account</h4>
-                  </div>
+                <Collapse
+                  isOpen={width ? (collapse === 1 ? isOpen : false) : true}
+                >
                   <div className="footer-contant">
-                    <ul>
-                      <li>
-                        <a>mens</a>
-                      </li>
-                      <li>
-                        <a>womens</a>
-                      </li>
-                      <li>
-                        <a>clothing</a>
-                      </li>
-                      <li>
-                        <a>accessories</a>
-                      </li>
-                      <li>
-                        <a>featured</a>
-                      </li>
-                    </ul>
+                    <div className="footer-logo">
+                      <Link href="/">
+                        <a>
+                          <div style={{ width: '200px', maxWidth: '200px' }}>
+                            <Image src={logo} alt="Mubaha" layout="responsive" />
+                          </div>
+                        </a>
+                      </Link>
+                    </div>
+                    <p>
+                      Với hàng triệu sản phẩm từ các thương hiệu, cửa hàng uy tín, hàng nghìn loại mặt hàng từ Điện thoại smartphone tới Rau củ quả tươi, kèm theo dịch vụ giao hàng siêu tốc Muhaba mang đến cho bạn một trải nghiệm mua sắm online bắt đầu bằng chữ tín.
+                      Thêm vào đó, ở Mubaha bạn có thể dễ dàng sử dụng vô vàn các tiện ích khác như mua thẻ cào, thanh toán hoá đơn điện nước, các dịch vụ bảo hiểm.
+                    </p>
+                    <div className="footer-social">
+                      <ul>
+                        <li>
+                          <a href="https://www.facebook.com">
+                            <i
+                              className="fa fa-facebook"
+                              aria-hidden="true"
+                            ></i>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://plus.google.com">
+                            <i
+                              className="fa fa-google-plus"
+                              aria-hidden="true"
+                            ></i>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://twitter.com">
+                            <i className="fa fa-twitter" aria-hidden="true"></i>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://www.instagram.com">
+                            <i
+                              className="fa fa-instagram"
+                              aria-hidden="true"
+                            ></i>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://rss.com">
+                            <i className="fa fa-rss" aria-hidden="true"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="col">
+                </Collapse>
+              </Col>
+              <Col className="offset-xl-1">
                 <div className="sub-title">
-                  <div className="footer-title">
-                    <h4>why we choose</h4>
+                  <div
+                    className={`footer-title ${isOpen && collapse == 2 ? "active" : ""
+                      } `}
+                  >
+                    <h4
+                      onClick={() => {
+                        if (width) {
+                          setIsOpen(!isOpen);
+                          setCollapse(2);
+                        } else setIsOpen(true);
+                      }}
+                    >
+                      my account
+                      <span className="according-menu"></span>
+                    </h4>
                   </div>
-                  <div className="footer-contant">
-                    <ul>
-                      <li>
-                        <a>shipping &amp; return</a>
-                      </li>
-                      <li>
-                        <a>secure shopping</a>
-                      </li>
-                      <li>
-                        <a>gallary</a>
-                      </li>
-                      <li>
-                        <a>affiliates</a>
-                      </li>
-                      <li>
-                        <a>contacts</a>
-                      </li>
-                    </ul>
-                  </div>
+                  <Collapse
+                    isOpen={width ? (collapse === 2 ? isOpen : false) : true}
+                  >
+                    <div className="footer-contant">
+                      <ul>
+                        <li>
+                          <Link href={`/shop/left_sidebar`}>
+                            <a>womens</a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href={`/shop/left_sidebar`}>
+                            <a> clothing </a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href={`/shop/left_sidebar`}>
+                            <a>accessories</a>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link href={`/shop/left_sidebar`}>
+                            <a> featured </a>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </Collapse>
                 </div>
-              </div>
-              <div className="col">
+              </Col>
+              <Col>
                 <div className="sub-title">
-                  <div className="footer-title">
-                    <h4>store information</h4>
+                  <div
+                    className={`footer-title ${isOpen && collapse == 3 ? "active" : ""
+                      } `}
+                  >
+                    <h4
+                      onClick={() => {
+                        if (width) {
+                          setIsOpen(!isOpen);
+                          setCollapse(3);
+                        } else setIsOpen(true);
+                      }}
+                    >
+                      why we choose
+                      <span className="according-menu"></span>
+                    </h4>
                   </div>
-                  <div className="footer-contant">
-                    <ul className="contact-list">
-                      <li>
-                        <i className="fa fa-map-marker" />
-                        MUBAHA Demo Store, Demo store India 345-659
-                      </li>
-                      <li>
-                        <i className="fa fa-phone" />
-                        Call Us: 123-456-7898
-                      </li>
-                      <li>
-                        <i className="fa fa-envelope-o" />
-                        Email Us: Support@MUBAHA.com
-                      </li>
-                      <li>
-                        <i className="fa fa-fax" />
-                        Fax: 123456
-                      </li>
-                    </ul>
-                  </div>
+                  <Collapse
+                    isOpen={width ? (collapse === 3 ? isOpen : false) : true}
+                  >
+                    <div className="footer-contant">
+                      <ul>
+                        <li>
+                          <a href="#">shipping & return</a>
+                        </li>
+                        <li>
+                          <a href="#">secure shopping</a>
+                        </li>
+                        <li>
+                          <a href="#">gallary</a>
+                        </li>
+                        <li>
+                          <a href="#">affiliates</a>
+                        </li>
+                        <li>
+                          <a href="#">contacts</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </Collapse>
                 </div>
-              </div>
-            </div>
-          </div>
+              </Col>
+              <Col>
+                <div className="sub-title">
+                  <div
+                    className={`footer-title ${isOpen && collapse == 4 ? "active" : ""
+                      } `}
+                  >
+                    <h4
+                      onClick={() => {
+                        if (width) {
+                          setIsOpen(!isOpen);
+                          setCollapse(4);
+                        } else setIsOpen(true);
+                      }}
+                    >
+                      store information
+                      <span className="according-menu"></span>
+                    </h4>
+                  </div>
+                  <Collapse
+                    isOpen={width ? (collapse === 4 ? isOpen : false) : true}
+                  >
+                    <div className="footer-contant">
+                      <ul className="contact-list">
+                        <li>
+                          <i className="fa fa-map-marker"></i>Multikart Demo
+                          Store, Demo store India 345-659
+                        </li>
+                        <li>
+                          <i className="fa fa-phone"></i>Call Us: 123-456-7898
+                        </li>
+                        <li>
+                          <i className="fa fa-envelope-o"></i>Email Us:{" "}
+                          <a href="#">Support@Fiot.com</a>
+                        </li>
+                        <li>
+                          <i className="fa fa-fax"></i>Fax: 123456
+                        </li>
+                      </ul>
+                    </div>
+                  </Collapse>
+                </div>
+              </Col>
+            </Row>
+          </Container>
         </section>
-        <div className="sub-footer">
-          <div className="container">
-            <div className="row">
-              <div className="col-xl-6 col-md-6 col-sm-12">
-                <div className="footer-end">
-                  <p>
-                    <i className="fa fa-copyright" aria-hidden="true" /> 2022 -
-                    TMP Software. All rights reserved.
-                  </p>
-                </div>
-              </div>
-              <div className="col-xl-6 col-md-6 col-sm-12">
-                <div className="payment-card-bottom">
-                  <ul>
-                    <li>
-                      <a>
-                        <img src="/assets/images/icon/visa.png" alt="" />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <img src="/assets/images/icon/mastercard.png" alt="" />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <img src="/assets/images/icon/paypal.png" alt="" />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <img
-                          src="/assets/images/icon/american-express.png"
-                          alt=""
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <img src="/assets/images/icon/discover.png" alt="" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
+        <Copyright />
       </footer>
-      {/* footer end */}
-    </>
+    </div>
   );
 }
