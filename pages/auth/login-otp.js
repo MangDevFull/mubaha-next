@@ -83,7 +83,7 @@ export default function loginWithOtp() {
       {/* breadcrumb End */}
       {/*section start*/}
 
-      <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} />
+      <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} type="LOG" />
 
 
       <section className="login-page section-b-space">

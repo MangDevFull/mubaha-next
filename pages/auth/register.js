@@ -74,7 +74,7 @@ export default function registerPage (){
         </div>
         {/* breadcrumb End */}
         {/*section start*/}
-        <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} />
+        <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} type={'REG'} />
         <section className="register-page section-b-space">
           <div className="container">
             <div className="row">

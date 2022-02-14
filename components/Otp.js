@@ -5,7 +5,7 @@ import {useState} from 'react'
 import API from '../services/api.js'
 import { useRouter } from 'next/router'
 
-export default function Otp({ show, handleClose,phone }) {
+export default function Otp({ show, handleClose,phone,type }) {
   const router = useRouter()
     const [otp,setOtp] = useState('')
     const [isInvalidOtp, setInvalidOtp] = useState(false);
@@ -17,15 +17,28 @@ export default function Otp({ show, handleClose,phone }) {
         phone,
         code:otp
       }
-      const response = await API.instance.post('/auth/verify-login-otp',params)
-      const data = response.data
-      if(data.status==200) {
-        localStorage.setItem("userId", data.data.userId);
-        localStorage.setItem("token", data.data.token);
-        router.push('/')
-      }else{
-        setInvalidOtp(true)
-        setOtp('')
+      if(type=='REG'){
+        const response = await API.instance.post('/auth/verify-register-otp',params)
+        const data = response.data
+        if(data.status==200) {
+          localStorage.setItem("userId", data.data.userId);
+          localStorage.setItem("token", data.data.token);
+          router.push('/')
+        }else{
+          setInvalidOtp(true)
+          setOtp('')
+        }
+      }else if(type=='LOG'){
+        const response = await API.instance.post('/auth/verify-login-otp',params)
+        const data = response.data
+        if(data.status==200) {
+          localStorage.setItem("userId", data.data.userId);
+          localStorage.setItem("token", data.data.token);
+          router.push('/')
+        }else{
+          setInvalidOtp(true)
+          setOtp('')
+        }
       }
     }
   return (
