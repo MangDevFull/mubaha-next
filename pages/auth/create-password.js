@@ -1,31 +1,46 @@
 import Link from 'next/link'
-import {Modal} from 'react-bootstrap'
-import {useState,useRef} from 'react'
+import { Modal } from 'react-bootstrap'
+import { useState, useRef } from 'react'
 import API from '../../services/api.js'
-import {useRouter} from 'next/router'
-export default function CreatePassWord (){
+import { useRouter } from 'next/router'
+import { AiFillEye,AiFillEyeInvisible } from "react-icons/ai";
+
+export default function CreatePassWord() {
   const [show, setShow] = useState(false);
+  const [showPass,setShowPass] = useState('block');
+  const [hidePass,setHidePass] = useState('none')
+  const [inputValues, setInputValues] = useState('password')
   const inputPassword = useRef();
   const router = useRouter();
+  const handleShowPassword = () =>{
+    setHidePass('block');
+    setShowPass('none')
+    setInputValues('text')
+  }
+  const handlHidePassword = () =>{
+    setHidePass('none');
+    setShowPass('block')
+    setInputValues('password')
+  }
   const handleCreatePass = async () => {
     const params = {
       password: inputPassword.current.value
     }
-   
-    const response = await API.instance.put('/auth/create-password',params)
+
+    const response = await API.instance.put('/auth/create-password', params)
 
     const data = response.data
 
-    if(data.status == 200){
+    if (data.status == 200) {
       setShow(true);
       router.push('/')
     }
 
   }
-  return(
+  return (
     <>
-     {/* breadcrumb start */}
-     <div className="breadcrumb-section">
+      {/* breadcrumb start */}
+      <div className="breadcrumb-section">
         <div className="container">
           <div className="row">
             <div className="col-sm-6">
@@ -45,31 +60,42 @@ export default function CreatePassWord (){
         </div>
       </div>
       {/* breadcrumb End */}
-        {/*section start*/}
-        <section className="pwd-page section-b-space">
+      {/*section start*/}
+      <section className="pwd-page section-b-space">
         <div className="container">
           <div className="row">
             <div className="col-lg-6 m-auto">
               <h2>Tạo mật khẩu cho tài khoản mới</h2>
-              <p style={{ textAlign: 'center' }}>Tôi không muốn tạo mật khẩu, tôi chỉ muốn đăng nhập bằng SMS. 
-              <span style={{color: 'red'}}>
-              <Link href="/">
-                <a>         Quay lại trang chủ</a>
-              </Link>
-              </span>
+              <p style={{ textAlign: 'center' }}>Tôi không muốn tạo mật khẩu, tôi chỉ muốn đăng nhập bằng SMS.
+                <span style={{ color: 'red' }}>
+                  <Link href="/">
+                    <a>         Quay lại trang chủ</a>
+                  </Link>
+                </span>
               </p>
-              <div className="theme-form" style={{marginTop:"10px"}}>
+              <div className="theme-form" style={{ marginTop: "10px" }}>
                 <div className="form-row row">
-                  <div className="col-md-12">
-                    <input type="text" ref={inputPassword} className="form-control"  placeholder="Nhập mật khẩu của bạn" required />
-                  </div><a className="btn btn-solid w-auto" onClick={handleCreatePass}>Tạo</a>
+                  <div className="col-md-12 d-flex">
+  
+                      <input type={inputValues} ref={inputPassword} className="form-control" placeholder="Nhập mật khẩu của bạn" required />
+                    <div onClick={handleShowPassword} style={{position:'absolute',margin:'10px',left:'90%',display:showPass}}>
+                      <AiFillEye style={{fontSize:'30px'}} />
+                      </div>
+                     
+                    <div onClick={handlHidePassword} style={{position:'absolute',margin:'10px',left:'90%',display:hidePass}}>
+                      <AiFillEyeInvisible style={{fontSize:'30px'}} />
+                      </div>
+    
+          
+                  </div>
+                  <a className="btn btn-solid w-auto" onClick={handleCreatePass}>Tạo</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>     
-      <svg xmlns="http://www.w3.org/2000/svg" style={{display: 'none'}}>
+      </section>
+      <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
         <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
         </symbol>
@@ -86,18 +112,18 @@ export default function CreatePassWord (){
         <Modal.Header closeButton>
           <Modal.Title>Thông báo</Modal.Title>
         </Modal.Header>
-       
-      <div className="alert alert-success d-flex align-items-center" role="alert">
-        <svg className="bi flex-shrink-0 me-2" width={24} height={24} role="img" aria-label="Success:"><use xlinkHref="#check-circle-fill" /></svg>
-        <div>
-        Tạo mật khẩu thành công
+
+        <div className="alert alert-success d-flex align-items-center" role="alert">
+          <svg className="bi flex-shrink-0 me-2" width={24} height={24} role="img" aria-label="Success:"><use xlinkHref="#check-circle-fill" /></svg>
+          <div>
+            Tạo mật khẩu thành công
+          </div>
         </div>
-      </div>
-      <Modal.Footer>
-      <div>
-     <p style={{marginRight:"10px"}}> Xin chờ một chút bạn đang được chuyển hướng đến sang trang chủ</p>
-     </div>
-  </Modal.Footer>
+        <Modal.Footer>
+          <div>
+            <p style={{ marginRight: "10px" }}> Xin chờ một chút bạn đang được chuyển hướng đến sang trang chủ</p>
+          </div>
+        </Modal.Footer>
       </Modal>
       {/*Section ends*/}
     </>
