@@ -8,6 +8,7 @@ import { Row, Col, Media, Collapse } from "reactstrap";
 import { useRouter } from "next/router";
 import product from "./products.json";
 import API from "../services/api";
+import RelatedProducts from "../components/related-products";
 
 export default function ProductDetail({
   detailProduct,
@@ -15,9 +16,9 @@ export default function ProductDetail({
   newProducts,
 }) {
   const router = useRouter();
-  const { slug } = router.query;
+  // const { slug } = router.query;
 
-  const products = product.products.splice(0, 20);
+  // const products = product.products.splice(0, 20);
 
   const [state, setState] = useState({ nav1: null, nav2: null });
   const slider1 = useRef();
@@ -819,30 +820,7 @@ export default function ProductDetail({
         </div>
       </section>
       {/* Section ends */}
-      {/* product section start*/}
-      <section className="section-b-space ratio_asos">
-        <div className="container">
-          <div className="row">
-            <div className="product-related col">
-              <h2>RELATED PRODUCTS</h2>
-            </div>
-
-            <Slider
-              slidesToShow={6}
-              className="slide-6-product product-m no-arrow"
-            >
-              {relatedProducts.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-              {/* <ProductCard
-                  key={data.relatedProducts._id}
-                  product={data.relatedProducts}
-                /> */}
-            </Slider>
-          </div>
-        </div>
-      </section>
-      {/* product section end*/}
+      <RelatedProducts data={relatedProducts} />
     </>
   );
 }
