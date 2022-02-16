@@ -8,7 +8,23 @@ export default function AppLyVendor({ data }) {
   const [provinces, setProvinces] = useState([])
   const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
-  const [address, setAddress] = useState({})
+  const [address, setAddress] = useState({
+    fullName: '',
+    phone: '',
+    province:{
+      code: '',
+      name: '',
+    },
+    district:{
+      code: '',
+      name: '',
+    },
+    ward:{
+      code: '',
+      name: '',
+    },
+    detail:''
+  })
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -28,7 +44,6 @@ export default function AppLyVendor({ data }) {
     const res = await API.instance.get('/locations/provinces')
     const data = res.data.data
     setProvinces(data)
-    console.log('province')
   }, [])
 
   const handleDistrict = async (e) => {
@@ -66,6 +81,8 @@ export default function AppLyVendor({ data }) {
       detail: inputDetailAddress.current.value
     }
     setAddress(dataAdd)
+    setShow(false)
+    setShowAddress(true)
   }
   return (
     <>
@@ -331,9 +348,9 @@ export default function AppLyVendor({ data }) {
                   <br></br>
                   {showAddress &&
                     <div style={{ marginLeft: '10px' }}>
-                      <p>Họ và tên</p>
-                      <p>Số điện thoại: </p>
-                      <p>Địa chỉ:</p>
+                      <p>Họ và tên: {address.fullName}</p>
+                      <p>Số điện thoại:{address.phone} </p>
+                      <p>Địa chỉ:{`${address.detail}, ${address.ward.name}, ${address.district.name}, ${address.province.name}`}</p>
                     </div>
                   }
                   <button className="btn-solid btn-sm" onClick={handleShow}>Cập nhật địa chỉ lấy hàng</button>
@@ -356,20 +373,26 @@ export default function AppLyVendor({ data }) {
               <div className="col-lg-6">
                 <div className="mb-3">
                   <label htmlFor="productname">Họ và tên</label>
-                  <input ref={inputName} name="productname" type="text" className="form-control productname" />
+                  <input ref={inputName} name="productname" type="text"
+                  defaultValue= {address.fullName}
+                   className="form-control productname" />
                 </div>
               </div>
               <div className="col-lg-6">
                 <div className="mb-3">
                   <label htmlFor="number_phone">Số điện thoại</label>
-                  <input ref={inputPhone} name="number_phone" type="text" className="form-control number_phone" maxLength={10} />
+                  <input ref={inputPhone} name="number_phone"
+                  defaultValue= {address.phone}
+                   type="text" className="form-control number_phone" maxLength={10} />
                 </div>
               </div>
               <div className="col-lg-12 col-md-12">
                 <div className="mb-3">
                   <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Tỉnh/Thành phố</label>
                   <select className="form-control" ref={selectPrivince} data-trigger name="choices-single-groups" onChange={handleDistrict}>
-                    <option value>Chọn một tỉnh/thành phố</option>
+                    {
+                      address.province.code ? <option value={ address.province.code} >{ address.province.name}</option> : <option >Chọn một tỉnh/thành phố</option>
+                    }
                     {
                       provinces.map((p) => {
                         return (
@@ -384,7 +407,10 @@ export default function AppLyVendor({ data }) {
                 <div className="mb-3">
                   <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Quận/Huyện</label>
                   <select ref={selectDistrict} className="form-control" data-trigger name="choices-single-groups" onChange={handleWards}>
-                    <option >Chọn một quận/huyện</option>
+                  {
+                      address.district.code ? <option value={ address.district.code} >{ address.district.name}</option> : <option >Chọn một quận/huyện</option>
+                    }
+
                     {
                       districts.map((p) => {
                         return (
@@ -399,7 +425,9 @@ export default function AppLyVendor({ data }) {
                 <div className="mb-3">
                   <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Xã/Phường</label>
                   <select ref={selectWard} className="form-control" data-trigger name="choices-single-groups" id="ward">
-                    <option value>Chọn một xã/phường</option>
+                  {
+                      address.ward.code ? <option value={ address.ward.code} >{ address.ward.name}</option> : <option>Chọn một xã/phường</option>
+                    }
                     {
                       wards.map((p) => {
                         return (
@@ -412,7 +440,7 @@ export default function AppLyVendor({ data }) {
               </div>
               <div className="col-lg-12">
                 <label htmlFor="message-text" className="col-form-label">Địa chỉ chi tiết</label>
-                <textarea className="form-control" ref={inputDetailAddress} />
+                <textarea className="form-control" ref={inputDetailAddress} defaultValue= {address.detail} />
               </div>
             </div>
           </form>
