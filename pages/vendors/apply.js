@@ -1,28 +1,35 @@
 import API from '../../services/api.js';
-import { useRef,useState,useEffect } from 'react';
-import {Modal,Button} from 'react-bootstrap'
+import { useRef, useState, useEffect } from 'react';
+import { Modal, Button } from 'react-bootstrap'
 
 export default function AppLyVendor({ data }) {
-  const [showAddress,setShowAddress] = useState(false);
+  const [showAddress, setShowAddress] = useState(false);
   const [show, setShow] = useState(false);
-  const [provinces,setProvinces] = useState([])
-  const [districts,setDistricts] = useState([])
-  const [wards,setWards] = useState([])
+  const [provinces, setProvinces] = useState([])
+  const [districts, setDistricts] = useState([])
+  const [wards, setWards] = useState([])
+  const [address, setAddress] = useState({})
+
   const handleClose = () => setShow(false);
   const handleShow = () => {
-  setShow(true);
-}
+    setShow(true);
+  }
   const inputUS = useRef();
   const inputBrandName = useRef();
   const inputEmail = useRef();
+  const inputName = useRef();
+  const inputPhone = useRef();
+  const selectPrivince = useRef();
+  const selectDistrict = useRef();
+  const selectWard = useRef();
+  const inputDetailAddress = useRef();
 
-
-  useEffect( async () => {
-      const res = await API.instance.get('/locations/provinces')
-      const data = res.data.data
-      setProvinces(data)
-
-  },[])
+  useEffect(async () => {
+    const res = await API.instance.get('/locations/provinces')
+    const data = res.data.data
+    setProvinces(data)
+    console.log('province')
+  }, [])
 
   const handleDistrict = async (e) => {
     const id = e.target.value
@@ -38,6 +45,27 @@ export default function AppLyVendor({ data }) {
     const res = await API.instance.get(`/locations/districts/${id}/wards`)
     const data = res.data.data
     setWards(data)
+  }
+
+  const handleAdd = () => {
+    const dataAdd = {
+      fullName: inputName.current.value,
+      phone: inputPhone.current.value,
+      province: {
+        code: selectPrivince.current.value,
+        name: selectPrivince.current.options[selectPrivince.current.selectedIndex].text,
+      },
+      district: {
+        code: selectDistrict.current.value,
+        name: selectDistrict.current.options[selectDistrict.current.selectedIndex].text
+      },
+      ward: {
+        code: selectWard.current.value,
+        name: selectWard.current.options[selectWard.current.selectedIndex].text
+      },
+      detail: inputDetailAddress.current.value
+    }
+    setAddress(dataAdd)
   }
   return (
     <>
@@ -301,13 +329,13 @@ export default function AppLyVendor({ data }) {
                 <div className="col-md-6">
                   <lable className="lable">Địa chỉ lấy hàng</lable>
                   <br></br>
-                  { showAddress &&
-                  <div style={{marginLeft:'10px'}}>
-                    <p>Họ và tên</p>
-                    <p>Số điện thoại: </p>
-                    <p>Địa chỉ:</p>
-                  </div>
-                }
+                  {showAddress &&
+                    <div style={{ marginLeft: '10px' }}>
+                      <p>Họ và tên</p>
+                      <p>Số điện thoại: </p>
+                      <p>Địa chỉ:</p>
+                    </div>
+                  }
                   <button className="btn-solid btn-sm" onClick={handleShow}>Cập nhật địa chỉ lấy hàng</button>
                 </div>
               </div>
@@ -323,74 +351,77 @@ export default function AppLyVendor({ data }) {
           <Modal.Title>Cập nhật địa chỉ</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <form id="add_address">
-        <div className="row">
-          <div className="col-lg-6">
-            <div className="mb-3">
-              <label htmlFor="productname">Họ và tên</label>
-              <input id="fullname" name="productname" type="text" className="form-control productname" />
+          <form id="add_address">
+            <div className="row">
+              <div className="col-lg-6">
+                <div className="mb-3">
+                  <label htmlFor="productname">Họ và tên</label>
+                  <input ref={inputName} name="productname" type="text" className="form-control productname" />
+                </div>
+              </div>
+              <div className="col-lg-6">
+                <div className="mb-3">
+                  <label htmlFor="number_phone">Số điện thoại</label>
+                  <input ref={inputPhone} name="number_phone" type="text" className="form-control number_phone" maxLength={10} />
+                </div>
+              </div>
+              <div className="col-lg-12 col-md-12">
+                <div className="mb-3">
+                  <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Tỉnh/Thành phố</label>
+                  <select className="form-control" ref={selectPrivince} data-trigger name="choices-single-groups" onChange={handleDistrict}>
+                    <option value>Chọn một tỉnh/thành phố</option>
+                    {
+                      provinces.map((p) => {
+                        return (
+                          <option key={p.code} value={p.code}> {p.name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
+              </div>
+              <div className="col-lg-12 col-md-12">
+                <div className="mb-3">
+                  <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Quận/Huyện</label>
+                  <select ref={selectDistrict} className="form-control" data-trigger name="choices-single-groups" onChange={handleWards}>
+                    <option >Chọn một quận/huyện</option>
+                    {
+                      districts.map((p) => {
+                        return (
+                          <option key={p.code} value={p.code}> {p.name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
+              </div>
+              <div className="col-lg-12 col-md-12">
+                <div className="mb-3">
+                  <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Xã/Phường</label>
+                  <select ref={selectWard} className="form-control" data-trigger name="choices-single-groups" id="ward">
+                    <option value>Chọn một xã/phường</option>
+                    {
+                      wards.map((p) => {
+                        return (
+                          <option key={p.code} value={p.code}> {p.name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
+              </div>
+              <div className="col-lg-12">
+                <label htmlFor="message-text" className="col-form-label">Địa chỉ chi tiết</label>
+                <textarea className="form-control" ref={inputDetailAddress} />
+              </div>
             </div>
-          </div>
-          <div className="col-lg-6">
-            <div className="mb-3">
-              <label htmlFor="number_phone">Số điện thoại</label>
-              <input id="phone" name="number_phone" type="text" className="form-control number_phone" maxLength={10} />
-            </div>
-          </div>
-          <div className="col-lg-12 col-md-12">
-            <div className="mb-3">
-              <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Tỉnh/Thành phố</label>
-              <select className="form-control" data-trigger name="choices-single-groups" onChange={handleDistrict}>
-                <option value>Chọn một tỉnh/thành phố</option>
-                {
-                  provinces.map((p) =>{
-                    return(
-                    <option key={p.code} value={p.code}> {p.name}</option>
-                  )})
-                }
-              </select>
-            </div>
-          </div>
-          <div className="col-lg-12 col-md-12">
-            <div className="mb-3">
-              <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Quận/Huyện</label>
-              <select className="form-control" data-trigger name="choices-single-groups" onChange={handleWards}>
-                <option >Chọn một quận/huyện</option>
-               {
-                districts.map((p) =>{
-                    return(
-                    <option key={p.code} value={p.code}> {p.name}</option>
-                  )})
-               }
-              </select>
-            </div>
-          </div>
-          <div className="col-lg-12 col-md-12">
-            <div className="mb-3">
-              <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Xã/Phường</label>
-              <select className="form-control" data-trigger name="choices-single-groups" id="ward">
-                <option value>Chọn một xã/phường</option>
-                {
-                  wards.map((p) =>{
-                    return(
-                    <option key={p.code} value={p.code}> {p.name}</option>
-                  )})
-               }
-              </select>
-            </div>
-          </div>
-          <div className="col-lg-12">
-            <label htmlFor="message-text" className="col-form-label">Địa chỉ chi tiết</label>
-            <textarea className="form-control" id="address" />
-          </div>
-        </div>
-      </form>
+          </form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Huỷ
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleAdd}>
             Cập nhật
           </Button>
         </Modal.Footer>

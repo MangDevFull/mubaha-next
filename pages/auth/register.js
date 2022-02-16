@@ -9,12 +9,14 @@ const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 import otpEnums from '../../utils/otpEnums.js';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
+
 export default function registerPage (){
   const [isNotValidPhone, setisNotValidPhone] = useState(true);
   const [phone, setPhone] = useState('')
   const [isVerifyPhone, setisVerifyPhone] = useState(false);
   const [isRegisted,setIsRegisted] = useState(false)
   const [message, setMessage] = useState('')
+  
   const handleClose = useCallback(() => {
     setisVerifyPhone(false);
   }, [isVerifyPhone, phone]);
