@@ -16,28 +16,89 @@ export default NextAuth({
         code: { label: "OTP", type: "text" },
       },
       async authorize(credentials, req) {
-        console.log('credentials', credentials);
         const payload = {
           phone: credentials.phone,
           code: credentials.code,
         }
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
         const res = await fetch(process.env.CREDENTIALS_AUTH_URL, {
           method: "POST",
           body: JSON.stringify(payload),
           headers: { "Content-Type": "application/json" },
         });
         const response = await res.json();
-        console.log(response)
 
         // If no error and we have user data, return it
         if (res.ok && response.data) {
-          console.log("login data", response.data?.token);
+          return response.data;
+        }
+        // Return null if user data could not be retrieved
+        return null;
+      },
+    }),
+    CredentialsProvider({
+      id: "mubaha-login",
+      // The name to display on the sign in form (e.g. 'Sign in with...')
+      name: "Credentials-login",
+      // The credentials is used to generate a suitable form on the sign in page.
+      // You can specify whatever fields you are expecting to be submitted.
+      // e.g. domain, username, password, 2FA token, etc.
+      // You can pass any HTML attribute to the <input> tag through the object.
+      credentials: {
+        phone: { label: "Phone", type: "text" },
+        password: { label: "Password", type: "text" },
+      },
+      async authorize(credentials, req) {
+        const payload = {
+          phone: credentials.phone,
+          password: credentials.password,
+        }
+        const res = await fetch(process.env.CREDENTIALS_AUTH_PASSWORD_URL, {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: { "Content-Type": "application/json" },
+        });
+        const response = await res.json();
+    
+        if (response.status ===400) {
+          const error = new Error(JSON.stringify(response));
+          console.error(error);
+          throw error
+        }
+     
+        // If no error and we have user data, return it
+        if (res.ok && response.data) {
+          return response.data;
+        }
+        // Return null if user data could not be retrieved
+        return null
+      },
+    }),
+    CredentialsProvider({
+      id: "mubaha-signup",
+      // The name to display on the sign in form (e.g. 'Sign in with...')
+      name: "Credentials-signup",
+      // The credentials is used to generate a suitable form on the sign in page.
+      // You can specify whatever fields you are expecting to be submitted.
+      // e.g. domain, username, password, 2FA token, etc.
+      // You can pass any HTML attribute to the <input> tag through the object.
+      credentials: {
+        phone: { label: "Phone", type: "text" },
+        code: { label: "Password", type: "text" },
+      },
+      async authorize(credentials, req) {
+        const payload = {
+          phone: credentials.phone,
+          code: credentials.code,
+        }
+        const res = await fetch(process.env.CREDENTIALS_AUTH_SIGNUP_URL, {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: { "Content-Type": "application/json" },
+        });
+        const response = await res.json();
+        console.log(response);
+        // If no error and we have user data, return it
+        if (res.ok && response.data) {
           return response.data;
         }
         // Return null if user data could not be retrieved
@@ -47,7 +108,7 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt({token, user}) {
-      console.log('callback jwt', token, user);
+      
       if(user) {
         const {
           account,
@@ -63,7 +124,6 @@ export default NextAuth({
       return token;
     },
     async session({session, token}) {
-      console.log('session token', token)
       session.user = token.user;
       session.accessToken = token.token;
       session.error = token.error;

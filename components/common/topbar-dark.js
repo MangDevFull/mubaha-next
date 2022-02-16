@@ -49,7 +49,13 @@ export default function TopBarDark({ topClass, fluid }) {
                 </Link>
               </li>
               <li>
-                  <a onClick={signOut}>
+                  <a
+                   onClick={() =>
+    signOut({
+      callbackUrl: `${window.location.origin}/`
+    })
+  }
+                  >
                     Đăng xuất
                   </a>
               </li></>

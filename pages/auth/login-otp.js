@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState, useCallback } from "react";
+import { useState, useCallback,useRef, useEffect } from "react";
 import Otp from "../../components/Otp.js";
 import Head from "next/head";
 import libphone from "google-libphonenumber";
@@ -19,9 +19,14 @@ export default function loginWithOtp() {
   const [isVerifyPhone, setisVerifyPhone] = useState(false);
   const [message, setMessage] = useState("");
   const [isNotRegistered, setIsNotRegistered] = useState(false);
+  const inputPhone = useRef();
   const handleClose = useCallback(() => {
     setisVerifyPhone(false);
   }, [isVerifyPhone, phone]);
+
+  useEffect(() => {
+    inputPhone.current.focus();
+  })
 
   const checkPhone = (phone) => {
     var reg = /^\d+$/;
@@ -49,10 +54,6 @@ export default function loginWithOtp() {
       phone: phone,
     };
     const response = await API.instance.post("/auth/login-otp", params);
-    // const {error, ok} = await signIn("credentials", {
-
-    // })
-
     const data = response.data;
     if (data.status == 200) {
       setisVerifyPhone(true);
@@ -114,6 +115,7 @@ export default function loginWithOtp() {
                   <div className="form-group">
                     <div>
                       <input
+                      ref={inputPhone}
                         type="tel"
                         name="username"
                         className="form-control phone-number"

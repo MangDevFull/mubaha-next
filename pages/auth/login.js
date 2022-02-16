@@ -1,37 +1,40 @@
 import Link from 'next/link'
 import Head from "next/head";
 import API from '../../services/api.js'
-import { useRef,useState } from "react";
+import { useRef,useState,useEffect } from "react";
 import {useRouter} from 'next/router';
 import {Alert} from 'react-bootstrap'
+import { signIn } from "next-auth/react";
+import {useSession} from 'next-auth/react'
+
 export default function loginPage() {
+
+  const { data: session, status } = useSession()
+
+  console.log(session)
+  
+
   const [isInvalid,setInvalid] = useState(false)
   const [message,setMessage] = useState('')
   const inputPhone = useRef();
   const inputPassword = useRef();
   const router = useRouter();
+  useEffect(() => {
+    inputPhone.current.focus()
+   console.log(inputPhone.current.value)
+  })
    const getValueForm = async () => {
-    const params ={
+    const data = await signIn("mubaha-login", {
       phone: inputPhone.current.value,
-      password: inputPassword.current.value
-    }
-     const response = await API.instance.post('/auth/login', params)
-    const data = response.data
-    if(data.status==200) {
-      localStorage.setItem("userId", data.data.userId);
-      localStorage.setItem("token", data.data.token);
-      router.push('/')
-    }else{
-      if(data.errors[0]=='isCreatPassword'){
-        setInvalid(true);
-      setMessage(data.message);
-      router.push('/auth/create-password')
-      }else{
-        setInvalid(true);
-        setMessage(data.message);
-      }
-    }
+      password: inputPassword.current.value,
+      callbackUrl: `${window.location.origin}/`,
+      redirect: false,
+    });
+
+    console.log(data.error)
+   
   }
+
 
   return (
     <>

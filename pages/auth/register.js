@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Head from "next/head";
-import { useState,useCallback } from 'react';
+import { useState,useCallback,useRef,useEffect } from 'react';
 import Otp from '../../components/Otp.js'
 import libphone from 'google-libphonenumber';
 import API from '../../services/api.js'
@@ -16,7 +16,10 @@ export default function registerPage (){
   const [isVerifyPhone, setisVerifyPhone] = useState(false);
   const [isRegisted,setIsRegisted] = useState(false)
   const [message, setMessage] = useState('')
-  
+  const inputPhone = useRef();
+  useEffect(() => {
+    inputPhone.current.focus()
+  })
   const handleClose = useCallback(() => {
     setisVerifyPhone(false);
   }, [isVerifyPhone, phone]);
@@ -102,7 +105,9 @@ export default function registerPage (){
                       </Alert>
                      }
                         <label htmlFor="fname">Số điện thoại *</label>
-                        <input type="tel" name="username" className="form-control phone-number"
+                        <input type="tel" name="username" 
+                        ref={inputPhone}
+                        className="form-control phone-number"
                         onChange={(e) => {
                           checkPhone(e.target.value);
                         }}

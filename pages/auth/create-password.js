@@ -4,8 +4,13 @@ import { useState, useRef } from 'react'
 import API from '../../services/api.js'
 import { useRouter } from 'next/router'
 import { AiFillEye,AiFillEyeInvisible } from "react-icons/ai";
+import {useSession} from 'next-auth/react'
 
 export default function CreatePassWord() {
+  const { data: session, status } = useSession()
+
+  console.log(session)
+  
   const [show, setShow] = useState(false);
   const [showPass,setShowPass] = useState('block');
   const [hidePass,setHidePass] = useState('none')
@@ -35,6 +40,8 @@ export default function CreatePassWord() {
       setShow(true);
       router.push('/')
     }
+
+    console.log(data)
 
   }
   return (
