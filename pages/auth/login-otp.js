@@ -11,7 +11,7 @@ const {PhoneNumberFormat, PhoneNumberUtil} = libphone
 
 const phoneUtil = PhoneNumberUtil.getInstance()
 
-export default function loginWithOtp() {
+export default function LoginOtp() {
   const [isNotValidPhone, setisNotValidPhone] = useState(true)
   const [phone, setPhone] = useState("")
   const [isVerifyPhone, setisVerifyPhone] = useState(false)
@@ -19,7 +19,7 @@ export default function loginWithOtp() {
   const [isNotRegistered, setIsNotRegistered] = useState(false)
   const handleClose = useCallback(() => {
     setisVerifyPhone(false)
-  }, [isVerifyPhone, phone])
+  }, [])
 
   const checkPhone = (phone) => {
     var reg = /^\d+$/
@@ -79,7 +79,9 @@ export default function loginWithOtp() {
               <nav aria-label="breadcrumb" className="theme-breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="/">Trang chủ</a>
+                    <Link href="/">
+                      <a>Trang chủ</a>
+                    </Link>
                   </li>
                   <li className="breadcrumb-item active">Đăng nhập</li>
                 </ol>

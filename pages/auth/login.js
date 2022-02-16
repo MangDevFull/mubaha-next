@@ -4,7 +4,7 @@ import API from "../../services/api.js"
 import {useRef, useState} from "react"
 import {useRouter} from "next/router"
 import {Alert} from "react-bootstrap"
-export default function loginPage() {
+export default function LoginPage() {
   const [isInvalid, setInvalid] = useState(false)
   const [message, setMessage] = useState("")
   const inputPhone = useRef()
@@ -51,7 +51,9 @@ export default function loginPage() {
               <nav aria-label="breadcrumb" className="theme-breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="/">Trang chủ</a>
+                    <Link href="/">
+                      <a>Trang chủ</a>
+                    </Link>
                   </li>
                   <li className="breadcrumb-item active">Đăng nhập</li>
                 </ol>

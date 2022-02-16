@@ -10,28 +10,28 @@ import otpEnums from "../../utils/otpEnums.js"
 
 const phoneUtil = PhoneNumberUtil.getInstance()
 
-export default function registerPage() {
-  const [isNotValidPhone, setisNotValidPhone] = useState(true)
+export default function RegisterPage() {
+  const [isNotValidPhone, setIsNotValidPhone] = useState(true)
   const [phone, setPhone] = useState("")
-  const [isVerifyPhone, setisVerifyPhone] = useState(false)
+  const [isVerifyPhone, setIsVerifyPhone] = useState(false)
   const [isRegisted, setIsRegisted] = useState(false)
   const [message, setMessage] = useState("")
 
   const handleClose = useCallback(() => {
-    setisVerifyPhone(false)
-  }, [isVerifyPhone, phone])
+    setIsVerifyPhone(false)
+  }, [])
 
   const checkPhone = (phone) => {
     if (phone.length < 2 || phone == null) {
-      setisNotValidPhone(true)
+      setIsNotValidPhone(true)
     } else {
       const number = phoneUtil.parse(phone, "VN")
       if (!phoneUtil.isValidNumber(number)) {
-        setisNotValidPhone(true)
+        setIsNotValidPhone(true)
       } else {
         const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164)
         setPhone(phoneNumber)
-        setisNotValidPhone(false)
+        setIsNotValidPhone(false)
       }
     }
   }
@@ -43,7 +43,7 @@ export default function registerPage() {
     const response = await API.instance.post("/auth/register-otp", params)
     const data = response.data
     if (data.status == 200) {
-      setisVerifyPhone(true)
+      setIsVerifyPhone(true)
     } else {
       setMessage(data.message)
       setIsRegisted(true)
@@ -67,7 +67,9 @@ export default function registerPage() {
               <nav aria-label="breadcrumb" className="theme-breadcrumb">
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <a href="/">Trang chủ</a>
+                    <Link href="/">
+                      <a>Trang chủ</a>
+                    </Link>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
                     Tạo tài khoản

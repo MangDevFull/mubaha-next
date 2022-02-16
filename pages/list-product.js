@@ -1,40 +1,40 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import Slider from "react-slick";
-import Image from "next/image";
-import SideProductCart from "../components/SideProductCart";
-import ProductCard from "../components/ProductCard";
-import { Row, Col, Media, Collapse } from "reactstrap";
-import { useRouter } from "next/router";
+import React, {useState, useEffect, useRef, useContext} from "react"
+import Slider from "react-slick"
+import Image from "next/image"
+import SideProductCart from "../components/SideProductCart"
+import ProductCard from "../components/ProductCard"
+import {Row, Col, Media, Collapse} from "reactstrap"
+import {useRouter} from "next/router"
 // import products from "./products.json";
-import API from "../services/api";
-import Head from "next/head";
-import InputRange from "react-input-range";
-import FilterContext from "../filter/FilterContext";
+import API from "../services/api"
+import Head from "next/head"
+import InputRange from "react-input-range"
+import FilterContext from "../filter/FilterContext"
 
-export default function ListProduct({ results, newProducts }) {
+export default function ListProduct({results, newProducts}) {
   // const products = data.products.splice(0, 20);
-  const [sidebarView, setSidebarView] = useState(false);
+  const [sidebarView, setSidebarView] = useState(false)
 
   const openCloseSidebar = () => {
     if (sidebarView) {
-      setSidebarView(!sidebarView);
+      setSidebarView(!sidebarView)
     } else {
-      setSidebarView(!sidebarView);
+      setSidebarView(!sidebarView)
     }
-  };
+  }
 
   // handle Price
 
-  const context = useContext(FilterContext);
+  const context = useContext(FilterContext)
   // console.log("context", context);
   // const price = context.selectedPrice;
-  const router = useRouter();
+  const router = useRouter()
   // const setSelectedPrice = context.setSelectedPrice;
-  const [url, setUrl] = useState();
+  const [url, setUrl] = useState()
   useEffect(() => {
-    const pathname = window.location.pathname;
-    setUrl(pathname);
-  }, []);
+    const pathname = window.location.pathname
+    setUrl(pathname)
+  }, [])
 
   return (
     <>
@@ -92,50 +92,32 @@ export default function ListProduct({ results, newProducts }) {
                       <div className="collection-brand-filter">
                         <ul className="category-list">
                           <li>
-                            <a
-                              href={null}
-                              onClick={() => updateCategory("all")}
-                            >
+                            <a href={null} onClick={() => updateCategory("all")}>
                               all products
                             </a>
                           </li>
                           <li>
-                            <a
-                              href={null}
-                              onClick={() => updateCategory("fashion")}
-                            >
+                            <a href={null} onClick={() => updateCategory("fashion")}>
                               fashion
                             </a>
                           </li>
                           <li>
-                            <a
-                              href={null}
-                              onClick={() => updateCategory("electronics")}
-                            >
+                            <a href={null} onClick={() => updateCategory("electronics")}>
                               electronics
                             </a>
                           </li>
                           <li>
-                            <a
-                              href={null}
-                              onClick={() => updateCategory("vegetables")}
-                            >
+                            <a href={null} onClick={() => updateCategory("vegetables")}>
                               vegetables
                             </a>
                           </li>
                           <li>
-                            <a
-                              href={null}
-                              onClick={() => updateCategory("furniture")}
-                            >
+                            <a href={null} onClick={() => updateCategory("furniture")}>
                               furniture
                             </a>
                           </li>
                           <li>
-                            <a
-                              href={null}
-                              onClick={() => updateCategory("jewellery")}
-                            >
+                            <a href={null} onClick={() => updateCategory("jewellery")}>
                               jewellery
                             </a>
                           </li>
@@ -149,60 +131,31 @@ export default function ListProduct({ results, newProducts }) {
                     <div className="collection-collapse-block-content">
                       <div className="collection-brand-filter">
                         <div className="form-check collection-filter-checkbox">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="zara"
-                          />
+                          <input type="checkbox" className="form-check-input" id="zara" />
                           <label className="form-check-label" htmlFor="zara">
                             zara
                           </label>
                         </div>
                         <div className="form-check collection-filter-checkbox">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="vera-moda"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="vera-moda"
-                          >
+                          <input type="checkbox" className="form-check-input" id="vera-moda" />
+                          <label className="form-check-label" htmlFor="vera-moda">
                             vera-moda
                           </label>
                         </div>
                         <div className="form-check collection-filter-checkbox">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="forever-21"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="forever-21"
-                          >
+                          <input type="checkbox" className="form-check-input" id="forever-21" />
+                          <label className="form-check-label" htmlFor="forever-21">
                             forever-21
                           </label>
                         </div>
                         <div className="form-check collection-filter-checkbox">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="roadster"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="roadster"
-                          >
+                          <input type="checkbox" className="form-check-input" id="roadster" />
+                          <label className="form-check-label" htmlFor="roadster">
                             roadster
                           </label>
                         </div>
                         <div className="form-check collection-filter-checkbox">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="only"
-                          />
+                          <input type="checkbox" className="form-check-input" id="only" />
                           <label className="form-check-label" htmlFor="only">
                             only
                           </label>
@@ -233,51 +186,26 @@ export default function ListProduct({ results, newProducts }) {
                     <div className="collection-collapse-block-content">
                       <div className="collection-brand-filter">
                         <div className="form-check collection-filter-checkbox">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="hundred"
-                          />
+                          <input type="checkbox" className="form-check-input" id="hundred" />
                           <label className="form-check-label" htmlFor="hundred">
                             s
                           </label>
                         </div>
                         <div className="form-check collection-filter-checkbox">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="twohundred"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="twohundred"
-                          >
+                          <input type="checkbox" className="form-check-input" id="twohundred" />
+                          <label className="form-check-label" htmlFor="twohundred">
                             m
                           </label>
                         </div>
                         <div className="form-check collection-filter-checkbox">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="threehundred"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="threehundred"
-                          >
+                          <input type="checkbox" className="form-check-input" id="threehundred" />
+                          <label className="form-check-label" htmlFor="threehundred">
                             l
                           </label>
                         </div>
                         <div className="form-check collection-filter-checkbox">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="fourhundred"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="fourhundred"
-                          >
+                          <input type="checkbox" className="form-check-input" id="fourhundred" />
+                          <label className="form-check-label" htmlFor="fourhundred">
                             xl
                           </label>
                         </div>
@@ -298,13 +226,13 @@ export default function ListProduct({ results, newProducts }) {
                               setSelectedPrice(price),
                                 router.push(
                                   `${url}?category=${context.state}&brand=${context.selectedBrands}&color=${context.selectedColor}&size=${context.selectedSize}&minPrice=${context.selectedPrice.min}&maxPrice=${context.selectedPrice.max}`
-                                );
+                                )
                             }}
                             onChangeComplete={(price) => {
                               context.setSelectedPrice(price),
                                 router.push(
                                   `${url}?category=${context.state}&brand=${context.selectedBrands}&color=${context.selectedColor}&size=${context.selectedSize}&minPrice=${context.selectedPrice.min}&maxPrice=${context.selectedPrice.max}`
-                                );
+                                )
                             }}
                             type="text"
                             className="js-range-slider"
@@ -353,16 +281,13 @@ export default function ListProduct({ results, newProducts }) {
                         <div className="top-banner-content small-section">
                           <h4>BIGGEST DEALS ON TOP BRANDS</h4>
                           <p>
-                            The trick to choosing the best wear for yourself is
-                            to keep in mind your body type, individual style,
-                            occasion and also the time of day or weather. In
-                            addition to eye-catching products from top brands,
-                            we also offer an easy 30-day return and exchange
-                            policy, free and fast shipping across all pin codes,
-                            cash or card on delivery option, deals and
-                            discounts, among other perks. So, sign up now and
-                            shop for westarn wear to your heart’s content on
-                            MUBAHA.{" "}
+                            The trick to choosing the best wear for yourself is to keep in mind your
+                            body type, individual style, occasion and also the time of day or
+                            weather. In addition to eye-catching products from top brands, we also
+                            offer an easy 30-day return and exchange policy, free and fast shipping
+                            across all pin codes, cash or card on delivery option, deals and
+                            discounts, among other perks. So, sign up now and shop for westarn wear
+                            to your heart’s content on MUBAHA.{" "}
                           </p>
                         </div>
                       </div>
@@ -372,11 +297,7 @@ export default function ListProduct({ results, newProducts }) {
                             <div className="col-xl-12">
                               <div className="filter-main-btn">
                                 <span className="filter-btn btn btn-theme">
-                                  <i
-                                    className="fa fa-filter"
-                                    aria-hidden="true"
-                                  />{" "}
-                                  Filter
+                                  <i className="fa fa-filter" aria-hidden="true" /> Filter
                                 </span>
                               </div>
                             </div>
@@ -431,28 +352,16 @@ export default function ListProduct({ results, newProducts }) {
                                 </div>
                                 <div className="product-page-per-view">
                                   <select>
-                                    <option value="High to low">
-                                      24 Products Par Page
-                                    </option>
-                                    <option value="Low to High">
-                                      50 Products Par Page
-                                    </option>
-                                    <option value="Low to High">
-                                      100 Products Par Page
-                                    </option>
+                                    <option value="High to low">24 Products Par Page</option>
+                                    <option value="Low to High">50 Products Par Page</option>
+                                    <option value="Low to High">100 Products Par Page</option>
                                   </select>
                                 </div>
                                 <div className="product-page-filter">
                                   <select>
-                                    <option value="High to low">
-                                      Sorting items
-                                    </option>
-                                    <option value="Low to High">
-                                      50 Products
-                                    </option>
-                                    <option value="Low to High">
-                                      100 Products
-                                    </option>
+                                    <option value="High to low">Sorting items</option>
+                                    <option value="Low to High">50 Products</option>
+                                    <option value="Low to High">100 Products</option>
                                   </select>
                                 </div>
                               </div>
@@ -462,11 +371,8 @@ export default function ListProduct({ results, newProducts }) {
                         <div className="product-wrapper-grid">
                           <div className="row margin-res">
                             {results.docs.map((product) => (
-                              <Col xl={3} lg={4} col={6}>
-                                <ProductCard
-                                  key={product._id}
-                                  product={product}
-                                />
+                              <Col xl={3} lg={4} col={6} key={product._id}>
+                                <ProductCard key={product._id} product={product} />
                               </Col>
                             ))}
                           </div>
@@ -491,16 +397,16 @@ export default function ListProduct({ results, newProducts }) {
       </section>
       {/* section End */}
     </>
-  );
+  )
 }
 
 export async function getServerSideProps() {
-  const response = await API.instance.get("/products");
-  const data = response.data.data;
+  const response = await API.instance.get("/products")
+  const data = response.data.data
   return {
     props: {
       results: data.results,
       newProducts: data.newProducts,
     },
-  };
+  }
 }

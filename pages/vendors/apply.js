@@ -1,49 +1,52 @@
-import API from '../../services/api.js';
-import { useRef, useState, useEffect } from 'react';
-import { Modal, Button } from 'react-bootstrap'
+import API from "../../services/api.js"
+import {useRef, useState, useEffect} from "react"
+import {Modal, Button} from "react-bootstrap"
 
-export default function AppLyVendor({ data }) {
-  const [showAddress, setShowAddress] = useState(false);
-  const [show, setShow] = useState(false);
+export default function AppLyVendor({data}) {
+  const [showAddress, setShowAddress] = useState(false)
+  const [show, setShow] = useState(false)
   const [provinces, setProvinces] = useState([])
   const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
   const [address, setAddress] = useState({
-    fullName: '',
-    phone: '',
-    province:{
-      code: '',
-      name: '',
+    fullName: "",
+    phone: "",
+    province: {
+      code: "",
+      name: "",
     },
-    district:{
-      code: '',
-      name: '',
+    district: {
+      code: "",
+      name: "",
     },
-    ward:{
-      code: '',
-      name: '',
+    ward: {
+      code: "",
+      name: "",
     },
-    detail:''
+    detail: "",
   })
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => setShow(false)
   const handleShow = () => {
-    setShow(true);
+    setShow(true)
   }
-  const inputUS = useRef();
-  const inputBrandName = useRef();
-  const inputEmail = useRef();
-  const inputName = useRef();
-  const inputPhone = useRef();
-  const selectPrivince = useRef();
-  const selectDistrict = useRef();
-  const selectWard = useRef();
-  const inputDetailAddress = useRef();
+  const inputUS = useRef()
+  const inputBrandName = useRef()
+  const inputEmail = useRef()
+  const inputName = useRef()
+  const inputPhone = useRef()
+  const selectPrivince = useRef()
+  const selectDistrict = useRef()
+  const selectWard = useRef()
+  const inputDetailAddress = useRef()
 
-  useEffect(async () => {
-    const res = await API.instance.get('/locations/provinces')
-    const data = res.data.data
-    setProvinces(data)
+  useEffect(() => {
+    async function fetchData() {
+      const res = await API.instance.get("/locations/provinces")
+      const data = res.data.data
+      setProvinces(data)
+    }
+    fetchData()
   }, [])
 
   const handleDistrict = async (e) => {
@@ -72,13 +75,13 @@ export default function AppLyVendor({ data }) {
       },
       district: {
         code: selectDistrict.current.value,
-        name: selectDistrict.current.options[selectDistrict.current.selectedIndex].text
+        name: selectDistrict.current.options[selectDistrict.current.selectedIndex].text,
       },
       ward: {
         code: selectWard.current.value,
-        name: selectWard.current.options[selectWard.current.selectedIndex].text
+        name: selectWard.current.options[selectWard.current.selectedIndex].text,
       },
-      detail: inputDetailAddress.current.value
+      detail: inputDetailAddress.current.value,
     }
     setAddress(dataAdd)
     setShow(false)
@@ -98,8 +101,12 @@ export default function AppLyVendor({ data }) {
             <div className="col-sm-6">
               <nav aria-label="breadcrumb" className="theme-breadcrumb">
                 <ol className="breadcrumb">
-                  <li className="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-                  <li className="breadcrumb-item active" aria-current="page">Đăng ký shop</li>
+                  <li className="breadcrumb-item">
+                    <a href="index.html">Trang chủ</a>
+                  </li>
+                  <li className="breadcrumb-item active" aria-current="page">
+                    Đăng ký shop
+                  </li>
                 </ol>
               </nav>
             </div>
@@ -112,12 +119,21 @@ export default function AppLyVendor({ data }) {
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <div className="banner-section"><img src="../assets/images/about/vendor.jpg" className="img-fluid blur-up lazyload" alt="" /></div>
+              <div className="banner-section">
+                <img
+                  src="../assets/images/about/vendor.jpg"
+                  className="img-fluid blur-up lazyload"
+                  alt=""
+                />
+              </div>
             </div>
             <div className="col-sm-12">
-              <h4>Bắt đầu kinh doanh của bạn với MUBAHA và tiếp cận khách hàng trên toàn thế giới.</h4>
-              <p>Nhưng để bạn có thể hiểu tất cả lỗi lầm này được sinh ra từ khi nào, tôi rất vui khi buộc tội và đau
-                đớn khi được khen ngợi
+              <h4>
+                Bắt đầu kinh doanh của bạn với MUBAHA và tiếp cận khách hàng trên toàn thế giới.
+              </h4>
+              <p>
+                Nhưng để bạn có thể hiểu tất cả lỗi lầm này được sinh ra từ khi nào, tôi rất vui khi
+                buộc tội và đau đớn khi được khen ngợi
               </p>
             </div>
           </div>
@@ -140,7 +156,13 @@ export default function AppLyVendor({ data }) {
               <h4>Chi phí thấp</h4>
             </div>
             <div className="col-lg-3 col-md-6 service-block1 ">
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlnsXlink="http://www.w3.org/1999/xlink" enableBackground="new 0 0 512 512">
+              <svg
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                enableBackground="new 0 0 512 512"
+              >
                 <g>
                   <g>
                     <path d="m266.1,237.1h-82.2c-6.2,0-10.4,5.2-10.4,10.4v243c0,6.3 5.2,10.4 10.4,10.4h82.2c5.2,0 10.4-4.2 10.4-10.4v-243c0-6.2-5.2-10.4-10.4-10.4zm-10.4,243h-61.4v-222.1h61.4v222.1z" />
@@ -172,10 +194,21 @@ export default function AppLyVendor({ data }) {
               <p> </p>
             </div>
             <div className="col-lg-3 col-md-6 service-block1 border border-0">
-              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style={{ enableBackground: 'new 0 0 512 512' }} xmlSpace="preserve">
+              <svg
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 512 512"
+                style={{enableBackground: "new 0 0 512 512"}}
+                xmlSpace="preserve"
+              >
                 <g>
                   <g>
-                    <path d="M404.267,315.41c-10.048-20.949-45.995-50.027-80.725-78.123c-19.371-15.659-37.675-30.464-49.344-42.133
+                    <path
+                      d="M404.267,315.41c-10.048-20.949-45.995-50.027-80.725-78.123c-19.371-15.659-37.675-30.464-49.344-42.133
 			c-2.923-2.944-7.296-3.883-11.157-2.496c-7.189,2.603-11.627,4.608-15.125,6.165c-5.333,2.389-7.125,3.2-14.315,3.925
 			c-3.179,0.32-6.037,2.027-7.808,4.672c-15.083,22.549-30.699,20.629-41.131,17.131c-3.328-1.109-3.925-2.539-4.245-3.904
 			c-2.24-9.365,9.003-31.168,23.573-45.739c34.667-34.688,52.544-43.371,90.304-26.496c42.837,19.157,85.76,34.155,86.187,34.304
@@ -192,57 +225,72 @@ export default function AppLyVendor({ data }) {
 			c3.307,2.795,9.707,9.557,16.768,16.917c9.515,9.941,19.349,20.224,25.963,25.771c39.723,33.259,87.467,69.163,96.981,75.413
 			c7.851,5.163,24.768,12.416,37.867,12.416c10.517,0,18.603-2.411,24.213-7.125c7.509,2.923,16.043,2.944,24.256-0.256
 			c9.707-3.755,17.685-11.328,22.208-20.501c8.405,1.792,18.027,0.533,26.773-3.861c8.555-4.309,14.741-10.901,17.813-18.603
-			c8.491,0.448,17.237-2.56,24.469-8.768C407.979,346.407,411.349,330.109,404.267,315.41z" />
+			c8.491,0.448,17.237-2.56,24.469-8.768C407.979,346.407,411.349,330.109,404.267,315.41z"
+                    />
                   </g>
                 </g>
                 <g>
                   <g>
-                    <path d="M213.333,138.663h-96c-5.888,0-10.667,4.779-10.667,10.667s4.779,10.667,10.667,10.667h96
-			c5.888,0,10.667-4.779,10.667-10.667S219.221,138.663,213.333,138.663z" />
+                    <path
+                      d="M213.333,138.663h-96c-5.888,0-10.667,4.779-10.667,10.667s4.779,10.667,10.667,10.667h96
+			c5.888,0,10.667-4.779,10.667-10.667S219.221,138.663,213.333,138.663z"
+                    />
                   </g>
                 </g>
                 <g>
                   <g>
-                    <path d="M435.52,292.711c-3.307-4.885-9.92-6.229-14.805-2.901l-31.189,20.949c-4.885,3.285-6.187,9.92-2.901,14.805
+                    <path
+                      d="M435.52,292.711c-3.307-4.885-9.92-6.229-14.805-2.901l-31.189,20.949c-4.885,3.285-6.187,9.92-2.901,14.805
 			c2.069,3.051,5.44,4.715,8.875,4.715c2.027,0,4.096-0.576,5.931-1.813l31.189-20.949
-			C437.504,304.231,438.805,297.597,435.52,292.711z" />
+			C437.504,304.231,438.805,297.597,435.52,292.711z"
+                    />
                   </g>
                 </g>
                 <g>
                   <g>
-                    <path d="M369.301,343.613c-7.637-6.016-41.792-40.981-62.912-62.997c-4.075-4.267-10.837-4.416-15.083-0.32
+                    <path
+                      d="M369.301,343.613c-7.637-6.016-41.792-40.981-62.912-62.997c-4.075-4.267-10.837-4.416-15.083-0.32
 			c-4.267,4.075-4.395,10.837-0.32,15.083c5.483,5.717,53.845,56.128,65.088,65.003c1.941,1.536,4.288,2.283,6.592,2.283
-			c3.136,0,6.272-1.408,8.405-4.075C374.72,353.981,373.931,347.261,369.301,343.613z" />
+			c3.136,0,6.272-1.408,8.405-4.075C374.72,353.981,373.931,347.261,369.301,343.613z"
+                    />
                   </g>
                 </g>
                 <g>
                   <g>
-                    <path d="M326.677,365.01c-12.779-10.219-44.885-44.331-52.139-52.224c-4.011-4.352-10.731-4.608-15.083-0.64
+                    <path
+                      d="M326.677,365.01c-12.779-10.219-44.885-44.331-52.139-52.224c-4.011-4.352-10.731-4.608-15.083-0.64
 			c-4.331,3.989-4.629,10.752-0.64,15.083c0.384,0.405,38.699,41.771,54.528,54.443c1.963,1.557,4.331,2.325,6.656,2.325
-			c3.115,0,6.229-1.387,8.341-3.989C332.011,375.399,331.264,368.679,326.677,365.01z" />
+			c3.115,0,6.229-1.387,8.341-3.989C332.011,375.399,331.264,368.679,326.677,365.01z"
+                    />
                   </g>
                 </g>
                 <g>
                   <g>
-                    <path d="M284.224,386.493c-15.211-12.821-46.336-45.952-52.416-52.459c-4.032-4.309-10.795-4.544-15.083-0.512
+                    <path
+                      d="M284.224,386.493c-15.211-12.821-46.336-45.952-52.416-52.459c-4.032-4.309-10.795-4.544-15.083-0.512
 			c-4.309,4.032-4.523,10.773-0.512,15.083c8.747,9.365,38.528,40.939,54.251,54.208c2.005,1.685,4.437,2.517,6.869,2.517
-			c3.029,0,6.059-1.301,8.171-3.797C289.301,397.01,288.725,390.29,284.224,386.493z" />
+			c3.029,0,6.059-1.301,8.171-3.797C289.301,397.01,288.725,390.29,284.224,386.493z"
+                    />
                   </g>
                 </g>
                 <g>
                   <g>
-                    <path d="M124.672,120.253C106.389,102.93,33.28,97.319,11.307,96.018c-3.029-0.149-5.824,0.853-7.957,2.88
+                    <path
+                      d="M124.672,120.253C106.389,102.93,33.28,97.319,11.307,96.018c-3.029-0.149-5.824,0.853-7.957,2.88
 			C1.216,100.903,0,103.719,0,106.663v192c0,5.888,4.779,10.667,10.667,10.667h64c4.608,0,8.704-2.965,10.133-7.36
 			c1.557-4.779,38.315-117.589,43.157-173.056C128.235,125.671,127.04,122.471,124.672,120.253z M66.88,287.997H21.333V118.098
-			c34.283,2.709,71.275,8.597,84.715,15.125C100.395,179.943,74.816,262.951,66.88,287.997z" />
+			c34.283,2.709,71.275,8.597,84.715,15.125C100.395,179.943,74.816,262.951,66.88,287.997z"
+                    />
                   </g>
                 </g>
                 <g>
                   <g>
-                    <path d="M501.333,117.33c-83.755,0-130.219,21.44-132.16,22.336c-2.773,1.301-4.843,3.712-5.696,6.635s-0.427,6.059,1.173,8.661
+                    <path
+                      d="M501.333,117.33c-83.755,0-130.219,21.44-132.16,22.336c-2.773,1.301-4.843,3.712-5.696,6.635s-0.427,6.059,1.173,8.661
 			c13.184,21.227,54.464,139.115,62.4,167.872c1.28,4.629,5.483,7.829,10.283,7.829h64c5.888,0,10.667-4.779,10.667-10.667v-192
 			C512,122.087,507.221,117.33,501.333,117.33z M490.667,309.33h-45.355c-10.112-32.939-39.979-118.827-56.64-154.325
-			c16.277-5.525,51.243-15.019,101.995-16.213V309.33z" />
+			c16.277-5.525,51.243-15.019,101.995-16.213V309.33z"
+                    />
                   </g>
                 </g>
               </svg>
@@ -264,11 +312,10 @@ export default function AppLyVendor({ data }) {
                     <div className="steps">1</div>
                     <h4>Liệt kê các sản phẩm của bạn &amp; Nhận nhà cung cấp dịch vụ hỗ trợ</h4>
                     <p>
-                      Đăng ký doanh nghiệp của bạn miễn phí và tạo danh mục sản phẩm. Bán theo giá của riêng
-                      bạn
-                      nhãn hiệu riêng hoặc bán một nhãn hiệu hiện có. Hoàn thành tài liệu và lập danh mục của
-                      bạn
-                      một cách dễ dàng từ mạng Dịch vụ Chuyên nghiệp của chúng tôi.
+                      Đăng ký doanh nghiệp của bạn miễn phí và tạo danh mục sản phẩm. Bán theo giá
+                      của riêng bạn nhãn hiệu riêng hoặc bán một nhãn hiệu hiện có. Hoàn thành tài
+                      liệu và lập danh mục của bạn một cách dễ dàng từ mạng Dịch vụ Chuyên nghiệp
+                      của chúng tôi.
                     </p>
                   </div>
                 </div>
@@ -280,9 +327,8 @@ export default function AppLyVendor({ data }) {
                     <h4>Nhận đơn đặt hàng &amp; Lên lịch lấy hàng</h4>
                     <p>
                       Sau khi được liệt kê, sản phẩm của bạn sẽ có sẵn cho hàng triệu người dùng.
-                      quản lý
-                      kinh doanh trực tuyến của bạn thông qua Bảng điều khiển người bán và Ứng dụng di động
-                      trong Khu vực người bán của chúng tôi.
+                      quản lý kinh doanh trực tuyến của bạn thông qua Bảng điều khiển người bán và
+                      Ứng dụng di động trong Khu vực người bán của chúng tôi.
                     </p>
                   </div>
                 </div>
@@ -292,11 +338,11 @@ export default function AppLyVendor({ data }) {
                   <div>
                     <div className="steps">3</div>
                     <h4> Nhận thanh toán nhanh chóng và phát triển doanh nghiệp của bạn</h4>
-                    <p>Nhận thanh toán nhanh chóng và không rắc rối trong tài khoản của bạn sau khi đơn đặt hàng
-                      của bạn được thực hiện
-                      hoàn thành.
-                      Mở rộng hoạt động kinh doanh của bạn với các khoản vay không cần thế chấp và lãi suất
-                      thấp.</p>
+                    <p>
+                      Nhận thanh toán nhanh chóng và không rắc rối trong tài khoản của bạn sau khi
+                      đơn đặt hàng của bạn được thực hiện hoàn thành. Mở rộng hoạt động kinh doanh
+                      của bạn với các khoản vay không cần thế chấp và lãi suất thấp.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -312,48 +358,66 @@ export default function AppLyVendor({ data }) {
             <div>
               <h4>Bắt đầu bán ngay</h4>
               <p>
-                Thị trường MUBAHA là nền tảng bán hàng trực tuyến hàng đầu của Ấn Độ. Hãy là một nhà sản xuất,
-                nhà cung cấp hoặc
-                nhà cung cấp, chỉ cần bán sản phẩm của bạn trực tuyến trên MUBAHA và trở thành người chơi thương mại
-                điện tử hàng đầu với
-                mức đầu tư tối thiểu. Thông qua một nhóm chuyên gia tổ chức các hội thảo, đào tạo dành riêng cho
-                người bán,
-                người bán
-                cổng hỗ trợ và người bán thuận tiện, MUBAHA tập trung vào việc giáo dục và trao quyền cho người bán
-                bên kia
-                Ấn Độ.
-                Bán hàng trên MUBAHA.com rất dễ dàng và hoàn toàn miễn phí. Tất cả những gì bạn cần là đăng ký, liệt
-                kê
-                danh mục và bắt đầu bán sản phẩm của bạn.
+                Thị trường MUBAHA là nền tảng bán hàng trực tuyến hàng đầu của Ấn Độ. Hãy là một nhà
+                sản xuất, nhà cung cấp hoặc nhà cung cấp, chỉ cần bán sản phẩm của bạn trực tuyến
+                trên MUBAHA và trở thành người chơi thương mại điện tử hàng đầu với mức đầu tư tối
+                thiểu. Thông qua một nhóm chuyên gia tổ chức các hội thảo, đào tạo dành riêng cho
+                người bán, người bán cổng hỗ trợ và người bán thuận tiện, MUBAHA tập trung vào việc
+                giáo dục và trao quyền cho người bán bên kia Ấn Độ. Bán hàng trên MUBAHA.com rất dễ
+                dàng và hoàn toàn miễn phí. Tất cả những gì bạn cần là đăng ký, liệt kê danh mục và
+                bắt đầu bán sản phẩm của bạn.
               </p>
-              <div class="row">
+              <div className="row">
                 <div className="col-md-6">
                   <div className="col-sm-12">
                     <lable className="lable">Tên shop</lable>
-                    <input ref={inputBrandName} type="text" className="form-control" name="fullname" placeholder="Tên shop" />
+                    <input
+                      ref={inputBrandName}
+                      type="text"
+                      className="form-control"
+                      name="fullname"
+                      placeholder="Tên shop"
+                    />
                   </div>
                   <br />
                   <div className="col-sm-12">
                     <lable className="lable">Email</lable>
-                    <input ref={inputEmail} type="text" className="form-control" name="email" placeholder="Nhập email" />
+                    <input
+                      ref={inputEmail}
+                      type="text"
+                      className="form-control"
+                      name="email"
+                      placeholder="Nhập email"
+                    />
                   </div>
                   <br />
                   <div className="col-sm-12">
                     <lable className="lable">Username</lable>
-                    <input ref={inputUS} type="text" name="username" className="form-control" placeholder="Nhập username" />
+                    <input
+                      ref={inputUS}
+                      type="text"
+                      name="username"
+                      className="form-control"
+                      placeholder="Nhập username"
+                    />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <lable className="lable">Địa chỉ lấy hàng</lable>
                   <br></br>
-                  {showAddress &&
-                    <div style={{ marginLeft: '10px' }}>
+                  {showAddress && (
+                    <div style={{marginLeft: "10px"}}>
                       <p>Họ và tên: {address.fullName}</p>
                       <p>Số điện thoại:{address.phone} </p>
-                      <p>Địa chỉ:{`${address.detail}, ${address.ward.name}, ${address.district.name}, ${address.province.name}`}</p>
+                      <p>
+                        Địa chỉ:
+                        {`${address.detail}, ${address.ward.name}, ${address.district.name}, ${address.province.name}`}
+                      </p>
                     </div>
-                  }
-                  <button className="btn-solid btn-sm" onClick={handleShow}>Cập nhật địa chỉ lấy hàng</button>
+                  )}
+                  <button className="btn-solid btn-sm" onClick={handleShow}>
+                    Cập nhật địa chỉ lấy hàng
+                  </button>
                 </div>
               </div>
               <br />
@@ -373,74 +437,131 @@ export default function AppLyVendor({ data }) {
               <div className="col-lg-6">
                 <div className="mb-3">
                   <label htmlFor="productname">Họ và tên</label>
-                  <input ref={inputName} name="productname" type="text"
-                  defaultValue= {address.fullName}
-                   className="form-control productname" />
+                  <input
+                    ref={inputName}
+                    name="productname"
+                    type="text"
+                    defaultValue={address.fullName}
+                    className="form-control productname"
+                  />
                 </div>
               </div>
               <div className="col-lg-6">
                 <div className="mb-3">
                   <label htmlFor="number_phone">Số điện thoại</label>
-                  <input ref={inputPhone} name="number_phone"
-                  defaultValue= {address.phone}
-                   type="text" className="form-control number_phone" maxLength={10} />
+                  <input
+                    ref={inputPhone}
+                    name="number_phone"
+                    defaultValue={address.phone}
+                    type="text"
+                    className="form-control number_phone"
+                    maxLength={10}
+                  />
                 </div>
               </div>
               <div className="col-lg-12 col-md-12">
                 <div className="mb-3">
-                  <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Tỉnh/Thành phố</label>
-                  <select className="form-control" ref={selectPrivince} data-trigger name="choices-single-groups" onChange={handleDistrict}>
-                    {
-                      address.province.code ? <option value={ address.province.code} >{ address.province.name}</option> : <option >Chọn một tỉnh/thành phố</option>
-                    }
-                    {
-                      provinces.map((p) => {
-                        return (
-                          <option key={p.code} value={p.code}> {p.name}</option>
-                        )
-                      })
-                    }
+                  <label
+                    htmlFor="choices-single-groups"
+                    className="form-label font-size-13 text-muted"
+                  >
+                    Tỉnh/Thành phố
+                  </label>
+                  <select
+                    className="form-control"
+                    ref={selectPrivince}
+                    data-trigger
+                    name="choices-single-groups"
+                    onChange={handleDistrict}
+                  >
+                    {address.province.code ? (
+                      <option value={address.province.code}>{address.province.name}</option>
+                    ) : (
+                      <option>Chọn một tỉnh/thành phố</option>
+                    )}
+                    {provinces.map((p) => {
+                      return (
+                        <option key={p.code} value={p.code}>
+                          {" "}
+                          {p.name}
+                        </option>
+                      )
+                    })}
                   </select>
                 </div>
               </div>
               <div className="col-lg-12 col-md-12">
                 <div className="mb-3">
-                  <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Quận/Huyện</label>
-                  <select ref={selectDistrict} className="form-control" data-trigger name="choices-single-groups" onChange={handleWards}>
-                  {
-                      address.district.code ? <option value={ address.district.code} >{ address.district.name}</option> : <option >Chọn một quận/huyện</option>
-                    }
+                  <label
+                    htmlFor="choices-single-groups"
+                    className="form-label font-size-13 text-muted"
+                  >
+                    Quận/Huyện
+                  </label>
+                  <select
+                    ref={selectDistrict}
+                    className="form-control"
+                    data-trigger
+                    name="choices-single-groups"
+                    onChange={handleWards}
+                  >
+                    {address.district.code ? (
+                      <option value={address.district.code}>{address.district.name}</option>
+                    ) : (
+                      <option>Chọn một quận/huyện</option>
+                    )}
 
-                    {
-                      districts.map((p) => {
-                        return (
-                          <option key={p.code} value={p.code}> {p.name}</option>
-                        )
-                      })
-                    }
+                    {districts.map((p) => {
+                      return (
+                        <option key={p.code} value={p.code}>
+                          {" "}
+                          {p.name}
+                        </option>
+                      )
+                    })}
                   </select>
                 </div>
               </div>
               <div className="col-lg-12 col-md-12">
                 <div className="mb-3">
-                  <label htmlFor="choices-single-groups" className="form-label font-size-13 text-muted">Xã/Phường</label>
-                  <select ref={selectWard} className="form-control" data-trigger name="choices-single-groups" id="ward">
-                  {
-                      address.ward.code ? <option value={ address.ward.code} >{ address.ward.name}</option> : <option>Chọn một xã/phường</option>
-                    }
-                    {
-                      wards.map((p) => {
-                        return (
-                          <option key={p.code} value={p.code}> {p.name}</option>
-                        )
-                      })
-                    }
+                  <label
+                    htmlFor="choices-single-groups"
+                    className="form-label font-size-13 text-muted"
+                  >
+                    Xã/Phường
+                  </label>
+                  <select
+                    ref={selectWard}
+                    className="form-control"
+                    data-trigger
+                    name="choices-single-groups"
+                    id="ward"
+                  >
+                    {address.ward.code ? (
+                      <option value={address.ward.code}>{address.ward.name}</option>
+                    ) : (
+                      <option>Chọn một xã/phường</option>
+                    )}
+                    {wards.map((p) => {
+                      return (
+                        <option key={p.code} value={p.code}>
+                          {" "}
+                          {p.name}
+                        </option>
+                      )
+                    })}
                   </select>
                 </div>
               </div>
               <div className="col-lg-12">
-                <label htmlFor="message-text" className="col-form-label">Địa chỉ chi tiết</label>
-                <textarea className="form-control" ref={inputDetailAddress} defaultValue= {address.detail} />
+                <label htmlFor="message-text" className="col-form-label">
+                  Địa chỉ chi tiết
+                </label>
+                <textarea
+                  className="form-control"
+                  ref={inputDetailAddress}
+                  defaultValue={address.detail}
+                />
               </div>
             </div>
           </form>
@@ -461,10 +582,10 @@ export default function AppLyVendor({ data }) {
 
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await API.instance.get('/accounts/me')
+  const res = await API.instance.get("/accounts/me")
 
   const data = res.data
 
   // Pass data to the page via props
-  return { props: { data } }
+  return {props: {data}}
 }
