@@ -5,7 +5,7 @@ import MasterBanner from "../components/MasterBanner"
 import MainServiceCollections from "../components/MainServiceCollections"
 import DealsOfTheDay from "../components/deals-of-the-day"
 
-import {useSession} from 'next-auth/react'
+import {useSession} from "next-auth/react"
 
 const Data = [
   {
@@ -23,7 +23,6 @@ const Data = [
 ]
 
 export default function Home({
-
   dealsOfTheDay,
   dontMissTheseProducts,
   firstNewProducts,
@@ -34,9 +33,7 @@ export default function Home({
   // if(localStorage !=null){
   //   console.log("localStorage",localStorage);
   // }
-  const { data: session, status } = useSession()
-
-  console.log(session)
+  const {data: session, status} = useSession()
 
   return (
     <>

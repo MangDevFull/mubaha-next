@@ -1,5 +1,5 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials"
+import NextAuth from "next-auth"
 
 export default NextAuth({
   providers: [
@@ -12,11 +12,10 @@ export default NextAuth({
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        phone: { label: "Phone", type: "text" },
-        code: { label: "OTP", type: "text" },
+        phone: {label: "Phone", type: "text"},
+        code: {label: "OTP", type: "text"},
       },
       async authorize(credentials, req) {
-        console.log('credentials', credentials);
         const payload = {
           phone: credentials.phone,
           code: credentials.code,
@@ -30,29 +29,23 @@ export default NextAuth({
         const res = await fetch(process.env.CREDENTIALS_AUTH_URL, {
           method: "POST",
           body: JSON.stringify(payload),
-          headers: { "Content-Type": "application/json" },
-        });
-        const response = await res.json();
-        console.log(response)
+          headers: {"Content-Type": "application/json"},
+        })
+        const response = await res.json()
 
         // If no error and we have user data, return it
         if (res.ok && response.data) {
-          console.log("login data", response.data?.token);
-          return response.data;
+          return response.data
         }
         // Return null if user data could not be retrieved
-        return null;
+        return null
       },
     }),
   ],
   callbacks: {
     async jwt({token, user}) {
-      console.log('callback jwt', token, user);
-      if(user) {
-        const {
-          account,
-          token,
-        } = user;
+      if (user) {
+        const {account, token} = user
 
         return {
           token,
@@ -60,16 +53,15 @@ export default NextAuth({
         }
       }
 
-      return token;
+      return token
     },
     async session({session, token}) {
-      console.log('session token', token)
-      session.user = token.user;
-      session.accessToken = token.token;
-      session.error = token.error;
-      return session;
-    }
+      session.user = token.user
+      session.accessToken = token.token
+      session.error = token.error
+      return session
+    },
   },
   secret: process.env.JWT_SECRET,
-  debug: process.env.NODE_ENV === 'development',
-});
+  debug: process.env.NODE_ENV === "development",
+})

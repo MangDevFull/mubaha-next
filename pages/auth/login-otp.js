@@ -1,68 +1,66 @@
-import Link from "next/link";
-import { useState, useCallback } from "react";
-import Otp from "../../components/Otp.js";
-import Head from "next/head";
-import libphone from "google-libphonenumber";
-import API from "../../services/api.js";
-import { Alert } from "react-bootstrap";
-import otpEnums from "../../utils/otpEnums.js";
+import Link from "next/link"
+import {useState, useCallback} from "react"
+import Otp from "../../components/Otp.js"
+import Head from "next/head"
+import libphone from "google-libphonenumber"
+import API from "../../services/api.js"
+import {Alert} from "react-bootstrap"
+import otpEnums from "../../utils/otpEnums.js"
 
+const {PhoneNumberFormat, PhoneNumberUtil} = libphone
 
-
-const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
-
-const phoneUtil = PhoneNumberUtil.getInstance();
+const phoneUtil = PhoneNumberUtil.getInstance()
 
 export default function loginWithOtp() {
-  const [isNotValidPhone, setisNotValidPhone] = useState(true);
-  const [phone, setPhone] = useState("");
-  const [isVerifyPhone, setisVerifyPhone] = useState(false);
-  const [message, setMessage] = useState("");
-  const [isNotRegistered, setIsNotRegistered] = useState(false);
+  const [isNotValidPhone, setisNotValidPhone] = useState(true)
+  const [phone, setPhone] = useState("")
+  const [isVerifyPhone, setisVerifyPhone] = useState(false)
+  const [message, setMessage] = useState("")
+  const [isNotRegistered, setIsNotRegistered] = useState(false)
   const handleClose = useCallback(() => {
-    setisVerifyPhone(false);
-  }, [isVerifyPhone, phone]);
+    setisVerifyPhone(false)
+  }, [isVerifyPhone, phone])
 
   const checkPhone = (phone) => {
-    var reg = /^\d+$/;
+    var reg = /^\d+$/
     if (!reg.test(phone)) {
-      setisNotValidPhone(true);
+      setisNotValidPhone(true)
     } else {
       if (phone.length < 2 || phone == null) {
-        setisNotValidPhone(true);
+        setisNotValidPhone(true)
       } else {
-        const number = phoneUtil.parse(phone, "VN");
+        const number = phoneUtil.parse(phone, "VN")
         if (!phoneUtil.isValidNumber(number)) {
-          setisNotValidPhone(true);
+          setisNotValidPhone(true)
         } else {
-          const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164);
-          setPhone(phoneNumber);
-          setisNotValidPhone(false);
+          const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164)
+          setPhone(phoneNumber)
+          setisNotValidPhone(false)
         }
       }
     }
-  };
+  }
 
   const getOtp = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const params = {
       phone: phone,
-    };
-    const response = await API.instance.post("/auth/login-otp", params);
+    }
+    const response = await API.instance.post("/auth/login-otp", params)
     // const {error, ok} = await signIn("credentials", {
 
     // })
 
-    const data = response.data;
+    const data = response.data
     if (data.status == 200) {
-      setisVerifyPhone(true);
-      setMessage("");
-      setIsNotRegistered(false);
+      setisVerifyPhone(true)
+      setMessage("")
+      setIsNotRegistered(false)
     } else {
-      setMessage(data.message);
-      setIsNotRegistered(true);
+      setMessage(data.message)
+      setIsNotRegistered(true)
     }
-  };
+  }
   return (
     <>
       <Head>
@@ -107,7 +105,7 @@ export default function loginWithOtp() {
 
                 <form className="theme-form" onSubmit={getOtp}>
                   {isNotRegistered && (
-                    <Alert style={{ textAlign: "center", height: "50px" }} variant={"danger"}>
+                    <Alert style={{textAlign: "center", height: "50px"}} variant={"danger"}>
                       {message}
                     </Alert>
                   )}
@@ -118,7 +116,7 @@ export default function loginWithOtp() {
                         name="username"
                         className="form-control phone-number"
                         onChange={(e) => {
-                          checkPhone(e.target.value);
+                          checkPhone(e.target.value)
                         }}
                         id="phone"
                         maxLength={20}
@@ -128,11 +126,7 @@ export default function loginWithOtp() {
                     </div>
                   </div>
                   <div className="d-flex justify-content-between">
-                    <button
-                      disabled={isNotValidPhone}
-                      type="submit"
-                      className="btn btn-solid"
-                    >
+                    <button disabled={isNotValidPhone} type="submit" className="btn btn-solid">
                       Tiếp tục
                     </button>
                     <Link href="/auth/login">
@@ -140,25 +134,6 @@ export default function loginWithOtp() {
                     </Link>
                   </div>
                 </form>
-                <div className="clearfix mb-4" />
-                <p className="mb-2">Hoặc tiếp tục với</p>
-                <ul className="list-group list-group-horizontal auth-icon-list">
-                  <li className="list-group-item">
-                    <a href="/a/fb">
-                      <img src="/assets/svg/icons/facebook.svg" />
-                    </a>
-                  </li>
-                  <li className="list-group-item">
-                    <a href="/a/gg">
-                      <img src="/assets/svg/icons/google.svg" />
-                    </a>
-                  </li>
-                  <li className="list-group-item">
-                    <a href="/a/zalo">
-                      <img src="/assets/svg/icons/zalo.svg" />
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
             <div className="col-lg-6 right-login">
@@ -180,5 +155,5 @@ export default function loginWithOtp() {
       </section>
       {/*Section ends*/}
     </>
-  );
+  )
 }
