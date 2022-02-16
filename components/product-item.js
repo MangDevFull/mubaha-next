@@ -1,24 +1,20 @@
-import {useState} from "react";
-import Link from "next/link";
-import {
-  Row, Col, Media, Modal, ModalBody
-} from "reactstrap";
+import {useState} from "react"
+import Link from "next/link"
+import {Row, Col, Media, Modal, ModalBody} from "reactstrap"
 
-import MasterProductDetail from "./common/product-box/master-product-detail";
+import MasterProductDetail from "./common/product-box/master-product-detail"
 
 const currency = {
-  currency: 'USD',
-  name:'doller',
-  symbol: '$',
-  value: 1
-};
+  currency: "VND",
+  name: "vietnamdong",
+  symbol: "đ",
+  value: 1,
+}
 
+export default function ProductItem({product}) {
+  const [modal, setModal] = useState(false)
 
-export default function ProductItem({ product }) {
-
-  const [modal, setModal] = useState(false);
-
-  const toggle = () => setModal(!modal);
+  const toggle = () => setModal(!modal)
 
   return (
     <div className="product-box product-wrap">
@@ -28,13 +24,16 @@ export default function ProductItem({ product }) {
           {product.sale === true ? <span className="lable4">on sale</span> : ""}
         </div>
         <div className="front">
-         
-          <Media
-            src={product.media.featuredImage}
-            style={{maxHeight: '204px'}}
-            className="img-fluid bg-img blur-up"
-            alt=""
-          />
+          <Link href={`/${product.slug}`}>
+            <a>
+              <Media
+                src={product.media.featuredImage}
+                style={{maxHeight: "204px"}}
+                className="img-fluid bg-img blur-up"
+                alt=""
+              />
+            </a>
+          </Link>
         </div>
         {/* <div className="back">
           <Media
@@ -102,16 +101,9 @@ export default function ProductItem({ product }) {
         {product.media.data ? (
           <ul className="product-thumb-list">
             {product.media.data.map((img, i) => (
-              <li
-                className={`grid_thumb_img ${img.src === image ? "active" : ""
-                  }`}
-                key={i}
-              >
+              <li className={`grid_thumb_img ${img.src === image ? "active" : ""}`} key={i}>
                 <a href={null} title="Add to Wishlist">
-                  <Media
-                    src={`${img.src}`}
-                    alt="wishlist"
-                  />
+                  <Media src={`${img.src}`} alt="wishlist" />
                 </a>
               </li>
             ))}
@@ -120,24 +112,14 @@ export default function ProductItem({ product }) {
           ""
         )}
       </div>
-      <MasterProductDetail
-        currency={currency}
-        product={product}
-      />
-<Modal
-        isOpen={modal}
-        toggle={toggle}
-        className="modal-lg quickview-modal"
-        centered
-      >
+      <MasterProductDetail currency={currency} product={product} />
+      <Modal isOpen={modal} toggle={toggle} className="modal-lg quickview-modal" centered>
         <ModalBody>
           <Row>
             <Col lg="6" xs="12">
               <div className="quick-view-img">
                 <Media
-                  src={`${
-                    product.variants && image ? image : product.media.featuredImage
-                  }`}
+                  src={`${product.variants && image ? image : product.media.featuredImage}`}
                   alt=""
                   className="img-fluid"
                 />
@@ -145,7 +127,11 @@ export default function ProductItem({ product }) {
             </Col>
             <Col lg="6" className="rtl-text">
               <div className="product-right">
-                <h2> {product.title} </h2>
+                <Link href={`/${product.slug}`}>
+                  <a>
+                    <h2>{product.title}</h2>
+                  </a>
+                </Link>
                 <h3>
                   {currency.symbol}
                   {(product.price * currency.value).toFixed(2)}
@@ -171,13 +157,10 @@ export default function ProductItem({ product }) {
                                   key={i}
                                   title={vari.color}
                                   onClick={() =>
-                                    variantChangeByColor(
-                                      vari.image_id,
-                                      product.images
-                                    )
+                                    variantChangeByColor(vari.image_id, product.images)
                                   }
                                 ></li>
-                              );
+                              )
                             })}
                           </>
                         )}
@@ -202,7 +185,7 @@ export default function ProductItem({ product }) {
                             <li key={i}>
                               <a href={null}>{size}</a>
                             </li>
-                          );
+                          )
                         })}
                       </ul>
                     </div>
@@ -222,11 +205,7 @@ export default function ProductItem({ product }) {
                           <i className="fa fa-angle-left"></i>
                         </button>
                       </span>
-                      <input
-                        type="text"
-                        name="quantity"
-                        className="form-control input-number"
-                      />
+                      <input type="text" name="quantity" className="form-control input-number" />
                       <span className="input-group-prepend">
                         <button
                           type="button"
@@ -241,17 +220,10 @@ export default function ProductItem({ product }) {
                   </div>
                 </div>
                 <div className="product-buttons">
-                  <button
-                    className="btn btn-solid"
-                    onClick={() => addCart(product)}
-                  >
+                  <button className="btn btn-solid" onClick={() => addCart(product)}>
                     add to cart
                   </button>
-                  <button
-                    className="btn btn-solid"
-                  >
-                    View detail
-                  </button>
+                  <button className="btn btn-solid">View detail</button>
                 </div>
               </div>
             </Col>
@@ -259,7 +231,5 @@ export default function ProductItem({ product }) {
         </ModalBody>
       </Modal>
     </div>
-
   )
-
 }
