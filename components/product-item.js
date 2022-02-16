@@ -1,20 +1,26 @@
-import {useState} from "react"
-import Link from "next/link"
-import {Row, Col, Media, Modal, ModalBody} from "reactstrap"
+import { useState } from "react";
+import Link from "next/link";
+import { Row, Col, Media, Modal, ModalBody } from "reactstrap";
 
-import MasterProductDetail from "./common/product-box/master-product-detail"
+import MasterProductDetail from "./common/product-box/master-product-detail";
 
 const currency = {
   currency: "VND",
   name: "vietnamdong",
   symbol: "đ",
   value: 1,
-}
+};
 
-export default function ProductItem({product}) {
-  const [modal, setModal] = useState(false)
+export default function ProductItem({ product }) {
+  const [modal, setModal] = useState(false);
+  // const [image, setImage] = useState("");
+  const uniqueTags = [];
 
-  const toggle = () => setModal(!modal)
+  // const onClickImageHandle = (img) => {
+  //   setImage(img);
+  // };
+
+  const toggle = () => setModal(!modal);
 
   return (
     <div className="product-box product-wrap">
@@ -28,7 +34,7 @@ export default function ProductItem({product}) {
             <a>
               <Media
                 src={product.media.featuredImage}
-                style={{maxHeight: "204px"}}
+                style={{ maxHeight: "204px" }}
                 className="img-fluid bg-img blur-up"
                 alt=""
               />
@@ -98,19 +104,19 @@ export default function ProductItem({product}) {
             </ModalBody>
           </Modal> */}
         </div>
-        {product.media.data ? (
+        {/* {product.media.data ? (
           <ul className="product-thumb-list">
             {product.media.data.map((img, i) => (
-              <li className={`grid_thumb_img ${img.src === image ? "active" : ""}`} key={i}>
+              <li className={`grid_thumb_img ${img.path === image ? "active" : ""}`} key={i}>
                 <a href={null} title="Add to Wishlist">
-                  <Media src={`${img.src}`} alt="wishlist" />
+                  <Media src={`${img.path}`} alt="wishlist" onClick={() => onClickImageHandle(img.path)} />
                 </a>
               </li>
             ))}
           </ul>
         ) : (
           ""
-        )}
+        )} */}
       </div>
       <MasterProductDetail currency={currency} product={product} />
       <Modal isOpen={modal} toggle={toggle} className="modal-lg quickview-modal" centered>
@@ -119,7 +125,7 @@ export default function ProductItem({product}) {
             <Col lg="6" xs="12">
               <div className="quick-view-img">
                 <Media
-                  src={`${product.variants && image ? image : product.media.featuredImage}`}
+                  src={`${product.media.featuredImage}`}
                   alt=""
                   className="img-fluid"
                 />
@@ -140,30 +146,16 @@ export default function ProductItem({product}) {
                   <ul className="color-variant">
                     {uniqueTags ? (
                       <ul className="color-variant">
-                        {product.type === "jewellery" ||
-                        product.type === "nursery" ||
-                        product.type === "beauty" ||
-                        product.type === "electronics" ||
-                        product.type === "goggles" ||
-                        product.type === "watch" ||
-                        product.type === "pets" ? (
-                          ""
-                        ) : (
-                          <>
-                            {uniqueTags.map((vari, i) => {
-                              return (
-                                <li
-                                  className={vari.color}
-                                  key={i}
-                                  title={vari.color}
-                                  onClick={() =>
-                                    variantChangeByColor(vari.image_id, product.images)
-                                  }
-                                ></li>
-                              )
-                            })}
-                          </>
-                        )}
+                        {uniqueTags.map((vari, i) => {
+                          return (
+                            <li
+                              className={vari.color}
+                              key={i}
+                              title={vari.color}
+                              onClick={() => variantChangeByColor(vari.image_id, product.images)}
+                            ></li>
+                          );
+                        })}
                       </ul>
                     ) : (
                       ""
@@ -185,7 +177,7 @@ export default function ProductItem({product}) {
                             <li key={i}>
                               <a href={null}>{size}</a>
                             </li>
-                          )
+                          );
                         })}
                       </ul>
                     </div>
@@ -231,5 +223,5 @@ export default function ProductItem({product}) {
         </ModalBody>
       </Modal>
     </div>
-  )
+  );
 }

@@ -1,39 +1,34 @@
-import React, { useState, useEffect, useRef } from "react";
-import Slider from "react-slick";
-import Head from "next/head";
-import Image from "next/image";
-import SideProductCart from "../components/SideProductCart";
-import ProductCard from "../components/ProductCard";
-import { Row, Col, Media, Collapse } from "reactstrap";
-import { useRouter } from "next/router";
-import product from "./products.json";
-import API from "../services/api";
-import RelatedProducts from "../components/related-products";
+import React, {useState, useEffect, useRef} from "react"
+import Slider from "react-slick"
+import Head from "next/head"
+import Image from "next/image"
+import SideProductCart from "../components/SideProductCart"
+import {Row, Col, Media, Collapse} from "reactstrap"
+import {useRouter} from "next/router"
+import product from "./products.json"
+import API from "../services/api"
+import RelatedProducts from "../components/related-products"
 
-export default function ProductDetail({
-  detailProduct,
-  relatedProducts,
-  newProducts,
-}) {
-  const router = useRouter();
+export default function ProductDetail({detailProduct, relatedProducts, newProducts}) {
+  const router = useRouter()
   // const { slug } = router.query;
 
   // const products = product.products.splice(0, 20);
 
-  const [state, setState] = useState({ nav1: null, nav2: null });
-  const slider1 = useRef();
-  const slider2 = useRef();
+  const [state, setState] = useState({nav1: null, nav2: null})
+  const slider1 = useRef()
+  const slider2 = useRef()
   useEffect(() => {
     setState({
       nav1: slider1.current,
       nav2: slider2.current,
-    });
-  }, []);
-  const { nav1, nav2 } = state;
+    })
+  }, [])
+  const {nav1, nav2} = state
 
   // Handle Brand
-  const [isBrandOpen, setIsBrandOpen] = useState(true);
-  const toggleBrand = () => setIsBrandOpen(!isBrandOpen);
+  const [isBrandOpen, setIsBrandOpen] = useState(true)
+  const toggleBrand = () => setIsBrandOpen(!isBrandOpen)
 
   let propertySlider = {
     slidesToShow: 1,
@@ -41,14 +36,14 @@ export default function ProductDetail({
     dots: false,
     arrows: true,
     fade: true,
-  };
+  }
   var productsnav = {
     slidesToShow: 3,
     swipeToSlide: true,
     arrows: false,
     dots: false,
     focusOnSelect: true,
-  };
+  }
   return (
     <>
       <Head>
@@ -91,8 +86,7 @@ export default function ProductDetail({
                     <div className="col-xl-12">
                       <div className="filter-main-btn mb-2">
                         <span className="filter-btn">
-                          <i className="fa fa-filter" aria-hidden="true" />{" "}
-                          Sidebar
+                          <i className="fa fa-filter" aria-hidden="true" /> Sidebar
                         </span>
                       </div>
                     </div>
@@ -146,9 +140,7 @@ export default function ProductDetail({
                                 alt="img"
                               />
                               <span className="p-counter">37 </span>
-                              <span className="lang">
-                                orders in last 24 hours
-                              </span>
+                              <span className="lang">orders in last 24 hours</span>
                             </li>
                             <li>
                               <img
@@ -164,18 +156,14 @@ export default function ProductDetail({
                         <h2>{detailProduct.name}</h2>
                         <div className="rating-section">
                           <div className="rating">
-                            <i className="fa fa-star" />{" "}
-                            <i className="fa fa-star" />{" "}
-                            <i className="fa fa-star" />{" "}
-                            <i className="fa fa-star" />{" "}
+                            <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
+                            <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
                             <i className="fa fa-star" />
                           </div>
                           <h6>120 ratings</h6>
                         </div>
                         <div className="label-section">
-                          <span className="badge badge-grey-color">
-                            #1 Best seller
-                          </span>
+                          <span className="badge badge-grey-color">#1 Best seller</span>
                           <span className="label-text">in fashion</span>
                         </div>
                         <h3 className="price-detail">
@@ -183,8 +171,7 @@ export default function ProductDetail({
                           {detailProduct.currencySymbol}{" "}
                           {detailProduct.discountPercent > 0 && (
                             <del>
-                              {detailProduct.price}{" "}
-                              {detailProduct.currencySymbol}
+                              {detailProduct.price} {detailProduct.currencySymbol}
                             </del>
                           )}
                         </h3>
@@ -200,10 +187,7 @@ export default function ProductDetail({
                           <h6 className="product-title size-text">
                             select size{" "}
                             <span>
-                              <a
-                                data-bs-toggle="modal"
-                                data-bs-target="#sizemodal"
-                              >
+                              <a data-bs-toggle="modal" data-bs-target="#sizemodal">
                                 size chart
                               </a>
                             </span>
@@ -216,16 +200,10 @@ export default function ProductDetail({
                             aria-labelledby="exampleModalLabel"
                             aria-hidden="true"
                           >
-                            <div
-                              className="modal-dialog modal-dialog-centered"
-                              role="document"
-                            >
+                            <div className="modal-dialog modal-dialog-centered" role="document">
                               <div className="modal-content">
                                 <div className="modal-header">
-                                  <h5
-                                    className="modal-title"
-                                    id="exampleModalLabel"
-                                  >
+                                  <h5 className="modal-title" id="exampleModalLabel">
                                     Sheer Straight Kurta
                                   </h5>
                                   <button
@@ -306,14 +284,11 @@ export default function ProductDetail({
                             }}
                           >
                             <a
-                              style={{ margin: "0px" }}
+                              style={{margin: "0px"}}
                               id="cartEffect"
                               className="btn btn-solid btn-animation"
                             >
-                              <i
-                                className="fa fa-shopping-cart me-1"
-                                aria-hidden="true"
-                              />
+                              <i className="fa fa-shopping-cart me-1" aria-hidden="true" />
                               add to cart
                             </a>
                           </button>
@@ -325,10 +300,7 @@ export default function ProductDetail({
                             }}
                           >
                             <a className="btn btn-solid">
-                              <i
-                                className="fa fa-bookmark fz-16 me-2"
-                                aria-hidden="true"
-                              />
+                              <i className="fa fa-bookmark fz-16 me-2" aria-hidden="true" />
                               Buy now
                             </a>
                           </button>
@@ -341,9 +313,7 @@ export default function ProductDetail({
                                 className="img-fluid"
                                 alt="img"
                               />
-                              <span className="lang">
-                                Free shipping for orders above $500 USD
-                              </span>
+                              <span className="lang">Free shipping for orders above $500 USD</span>
                             </li>
                           </ul>
                         </div>
@@ -400,11 +370,7 @@ export default function ProductDetail({
                 <section className="tab-product m-0">
                   <div className="row">
                     <div className="col-sm-12 col-lg-12">
-                      <ul
-                        className="nav nav-tabs nav-material"
-                        id="top-tab"
-                        role="tablist"
-                      >
+                      <ul className="nav nav-tabs nav-material" id="top-tab" role="tablist">
                         <li className="nav-item">
                           <a
                             className="nav-link active"
@@ -458,10 +424,7 @@ export default function ProductDetail({
                           <div className="material-border" />
                         </li>
                       </ul>
-                      <div
-                        className="tab-content nav-material"
-                        id="top-tabContent"
-                      >
+                      <div className="tab-content nav-material" id="top-tabContent">
                         <div
                           className="tab-pane fade show active"
                           id="top-home"
@@ -471,36 +434,27 @@ export default function ProductDetail({
                           <div className="product-tab-discription">
                             <div className="part">
                               <p>
-                                The Model is wearing a white blouse from our
-                                stylist&#39;s collection, see the img for a
-                                mock-up of what the actual blouse would look
-                                like.it has text written on it in a black
-                                cursive language which looks great on a white
-                                color.
+                                The Model is wearing a white blouse from our stylist&#39;s
+                                collection, see the img for a mock-up of what the actual blouse
+                                would look like.it has text written on it in a black cursive
+                                language which looks great on a white color.
                               </p>
                             </div>
                             <div className="part">
                               <h5 className="inner-title">fabric:</h5>
                               <p>
-                                Art silk is manufactured by synthetic fibres
-                                like rayon. It&#39;s light in weight and is soft
-                                on the skin for comfort in summers.Art silk is
-                                manufactured by synthetic fibres like rayon.
-                                It&#39;s light in weight and is soft on the skin
-                                for comfort in summers.
+                                Art silk is manufactured by synthetic fibres like rayon. It&#39;s
+                                light in weight and is soft on the skin for comfort in summers.Art
+                                silk is manufactured by synthetic fibres like rayon. It&#39;s light
+                                in weight and is soft on the skin for comfort in summers.
                               </p>
                             </div>
                             <div className="part">
                               <h5 className="inner-title">size &amp; fit:</h5>
-                              <p>
-                                The model (height 5&#39;8&rdquo;) is wearing a
-                                size S
-                              </p>
+                              <p>The model (height 5&#39;8&rdquo;) is wearing a size S</p>
                             </div>
                             <div className="part">
-                              <h5 className="inner-title">
-                                Material &amp; Care:
-                              </h5>
+                              <h5 className="inner-title">Material &amp; Care:</h5>
                               <p>Top fabric: pure cotton</p>
                               <p>Bottom fabric: pure cotton</p>
                               <p>Hand-wash</p>
@@ -514,11 +468,10 @@ export default function ProductDetail({
                           aria-labelledby="profile-top-tab"
                         >
                           <p>
-                            The Model is wearing a white blouse from our
-                            stylist&#39;s collection, see the img for a mock-up
-                            of what the actual blouse would look like.it has
-                            text written on it in a black cursive language which
-                            looks great on a white color.
+                            The Model is wearing a white blouse from our stylist&#39;s collection,
+                            see the img for a mock-up of what the actual blouse would look like.it
+                            has text written on it in a black cursive language which looks great on
+                            a white color.
                           </p>
                           <div className="single-product-tables">
                             <table>
@@ -580,10 +533,8 @@ export default function ProductDetail({
                                   <label>Rating</label>
                                   <div className="media-body ms-3">
                                     <div className="rating three-star">
-                                      <i className="fa fa-star" />{" "}
-                                      <i className="fa fa-star" />{" "}
-                                      <i className="fa fa-star" />{" "}
-                                      <i className="fa fa-star" />{" "}
+                                      <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
+                                      <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
                                       <i className="fa fa-star" />
                                     </div>
                                   </div>
@@ -699,7 +650,7 @@ export default function ProductDetail({
                         x="0px"
                         y="0px"
                         viewBox="0 0 480 480"
-                        style={{ enableBackground: "new 0 0 480 480" }}
+                        style={{enableBackground: "new 0 0 480 480"}}
                         xmlSpace="preserve"
                         width="512px"
                         height="512px"
@@ -750,7 +701,7 @@ export default function ProductDetail({
                         x="0px"
                         y="0px"
                         viewBox="0 0 512 512"
-                        style={{ enableBackground: "new 0 0 512 512" }}
+                        style={{enableBackground: "new 0 0 512 512"}}
                         xmlSpace="preserve"
                         width="512px"
                         height="512px"
@@ -807,9 +758,7 @@ export default function ProductDetail({
                   </Slider> */}
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
                     {newProducts.map((product) => {
-                      return (
-                        <SideProductCart key={product._id} product={product} />
-                      );
+                      return <SideProductCart key={product._id} product={product} />
                     })}
                   </Slider>
                 </div>
@@ -822,13 +771,13 @@ export default function ProductDetail({
       {/* Section ends */}
       <RelatedProducts data={relatedProducts} />
     </>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
-  const { slug } = context.query;
-  const response = await API.instance.get(`/products/${slug}`);
-  const data = response.data.data;
+  const {slug} = context.query
+  const response = await API.instance.get(`/products/${slug}`)
+  const data = response.data.data
 
   return {
     props: {
@@ -836,5 +785,5 @@ export async function getServerSideProps(context) {
       relatedProducts: data.relatedProducts,
       newProducts: data.newProducts,
     }, // will be passed to the page component as props
-  };
+  }
 }
