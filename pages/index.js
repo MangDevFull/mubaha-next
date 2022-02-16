@@ -1,10 +1,9 @@
-
-import Head from "next/head";
-import Slider from "react-slick";
-import API from "../services/api";
-import MasterBanner from "../components/MasterBanner";
-import MainServiceCollections from "../components/MainServiceCollections";
-import DealsOfTheDay from "../components/deals-of-the-day";
+import Head from "next/head"
+import Slider from "react-slick"
+import API from "../services/api"
+import MasterBanner from "../components/MasterBanner"
+import MainServiceCollections from "../components/MainServiceCollections"
+import DealsOfTheDay from "../components/deals-of-the-day"
 
 const Data = [
   {
@@ -19,7 +18,7 @@ const Data = [
     desc: "fresh vegetables",
     link: "#",
   },
-];
+]
 
 export default function Home({
   dealsOfTheDay,
@@ -46,19 +45,19 @@ export default function Home({
                 desc={data.desc}
                 classes={data.classes}
               />
-            );
+            )
           })}
         </Slider>
       </section>
       <MainServiceCollections />
       <DealsOfTheDay data={dealsOfTheDay} />
     </>
-  );
+  )
 }
 
 export async function getServerSideProps() {
-  const response = await API.instance.get("/");
-  const data = response.data.data;
+  const response = await API.instance.get("/")
+  const data = response.data.data
 
   return {
     props: {
@@ -69,5 +68,5 @@ export async function getServerSideProps() {
       rightFeatureProducts: data.rightFeatureProducts,
       top5Products: data.top5Products,
     },
-  };
+  }
 }
