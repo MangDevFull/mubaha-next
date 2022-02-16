@@ -20,7 +20,7 @@ export default function Otp({ show, handleClose,phone,type }) {
         code:otp
       }
       if(type==otpEnums.REGISTRATION){
-        const response = await API.instance.post('/auth/verify-register-otp',params)
+        const response = await API.instance.post('/auth/verify-register-otp',{params})
         const data = response.data
         if(data.status==200) {
           localStorage.setItem("userId", data.data.userId);
@@ -35,6 +35,7 @@ export default function Otp({ show, handleClose,phone,type }) {
         const {error, ok} = await signIn("mubaha", {
           phone: phone,
           code: otp,
+          callbackUrl: `${window.location.origin}/`,
         });
 
         console.log(error, ok)
