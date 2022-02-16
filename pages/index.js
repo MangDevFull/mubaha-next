@@ -5,6 +5,8 @@ import MasterBanner from "../components/MasterBanner"
 import MainServiceCollections from "../components/MainServiceCollections"
 import DealsOfTheDay from "../components/deals-of-the-day"
 
+import {useSession} from 'next-auth/react'
+
 const Data = [
   {
     img: "home39",
@@ -21,6 +23,7 @@ const Data = [
 ]
 
 export default function Home({
+
   dealsOfTheDay,
   dontMissTheseProducts,
   firstNewProducts,
@@ -28,6 +31,13 @@ export default function Home({
   rightFeatureProducts,
   top5Products,
 }) {
+  // if(localStorage !=null){
+  //   console.log("localStorage",localStorage);
+  // }
+  const { data: session, status } = useSession()
+
+  console.log(session)
+
   return (
     <>
       <Head>

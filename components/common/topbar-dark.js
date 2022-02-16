@@ -2,7 +2,11 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Link from "next/link";
 
+import {useSession, signOut} from 'next-auth/react'
+
 export default function TopBarDark({ topClass, fluid }) {
+
+  const { data: session, status } = useSession()
 
   return (
     <div className={topClass}>
@@ -20,20 +24,36 @@ export default function TopBarDark({ topClass, fluid }) {
           </Col>
           <Col lg="6" className="text-right">
             <ul className="header-dropdown">
+              {!session ?
+              <>
               <li>
+              <Link href="/auth/register">
+                <a>
+                  Đăng ký
+                </a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/auth/login">
+                <a>
+                  Đăng nhập
+                </a>
+              </Link>
+            </li>
+            </> : <>
+            <li>
                 <Link href="/">
                   <a>
-                    Đăng ký
+                    Thông tin tài khoản
                   </a>
                 </Link>
               </li>
               <li>
-                <Link href="/">
-                  <a>
-                    Đăng nhập
+                  <a onClick={signOut}>
+                    Đăng xuất
                   </a>
-                </Link>
-              </li>
+              </li></>
+              }
             </ul>
           </Col>
         </Row>

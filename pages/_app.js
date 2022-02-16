@@ -1,14 +1,18 @@
 import "../public/assets/scss/app.scss";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import Layout from "../components/Layout";
+import { SessionProvider } from "next-auth/react";
 
 export default function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-      <ToastContainer />
+      <SessionProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+
+        <ToastContainer />
+      </SessionProvider>
     </>
   );
 }
