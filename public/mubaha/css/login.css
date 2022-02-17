@@ -1,0 +1,53 @@
+.background_login{
+  background-color: #ff4c3b;
+  height: 550px;
+}
+.padding_login{
+  padding: 30px;
+}
+.login_form{
+  background-color:white;
+  border: none;
+  border-radius: 5px solid white;
+}
+.btn-login{
+  width: 100%;
+  padding: 13px 29px;
+    color: #ffffff ;
+    letter-spacing: 0.05em;
+    border: 2px solid ;
+    background-color: #ff4c3b;
+    background-size: 540px;
+    height: 50px
+}
+.text-link{
+  font-size: 10px
+}
+.line{
+  height: 1px;
+    width: 100%;
+    background-color: #dbdbdb;
+    flex: 1;
+}
+.text-or{
+  color: rgb(56, 50, 50);
+    padding: 0 1rem;
+    text-transform: uppercase;
+    font-size: .75rem;
+    text-align: center;
+}
+.login-social{
+  margin-top:15px
+}
+.socail{
+ text-align: center
+}
+.text-icon{
+  margin-left: 1px;
+}
+.register{
+  margin-top: 30px
+}
+.text-signup{
+  margin-left: 60px
+}

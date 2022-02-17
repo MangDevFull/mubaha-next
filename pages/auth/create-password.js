@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { AiFillEye,AiFillEyeInvisible } from "react-icons/ai";
 import {useSession} from 'next-auth/react'
 
+
 export default function CreatePassWord() {
   const { data: session, status } = useSession()
 
@@ -28,20 +29,28 @@ export default function CreatePassWord() {
     setInputValues('password')
   }
   const handleCreatePass = async () => {
-    const params = {
+    const body = {
       password: inputPassword.current.value
     }
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.accessToken
+      },
+      body: JSON.stringify(body)
 
-    const response = await API.instance.put('/auth/create-password', params)
+    }
 
-    const data = response.data
+    const response = await fetch(`${process.env.API_URL}/auth/create-password`,options)
+
+    const data = await response.json()
 
     if (data.status == 200) {
       setShow(true);
       router.push('/')
     }
 
-    console.log(data)
 
   }
   return (

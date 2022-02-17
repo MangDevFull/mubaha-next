@@ -1,30 +1,52 @@
 import Link from 'next/link'
 import Head from "next/head";
+import Image from 'next/image'
 import API from '../../services/api.js'
-import { useRef,useState,useEffect } from "react";
-import {useRouter} from 'next/router';
-import {Alert} from 'react-bootstrap'
+import { useRef, useState, useEffect } from "react";
+import { useRouter } from 'next/router';
+import { Alert } from 'react-bootstrap'
 import { signIn } from "next-auth/react";
-import {useSession} from 'next-auth/react'
+import { Container, Row, Form, Label, Input, Col } from 'reactstrap';
+import libphone from "google-libphonenumber";
 
+import logo from '../../assets/images/logo-white.svg'
+const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
+
+const phoneUtil = PhoneNumberUtil.getInstance();
 export default function loginPage() {
 
-  const { data: session, status } = useSession()
 
-  console.log(session)
-  
-
-  const [isInvalid,setInvalid] = useState(false)
-  const [message,setMessage] = useState('')
+  const [isNotValidPhone, setisNotValidPhone] = useState(true);
+  const [isInvalid, setInvalid] = useState(false)
+  const [message, setMessage] = useState('')
   const inputPhone = useRef();
   const inputPassword = useRef();
   const router = useRouter();
-  useEffect(() => {
-    inputPhone.current.focus()
-   console.log(inputPhone.current.value)
-  })
-   const getValueForm = async (e) => {
-     e.preventDefault()
+  // useEffect(() => {
+  //   inputPhone.current.focus()
+  // })
+
+  const checkPhone = (phone) => {
+    var reg = /^\d+$/;
+    if (!reg.test(phone)) {
+      setisNotValidPhone(true);
+    } else {
+      if (phone.length < 2 || phone == null) {
+        setisNotValidPhone(true);
+      } else {
+        const number = phoneUtil.parse(phone, "VN");
+        if (!phoneUtil.isValidNumber(number)) {
+          setisNotValidPhone(true);
+        } else {
+          const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164);
+          setisNotValidPhone(false);
+        }
+      }
+    }
+  };
+
+  const getValueForm = async (e) => {
+    e.preventDefault()
     const res = await signIn("mubaha-login", {
       phone: inputPhone.current.value,
       password: inputPassword.current.value,
@@ -33,18 +55,18 @@ export default function loginPage() {
 
     const data = JSON.parse(res.error)
     console.log(data);
-    if(data.status === 400){
-      
-      if(data.errors!=null){
+    if (data.status === 400) {
+
+      if (data.errors != null) {
         setMessage(data.message);
         setInvalid(true)
-        router.push('/auth/create-password')
-      }else{
+        // router.push('/auth/create-password')
+      } else {
         setMessage(data.message);
         setInvalid(true)
       }
     }
-   
+
   }
 
 
@@ -53,89 +75,83 @@ export default function loginPage() {
       <Head>
         <title>Đăng nhập với mật khẩu</title>
       </Head>
-      {/* breadcrumb start */}
-      <div className="breadcrumb-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="page-title">
-                <h2>Đăng nhập tài khoản</h2>
-              </div>
+     
+      <div className="login-page">
+
+        <Row className="background_login">
+          <Col lg="7">
+
+            <div className=" authentication-right">
+       
+                <Image width='300' height='100' src={logo} alt="Mubaha" layout="responsive" />
             </div>
-            <div className="col-sm-6">
-              <nav aria-label="breadcrumb" className="theme-breadcrumb">
-                <ol className="breadcrumb">
-                  <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                  <li className="breadcrumb-item active">Đăng nhập</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* breadcrumb End */}
-      {/*section start*/}
-      <section className="login-page section-b-space">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6">
-              <h3>Đăng nhập</h3>
-              <div className="theme-card">
-                <h6 className="title-font">Đăng nhập với mật khẩu</h6>
-                <form className="theme-form" onSubmit={getValueForm}>
-                  <div className="form-group">
-                  {isInvalid &&
-                      <Alert style={{textAlign:'center',height:'50px'}} variant={'danger'}>
-                      {message}
-                      </Alert>
-                    }
-                    <div>
-                      <input type="tel"
-                       name="phone" className="form-control phone-number" 
-                       ref = {inputPhone}
-                        placeholder="Số điện thoại" required />
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <div>
-                      <input type="password" 
-                      name="password" className="form-control phone-number" 
-                      ref = {inputPassword}
-                       placeholder="Nhập mật khẩu" required />
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <button type="submit" className="btn btn-solid">Đăng nhập</button>
+          </Col>
+          <Col lg="4" className="right-login padding_login" >
+            <div className="theme-card login_form" >
+              <h5>Đăng Nhập</h5>
+              <Form className="theme-form">
+                <div className="form-group">
+                  <Input type="text" className="form-control" placeholder="Nhập số điện thoại của bạn" required="" />
+                </div>
+                <div className="form-group">
+
+                  <Input type="password" className="form-control"
+                    placeholder="Nhập mật khẩu của bạn" required="" />
+                </div>
+                <button href="#" className="btn-login">Đăng nhập</button>
+                <div className="d-flex" style={{ paddingTop: '10px' }}>
+                  <div style={{ paddingRight: '50%' }}>
                     <Link href="/auth/login-otp">
-                      <a className="btn btn-solid">Đăng nhập với SMS</a>
+                      <a className="text-link">Quên mật khẩu</a>
                     </Link>
                   </div>
-                </form>
-                <div className="clearfix mb-4" />
-                <p className="mb-2">Hoặc tiếp tục với</p>
-                <ul className="list-group list-group-horizontal auth-icon-list">
-                  <li className="list-group-item"><a href="/a/fb"><img src="/assets/svg/icons/facebook.svg" /></a></li>
-                  <li className="list-group-item"><a href="/a/gg"><img src="/assets/svg/icons/google.svg" /></a></li>
-                  <li className="list-group-item"><a href="/a/zalo"><img src="/assets/svg/icons/zalo.svg" /></a></li>
-                </ul>
-              </div>
-            </div>
-            <div className="col-lg-6 right-login">
-              <h3>Khách hàng mới</h3>
-              <div className="theme-card authentication-right">
-                <h6 className="title-font">Tạo một tài khoản mới</h6>
-                <p>Đăng ký một tài khoản miễn phí tại cửa hàng của chúng tôi. Thủ tục đăng kí nhanh chóng và đơn
-                  giản. Nó cho phép bạn
-                  có thể đặt hàng từ cửa hàng của chúng tôi. Để bắt đầu mua sắm bấm đăng ký.</p>
-                <Link href="/auth/register">
-                  <a style={{ marginTop: '80px' }} className="btn btn-solid">Tạo một tài khoản</a>
+                  <div>
+                    <Link href="/auth/login-otp">
+                      <a className="text-link">Đăng nhập SMS</a>
+                    </Link>
+                  </div>
+                </div>
+              </Form>
+              <div className="login-social">
+
+                <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
+                <Row>
+                  <Col lg='4'>
+                    <div className='socail'>
+                      <img src='/assets/icon/facebook.svg' width='40' height='40' alt="Mubaha" />
+                    
+                    </div>
+                  </Col>
+                  <Col lg='4'>
+                    <div className='socail'>
+                      <img style={{marginLeft: '10px' }} src='/assets/icon/google.svg' width='40' height='40' alt="Mubaha" />
+                  
+                    </div>
+                  </Col>
+                  <Col lg='4'>
+                    <div className='socail'>
+                      <img src='/assets/icon/zalo.svg' width='40' height='40' alt="Mubaha" />
+               
+                    </div>
+                  </Col>
+                </Row>
+                <Row className='register'>
+                  <div>
+                    <p className='text-signup'><span>Bạn chưa có tài khoản? </span>
+                    <Link href="/auth/register">
+                  <a >Đăng ký</a>
 
                 </Link>
+                     </p>
+                  </div>
+                </Row>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </Col>
+          <Col lg="1"></Col>
+        </Row>
+
+      </div>
       {/*Section ends*/}
     </>
   )

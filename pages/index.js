@@ -23,6 +23,7 @@ const Data = [
 ]
 
 export default function Home({
+  
 
   dealsOfTheDay,
   dontMissTheseProducts,
@@ -37,7 +38,6 @@ export default function Home({
   const { data: session, status } = useSession()
 
   console.log(session)
-
   return (
     <>
       <Head>

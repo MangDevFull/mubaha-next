@@ -100,7 +100,7 @@ export default function registerPage (){
                       </div>
                       <div className="col-md-6">
                       { isRegisted &&
-                      <Alert style={{textAlign:'center',height:'50px'}} variant={'danger'}>
+                      <Alert style={{textAlign:'center',height:'39px'}} variant={'danger'}>
                       {message}
                       </Alert>
                      }

@@ -108,7 +108,7 @@ export default function loginWithOtp() {
 
                 <form className="theme-form" onSubmit={getOtp}>
                   {isNotRegistered && (
-                    <Alert style={{ textAlign: "center", height: "50px" }} variant={"danger"}>
+                    <Alert style={{ textAlign: "center", height: "39px" }} variant={"danger"}>
                       {message}
                     </Alert>
                   )}
