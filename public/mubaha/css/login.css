@@ -1,9 +1,11 @@
 .background_login{
-  background-color: #ff4c3b;
-  height: 550px;
+  background-color: #f89922;
+  height: auto;
 }
 .padding_login{
-  padding: 30px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+
 }
 .login_form{
   background-color:white;
@@ -16,12 +18,12 @@
     color: #ffffff ;
     letter-spacing: 0.05em;
     border: 2px solid ;
-    background-color: #ff4c3b;
+    background-color: #f89922;
     background-size: 540px;
     height: 50px
 }
 .text-link{
-  font-size: 10px
+  font-size: 13px
 }
 .line{
   height: 1px;
@@ -37,7 +39,7 @@
     text-align: center;
 }
 .login-social{
-  margin-top:15px
+  margin-top:20px
 }
 .socail{
  text-align: center
@@ -49,5 +51,18 @@
   margin-top: 30px
 }
 .text-signup{
-  margin-left: 60px
+  margin-left: 100px
 }
+.logo-login{
+  position: absolute;
+  margin-top: 100px;
+  margin-left: 230px
+}
+.text-pol{
+  margin-left: 70px;
+}
+.text-p{
+  color: red
+}
+  
+

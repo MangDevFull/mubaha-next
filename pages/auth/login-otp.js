@@ -6,7 +6,7 @@ import libphone from "google-libphonenumber";
 import API from "../../services/api.js";
 import { Alert } from "react-bootstrap";
 import otpEnums from "../../utils/otpEnums.js";
-
+import {  Row, Form, Input, Col } from 'reactstrap';
 
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
@@ -28,7 +28,8 @@ export default function loginWithOtp() {
     inputPhone.current.focus();
   })
 
-  const checkPhone = (phone) => {
+  const checkPhone = (e) => {
+    phone = e.target.value;
     var reg = /^\d+$/;
     if (!reg.test(phone)) {
       setisNotValidPhone(true);
@@ -70,116 +71,84 @@ export default function loginWithOtp() {
         <title>Đăng nhập với SMS</title>
       </Head>
       {/* breadcrumb start */}
-      <div className="breadcrumb-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="page-title">
-                <h2>Đăng nhập tài khoản</h2>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <nav aria-label="breadcrumb" className="theme-breadcrumb">
-                <ol className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <a href="/">Trang chủ</a>
-                  </li>
-                  <li className="breadcrumb-item active">Đăng nhập</li>
-                </ol>
-              </nav>
-            </div>
+      <div className="login-page">
+
+<Row className="background_login">
+  <Col lg="7">
+
+    <div className=" authentication-right">
+
+        <img className="logo-login" width='500' height='400' src="/assets/icon/logo-login.png" alt="Mubaha" />
+      
+    </div>
+  </Col>
+  <Col lg="4" className="right-login mt-5 mb-5" >
+    <div className="theme-card login_form" >
+      <h5>Đăng Nhập</h5>
+      <Form className="theme-form" onSubmit={getOtp}>
+      {isNotRegistered &&
+              <Alert style={{textAlign:'center',height:'40px'}} variant={'danger'}>
+              {message}
+              </Alert>
+            }
+        <div className="form-group">
+          <input ref={inputPhone}
+          onChange={checkPhone}
+           type="text" className="form-control" placeholder="Nhập số điện thoại của bạn" required="" />
+        </div>
+        <button type='submit' disabled={isNotValidPhone} style={{width:'100%',backgroundColor:'#f89922'}} className="btn btn-solid">Đăng nhập</button>
+        <div className="d-flex" style={{ paddingTop: '10px' }}>
+          <div style={{ paddingLeft: '60%' }}>
+  
+            <Link href="/auth/login">
+              <a className="text-link">Đăng nhập mật khẩu</a>
+            </Link>
           </div>
         </div>
+      </Form>
+      <div className="login-social">
+
+        <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
+        <Row>
+          <Col>
+            <div className='socail'>
+              <img src='/assets/icon/facebook.svg' width='40' height='40' alt="Mubaha" />
+            
+            </div>
+          </Col>
+          <Col>
+            <div className='socail'>
+              <img style={{marginLeft: '10px' }} src='/assets/icon/google.svg' width='40' height='40' alt="Mubaha" />
+          
+            </div>
+          </Col>
+          <Col>
+            <div className='socail'>
+              <img src='/assets/icon/zalo.svg' width='40' height='40' alt="Mubaha" />
+       
+            </div>
+          </Col>
+        </Row>
+        <Row className='register'>
+          <div>
+            <p className='text-signup'><span>Bạn chưa có tài khoản? </span>
+            <Link href="/auth/register">
+          <a >Đăng ký</a>
+
+        </Link>
+             </p>
+          </div>
+        </Row>
       </div>
-      {/* breadcrumb End */}
-      {/*section start*/}
+    </div>
+  </Col>
+  <Col lg="1"></Col>
+</Row>
+
+</div>
 
       <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} type={otpEnums.LOGIN} />
 
-      <section className="login-page section-b-space">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6">
-              <h3>Đăng nhập</h3>
-
-              <div className="theme-card">
-                <h6 className="title-font">Đăng nhập với SMS</h6>
-                <br />
-
-                <form className="theme-form" onSubmit={getOtp}>
-                  {isNotRegistered && (
-                    <Alert style={{ textAlign: "center", height: "39px" }} variant={"danger"}>
-                      {message}
-                    </Alert>
-                  )}
-                  <div className="form-group">
-                    <div>
-                      <input
-                      ref={inputPhone}
-                        type="tel"
-                        name="username"
-                        className="form-control phone-number"
-                        onChange={(e) => {
-                          checkPhone(e.target.value);
-                        }}
-                        id="phone"
-                        maxLength={20}
-                        placeholder="Số điện thoại"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <button
-                      disabled={isNotValidPhone}
-                      type="submit"
-                      className="btn btn-solid"
-                    >
-                      Tiếp tục
-                    </button>
-                    <Link href="/auth/login">
-                      <a className="btn btn-solid">Đăng nhập với mật khẩu</a>
-                    </Link>
-                  </div>
-                </form>
-                <div className="clearfix mb-4" />
-                <p className="mb-2">Hoặc tiếp tục với</p>
-                <ul className="list-group list-group-horizontal auth-icon-list">
-                  <li className="list-group-item">
-                    <a href="/a/fb">
-                      <img src="/assets/svg/icons/facebook.svg" />
-                    </a>
-                  </li>
-                  <li className="list-group-item">
-                    <a href="/a/gg">
-                      <img src="/assets/svg/icons/google.svg" />
-                    </a>
-                  </li>
-                  <li className="list-group-item">
-                    <a href="/a/zalo">
-                      <img src="/assets/svg/icons/zalo.svg" />
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="col-lg-6 right-login">
-              <h3>Khách hàng mới</h3>
-              <div className="theme-card authentication-right">
-                <h6 className="title-font">Tạo một tài khoản mới</h6>
-                <p>
-                  Đăng ký một tài khoản miễn phí tại cửa hàng của chúng tôi. Thủ tục đăng kí nhanh
-                  chóng và đơn giản. Nó cho phép bạn có thể đặt hàng từ cửa hàng của chúng tôi. Để
-                  bắt đầu mua sắm bấm đăng ký.
-                </p>
-                <Link href="/auth/register">
-                  <a className="btn btn-solid">Tạo một tài khoản</a>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       {/*Section ends*/}
     </>
   );
