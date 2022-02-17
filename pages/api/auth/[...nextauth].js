@@ -26,7 +26,10 @@ export default NextAuth({
           headers: { "Content-Type": "application/json" },
         });
         const response = await res.json();
-
+        if (response.status ===400) {
+          const error = new Error(JSON.stringify(response));
+          throw error
+        }
         // If no error and we have user data, return it
         if (res.ok && response.data) {
           return response.data;
@@ -61,7 +64,6 @@ export default NextAuth({
     
         if (response.status ===400) {
           const error = new Error(JSON.stringify(response));
-          console.error(error);
           throw error
         }
      
@@ -96,7 +98,10 @@ export default NextAuth({
           headers: { "Content-Type": "application/json" },
         });
         const response = await res.json();
-        console.log(response);
+        if (response.status ===400) {
+          const error = new Error(JSON.stringify(response));
+          throw error
+        }
         // If no error and we have user data, return it
         if (res.ok && response.data) {
           return response.data;
@@ -126,6 +131,7 @@ export default NextAuth({
     async session({session, token}) {
       session.user = token.user;
       session.accessToken = token.token;
+      session.token = token.token;
       session.error = token.error;
       return session;
     }

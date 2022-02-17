@@ -23,15 +23,27 @@ export default function loginPage() {
     inputPhone.current.focus()
    console.log(inputPhone.current.value)
   })
-   const getValueForm = async () => {
-    const data = await signIn("mubaha-login", {
+   const getValueForm = async (e) => {
+     e.preventDefault()
+    const res = await signIn("mubaha-login", {
       phone: inputPhone.current.value,
       password: inputPassword.current.value,
-      callbackUrl: `${window.location.origin}/`,
       redirect: false,
     });
 
-    console.log(data.error)
+    const data = JSON.parse(res.error)
+    console.log(data);
+    if(data.status === 400){
+      
+      if(data.errors!=null){
+        setMessage(data.message);
+        setInvalid(true)
+        router.push('/auth/create-password')
+      }else{
+        setMessage(data.message);
+        setInvalid(true)
+      }
+    }
    
   }
 
@@ -70,13 +82,13 @@ export default function loginPage() {
               <h3>Đăng nhập</h3>
               <div className="theme-card">
                 <h6 className="title-font">Đăng nhập với mật khẩu</h6>
-                <div className="theme-form">
+                <form className="theme-form" onSubmit={getValueForm}>
                   <div className="form-group">
                   {isInvalid &&
-           <Alert style={{textAlign:'center',height:'50px'}} variant={'danger'}>
-          {message}
-          </Alert>
-        }
+                      <Alert style={{textAlign:'center',height:'50px'}} variant={'danger'}>
+                      {message}
+                      </Alert>
+                    }
                     <div>
                       <input type="tel"
                        name="phone" className="form-control phone-number" 
@@ -93,12 +105,12 @@ export default function loginPage() {
                     </div>
                   </div>
                   <div className="d-flex justify-content-between">
-                    <button onClick={getValueForm} type="submit" className="btn btn-solid">Đăng nhập</button>
+                    <button type="submit" className="btn btn-solid">Đăng nhập</button>
                     <Link href="/auth/login-otp">
                       <a className="btn btn-solid">Đăng nhập với SMS</a>
                     </Link>
                   </div>
-                </div>
+                </form>
                 <div className="clearfix mb-4" />
                 <p className="mb-2">Hoặc tiếp tục với</p>
                 <ul className="list-group list-group-horizontal auth-icon-list">

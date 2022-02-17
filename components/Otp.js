@@ -20,63 +20,30 @@ export default function Otp({ show, handleClose, phone, type }) {
   }
 
   const handleOtp = async () => {
-    // const params = {
-    //   phone,
-    //   code: otp
-    // }
     if (type == otpEnums.REGISTRATION) {
-      const data = await signIn("mubaha-signup", {
+      const res = await signIn("mubaha-signup", {
         phone: phone,
         code: otp,
-        callbackUrl: `${window.location.origin}/auth/create-password`,
-      });
-      // const response = await API.instance.post('/auth/verify-register-otp',  params)
-      // const data = response.data
-      // if (data.status == 200) {
-      //   localStorage.setItem("userId", data.data.userId);
-      //   localStorage.setItem("token", data.data.token);
-      //   router.push('/auth/create-password')
-      // } else {
-      //   console.log(data)
-      //   setInvalidOtp(true)
-      //   setOtp('')
-      // }
-    } else if (type == otpEnums.LOGIN) {
-      // const response = await API.instance.post('/auth/verify-login-otp',params)
-      const data = await signIn("mubaha", {
-        phone: phone,
-        code: otp,
-        // callbackUrl: `${window.location.origin}/`,
         redirect: false,
       });
-
-      console.log(data)
-
-      
-
-      // if(ok) {
-      //   // router.push('/');
-      // } else if(error) {
-      //   setInvalidOtp(true);
-      //   setOtp('')
-      // }
-      // console.log('check auth', error, status)
-      // if(resp.error) {
-      //   setInvalidOtp(true);
-      //   setOtp('')
-      // } else if(resp.ok) {
-
-      //   // router.push('/')
-      // }
-      // const data = response.data
-      // if(data.status==200) {
-      //   localStorage.setItem("userId", data.data.userId);
-      //   localStorage.setItem("token", data.data.token);
-      //   router.push('/')
-      // }else{
-      //   setInvalidOtp(true)
-      //   setOtp('')
-      // }
+      if(res.error == null) {
+        router.push('/auth/create-password')
+       }else{
+          setInvalidOtp(true)
+          setOtp('')
+       }
+    } else if (type == otpEnums.LOGIN) {
+      const res = await signIn("mubaha", {
+        phone: phone,
+        code: otp,
+        redirect: false,
+      });
+     if(res.error == null) {
+      router.push('/')
+     }else{
+        setInvalidOtp(true)
+        setOtp('')
+     }
     }
   }
   return (
