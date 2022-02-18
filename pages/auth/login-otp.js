@@ -13,16 +13,16 @@ const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
-export default function loginWithOtp() {
-  const [isNotValidPhone, setisNotValidPhone] = useState(true);
+export default function LoginWithOtp() {
+  const [isNotValidPhone, setIsNotValidPhone] = useState(true);
   const [phone, setPhone] = useState("");
-  const [isVerifyPhone, setisVerifyPhone] = useState(false);
+  const [isVerifyPhone, setIsVerifyPhone] = useState(false);
   const [message, setMessage] = useState("");
   const [isNotRegistered, setIsNotRegistered] = useState(false);
   const inputPhone = useRef();
   const handleClose = useCallback(() => {
-    setisVerifyPhone(false);
-  }, [isVerifyPhone, phone]);
+    setIsVerifyPhone(false)
+  }, [])
 
   useEffect(() => {
     inputPhone.current.focus();
@@ -32,39 +32,39 @@ export default function loginWithOtp() {
     phone = e.target.value;
     var reg = /^\d+$/;
     if (!reg.test(phone)) {
-      setisNotValidPhone(true);
+      setIsNotValidPhone(true)
     } else {
       if (phone.length < 2 || phone == null) {
-        setisNotValidPhone(true);
+        setIsNotValidPhone(true)
       } else {
-        const number = phoneUtil.parse(phone, "VN");
+        const number = phoneUtil.parse(phone, "VN")
         if (!phoneUtil.isValidNumber(number)) {
-          setisNotValidPhone(true);
+          setIsNotValidPhone(true)
         } else {
-          const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164);
-          setPhone(phoneNumber);
-          setisNotValidPhone(false);
+          const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164)
+          setPhone(phoneNumber)
+          setIsNotValidPhone(false)
         }
       }
     }
-  };
+  }
 
   const getOtp = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const params = {
       phone: phone,
     };
     const response = await API.instance.post("/auth/login-otp", params);
     const data = response.data;
     if (data.status == 200) {
-      setisVerifyPhone(true);
-      setMessage("");
-      setIsNotRegistered(false);
+      setIsVerifyPhone(true)
+      setMessage("")
+      setIsNotRegistered(false)
     } else {
-      setMessage(data.message);
-      setIsNotRegistered(true);
+      setMessage(data.message)
+      setIsNotRegistered(true)
     }
-  };
+  }
   return (
     <>
       <Head>
@@ -131,5 +131,5 @@ export default function loginWithOtp() {
 
       {/*Section ends*/}
     </>
-  );
+  )
 }

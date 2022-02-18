@@ -17,7 +17,7 @@ export default function TopBarDark({ topClass, fluid }) {
               <ul>
                 <li>Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam</li>
                 <li>
-                  <i className="fa fa-phone" aria-hidden="true"></i>Hotline: 1900 9999
+                  Hotline: 1900 9999
                 </li>
               </ul>
             </div>

@@ -1,3 +1,4 @@
+import Link from "next/link"
 
 const MasterProductDetail = ({
   product,
@@ -9,36 +10,34 @@ const MasterProductDetail = ({
   des,
   // variantChangeByColor,
 }) => {
-  let RatingStars = [];
-  let rating = 5;
+  let RatingStars = []
+  let rating = 5
   for (var i = 0; i < rating; i++) {
-    RatingStars.push(<i className="fa fa-star" key={i}></i>);
+    RatingStars.push(<i className="fa fa-star" key={i}></i>)
   }
 
   return (
     <div className={`product-detail ${productDetail} ${detailClass}`}>
       <div>
-        {title !== "Product style 4" ? (
-          <div className="rating">{RatingStars}</div>
-        ) : (
-          ""
-        )}
-        <h6>{product.name}</h6>
+        <div className="rating">{RatingStars}</div>
+        <Link href={`/${product.slug}`}>
+          <a>
+            <h6>{product.name}</h6>
+          </a>
+        </Link>
+
         {des ? <p>{product.description}</p> : ""}
         <h4>
+          {product.price}
           {currency.symbol}
-          {(
-            (product.price - (product.price * product.discount) / 100) *
-            currency.value
-          ).toFixed(2)}
-          {product.discount ??
+          {product.discount > 0 ?? (
             <del>
-              <span className="money">
+              <span className="money ml-1">
+                {(product.price * currency.value)}
                 {currency.symbol}
-                {(product.price * currency.value).toFixed(2)}
               </span>
             </del>
-          }
+          )}
         </h4>
 
         {/* {product.variants.map((vari) => {
@@ -78,7 +77,7 @@ const MasterProductDetail = ({
         )} */}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MasterProductDetail;
+export default MasterProductDetail

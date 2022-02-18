@@ -9,8 +9,6 @@ import {useSession} from 'next-auth/react'
 
 export default function CreatePassWord() {
   const { data: session, status } = useSession()
-
-  console.log(session)
   
   const [show, setShow] = useState(false);
   const [showPass,setShowPass] = useState('block');
@@ -23,10 +21,10 @@ export default function CreatePassWord() {
     setShowPass('none')
     setInputValues('text')
   }
-  const handlHidePassword = () =>{
-    setHidePass('none');
-    setShowPass('block')
-    setInputValues('password')
+  const handlHidePassword = () => {
+    setHidePass("none")
+    setShowPass("block")
+    setInputValues("password")
   }
   const handleCreatePass = async () => {
     const body = {
@@ -47,8 +45,8 @@ export default function CreatePassWord() {
     const data = await response.json()
 
     if (data.status == 200) {
-      setShow(true);
-      router.push('/')
+      setShow(true)
+      router.push("/")
     }
 
 
@@ -67,8 +65,14 @@ export default function CreatePassWord() {
             <div className="col-sm-6">
               <nav aria-label="breadcrumb" className="theme-breadcrumb">
                 <ol className="breadcrumb">
-                  <li className="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                  <li className="breadcrumb-item active" aria-current="page">Tạo mật khẩu</li>
+                  <li className="breadcrumb-item">
+                    <Link href="/">
+                      <a>Trang chủ</a>
+                    </Link>
+                  </li>
+                  <li className="breadcrumb-item active" aria-current="page">
+                    Tạo mật khẩu
+                  </li>
                 </ol>
               </nav>
             </div>
@@ -82,14 +86,15 @@ export default function CreatePassWord() {
           <div className="row">
             <div className="col-lg-6 m-auto">
               <h2>Tạo mật khẩu cho tài khoản mới</h2>
-              <p style={{ textAlign: 'center' }}>Tôi không muốn tạo mật khẩu, tôi chỉ muốn đăng nhập bằng SMS.
-                <span style={{ color: 'red' }}>
+              <p style={{textAlign: "center"}}>
+                Tôi không muốn tạo mật khẩu, tôi chỉ muốn đăng nhập bằng SMS.
+                <span style={{color: "red"}}>
                   <Link href="/">
-                    <a>         Quay lại trang chủ</a>
+                    <a> Quay lại trang chủ</a>
                   </Link>
                 </span>
               </p>
-              <div className="theme-form" style={{ marginTop: "10px" }}>
+              <div className="theme-form" style={{marginTop: "10px"}}>
                 <div className="form-row row">
                   <div className="col-md-12 d-flex">
   
@@ -104,14 +109,16 @@ export default function CreatePassWord() {
     
           
                   </div>
-                  <a className="btn btn-solid w-auto" onClick={handleCreatePass}>Tạo</a>
+                  <a className="btn btn-solid w-auto" onClick={handleCreatePass}>
+                    Tạo
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
+      <svg xmlns="http://www.w3.org/2000/svg" style={{display: "none"}}>
         <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
         </symbol>
@@ -123,21 +130,29 @@ export default function CreatePassWord() {
         </symbol>
       </svg>
 
-
       <Modal show={show}>
         <Modal.Header closeButton>
           <Modal.Title>Thông báo</Modal.Title>
         </Modal.Header>
 
         <div className="alert alert-success d-flex align-items-center" role="alert">
-          <svg className="bi flex-shrink-0 me-2" width={24} height={24} role="img" aria-label="Success:"><use xlinkHref="#check-circle-fill" /></svg>
-          <div>
-            Tạo mật khẩu thành công
-          </div>
+          <svg
+            className="bi flex-shrink-0 me-2"
+            width={24}
+            height={24}
+            role="img"
+            aria-label="Success:"
+          >
+            <use xlinkHref="#check-circle-fill" />
+          </svg>
+          <div>Tạo mật khẩu thành công</div>
         </div>
         <Modal.Footer>
           <div>
-            <p style={{ marginRight: "10px" }}> Xin chờ một chút bạn đang được chuyển hướng đến sang trang chủ</p>
+            <p style={{marginRight: "10px"}}>
+              {" "}
+              Xin chờ một chút bạn đang được chuyển hướng đến sang trang chủ
+            </p>
           </div>
         </Modal.Footer>
       </Modal>

@@ -1,82 +1,121 @@
 import Link from "next/link";
+import { Row, Col, Media, Modal, ModalBody } from "reactstrap";
 
+import MasterProductDetail from "./common/product-box/master-product-detail";
+
+const currency = {
+  ccurrency: "USD",
+  name: "doller",
+  symbol: "$",
+  value: 1,
+};
 export default function ProductCard({ product }) {
   return (
     <>
-      <div className="col-12">
-        <div className="product-box product-wrap">
-          <div className="img-wrapper">
-            <div className="front">
-              <Link href={`/${product.slug}`}>
-                <a>
-                  <img
-                    src={product.media.featuredImage}
-                    className="img-fluid blur-up lazyload bg-img"
-                    alt=""
-                  />
-                </a>
-              </Link>
-            </div>
-            <div className="back">
-              <Link href={`/${product.slug}`}>
-                <a>
-                  <img
-                    src={product.media.featuredImage}
-                    className="img-fluid blur-up lazyload bg-img"
-                    alt=""
-                  />
-                </a>
-              </Link>
-            </div>
-            <div className="cart-info cart-wrap bg-color-cls sm-box">
-              <button title="Add to cart">
-                <i className="ti-shopping-cart" />
-              </button>
-              <a title="Add to Wishlist">
-                <i className="ti-heart" aria-hidden="true" />
-              </a>
-              <a
-                data-bs-toggle="modal"
-                data-bs-target="#quick-view"
-                title="Quick View"
-              >
-                <i className="ti-search" aria-hidden="true" />
-              </a>
-              <a title="Compare">
-                <i className="ti-reload" aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-          <div className="product-detail">
-            <div className="rating">
-              <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
-              <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
-              <i className="fa fa-star" />
-            </div>
+      <div className="product-box product-wrap">
+        <div className="img-wrapper">
+          <div className="front">
             <Link href={`/${product.slug}`}>
-              <a>
-                <h6>{product.name}</h6>
-              </a>
+              <Media
+                src={product.media.featuredImage}
+                style={{ maxHeight: "204px" }}
+                className="img-fluid bg-img blur-up"
+                alt=""
+              />
             </Link>
-            <h4>${product.price}</h4>
-            <ul className="color-variant quantity-variant box-l">
-              <li className="bg-light">2kg</li>
-              <li className="bg-light">5kg</li>
-            </ul>
-            <div className="progress-section">
-              <div className="progress">
-                <div
-                  className="progress-bar"
-                  role="progressbar"
-                  style={{ width: "75%" }}
-                  aria-valuenow={75}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                />
-              </div>
-              <span>75% Claimed</span>
-            </div>
           </div>
+          <div className="cart-box">
+            <button title="Add to cart">
+              <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+            </button>
+            <a href={null} title="Add to Wishlist">
+              <i className="fa fa-heart" aria-hidden="true"></i>
+            </a>
+            <a href={null} title="Quick View">
+              <i className="fa fa-search" aria-hidden="true"></i>
+            </a>
+            <a href={null} title="Compare">
+              <i className="fa fa-refresh" aria-hidden="true"></i>
+            </a>
+            {/* <Modal
+            isOpen={modalCompare}
+            toggle={toggleCompare}
+            size="lg"
+            centered
+          >
+            <ModalBody>
+              <Row className="compare-modal">
+                <Col lg="12">
+                  <div className="media">
+                    <Media
+                      src={`${
+                        product.variants && image
+                          ? image
+                          : product.images[0].src
+                      }`}
+                      alt=""
+                      className="img-fluid"
+                    />
+                    <div className="media-body align-self-center text-center">
+                      <h5>
+                        <i className="fa fa-check"></i>Item{" "}
+                        <span>{product.title}</span>
+                        <span>successfully added to your Compare list</span>
+                      </h5>
+                      <div className="buttons d-flex justify-content-center">
+                        <Link href="/page/compare">
+                          <a
+                            href={null}
+                            className="btn-sm btn-solid"
+                            onClick={addCompare}
+                          >
+                            View Compare list
+                          </a>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </ModalBody>
+          </Modal> */}
+          </div>
+          <div className="back">
+            <Link href={`/${product.slug}`}>
+              <Media
+                src={product.media.featuredImage}
+                style={{ maxHeight: "204px" }}
+                className="img-fluid bg-img blur-up"
+                alt=""
+              />
+            </Link>
+          </div>
+          <div className="cart-info cart-wrap bg-color-cls sm-box">
+            <button title="Add to cart">
+              <i className="ti-shopping-cart" />
+            </button>
+            <a title="Add to Wishlist">
+              <i className="ti-heart" aria-hidden="true" />
+            </a>
+            <a
+              data-bs-toggle="modal"
+              data-bs-target="#quick-view"
+              title="Quick View"
+            >
+              <i className="ti-search" aria-hidden="true" />
+            </a>
+            <a title="Compare">
+              <i className="ti-reload" aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+        <div className="product-detail">
+          <Link href={`/${product.slug}`}>
+            <a>
+              <h6>{product.name}</h6>
+            </a>
+          </Link>
+          <h4>${product.price}</h4>
         </div>
       </div>
     </>

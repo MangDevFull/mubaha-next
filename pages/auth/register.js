@@ -12,12 +12,12 @@ import OtpInput from 'react-otp-input';
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 import otpEnums from '../../utils/otpEnums.js';
 
-const phoneUtil = PhoneNumberUtil.getInstance();
+const phoneUtil = PhoneNumberUtil.getInstance()
 
-export default function registerPage() {
-  const [isNotValidPhone, setisNotValidPhone] = useState(true);
+export default function RegisterPage() {
+  const [isNotValidPhone, setIsNotValidPhone] = useState(true);
   const [phone, setPhone] = useState('')
-  const [isVerifyPhone, setisVerifyPhone] = useState(false);
+  const [isVerifyPhone, setIsVerifyPhone] = useState(false);
   const [isRegisted, setIsRegisted] = useState(false)
   const [message, setMessage] = useState('')
   const inputPhone = useRef();
@@ -25,21 +25,21 @@ export default function registerPage() {
     inputPhone.current.focus()
   },[])
   const handleClose = useCallback(() => {
-    setisVerifyPhone(false);
-  }, [isVerifyPhone, phone]);
+    setIsVerifyPhone(false)
+  }, [])
 
   const checkPhone = (e) => {
     phone = e.target.value
     if (phone.length < 2 || phone == null) {
-      setisNotValidPhone(true);
+      setIsNotValidPhone(true)
     } else {
-      const number = phoneUtil.parse(phone, 'VN');
+      const number = phoneUtil.parse(phone, "VN")
       if (!phoneUtil.isValidNumber(number)) {
-        setisNotValidPhone(true);
+        setIsNotValidPhone(true)
       } else {
-        const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164);
-        setPhone(phoneNumber);
-        setisNotValidPhone(false)
+        const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164)
+        setPhone(phoneNumber)
+        setIsNotValidPhone(false)
       }
     }
   }
@@ -52,10 +52,10 @@ export default function registerPage() {
     const response = await API.instance.post('/auth/register-otp', params)
     const data = response.data
     if (data.status == 200) {
-      setisVerifyPhone(true);
+      setIsVerifyPhone(true);
     } else {
       setMessage(data.message)
-      setIsRegisted(true);
+      setIsRegisted(true)
     }
   }
   return (
@@ -95,7 +95,7 @@ export default function registerPage() {
 
       <div className="login-social">
 
-        <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
+        <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
         <LoginSocail />
         <Row className='register'>
           <div className='text-pol mb-4 mx-auto'>

@@ -1,5 +1,5 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials"
+import NextAuth from "next-auth"
 
 export default NextAuth({
   providers: [
@@ -12,15 +12,15 @@ export default NextAuth({
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        phone: { label: "Phone", type: "text" },
-        code: { label: "OTP", type: "text" },
+        phone: {label: "Phone", type: "text"},
+        code: {label: "OTP", type: "text"},
       },
       async authorize(credentials, req) {
         const payload = {
           phone: credentials.phone,
           code: credentials.code,
         }
-        const res = await fetch(process.env.CREDENTIALS_AUTH_URL, {
+        const res = await fetch(`${process.env.API_URL}/auth/verify-login-otp`, {
           method: "POST",
           body: JSON.stringify(payload),
           headers: { "Content-Type": "application/json" },
@@ -55,7 +55,7 @@ export default NextAuth({
           phone: credentials.phone,
           password: credentials.password,
         }
-        const res = await fetch(process.env.CREDENTIALS_AUTH_PASSWORD_URL, {
+        const res = await fetch(`${process.env.API_URL}/auth/login`, {
           method: "POST",
           body: JSON.stringify(payload),
           headers: { "Content-Type": "application/json" },
@@ -92,7 +92,7 @@ export default NextAuth({
           phone: credentials.phone,
           code: credentials.code,
         }
-        const res = await fetch(process.env.CREDENTIALS_AUTH_SIGNUP_URL, {
+        const res = await fetch(`${process.env.API_URL}/auth/verify-register-otp`, {
           method: "POST",
           body: JSON.stringify(payload),
           headers: { "Content-Type": "application/json" },
@@ -107,7 +107,7 @@ export default NextAuth({
           return response.data;
         }
         // Return null if user data could not be retrieved
-        return null;
+        return null
       },
     }),
   ],
@@ -126,7 +126,7 @@ export default NextAuth({
         }
       }
 
-      return token;
+      return token
     },
     async session({session, token}) {
       session.user = token.user;
@@ -136,5 +136,5 @@ export default NextAuth({
     }
   },
   secret: process.env.JWT_SECRET,
-  debug: process.env.NODE_ENV === 'development',
-});
+  debug: process.env.NODE_ENV === "development",
+})

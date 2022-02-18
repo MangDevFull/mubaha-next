@@ -85,18 +85,18 @@ export default function VerifyOtp({phone,type}) {
             Bạn không nhận được mã?
             <br />
             <br></br>
-            <span style={{ color: 'blue' }}>          <Link href="#">
-              <a >          Gửi lại</a>
-
-            </Link></span> hoặc
-            <span style={{ color: 'blue' }} >
-
+            <span style={{color: "blue"}}>
+              {" "}
+              <Link href="#">
+                <a> Gửi lại</a>
+              </Link>
+            </span>{" "}
+            hoặc
+            <span style={{color: "blue"}}>
               <Link href="/auth/login">
-                <a >           thử bằng phương thức xác minh khác</a>
-
+                <a> thử bằng phương thức xác minh khác</a>
               </Link>
             </span>
-
           </p>
         </div>
       </div>

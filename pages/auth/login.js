@@ -13,10 +13,10 @@ import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
 const { PhoneNumberUtil } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
-export default function loginPage() {
+export default function LoginPage() {
 
 
-  const [isNotValidPhone, setisNotValidPhone] = useState(true);
+  const [isNotValidPhone, setIsNotValidPhone] = useState(true);
   const [isInvalid, setInvalid] = useState(false)
   const [message, setMessage] = useState('')
   const inputPhone = useRef();
@@ -47,16 +47,16 @@ export default function loginPage() {
     console.log(phone)
     var reg = /^\d+$/;
     if (!reg.test(phone)) {
-      setisNotValidPhone(true);
+      setIsNotValidPhone(true);
     } else {
       if (phone.length < 2 || phone == null) {
-        setisNotValidPhone(true);
+        setIsNotValidPhone(true);
       } else {
         const number = phoneUtil.parse(phone, "VN");
         if (!phoneUtil.isValidNumber(number)) {
-          setisNotValidPhone(true);
+          setIsNotValidPhone(true);
         } else {
-          setisNotValidPhone(false);
+          setIsNotValidPhone(false);
         }
       }
     }

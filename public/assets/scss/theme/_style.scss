@@ -3797,9 +3797,9 @@ header {
           color: $star-yellow;
         }
 
-        &:last-child {
-          color: $round-border;
-        }
+        // &:last-child {
+        //   color: $round-border;
+        // }
       }
     }
 
@@ -11906,13 +11906,13 @@ footer {
   i {
     padding-right: 5px;
 
-    &:nth-child(-n + 4) {
+    &:nth-child(-n + 5) {
       color: $star-yellow;
     }
 
-    &:last-child {
-      color: $round-border;
-    }
+    // &:last-child {
+    //   color: $round-border;
+    // }
   }
 
   .three-star {

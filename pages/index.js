@@ -5,7 +5,7 @@ import MasterBanner from "../components/MasterBanner"
 import MainServiceCollections from "../components/MainServiceCollections"
 import DealsOfTheDay from "../components/deals-of-the-day"
 
-import {useSession} from 'next-auth/react'
+import {useSession} from "next-auth/react"
 
 const Data = [
   {
@@ -23,8 +23,6 @@ const Data = [
 ]
 
 export default function Home({
-  
-
   dealsOfTheDay,
   dontMissTheseProducts,
   firstNewProducts,
@@ -66,8 +64,8 @@ export default function Home({
 }
 
 export async function getServerSideProps() {
-  const response = await API.instance.get("/")
-  const data = response.data.data
+  const response = await fetch(`${process.env.API_URL}`)
+  const {data} = await response.json();
 
   return {
     props: {
