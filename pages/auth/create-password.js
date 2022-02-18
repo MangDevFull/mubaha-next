@@ -1,21 +1,33 @@
 import Link from 'next/link'
 import { Modal } from 'react-bootstrap'
-import { useState, useRef } from 'react'
-import API from '../../services/api.js'
+import { useState, useRef,useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { AiFillEye,AiFillEyeInvisible } from "react-icons/ai";
 import {useSession} from 'next-auth/react'
-import Breadcrumb from '../components/Breadcrumb.js'
+import Breadcrumb from '../../components/Breadcrumb.js'
 
 export default function CreatePassWord() {
-  const { data: session, status } = useSession()
-  
   const [show, setShow] = useState(false);
   const [showPass,setShowPass] = useState('block');
   const [hidePass,setHidePass] = useState('none')
   const [inputValues, setInputValues] = useState('password')
   const inputPassword = useRef();
   const router = useRouter();
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/')
+    }
+  })
+  useEffect(() => {
+   if(session != undefined) {
+      const checkisCreatePass = session.user.authentication.isCreatedPassword 
+    if(checkisCreatePass) {
+      router.push('/')
+    }
+   }
+  })
+
   const handleShowPassword = () =>{
     setHidePass('block');
     setShowPass('none')

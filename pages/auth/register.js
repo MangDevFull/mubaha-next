@@ -100,7 +100,7 @@ export default function RegisterPage() {
         <LoginSocail />
         <div className='register'>
           <div className=' mb-4 mx-auto'>
-            <h6 style={{ textAlign: 'center', fontSize: '11px' }}>
+            <h6 style={{ textAlign: 'center', fontSize: '13px' }}>
               Bằng việc đăng kí, bạn đã đồng ý với Mubaha về <br></br>
               <span className='text-p'>Điều khoản dịch vụ</span>
               <span> & </span>

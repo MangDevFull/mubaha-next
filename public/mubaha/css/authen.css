@@ -11,7 +11,7 @@
   background-color:white;
   border: none;
   border-radius: 0.25rem;
-  box-shadow: 0 3px 10px 0 rgb(0 0 0 / 14%);
+  box-shadow: 3px 10px 0 #f89922;
 }
 .btn-login{
   width: 100%;
