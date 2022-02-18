@@ -9,6 +9,7 @@ import { Row, Form, Input, Col } from 'reactstrap';
 import libphone from "google-libphonenumber";
 import LoginSocail from '../../components/authen/LoginSocail.js'
 import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
+import Layout from "../../components/Layout";
 import API from "../../services/api.js";
 import Otp from "../../components/Otp.js";
 import otpEnums from "../../utils/otpEnums.js";
@@ -222,5 +223,13 @@ export default function LoginPage() {
       { isVerifyPhone && <Otp  phone={phone} type={otpEnums.CREATE_PASSWORD} />}
       {/*Section ends*/}
     </>
+  )
+}
+
+LoginPage.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }

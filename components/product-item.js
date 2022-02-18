@@ -27,7 +27,7 @@ export default function ProductItem({ product }) {
       <div className="img-wrapper">
         <div className="lable-block">
           {product.new === true ? <span className="lable3">new</span> : ""}
-          {product.sale === true ? <span className="lable4">on sale</span> : ""}
+          {product.discount > 0 ? <span className="lable4">Giảm giá</span> : ""}
         </div>
         <div className="front">
           <Link href={`/${product.slug}`}>

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import NumberFormat from "react-number-format";
 
 const MasterProductDetail = ({
   product,
@@ -28,16 +29,27 @@ const MasterProductDetail = ({
 
         {des ? <p>{product.description}</p> : ""}
         <h4>
-          {product.price}
-          {currency.symbol}
-          {product.discount > 0 ?? (
+          <NumberFormat
+            value={product.currentPrice}
+            thousandSeparator={true}
+            displayType="text"
+            suffix={currency.symbol}
+            decimalScale={0}
+          />
+          {product.discountPercent > 1 ? 
             <del>
               <span className="money ml-1">
-                {(product.price * currency.value)}
-                {currency.symbol}
+                <NumberFormat
+                  value={product.price}
+                  thousandSeparator={true}
+                  displayType="text"
+                  suffix={currency.symbol}
+                  decimalScale={0}
+                />
               </span>
             </del>
-          )}
+            : ""
+          }
         </h4>
 
         {/* {product.variants.map((vari) => {

@@ -15,7 +15,7 @@ export default function Copyright() {
           <Row>
             <Col xl={6} md={6} sm={12}>
               <div className="footer-end">
-                <p><i className="fa fa-copyright" aria-hidden="true"></i> 2022 TMP Technology. All rights reserved.</p>
+                <p><i className="fa fa-copyright" aria-hidden="true"></i> {(new Date().getFullYear())} TMP Technology. Tất cả các quyền được bảo lưu.</p>
               </div>
             </Col>
             <Col xl={6} md={6} sm={12}>

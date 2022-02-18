@@ -4,6 +4,7 @@ import API from "../services/api"
 import MasterBanner from "../components/MasterBanner"
 import MainServiceCollections from "../components/MainServiceCollections"
 import DealsOfTheDay from "../components/deals-of-the-day"
+import Layout from "../components/Layout";
 
 import {useSession} from "next-auth/react"
 
@@ -60,6 +61,14 @@ export default function Home({
       <MainServiceCollections />
       <DealsOfTheDay data={dealsOfTheDay} />
     </>
+  )
+}
+
+Home.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }
 

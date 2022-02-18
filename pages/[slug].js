@@ -9,6 +9,7 @@ import product from "./products.json";
 import API from "../services/api";
 import RelatedProducts from "../components/related-products";
 import NumberFormat from "react-number-format";
+import Layout from "../components/Layout";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
   const router = useRouter();
@@ -784,6 +785,14 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
       <RelatedProducts data={relatedProducts} />
     </>
   );
+}
+
+ProductDetail.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
+  )
 }
 
 export async function getServerSideProps(context) {

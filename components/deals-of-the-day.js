@@ -17,8 +17,7 @@ export default function DealsOfTheDay({ data }) {
         <Row>
           <Col>
             <div className="title1 title-gradient">
-              <h2 className="title-inner1"><i className="fa fa-bolt"></i> deals of the day</h2>
-              <div className="line"><span></span></div>
+              <h2 className="title-inner1"><i className="fa fa-bolt"></i> gợi ý hôm nay</h2>
             </div>
             {!data ?
               <div className="row mx-0 margin-default">

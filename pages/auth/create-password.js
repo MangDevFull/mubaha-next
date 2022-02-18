@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { AiFillEye,AiFillEyeInvisible } from "react-icons/ai";
 import {useSession} from 'next-auth/react'
 import Breadcrumb from '../../components/Breadcrumb.js'
+import Layout from "../../components/Layout";
 
 export default function CreatePassWord() {
   const [show, setShow] = useState(false);
@@ -141,5 +142,13 @@ export default function CreatePassWord() {
       </Modal>
       {/*Section ends*/}
     </>
+  )
+}
+
+CreatePassWord.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }

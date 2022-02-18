@@ -6,6 +6,7 @@ import libphone from "google-libphonenumber";
 import API from "../../services/api.js";
 import { Alert } from "react-bootstrap";
 import otpEnums from "../../utils/otpEnums.js";
+import Layout from "../../components/Layout";
 import {  Row, Form, Input, Col } from 'reactstrap';
 import LoginSocail from '../../components/authen/LoginSocail.js'
 import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
@@ -128,4 +129,12 @@ export default function LoginWithOtp() {
       {/*Section ends*/}
     </>
   );
+}
+
+LoginWithOtp.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
+  )
 }

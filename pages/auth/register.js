@@ -8,6 +8,7 @@ import { Alert } from 'react-bootstrap'
 import { Row, Form, Input, Col } from 'reactstrap';
 import LoginSocail from '../../components/authen/LoginSocail.js'
 import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
+import Layout from "../../components/Layout";
 import OtpInput from 'react-otp-input';
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 import otpEnums from '../../utils/otpEnums.js';
@@ -96,7 +97,7 @@ export default function RegisterPage() {
 
       <div className="login-social">
 
-        <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
+        <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
         <LoginSocail />
         <div className='register'>
           <div className=' mb-4 mx-auto'>
@@ -127,5 +128,13 @@ export default function RegisterPage() {
 
       {isVerifyPhone && <Otp phone={phone} type={otpEnums.REGISTRATION} />}
     </>
+  )
+}
+
+RegisterPage.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }
