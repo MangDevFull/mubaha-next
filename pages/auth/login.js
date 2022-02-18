@@ -1,7 +1,5 @@
 import Link from 'next/link'
 import Head from "next/head";
-import Image from 'next/image'
-import API from '../../services/api.js'
 import { useRef, useState, useEffect } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useRouter } from 'next/router';
@@ -131,7 +129,7 @@ export default function loginPage() {
                 <button type='submit' disabled={isNotValidPhone} style={{ width: '100%', backgroundColor: '#f89922' }} className="btn btn-solid">Đăng nhập</button>
                 <div className="d-flex" style={{ paddingTop: '10px' }}>
                   <div style={{ paddingRight: '40%' }}>
-                    <Link href="/auth/login-otp">
+                    <Link href="#">
                       <a className="text-link">Quên mật khẩu</a>
                     </Link>
                   </div>
@@ -142,15 +140,14 @@ export default function loginPage() {
                   </div>
                 </div>
               </Form>
-              <div className="login-social">
+              <div className="login-social mx-auto">
                 <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
                 <LoginSocail />
                 <Row className='register'>
-                  <div>
-                    <p className='text-signup'><span>Bạn chưa có tài khoản? </span>
+                  <div className="mx-auto"> 
+                    <p className=''><span>Bạn chưa có tài khoản? </span>
                       <Link href="/auth/register">
                         <a >Đăng ký</a>
-
                       </Link>
                     </p>
                   </div>

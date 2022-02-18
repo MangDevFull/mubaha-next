@@ -44,7 +44,6 @@ export default function VerifyOtp({phone,type}) {
       }
     }
   }
-
   return(
     <>
       <Breadcrumb previousLink={type == otpEnums.LOGIN ? "/auth/login" : "/auth/register"} 

@@ -2,7 +2,7 @@ import {  Row } from 'reactstrap';
 export default function LoginSocail(){
   return(
     <>
-       <Row style={{ paddingLeft: '30%'}}>
+       <Row style={{ paddingLeft: '29%'}}>
             <div className='socail'>
               <img src='/assets/icon/facebook.svg' width='40' height='40' alt="Mubaha" />
             
