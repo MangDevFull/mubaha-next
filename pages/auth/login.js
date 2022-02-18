@@ -126,8 +126,8 @@ export default function LoginPage() {
                   </div>
                 </div>
                 <button type='submit' disabled={isNotValidPhone} style={{ width: '100%', backgroundColor: '#f89922' }} className="btn btn-solid">Đăng nhập</button>
-                <div className="d-flex" style={{ paddingTop: '10px' }}>
-                  <div style={{ paddingRight: '40%' }}>
+                <div className="d-flex justify-content-between" style={{ paddingTop: '10px' }}>
+                  <div >
                     <Link href="#">
                       <a className="text-link">Quên mật khẩu</a>
                     </Link>

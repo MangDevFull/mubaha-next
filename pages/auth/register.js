@@ -98,25 +98,23 @@ export default function RegisterPage() {
 
         <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
         <LoginSocail />
-        <Row className='register'>
-          <div className='text-pol mb-4 mx-auto'>
+        <div className='register'>
+          <div className=' mb-4 mx-auto'>
             <h6 style={{ textAlign: 'center', fontSize: '11px' }}>
               Bằng việc đăng kí, bạn đã đồng ý với Mubaha về <br></br>
               <span className='text-p'>Điều khoản dịch vụ</span>
               <span> & </span>
               <span className='text-p'>Chính sách bảo mật</span></h6>
           </div>
-          <div className='mx-auto'>
-
-            <p className='text-signup'>
+          <div className='d-flex justify-content-center'>
+            <p className='mx-auto'>
               <span>Bạn đã có tài khoản? </span>
               <Link href="/auth/login">
                 <a >Đăng nhập</a>
-
               </Link>
             </p>
           </div>
-        </Row>
+        </div>
       </div>
     </div>
   </Col>

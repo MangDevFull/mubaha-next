@@ -90,8 +90,8 @@ export default function LoginWithOtp() {
            type="text" className="form-control" placeholder="Nhập số điện thoại của bạn" required="" />
         </div>
         <button type='submit' disabled={isNotValidPhone} style={{width:'100%',backgroundColor:'#f89922'}} className="btn btn-solid">Đăng nhập</button>
-        <div className="d-flex" style={{ paddingTop: '10px' }}>
-          <div style={{ paddingLeft: '60%' }}>
+        <div className="d-flex justify-content-end" style={{ paddingTop: '10px' }}>
+          <div >
   
             <Link href="/auth/login">
               <a className="text-link">Đăng nhập mật khẩu</a>
