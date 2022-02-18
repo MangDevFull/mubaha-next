@@ -28,7 +28,7 @@ export default function Header({}) {
 
   return (
     <div>
-      <header id="sticky" className="sticky">
+      <header id="sticky" className="sticky marketplace">
         <div className="mobile-fix-option"></div>
 
         <TopBarDark topClass="top-header" />
