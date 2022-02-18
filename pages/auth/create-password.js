@@ -94,12 +94,12 @@ export default function CreatePassWord() {
                   <div className="col-md-12 d-flex">
   
                       <input type={inputValues} ref={inputPassword} className="form-control" placeholder="Nhập mật khẩu của bạn" required />
-                    <div onClick={handleShowPassword} style={{position:'absolute',margin:'10px',left:'90%',display:showPass}}>
-                      <AiFillEye style={{fontSize:'30px'}} />
+                    <div onClick={handleShowPassword} style={{display:showPass}} className="hide-show-password-2">
+                      <AiFillEye className="icon-password" />
                       </div>
                      
-                    <div onClick={handlHidePassword} style={{position:'absolute',margin:'10px',left:'90%',display:hidePass}}>
-                      <AiFillEyeInvisible style={{fontSize:'30px'}} />
+                    <div onClick={handlHidePassword} style={{display:hidePass}} className="hide-show-password-2">
+                      <AiFillEyeInvisible className="icon-password" />
                       </div>
     
           
