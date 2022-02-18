@@ -39,7 +39,7 @@
     text-align: center;
 }
 .login-social{
-  margin-top:20px
+  margin-top:40px
 }
 .socail{
  text-align: center;
@@ -49,7 +49,7 @@
   margin-left: 1px;
 }
 .register{
-  margin-top: 30px
+  margin-top: 40px
 }
 .text-signup{
   margin-left: 100px
@@ -104,6 +104,20 @@
 .icon-password{
   font-size: 30px;
   color: #4e4d4a;
+}
+.form-otp{
+  background-color: #fff;
+  width: 50%;
+  box-shadow: 0 3px 10px 0 rgb(0 0 0 / 14%);
+    border-radius: 0.25rem;
+    margin-top: 50px;
+    margin-bottom: 50px
+}
+.text-title-otp{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
 }
   
 

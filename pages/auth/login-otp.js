@@ -26,7 +26,7 @@ export default function loginWithOtp() {
 
   useEffect(() => {
     inputPhone.current.focus();
-  })
+  },[])
 
   const checkPhone = (e) => {
     phone = e.target.value;
@@ -71,6 +71,8 @@ export default function loginWithOtp() {
         <title>Đăng nhập với SMS</title>
       </Head>
       {/* breadcrumb start */}
+      {!isVerifyPhone
+      &&
       <div className="login-page">
 
 <Row className="background_login">
@@ -103,7 +105,7 @@ export default function loginWithOtp() {
       </Form>
       <div className="login-social">
 
-        <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
+        <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
         <LoginSocail />
         <Row className='register'>
           <div>
@@ -122,8 +124,10 @@ export default function loginWithOtp() {
 </Row>
 
 </div>
+      }
 
-      <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} type={otpEnums.LOGIN} />
+
+     { isVerifyPhone && <Otp  phone={phone} type={otpEnums.LOGIN} />}
 
       {/*Section ends*/}
     </>
