@@ -73,13 +73,13 @@ export default function loginWithOtp() {
       {/* breadcrumb start */}
       {!isVerifyPhone
       &&
-      <div className="login-page">
+      <div className="login-page container-fluit">
 
 <Row className="background_login">
   <Col lg="7">
   <ImageAuthen />
   </Col>
-  <Col lg="4" className="right-login mt-5 mb-5" >
+  <Col lg="4" className="right-login mt-5 mb-5 container" >
     <div className="theme-card login_form" >
       <h5>Đăng Nhập</h5>
       <Form className="theme-form" onSubmit={getOtp}>
@@ -107,8 +107,8 @@ export default function loginWithOtp() {
 
         <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
         <LoginSocail />
-        <Row className='register'>
-          <div>
+        <Row className='register '>
+          <div className='mx-auto'>
             <p className='text-signup'><span>Bạn chưa có tài khoản? </span>
             <Link href="/auth/register">
           <a >Đăng ký</a>

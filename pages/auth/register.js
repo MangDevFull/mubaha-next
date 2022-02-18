@@ -65,13 +65,13 @@ export default function registerPage() {
       </Head>
       {!isVerifyPhone
        &&
-       <div className="login-page">
+       <div className="login-page container-fluit">
 
 <Row className="background_login">
   <Col lg="7">
     <ImageAuthen />
   </Col>
-  <Col lg="4" className="right-login mt-5 mb-5" >
+  <Col lg="4" className="right-login mt-5 mb-5 container" >
     <div className="theme-card login_form" >
       <h5>Đăng ký</h5>
       <Form className="theme-form" onSubmit={getOtp}>
@@ -98,14 +98,14 @@ export default function registerPage() {
         <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
         <LoginSocail />
         <Row className='register'>
-          <div className='text-pol mb-4'>
+          <div className='text-pol mb-4 mx-auto'>
             <h6 style={{ textAlign: 'center', fontSize: '11px' }}>
               Bằng việc đăng kí, bạn đã đồng ý với Mubaha về <br></br>
               <span className='text-p'>Điều khoản dịch vụ</span>
               <span> & </span>
               <span className='text-p'>Chính sách bảo mật</span></h6>
           </div>
-          <div>
+          <div className='mx-auto'>
 
             <p className='text-signup'>
               <span>Bạn đã có tài khoản? </span>

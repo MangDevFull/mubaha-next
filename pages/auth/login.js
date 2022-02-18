@@ -93,14 +93,14 @@ export default function loginPage() {
         <title>Đăng nhập với mật khẩu</title>
       </Head>
 
-      <div className="login-page">
+      <div className="login-page container-fluit">
 
         <Row className="background_login">
           <Col lg="7">
 
             <ImageAuthen />
           </Col>
-          <Col lg="4" className="right-login mt-5 mb-5" >
+          <Col lg="4" className="right-login mt-5 mb-5 container" >
             <div className="theme-card login_form" >
               <h5>Đăng Nhập</h5>
               <Form className="theme-form" onSubmit={getValueForm}>
