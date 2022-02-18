@@ -64,7 +64,6 @@ export default function LoginPage() {
 
   const getValueForm = async (e) => {
     e.preventDefault()
-    console.log('phone', inputPhone.current.value)
     const res = await signIn("mubaha-login", {
       phone: inputPhone.current.value,
       password: inputPassword.current.value,

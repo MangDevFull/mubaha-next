@@ -20,10 +20,6 @@ export default function LoginWithOtp() {
   const [message, setMessage] = useState("");
   const [isNotRegistered, setIsNotRegistered] = useState(false);
   const inputPhone = useRef();
-  const handleClose = useCallback(() => {
-    setIsVerifyPhone(false)
-  }, [])
-
   useEffect(() => {
     inputPhone.current.focus();
   },[])
@@ -32,39 +28,39 @@ export default function LoginWithOtp() {
     phone = e.target.value;
     var reg = /^\d+$/;
     if (!reg.test(phone)) {
-      setIsNotValidPhone(true)
+      setIsNotValidPhone(true);
     } else {
       if (phone.length < 2 || phone == null) {
-        setIsNotValidPhone(true)
+        setIsNotValidPhone(true);
       } else {
-        const number = phoneUtil.parse(phone, "VN")
+        const number = phoneUtil.parse(phone, "VN");
         if (!phoneUtil.isValidNumber(number)) {
-          setIsNotValidPhone(true)
+          setIsNotValidPhone(true);
         } else {
-          const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164)
-          setPhone(phoneNumber)
-          setIsNotValidPhone(false)
+          const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164);
+          setPhone(phoneNumber);
+          setIsNotValidPhone(false);
         }
       }
     }
-  }
+  };
 
   const getOtp = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const params = {
       phone: phone,
     };
     const response = await API.instance.post("/auth/login-otp", params);
     const data = response.data;
     if (data.status == 200) {
-      setIsVerifyPhone(true)
-      setMessage("")
-      setIsNotRegistered(false)
+      setIsVerifyPhone(true);
+      setMessage("");
+      setIsNotRegistered(false);
     } else {
-      setMessage(data.message)
-      setIsNotRegistered(true)
+      setMessage(data.message);
+      setIsNotRegistered(true);
     }
-  }
+  };
   return (
     <>
       <Head>
@@ -131,5 +127,5 @@ export default function LoginWithOtp() {
 
       {/*Section ends*/}
     </>
-  )
+  );
 }

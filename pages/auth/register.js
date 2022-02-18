@@ -14,6 +14,7 @@ import otpEnums from '../../utils/otpEnums.js';
 
 const phoneUtil = PhoneNumberUtil.getInstance()
 
+
 export default function RegisterPage() {
   const [isNotValidPhone, setIsNotValidPhone] = useState(true);
   const [phone, setPhone] = useState('')
@@ -95,7 +96,7 @@ export default function RegisterPage() {
 
       <div className="login-social">
 
-        <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
+        <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
         <LoginSocail />
         <Row className='register'>
           <div className='text-pol mb-4 mx-auto'>
