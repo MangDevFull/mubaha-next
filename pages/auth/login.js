@@ -9,7 +9,8 @@ import { Alert } from 'react-bootstrap'
 import { signIn } from "next-auth/react";
 import {  Row, Form, Input, Col } from 'reactstrap';
 import libphone from "google-libphonenumber";
-
+import LoginSocail from '../../components/authen/LoginSocail.js'
+import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
 
 const { PhoneNumberUtil } = libphone;
 
@@ -99,11 +100,7 @@ export default function loginPage() {
         <Row className="background_login">
           <Col lg="7">
 
-            <div className=" authentication-right">
-       
-                <img className="logo-login" width='500' height='400' src="/assets/icon/logo-login.png" alt="Mubaha" />
-              
-            </div>
+          <ImageAuthen />
           </Col>
           <Col lg="4" className="right-login mt-5 mb-5" >
             <div className="theme-card login_form" >
@@ -149,26 +146,7 @@ export default function loginPage() {
               <div className="login-social">
 
                 <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
-                <Row>
-                  <Col>
-                    <div className='socail'>
-                      <img src='/assets/icon/facebook.svg' width='40' height='40' alt="Mubaha" />
-                    
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className='socail'>
-                      <img style={{marginLeft: '10px' }} src='/assets/icon/google.svg' width='40' height='40' alt="Mubaha" />
-                  
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className='socail'>
-                      <img src='/assets/icon/zalo.svg' width='40' height='40' alt="Mubaha" />
-               
-                    </div>
-                  </Col>
-                </Row>
+                <LoginSocail />
                 <Row className='register'>
                   <div>
                     <p className='text-signup'><span>Bạn chưa có tài khoản? </span>

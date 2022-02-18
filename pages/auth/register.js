@@ -6,6 +6,8 @@ import libphone from 'google-libphonenumber';
 import API from '../../services/api.js'
 import {Alert} from 'react-bootstrap'
 import {  Row, Form, Input, Col } from 'reactstrap';
+import LoginSocail from '../../components/authen/LoginSocail.js'
+import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 import otpEnums from '../../utils/otpEnums.js';
 
@@ -67,11 +69,7 @@ export default function registerPage (){
 <Row className="background_login">
   <Col lg="7">
 
-    <div className=" authentication-right">
-
-        <img className="logo-login" width='500' height='400' src="/assets/icon/logo-login.png" alt="Mubaha" />
-      
-    </div>
+  <ImageAuthen />
   </Col>
   <Col lg="4" className="right-login mt-5 mb-5" >
     <div className="theme-card login_form" >
@@ -87,39 +85,16 @@ export default function registerPage (){
           onChange={checkPhone}
            type="text" className="form-control" placeholder="Nhập số điện thoại của bạn" required="" />
         </div>
-        <button type='submit' disabled={isNotValidPhone} style={{width:'100%',backgroundColor:'#f89922'}} className="btn btn-solid">Đăng nhập</button>
+        <button type='submit' disabled={isNotValidPhone} style={{width:'100%',backgroundColor:'#f89922'}} className="btn btn-solid">Đăng ký</button>
         <div className="d-flex" style={{ paddingTop: '10px' }}>
           <div style={{ paddingLeft: '60%' }}>
-  
-            <Link href="/auth/login">
-              <a className="text-link">Đăng nhập mật khẩu</a>
-            </Link>
           </div>
         </div>
       </Form>
       <div className="login-social">
 
         <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
-        <Row>
-          <Col>
-            <div className='socail'>
-              <img src='/assets/icon/facebook.svg' width='40' height='40' alt="Mubaha" />
-            
-            </div>
-          </Col>
-          <Col>
-            <div className='socail'>
-              <img style={{marginLeft: '10px' }} src='/assets/icon/google.svg' width='40' height='40' alt="Mubaha" />
-          
-            </div>
-          </Col>
-          <Col>
-            <div className='socail'>
-              <img src='/assets/icon/zalo.svg' width='40' height='40' alt="Mubaha" />
-       
-            </div>
-          </Col>
-        </Row>
+        <LoginSocail />
         <Row className='register'>
         <div className='text-pol mb-4'>
           <h6 style={{ textAlign: 'center',fontSize:'11px' }}>
@@ -129,7 +104,7 @@ export default function registerPage (){
          <span className='text-p'>Chính sách bảo mật</span></h6>
         </div>
           <div>
-
+         
             <p className='text-signup'>
             <span>Bạn đã có tài khoản? </span>
             <Link href="/auth/login">
