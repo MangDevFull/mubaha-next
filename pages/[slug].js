@@ -776,8 +776,11 @@ export default function ProductDetail({detailProduct, relatedProducts, newProduc
 
 export async function getServerSideProps(context) {
   const {slug} = context.query
-  const response = await API.instance.get(`/products/${slug}`)
-  const data = response.data.data
+  // const response = await API.instance.get(`/products/${slug}`)
+  // const data = response.data.data
+
+  const response = await fetch(`${process.env.API_URL}/products/${slug}`)
+  const {data} = await response.json();
 
   return {
     props: {

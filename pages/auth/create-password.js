@@ -1,21 +1,25 @@
-import Link from "next/link"
-import {Modal} from "react-bootstrap"
-import {useState, useRef} from "react"
-import API from "../../services/api.js"
-import {useRouter} from "next/router"
-import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai"
+import Link from 'next/link'
+import { Modal } from 'react-bootstrap'
+import { useState, useRef } from 'react'
+import API from '../../services/api.js'
+import { useRouter } from 'next/router'
+import { AiFillEye,AiFillEyeInvisible } from "react-icons/ai";
+import {useSession} from 'next-auth/react'
+
 
 export default function CreatePassWord() {
-  const [show, setShow] = useState(false)
-  const [showPass, setShowPass] = useState("block")
-  const [hidePass, setHidePass] = useState("none")
-  const [inputValues, setInputValues] = useState("password")
-  const inputPassword = useRef()
-  const router = useRouter()
-  const handleShowPassword = () => {
-    setHidePass("block")
-    setShowPass("none")
-    setInputValues("text")
+  const { data: session, status } = useSession()
+  
+  const [show, setShow] = useState(false);
+  const [showPass,setShowPass] = useState('block');
+  const [hidePass,setHidePass] = useState('none')
+  const [inputValues, setInputValues] = useState('password')
+  const inputPassword = useRef();
+  const router = useRouter();
+  const handleShowPassword = () =>{
+    setHidePass('block');
+    setShowPass('none')
+    setInputValues('text')
   }
   const handlHidePassword = () => {
     setHidePass("none")
@@ -23,18 +27,29 @@ export default function CreatePassWord() {
     setInputValues("password")
   }
   const handleCreatePass = async () => {
-    const params = {
-      password: inputPassword.current.value,
+    const body = {
+      password: inputPassword.current.value
+    }
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.accessToken
+      },
+      body: JSON.stringify(body)
+
     }
 
-    const response = await API.instance.put("/auth/create-password", params)
+    const response = await fetch(`${process.env.API_URL}/auth/create-password`,options)
 
-    const data = response.data
+    const data = await response.json()
 
     if (data.status == 200) {
       setShow(true)
       router.push("/")
     }
+
+
   }
   return (
     <>
@@ -82,26 +97,17 @@ export default function CreatePassWord() {
               <div className="theme-form" style={{marginTop: "10px"}}>
                 <div className="form-row row">
                   <div className="col-md-12 d-flex">
-                    <input
-                      type={inputValues}
-                      ref={inputPassword}
-                      className="form-control"
-                      placeholder="Nhập mật khẩu của bạn"
-                      required
-                    />
-                    <div
-                      onClick={handleShowPassword}
-                      style={{position: "absolute", margin: "10px", left: "90%", display: showPass}}
-                    >
-                      <AiFillEye style={{fontSize: "30px"}} />
-                    </div>
-
-                    <div
-                      onClick={handlHidePassword}
-                      style={{position: "absolute", margin: "10px", left: "90%", display: hidePass}}
-                    >
-                      <AiFillEyeInvisible style={{fontSize: "30px"}} />
-                    </div>
+  
+                      <input type={inputValues} ref={inputPassword} className="form-control" placeholder="Nhập mật khẩu của bạn" required />
+                    <div onClick={handleShowPassword} style={{display:showPass}} className="hide-show-password-2">
+                      <AiFillEye className="icon-password" />
+                      </div>
+                     
+                    <div onClick={handlHidePassword} style={{display:hidePass}} className="hide-show-password-2">
+                      <AiFillEyeInvisible className="icon-password" />
+                      </div>
+    
+          
                   </div>
                   <a className="btn btn-solid w-auto" onClick={handleCreatePass}>
                     Tạo

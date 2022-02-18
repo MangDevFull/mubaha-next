@@ -1,41 +1,49 @@
-import Link from "next/link"
-import {useState, useCallback} from "react"
-import Otp from "../../components/Otp.js"
-import Head from "next/head"
-import libphone from "google-libphonenumber"
-import API from "../../services/api.js"
-import {Alert} from "react-bootstrap"
-import otpEnums from "../../utils/otpEnums.js"
+import Link from "next/link";
+import { useState, useCallback,useRef, useEffect } from "react";
+import Otp from "../../components/Otp.js";
+import Head from "next/head";
+import libphone from "google-libphonenumber";
+import API from "../../services/api.js";
+import { Alert } from "react-bootstrap";
+import otpEnums from "../../utils/otpEnums.js";
+import {  Row, Form, Input, Col } from 'reactstrap';
+import LoginSocail from '../../components/authen/LoginSocail.js'
+import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
+const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
-const {PhoneNumberFormat, PhoneNumberUtil} = libphone
+const phoneUtil = PhoneNumberUtil.getInstance();
 
-const phoneUtil = PhoneNumberUtil.getInstance()
-
-export default function LoginOtp() {
-  const [isNotValidPhone, setisNotValidPhone] = useState(true)
-  const [phone, setPhone] = useState("")
-  const [isVerifyPhone, setisVerifyPhone] = useState(false)
-  const [message, setMessage] = useState("")
-  const [isNotRegistered, setIsNotRegistered] = useState(false)
+export default function LoginWithOtp() {
+  const [isNotValidPhone, setIsNotValidPhone] = useState(true);
+  const [phone, setPhone] = useState("");
+  const [isVerifyPhone, setIsVerifyPhone] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isNotRegistered, setIsNotRegistered] = useState(false);
+  const inputPhone = useRef();
   const handleClose = useCallback(() => {
-    setisVerifyPhone(false)
+    setIsVerifyPhone(false)
   }, [])
 
-  const checkPhone = (phone) => {
-    var reg = /^\d+$/
+  useEffect(() => {
+    inputPhone.current.focus();
+  },[])
+
+  const checkPhone = (e) => {
+    phone = e.target.value;
+    var reg = /^\d+$/;
     if (!reg.test(phone)) {
-      setisNotValidPhone(true)
+      setIsNotValidPhone(true)
     } else {
       if (phone.length < 2 || phone == null) {
-        setisNotValidPhone(true)
+        setIsNotValidPhone(true)
       } else {
         const number = phoneUtil.parse(phone, "VN")
         if (!phoneUtil.isValidNumber(number)) {
-          setisNotValidPhone(true)
+          setIsNotValidPhone(true)
         } else {
           const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164)
           setPhone(phoneNumber)
-          setisNotValidPhone(false)
+          setIsNotValidPhone(false)
         }
       }
     }
@@ -45,15 +53,11 @@ export default function LoginOtp() {
     e.preventDefault()
     const params = {
       phone: phone,
-    }
-    const response = await API.instance.post("/auth/login-otp", params)
-    // const {error, ok} = await signIn("credentials", {
-
-    // })
-
-    const data = response.data
+    };
+    const response = await API.instance.post("/auth/login-otp", params);
+    const data = response.data;
     if (data.status == 200) {
-      setisVerifyPhone(true)
+      setIsVerifyPhone(true)
       setMessage("")
       setIsNotRegistered(false)
     } else {
@@ -67,94 +71,64 @@ export default function LoginOtp() {
         <title>Đăng nhập với SMS</title>
       </Head>
       {/* breadcrumb start */}
-      <div className="breadcrumb-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="page-title">
-                <h2>Đăng nhập tài khoản</h2>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <nav aria-label="breadcrumb" className="theme-breadcrumb">
-                <ol className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link href="/">
-                      <a>Trang chủ</a>
-                    </Link>
-                  </li>
-                  <li className="breadcrumb-item active">Đăng nhập</li>
-                </ol>
-              </nav>
-            </div>
+      {!isVerifyPhone
+      &&
+      <div className="login-page">
+
+<Row className="background_login">
+  <Col lg="7">
+  <ImageAuthen />
+  </Col>
+  <Col lg="4" className="right-login mt-5 mb-5" >
+    <div className="theme-card login_form" >
+      <h5>Đăng Nhập</h5>
+      <Form className="theme-form" onSubmit={getOtp}>
+      {isNotRegistered &&
+              <Alert style={{textAlign:'center',height:'40px'}} variant={'danger'}>
+              {message}
+              </Alert>
+            }
+        <div className="form-group">
+          <input ref={inputPhone}
+          onChange={checkPhone}
+           type="text" className="form-control" placeholder="Nhập số điện thoại của bạn" required="" />
+        </div>
+        <button type='submit' disabled={isNotValidPhone} style={{width:'100%',backgroundColor:'#f89922'}} className="btn btn-solid">Đăng nhập</button>
+        <div className="d-flex" style={{ paddingTop: '10px' }}>
+          <div style={{ paddingLeft: '60%' }}>
+  
+            <Link href="/auth/login">
+              <a className="text-link">Đăng nhập mật khẩu</a>
+            </Link>
           </div>
         </div>
+      </Form>
+      <div className="login-social">
+
+        <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
+        <LoginSocail />
+        <Row className='register'>
+          <div>
+            <p className='text-signup'><span>Bạn chưa có tài khoản? </span>
+            <Link href="/auth/register">
+          <a >Đăng ký</a>
+
+        </Link>
+             </p>
+          </div>
+        </Row>
       </div>
-      {/* breadcrumb End */}
-      {/*section start*/}
+    </div>
+  </Col>
+  <Col lg="1"></Col>
+</Row>
 
-      <Otp show={isVerifyPhone} handleClose={handleClose} phone={phone} type={otpEnums.LOGIN} />
+</div>
+      }
 
-      <section className="login-page section-b-space">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6">
-              <h3>Đăng nhập</h3>
 
-              <div className="theme-card">
-                <h6 className="title-font">Đăng nhập với SMS</h6>
-                <br />
+     { isVerifyPhone && <Otp  phone={phone} type={otpEnums.LOGIN} />}
 
-                <form className="theme-form" onSubmit={getOtp}>
-                  {isNotRegistered && (
-                    <Alert style={{textAlign: "center", height: "50px"}} variant={"danger"}>
-                      {message}
-                    </Alert>
-                  )}
-                  <div className="form-group">
-                    <div>
-                      <input
-                        type="tel"
-                        name="username"
-                        className="form-control phone-number"
-                        onChange={(e) => {
-                          checkPhone(e.target.value)
-                        }}
-                        id="phone"
-                        maxLength={20}
-                        placeholder="Số điện thoại"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <button disabled={isNotValidPhone} type="submit" className="btn btn-solid">
-                      Tiếp tục
-                    </button>
-                    <Link href="/auth/login">
-                      <a className="btn btn-solid">Đăng nhập với mật khẩu</a>
-                    </Link>
-                  </div>
-                </form>
-              </div>
-            </div>
-            <div className="col-lg-6 right-login">
-              <h3>Khách hàng mới</h3>
-              <div className="theme-card authentication-right">
-                <h6 className="title-font">Tạo một tài khoản mới</h6>
-                <p>
-                  Đăng ký một tài khoản miễn phí tại cửa hàng của chúng tôi. Thủ tục đăng kí nhanh
-                  chóng và đơn giản. Nó cho phép bạn có thể đặt hàng từ cửa hàng của chúng tôi. Để
-                  bắt đầu mua sắm bấm đăng ký.
-                </p>
-                <Link href="/auth/register">
-                  <a className="btn btn-solid">Tạo một tài khoản</a>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       {/*Section ends*/}
     </>
   )

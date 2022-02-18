@@ -33,8 +33,9 @@ export default function Home({
   // if(localStorage !=null){
   //   console.log("localStorage",localStorage);
   // }
-  const {data: session, status} = useSession()
+  const { data: session, status } = useSession()
 
+  console.log(session)
   return (
     <>
       <Head>
@@ -63,8 +64,8 @@ export default function Home({
 }
 
 export async function getServerSideProps() {
-  const response = await API.instance.get("/")
-  const data = response.data.data
+  const response = await fetch(`${process.env.API_URL}`)
+  const {data} = await response.json();
 
   return {
     props: {
