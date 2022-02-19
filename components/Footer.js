@@ -8,7 +8,7 @@ import { Container, Row, Col, Form, FormGroup, Input, Button, Collapse } from "r
 
 import logo from "../assets/images/logo-color.svg";
 import Copyright from "./common/copyright.js";
-import MasonryCategoryGrid from "./common/Masonry-category-grid";
+import MasonryCategoryGrid from "./common/masonry-category-grid";
 
 export default function Footer({ categories }) {
   const [isOpen, setIsOpen] = useState();
