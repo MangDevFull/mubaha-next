@@ -30,7 +30,7 @@ const Data = [
 export default function MainServiceCollections() {
   return (
     <>
-      <section className="banner-padding absolute-banner pb-0">
+      <section className="banner-padding absolute-banner mt-5">
         <Container className="absolute-bg">
           <div className="service p-0">
             <Row>

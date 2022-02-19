@@ -19,7 +19,7 @@ const MasterProductDetail = ({
 
   return (
     <div className={`product-detail ${productDetail} ${detailClass}`}>
-      <div>
+      <div className="product-info">
         <div className="rating">{RatingStars}</div>
         <Link href={`/${product.slug}`}>
           <a>

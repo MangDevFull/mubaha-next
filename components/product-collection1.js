@@ -10,14 +10,14 @@ import ProductItem from './product-item'
 
 import Slider from 'react-slick';
 
-export default function DealsOfTheDay({ data }) {
+export default function ProductCollection1({ title, data }) {
   return (
     <section className="section-b-space ratio_square">
       <Container>
         <Row>
           <Col>
             <div className="title1 title-gradient">
-              <h2 className="title-inner1"><i className="fa fa-bolt"></i> gợi ý hôm nay</h2>
+              <h2 className="title-inner1"><i className="fa fa-bolt"></i> {title}</h2>
             </div>
             {!data ?
               <div className="row mx-0 margin-default">

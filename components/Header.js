@@ -8,6 +8,8 @@ import TopBarDark from "./common/topbar-dark"
 import logo from "../assets/images/logo-color.svg"
 import search from "../public/assets/images/icon/search.png"
 
+import NavBar from "./common/navbar"
+
 export default function Header({}) {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
@@ -21,9 +23,18 @@ export default function Header({}) {
     let number =
       window.pageXOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
     if (number >= 300) {
-      if (window.innerWidth < 576) document.getElementById("sticky").classList.remove("fixed")
-      else document.getElementById("sticky").classList.add("fixed")
-    } else document.getElementById("sticky").classList.remove("fixed")
+      if (window.innerWidth < 576) {
+        document.getElementById("sticky").classList.remove("fixed")
+        document.getElementById("navbar-row").style.display = "block";
+      }
+      else {
+        document.getElementById("sticky").classList.add("fixed")
+        document.getElementById("navbar-row").style.display = "none";
+      }
+    } else {
+      document.getElementById("sticky").classList.remove("fixed")
+      document.getElementById("navbar-row").style.display = "block";
+    }
   }
 
   return (
@@ -31,11 +42,11 @@ export default function Header({}) {
       <header id="sticky" className="sticky marketplace">
         <div className="mobile-fix-option"></div>
 
-        <TopBarDark topClass="top-header" />
+        <TopBarDark topClass="top-header top-header-dark2" />
         <Container>
           <Row>
             <Col>
-              <div className="main-menu d-flex">
+              <div className="main-menu border-section border-top-0 d-flex">
                 <div className="menu-left">
                   <div className="brand-logo">
                     <div style={{width: "260px", maxWidth: "260px"}}>
@@ -82,6 +93,15 @@ export default function Header({}) {
                     </div>
                   </div>
                 </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+        <Container id="navbar-row">
+          <Row>
+            <Col>
+              <div className="main-nav-center">
+                <NavBar />
               </div>
             </Col>
           </Row>
