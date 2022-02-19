@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { AiFillEye,AiFillEyeInvisible } from "react-icons/ai";
 import {useSession} from 'next-auth/react'
 import Breadcrumb from '../../components/Breadcrumb.js'
-
+import { Form } from 'reactstrap';
 export default function CreatePassWord() {
   const [show, setShow] = useState(false);
   const [showPass,setShowPass] = useState('block');
@@ -38,7 +38,8 @@ export default function CreatePassWord() {
     setShowPass("block")
     setInputValues("password")
   }
-  const handleCreatePass = async () => {
+  const handleCreatePass = async (e) => {
+    e.preventDefault()
     const body = {
       password: inputPassword.current.value
     }
@@ -77,7 +78,7 @@ export default function CreatePassWord() {
                   </Link>
                 </span>
               </p>
-              <div className="theme-form" style={{marginTop: "10px"}}>
+              <Form className="theme-form" style={{marginTop: "10px"}} onSubmit={handleCreatePass}>
                 <div className="form-row row">
                   <div className="col-md-12 d-flex">
   
@@ -92,11 +93,11 @@ export default function CreatePassWord() {
     
           
                   </div>
-                  <a className="btn btn-solid w-auto" onClick={handleCreatePass}>
+                  <button className="btn btn-solid w-auto" type='submit'>
                     Tạo
-                  </a>
+                  </button>
                 </div>
-              </div>
+              </Form>
             </div>
           </div>
         </div>
@@ -112,7 +113,7 @@ export default function CreatePassWord() {
           <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
         </symbol>
       </svg>
-
+{/* 
       <Modal show={show}>
         <Modal.Header closeButton>
           <Modal.Title>Thông báo</Modal.Title>
@@ -138,7 +139,7 @@ export default function CreatePassWord() {
             </p>
           </div>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
       {/*Section ends*/}
     </>
   )
