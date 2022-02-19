@@ -11,7 +11,7 @@ const currency = {
   value: 1,
 };
 
-export default function ProductItem({ product }) {
+export default function ProductItem({ product, oldThumbnail }) {
   const [modal, setModal] = useState(false);
   // const [image, setImage] = useState("");
   const uniqueTags = [];
@@ -27,14 +27,14 @@ export default function ProductItem({ product }) {
       <div className="img-wrapper">
         <div className="lable-block">
           {product.new === true ? <span className="lable3">new</span> : ""}
-          {product.sale === true ? <span className="lable4">on sale</span> : ""}
+          {product.discount > 0 ? <span className="lable4">Giảm giá</span> : ""}
         </div>
         <div className="front">
           <Link href={`/${product.slug}`}>
             <a>
               <Media
                 src={product.media.featuredImage}
-                style={{ maxHeight: "204px" }}
+                style={ !oldThumbnail ? {maxHeight: "204px"} : {} }
                 className="img-fluid bg-img blur-up"
                 alt=""
               />
@@ -135,7 +135,7 @@ export default function ProductItem({ product }) {
               <div className="product-right">
                 <Link href={`/${product.slug}`}>
                   <a>
-                    <h2>{product.title}</h2>
+                    <h2>{product.name}</h2>
                   </a>
                 </Link>
                 <h3>

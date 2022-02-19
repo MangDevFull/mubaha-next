@@ -153,6 +153,12 @@ position: absolute;
   margin-top: 100px;
   margin-bottom: 100px;
   width: 60%;
-  height: 70%;
+  height: 650px;
+}
+.margin-form-otp{
+  margin-top: 100px;
+  margin-bottom: 100px;
+  width: 60%;
+  height: 600px
 }
 

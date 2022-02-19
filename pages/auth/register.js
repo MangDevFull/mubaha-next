@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Head from "next/head";
+import Breadcrumb from '../../components/Breadcrumb.js'
 import { useState, useCallback, useRef, useEffect } from 'react';
 import Otp from '../../components/Otp.js'
 import libphone from 'google-libphonenumber';
@@ -8,6 +9,7 @@ import { Alert } from 'react-bootstrap'
 import { Row, Form, Input, Col } from 'reactstrap';
 import LoginSocail from '../../components/authen/LoginSocail.js'
 import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
+import Layout from "../../components/Layout";
 import OtpInput from 'react-otp-input';
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 import otpEnums from '../../utils/otpEnums.js';
@@ -67,39 +69,37 @@ export default function RegisterPage() {
       {!isVerifyPhone
        &&
        <div className="login-page container-fluit">
-
-<Row className="background_login">
-  <Col lg="7">
-    <ImageAuthen />
-  </Col>
-  <Col lg="4" className="right-login mt-5 mb-5 container" >
-    <div className="theme-card login_form" >
-      <h5>Đăng ký</h5>
-      <Form className="theme-form" onSubmit={getOtp}>
-        {isRegisted &&
-          <Alert className='mt-2 mb-10' style={{ textAlign: 'center', height: '40px' }} variant={'danger'}>
-            {message}
-          </Alert>
-        }
-        <div className="form-group">
-          <input ref={inputPhone}
-            onChange={checkPhone}
-            type="text" className="form-control" placeholder="Nhập số điện thoại của bạn" required="" />
-        </div>
-        <button type='submit' disabled={isNotValidPhone} style={{ width: '100%', backgroundColor: '#f89922' }} className="btn btn-solid">Đăng ký</button>
-        <div className="d-flex" style={{ paddingTop: '10px' }}>
-          <div style={{ paddingLeft: '60%' }}>
-          </div>
-        </div>
-
-      </Form>
-
-      <div className="login-social">
-
-        <h5 class="text-or">HOẶC TIẾP TỤC VỚI</h5>
-        <LoginSocail />
-        <div className='register'>
-          <div className=' mb-4 mx-auto'>
+          <Row className="background_login d-flex justify-content-center">
+            <div className="right-login margin-form-otp d-flex">
+              <div className="" style={{width:"50%"}}>
+                <ImageAuthen />
+              </div>
+              <div className="theme-card login_form-right " style={{width:"50%"}}>
+                <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
+                  <h3 className="text-center">Đăng Ký</h3>
+                </div>
+                <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
+                  {isRegisted &&
+                    <Alert style={{ textAlign: 'center', height: '40px' }} variant={'danger'}>
+                      {message}
+                    </Alert>
+                  }
+                  <div className="form-group mb-1">
+                    <input ref={inputPhone}
+                      onChange={checkPhone}
+                      type="text" className="form-control"
+                      placeholder="Nhập số điện thoại của bạn" required="" />
+                  </div>
+                  <div className="d-flex justify-content-center">
+                    <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-login">Đăng Ký</button>
+                  </div>
+                </Form>
+                <div className="login-social mx-auto">
+                  <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
+                  <LoginSocail />
+                </div>
+                <Row className='register d-flex justify-content-center  ml-3 mr-3 mb-5'>
+                <div className=' mb-4 mx-auto'>
             <h6 style={{ textAlign: 'center', fontSize: '13px' }}>
               Bằng việc đăng kí, bạn đã đồng ý với Mubaha về <br></br>
               <span className='text-p'>Điều khoản dịch vụ</span>
@@ -114,18 +114,36 @@ export default function RegisterPage() {
               </Link>
             </p>
           </div>
+                </Row>
+              </div>
+            </div>
+          </Row>
         </div>
-      </div>
-    </div>
-  </Col>
-  <Col lg="1"></Col>
-</Row>
 
-</div>
+  
+
+         
+    
         }
      
 
-      {isVerifyPhone && <Otp phone={phone} type={otpEnums.REGISTRATION} />}
+      {isVerifyPhone && 
+      <div>
+      <Breadcrumb previousLink= "/auth/register"
+        previousValue="Đăng ký" currentValue="Xác thực Otp" />
+                  <Row className="background_login d-flex justify-content-center">
+<Otp phone={phone} type={otpEnums.REGISTRATION} /> 
+</Row>
+      </div>
+      }
     </>
+  )
+}
+
+RegisterPage.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }

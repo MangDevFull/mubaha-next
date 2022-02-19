@@ -10,6 +10,7 @@ import API from "../services/api"
 import Head from "next/head"
 import InputRange from "react-input-range"
 import FilterContext from "../filter/FilterContext"
+import Layout from "../components/Layout";
 
 export default function ListProduct({results, newProducts}) {
   // const products = data.products.splice(0, 20);
@@ -397,6 +398,14 @@ export default function ListProduct({results, newProducts}) {
       </section>
       {/* section End */}
     </>
+  )
+}
+
+ListProduct.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }
 

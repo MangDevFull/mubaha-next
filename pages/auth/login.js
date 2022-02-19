@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Head from "next/head";
+import Breadcrumb from '../../components/Breadcrumb.js'
 import { useRef, useState, useEffect } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useRouter } from 'next/router';
@@ -9,6 +10,7 @@ import { Row, Form, Input, Col } from 'reactstrap';
 import libphone from "google-libphonenumber";
 import LoginSocail from '../../components/authen/LoginSocail.js'
 import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
+import Layout from "../../components/Layout";
 import API from "../../services/api.js";
 import Otp from "../../components/Otp.js";
 import otpEnums from "../../utils/otpEnums.js";
@@ -80,9 +82,15 @@ export default function LoginPage() {
         router.push('/')
       } else {
         const data = JSON.parse(res.error)
-        setMessage(data.message);
-        setInvalid(true)
-        setIsCreatePassword(false)
+        if(data.errors[0]=="isCreatPassword"){
+          setMessage(data.message);
+        setInvalid(false)
+        setIsCreatePassword(true)
+        }else{
+          setMessage(data.message);
+          setInvalid(true)
+          setIsCreatePassword(false)
+        }
       }
     }
   }
@@ -152,7 +160,7 @@ export default function LoginPage() {
                   }
                   {isCreatePassword &&
                     <Alert style={{ textAlign: 'center', height: '70px' }} variant={'danger'}>
-                      <span>{message} </span>
+                      <span>{message}</span>
                       <br></br>
                       <br></br>
                       <a href="#" onClick={createPassword}>Đặt mật khẩu</a>
@@ -222,8 +230,25 @@ export default function LoginPage() {
         </div>
       }
 
-      {isVerifyPhone && <Otp phone={phone} type={otpEnums.CREATE_PASSWORD} />}
+      {isVerifyPhone 
+      && 
+      <div>
+      <Breadcrumb previousLink= "/"
+        previousValue="Trang chủ" currentValue="Xác thực Otp" />
+                  <Row className="background_login d-flex justify-content-center">
+<Otp phone={phone} type={otpEnums.CREATE_PASSWORD} /> 
+</Row>
+      </div>
+      }
       {/*Section ends*/}
     </>
+  )
+}
+
+LoginPage.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }

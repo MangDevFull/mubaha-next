@@ -1,11 +1,16 @@
-import Head from "next/head"
-import Slider from "react-slick"
-import API from "../services/api"
-import MasterBanner from "../components/MasterBanner"
-import MainServiceCollections from "../components/MainServiceCollections"
-import DealsOfTheDay from "../components/deals-of-the-day"
+import Head from "next/head";
+import Slider from "react-slick";
+import API from "../services/api";
+import MasterBanner from "../components/MasterBanner";
+import MainServiceCollections from "../components/MainServiceCollections";
+import ProductCollection1 from "../components/product-collection1";
+import Layout from "../components/Layout";
 
-import {useSession} from "next-auth/react"
+import { useSession } from "next-auth/react";
+
+import MainMultipleSlider from "../components/main-multiple-slider";
+import PartitionSlider from "../components/partition-slider";
+import MasterParallaxBanner from "../components/master-parallax-banner";
 
 const Data = [
   {
@@ -20,7 +25,7 @@ const Data = [
     desc: "fresh vegetables",
     link: "#",
   },
-]
+];
 
 export default function Home({
   dealsOfTheDay,
@@ -33,39 +38,46 @@ export default function Home({
   // if(localStorage !=null){
   //   console.log("localStorage",localStorage);
   // }
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
 
-  console.log(session)
+  console.log(session);
   return (
     <>
       <Head>
         <title>Trang chủ | Mubaha</title>
       </Head>
-      <section className="p-0">
-        <Slider className="slide-1 home-slider">
-          {Data.map((data, i) => {
-            return (
-              <MasterBanner
-                key={i}
-                img={data.img}
-                link={data.link}
-                title={data.title}
-                desc={data.desc}
-                classes={data.classes}
-              />
-            )
-          })}
-        </Slider>
+      <section>
+        <MainMultipleSlider dontMissTheseProducts={dontMissTheseProducts} />
       </section>
       <MainServiceCollections />
-      <DealsOfTheDay data={dealsOfTheDay} />
+      <ProductCollection1 title="gợi ý hôm nay" data={dealsOfTheDay} />
+      <div className="section-b-space">
+        <PartitionSlider
+          dealsOfTheDay={dealsOfTheDay}
+          leftNewProducts={leftNewProducts}
+          rightFeatureProducts={rightFeatureProducts}
+        />
+      </div>
+      <MasterParallaxBanner
+        bg="parallax-mubaha"
+        parallaxClass="text-center p-left"
+        title="2022"
+        subTitle1="xu hướng mới"
+        subTitle2="rất nhiều ưu đãi"
+      />
+
+      <ProductCollection1 title="đừng bỏ lỡ" data={dontMissTheseProducts} />
     </>
-  )
+  );
 }
 
+Home.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
+
 export async function getServerSideProps() {
-  const response = await fetch(`${process.env.API_URL}`)
-  const {data} = await response.json();
+  const response = await fetch(`${process.env.API_URL}`);
+  const { data } = await response.json();
 
   return {
     props: {
@@ -76,5 +88,5 @@ export async function getServerSideProps() {
       rightFeatureProducts: data.rightFeatureProducts,
       top5Products: data.top5Products,
     },
-  }
+  };
 }

@@ -1,34 +1,36 @@
-import React, {useState, useEffect, useRef} from "react"
-import Slider from "react-slick"
-import Head from "next/head"
-import Image from "next/image"
-import SideProductCart from "../components/SideProductCart"
-import {Row, Col, Media, Collapse} from "reactstrap"
-import {useRouter} from "next/router"
-import product from "./products.json"
-import API from "../services/api"
-import RelatedProducts from "../components/related-products"
+import React, { useState, useEffect, useRef } from "react";
+import Slider from "react-slick";
+import Head from "next/head";
+import Image from "next/image";
+import SideProductCart from "../components/SideProductCart";
+import { Row, Col, Media, Collapse } from "reactstrap";
+import { useRouter } from "next/router";
+import product from "./products.json";
+import API from "../services/api";
+import RelatedProducts from "../components/related-products";
+import NumberFormat from "react-number-format";
+import Layout from "../components/Layout";
 
-export default function ProductDetail({detailProduct, relatedProducts, newProducts}) {
-  const router = useRouter()
+export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  const router = useRouter();
   // const { slug } = router.query;
 
   // const products = product.products.splice(0, 20);
 
-  const [state, setState] = useState({nav1: null, nav2: null})
-  const slider1 = useRef()
-  const slider2 = useRef()
+  const [state, setState] = useState({ nav1: null, nav2: null });
+  const slider1 = useRef();
+  const slider2 = useRef();
   useEffect(() => {
     setState({
       nav1: slider1.current,
       nav2: slider2.current,
-    })
-  }, [])
-  const {nav1, nav2} = state
+    });
+  }, []);
+  const { nav1, nav2 } = state;
 
   // Handle Brand
-  const [isBrandOpen, setIsBrandOpen] = useState(true)
-  const toggleBrand = () => setIsBrandOpen(!isBrandOpen)
+  const [isBrandOpen, setIsBrandOpen] = useState(true);
+  const toggleBrand = () => setIsBrandOpen(!isBrandOpen);
 
   let propertySlider = {
     slidesToShow: 1,
@@ -36,14 +38,14 @@ export default function ProductDetail({detailProduct, relatedProducts, newProduc
     dots: false,
     arrows: true,
     fade: true,
-  }
+  };
   var productsnav = {
     slidesToShow: 3,
     swipeToSlide: true,
     arrows: false,
     dots: false,
     focusOnSelect: true,
-  }
+  };
   return (
     <>
       <Head>
@@ -167,11 +169,22 @@ export default function ProductDetail({detailProduct, relatedProducts, newProduc
                           <span className="label-text">in fashion</span>
                         </div>
                         <h3 className="price-detail">
-                          {detailProduct.currentPrice}
-                          {detailProduct.currencySymbol}{" "}
+                          <NumberFormat
+                            value={detailProduct.currentPrice}
+                            thousandSeparator={true}
+                            displayType="text"
+                            suffix={detailProduct.currencySymbol}
+                            decimalScale={0}
+                          />{" "}
                           {detailProduct.discountPercent > 0 && (
                             <del>
-                              {detailProduct.price} {detailProduct.currencySymbol}
+                              <NumberFormat
+                              value={detailProduct.price}
+                              thousandSeparator={true}
+                              displayType="text"
+                              suffix={detailProduct.currencySymbol}
+                              decimalScale={0}
+                            />
                             </del>
                           )}
                         </h3>
@@ -284,7 +297,7 @@ export default function ProductDetail({detailProduct, relatedProducts, newProduc
                             }}
                           >
                             <a
-                              style={{margin: "0px"}}
+                              style={{ margin: "0px" }}
                               id="cartEffect"
                               className="btn btn-solid btn-animation"
                             >
@@ -650,7 +663,7 @@ export default function ProductDetail({detailProduct, relatedProducts, newProduc
                         x="0px"
                         y="0px"
                         viewBox="0 0 480 480"
-                        style={{enableBackground: "new 0 0 480 480"}}
+                        style={{ enableBackground: "new 0 0 480 480" }}
                         xmlSpace="preserve"
                         width="512px"
                         height="512px"
@@ -701,7 +714,7 @@ export default function ProductDetail({detailProduct, relatedProducts, newProduc
                         x="0px"
                         y="0px"
                         viewBox="0 0 512 512"
-                        style={{enableBackground: "new 0 0 512 512"}}
+                        style={{ enableBackground: "new 0 0 512 512" }}
                         xmlSpace="preserve"
                         width="512px"
                         height="512px"
@@ -758,7 +771,7 @@ export default function ProductDetail({detailProduct, relatedProducts, newProduc
                   </Slider> */}
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
                     {newProducts.map((product) => {
-                      return <SideProductCart key={product._id} product={product} />
+                      return <SideProductCart key={product._id} product={product} />;
                     })}
                   </Slider>
                 </div>
@@ -771,16 +784,24 @@ export default function ProductDetail({detailProduct, relatedProducts, newProduc
       {/* Section ends */}
       <RelatedProducts data={relatedProducts} />
     </>
+  );
+}
+
+ProductDetail.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }
 
 export async function getServerSideProps(context) {
-  const {slug} = context.query
+  const { slug } = context.query;
   // const response = await API.instance.get(`/products/${slug}`)
   // const data = response.data.data
 
-  const response = await fetch(`${process.env.API_URL}/products/${slug}`)
-  const {data} = await response.json();
+  const response = await fetch(`${process.env.API_URL}/products/${slug}`);
+  const { data } = await response.json();
 
   return {
     props: {
@@ -788,5 +809,5 @@ export async function getServerSideProps(context) {
       relatedProducts: data.relatedProducts,
       newProducts: data.newProducts,
     }, // will be passed to the page component as props
-  }
+  };
 }

@@ -6,6 +6,8 @@ import { AiFillEye,AiFillEyeInvisible } from "react-icons/ai";
 import {useSession} from 'next-auth/react'
 import Breadcrumb from '../../components/Breadcrumb.js'
 import { Form } from 'reactstrap';
+import Layout from "../../components/Layout";
+
 export default function CreatePassWord() {
   const [show, setShow] = useState(false);
   const [showPass,setShowPass] = useState('block');
@@ -27,6 +29,10 @@ export default function CreatePassWord() {
     }
    }
   })
+
+  useEffect(() => {
+    inputPassword.current.focus()
+  },[])
 
   const handleShowPassword = () =>{
     setHidePass('block');
@@ -141,5 +147,13 @@ export default function CreatePassWord() {
       </Modal>
       {/*Section ends*/}
     </>
+  )
+}
+
+CreatePassWord.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }
