@@ -1,3 +1,5 @@
+import Link from "next/link"
+import NumberFormat from "react-number-format";
 
 const MasterProductDetail = ({
   product,
@@ -9,35 +11,44 @@ const MasterProductDetail = ({
   des,
   // variantChangeByColor,
 }) => {
-  let RatingStars = [];
-  let rating = 5;
+  let RatingStars = []
+  let rating = 5
   for (var i = 0; i < rating; i++) {
-    RatingStars.push(<i className="fa fa-star" key={i}></i>);
+    RatingStars.push(<i className="fa fa-star" key={i}></i>)
   }
 
   return (
     <div className={`product-detail ${productDetail} ${detailClass}`}>
-      <div>
-        {title !== "Product style 4" ? (
-          <div className="rating">{RatingStars}</div>
-        ) : (
-          ""
-        )}
-        <h6>{product.name}</h6>
+      <div className="product-info">
+        <div className="rating">{RatingStars}</div>
+        <Link href={`/${product.slug}`}>
+          <a>
+            <h6>{product.name}</h6>
+          </a>
+        </Link>
+
         {des ? <p>{product.description}</p> : ""}
         <h4>
-          {currency.symbol}
-          {(
-            (product.price - (product.price * product.discount) / 100) *
-            currency.value
-          ).toFixed(2)}
-          {product.discount ??
+          <NumberFormat
+            value={product.currentPrice}
+            thousandSeparator={true}
+            displayType="text"
+            suffix={currency.symbol}
+            decimalScale={0}
+          />
+          {product.discountPercent > 1 ? 
             <del>
-              <span className="money">
-                {currency.symbol}
-                {(product.price * currency.value).toFixed(2)}
+              <span className="money ml-1">
+                <NumberFormat
+                  value={product.price}
+                  thousandSeparator={true}
+                  displayType="text"
+                  suffix={currency.symbol}
+                  decimalScale={0}
+                />
               </span>
             </del>
+            : ""
           }
         </h4>
 
@@ -78,7 +89,7 @@ const MasterProductDetail = ({
         )} */}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MasterProductDetail;
+export default MasterProductDetail

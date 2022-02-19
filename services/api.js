@@ -1,5 +1,6 @@
 import axios from "axios";
 import URL from "./../utils/api_url";
+
 const getInstance = () => {
   const instance = axios.create({
     baseURL: URL.baseUrl,
@@ -7,20 +8,20 @@ const getInstance = () => {
   });
   instance.interceptors.request.use(
     async (config) => {
-      let token = "";
+     
       if (typeof window !== "undefined") {
-        if (localStorage.getItem("token")) return localStorage.getItem("token");
-        return "";
+        let token = localStorage.getItem("token");
+        config.headers.Authorization = token ? `Bearer ${token}` : "";
       }
-      if (!token) {
-        return config;
-      }
-      let header = {
-        ...config.headers,
-        Authorization: token,
-      };
+      // if (!token) {
+      //   return config;
+      // }
+      // let header = {
+      //   ...config.headers,
+      //   Authorization: token,
+      // };
 
-      config.headers = header;
+      
 
       return config;
     },
@@ -35,5 +36,4 @@ const getInstance = () => {
 const API = {
   instance: getInstance(),
 };
-
 export default API;

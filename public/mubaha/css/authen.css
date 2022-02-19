@@ -1,0 +1,125 @@
+.background_login{
+  background-color: #f89922;
+  height: auto;
+}
+.padding_login{
+  padding-top: 60px;
+  padding-bottom: 60px;
+
+}
+.login_form{
+  background-color:white;
+  border: none;
+  border-radius: 0.25rem;
+  box-shadow: 3px 10px 0 #f89922;
+}
+.btn-login{
+  width: 100%;
+  padding: 13px 29px;
+    color: #ffffff ;
+    letter-spacing: 0.05em;
+    border: 2px solid ;
+    background-color: #f89922;
+    background-size: 540px;
+    height: 50px
+}
+.text-link{
+  font-size: 13px
+}
+.line{
+  height: 1px;
+    width: 100%;
+    background-color: #dbdbdb;
+    flex: 1;
+}
+.text-or{
+  color: rgb(56, 50, 50);
+    padding: 0 1rem;
+    text-transform: uppercase;
+    font-size: .75rem;
+    text-align: center;
+}
+.login-social{
+  margin-top:40px
+}
+.socail{
+  box-shadow: 0 3px 10px 0 rgb(0 0 0 / 14%);
+}
+.text-icon{
+  margin-left: 1px;
+}
+.register{
+  margin-top: 40px
+}
+.text-signup{
+   padding-left: 40px;
+}
+.logo-login{
+  position: absolute;
+  margin-top: 64px;
+  margin-left: 230px
+}
+.text-pol{
+  margin-left: 70px;
+}
+.text-p{
+  color: red
+}
+.btn-cancle-otp{
+  padding: 13px 29px;
+    color: #ffffff ;
+    letter-spacing: 0.05em;
+    border: 2px solid #dbd5cd;
+    background-image: -webkit-linear-gradient(30deg, #dbd5cd 50%, transparent 50%);
+    background-image: -webkit-linear-gradient(60deg, #dbd5cd 50%, transparent 50%);
+    background-image: linear-gradient(30deg, #dbd5cd 50%, transparent 50%);
+    background-size: 540px;
+    background-repeat: no-repeat;
+    background-position: 0;
+    -webkit-transition: 300ms ease-in-out;
+    transition: 300ms ease-in-out;
+    margin-right: 10px;
+}
+.text-phone-otp{
+  font-size:20px;
+  text-align: center;
+}
+.text-otp{
+  text-align: center;
+}
+.alert-otp{
+  text-align: center;
+  height: 60px
+}
+.hide-show-password{
+position: absolute; 
+  margin: 12px;
+  margin-left: 80%;
+  opacity: 0.7;
+}
+.hide-show-password-2{
+  position: absolute;
+  margin: 12px;
+  margin-left: 80%;
+  opacity: 0.7;
+}
+.icon-password{
+  font-size: 30px;
+  color: #4e4d4a;
+}
+.form-otp{
+  background-color: #fff;
+  width: 50%;
+  box-shadow: 0 3px 10px 0 rgb(0 0 0 / 14%);
+    border-radius: 0.25rem;
+    margin-top: 50px;
+    margin-bottom: 50px
+}
+.text-title-otp{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+  
+

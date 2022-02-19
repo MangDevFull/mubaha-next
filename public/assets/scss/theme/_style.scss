@@ -3797,9 +3797,9 @@ header {
           color: $star-yellow;
         }
 
-        &:last-child {
-          color: $round-border;
-        }
+        // &:last-child {
+        //   color: $round-border;
+        // }
       }
     }
 
@@ -4459,6 +4459,10 @@ header {
     &.parallax-banner#{$i} {
       background-image: url("#{$assetspath}/parallax/#{$i}.jpg");
     }
+  }
+
+  &.parallax-mubaha {
+    background-image: url("/assets/images/parallax/banner1.jpg");
   }
 
   &.parallax-christmas {
@@ -11906,13 +11910,13 @@ footer {
   i {
     padding-right: 5px;
 
-    &:nth-child(-n + 4) {
+    &:nth-child(-n + 5) {
       color: $star-yellow;
     }
 
-    &:last-child {
-      color: $round-border;
-    }
+    // &:last-child {
+    //   color: $round-border;
+    // }
   }
 
   .three-star {

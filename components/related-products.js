@@ -1,10 +1,10 @@
-import Slider from "react-slick";
-import { Container, Row, Col } from "reactstrap";
-import ProductCard from "../components/ProductCard";
-import PostLoader from "./common/post-loader";
-import { Product5 } from "../services/script";
+import Slider from "react-slick"
+import {Container, Row, Col} from "reactstrap"
+import ProductItem from "../components/product-item"
+import PostLoader from "./common/post-loader"
+import {Product5} from "../services/script"
 
-export default function RelatedProducts({ data }) {
+export default function RelatedProducts({data}) {
   return (
     <>
       {/* product section start*/}
@@ -31,14 +31,11 @@ export default function RelatedProducts({ data }) {
                   </div>
                 </div>
               ) : (
-                <Slider
-                  {...Product5}
-                  className="slide-6-product product-m no-arrow"
-                >
+                <Slider {...Product5} className="slide-6-product product-m no-arrow">
                   {data &&
                     data.map((product, index) => (
                       <divp key={index}>
-                        <ProductCard product={product} />
+                        <ProductItem product={product} />
                       </divp>
                     ))}
                 </Slider>
@@ -49,5 +46,5 @@ export default function RelatedProducts({ data }) {
       </section>
       {/* product section end*/}
     </>
-  );
+  )
 }
