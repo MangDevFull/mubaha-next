@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { useState, useCallback,useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import Otp from "../../components/Otp.js";
+import Breadcrumb from '../../components/Breadcrumb.js'
 import Head from "next/head";
 import libphone from "google-libphonenumber";
 import API from "../../services/api.js";
 import { Alert } from "react-bootstrap";
 import otpEnums from "../../utils/otpEnums.js";
 import Layout from "../../components/Layout";
-import {  Row, Form, Input, Col } from 'reactstrap';
+import { Row, Form, Input, Col } from 'reactstrap';
 import LoginSocail from '../../components/authen/LoginSocail.js'
 import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
@@ -23,7 +24,7 @@ export default function LoginWithOtp() {
   const inputPhone = useRef();
   useEffect(() => {
     inputPhone.current.focus();
-  },[])
+  }, [])
 
   const checkPhone = (e) => {
     phone = e.target.value;
@@ -69,64 +70,70 @@ export default function LoginWithOtp() {
       </Head>
       {/* breadcrumb start */}
       {!isVerifyPhone
-      &&
-      <div className="login-page container-fluit">
-
-<Row className="background_login">
-  <Col lg="7">
-  <ImageAuthen />
-  </Col>
-  <Col lg="4" className="right-login mt-5 mb-5 container" >
-    <div className="theme-card login_form" >
-      <h5>Đăng Nhập</h5>
-      <Form className="theme-form" onSubmit={getOtp}>
-      {isNotRegistered &&
-              <Alert style={{textAlign:'center',height:'40px'}} variant={'danger'}>
-              {message}
-              </Alert>
-            }
-        <div className="form-group">
-          <input ref={inputPhone}
-          onChange={checkPhone}
-           type="text" className="form-control" placeholder="Nhập số điện thoại của bạn" required="" />
+        &&
+        <div className="login-page container-fluit">
+          <Row className="background_login d-flex justify-content-center">
+            <div className="right-login margin-form-otp d-flex">
+              <div className="" style={{width:"50%"}}>
+                <ImageAuthen />
+              </div>
+              <div className="theme-card login_form-right " style={{width:"50%"}}>
+                <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
+                  <h3 className="text-center">Đăng Nhập</h3>
+                </div>
+                <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
+                  {isNotRegistered &&
+                    <Alert style={{ textAlign: 'center', height: '40px' }} variant={'danger'}>
+                      {message}
+                    </Alert>
+                  }
+                  <div className="form-group mb-1">
+                    <input ref={inputPhone}
+                      onChange={checkPhone}
+                      type="text" className="form-control"
+                      placeholder="Nhập số điện thoại của bạn" required="" />
+                  </div>
+                  <div className="d-flex justify-content-end mb-5">
+                      <div>
+                        <Link href="/auth/login">
+                          <a className="text-link text-primary">Đăng nhập mật khẩu</a>
+                        </Link>
+                      </div>
+                    </div>
+                  <div className="d-flex justify-content-center">
+                    <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-login">Đăng nhập</button>
+                  </div>
+                </Form>
+                <div className="login-social mx-auto">
+                  <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
+                  <LoginSocail />
+                </div>
+                <Row className='register d-flex justify-content-center  ml-3 mr-3 mb-5'>
+                  <div className="">
+                    <Link href="/auth/register">
+                      <a className="text-primary" >Tạo một tài khoản mới</a>
+                    </Link>
+                  </div>
+                </Row>
+              </div>
+            </div>
+          </Row>
         </div>
-        <button type='submit' disabled={isNotValidPhone} style={{width:'100%',backgroundColor:'#f89922'}} className="btn btn-solid">Đăng nhập</button>
-        <div className="d-flex justify-content-end" style={{ paddingTop: '10px' }}>
-          <div >
-  
-            <Link href="/auth/login">
-              <a className="text-link">Đăng nhập mật khẩu</a>
-            </Link>
-          </div>
-        </div>
-      </Form>
-      <div className="login-social">
 
-        <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
-        <LoginSocail />
-        <Row className='register '>
-          <div className='mx-auto'>
-            <p className='text-signup'><span>Bạn chưa có tài khoản? </span>
-            <Link href="/auth/register">
-          <a >Đăng ký</a>
+}
 
-        </Link>
-             </p>
-          </div>
-        </Row>
-      </div>
-    </div>
-  </Col>
-  <Col lg="1"></Col>
+
+{ isVerifyPhone && 
+  <div>
+  <Breadcrumb previousLink= "/auth/login"
+        previousValue="Đăng nhập" currentValue="Xác thực Otp" />
+                  <Row className="background_login d-flex justify-content-center">
+<Otp phone={phone} type={otpEnums.LOGIN} /> 
 </Row>
+  </div>
 
-</div>
-      }
+}
 
-
-     { isVerifyPhone && <Otp  phone={phone} type={otpEnums.LOGIN} />}
-
-      {/*Section ends*/}
     </>
   );
 }

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { AiFillEye,AiFillEyeInvisible } from "react-icons/ai";
 import {useSession} from 'next-auth/react'
 import Breadcrumb from '../../components/Breadcrumb.js'
+import { Form } from 'reactstrap';
 import Layout from "../../components/Layout";
 
 export default function CreatePassWord() {
@@ -29,6 +30,10 @@ export default function CreatePassWord() {
    }
   })
 
+  useEffect(() => {
+    inputPassword.current.focus()
+  },[])
+
   const handleShowPassword = () =>{
     setHidePass('block');
     setShowPass('none')
@@ -39,7 +44,8 @@ export default function CreatePassWord() {
     setShowPass("block")
     setInputValues("password")
   }
-  const handleCreatePass = async () => {
+  const handleCreatePass = async (e) => {
+    e.preventDefault()
     const body = {
       password: inputPassword.current.value
     }
@@ -78,7 +84,7 @@ export default function CreatePassWord() {
                   </Link>
                 </span>
               </p>
-              <div className="theme-form" style={{marginTop: "10px"}}>
+              <Form className="theme-form" style={{marginTop: "10px"}} onSubmit={handleCreatePass}>
                 <div className="form-row row">
                   <div className="col-md-12 d-flex">
   
@@ -93,11 +99,11 @@ export default function CreatePassWord() {
     
           
                   </div>
-                  <a className="btn btn-solid w-auto" onClick={handleCreatePass}>
+                  <button className="btn btn-solid w-auto" type='submit'>
                     Tạo
-                  </a>
+                  </button>
                 </div>
-              </div>
+              </Form>
             </div>
           </div>
         </div>
@@ -115,11 +121,11 @@ export default function CreatePassWord() {
       </svg>
 
       <Modal show={show}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Thông báo</Modal.Title>
         </Modal.Header>
 
-        <div className="alert alert-success d-flex align-items-center" role="alert">
+        <div className="alert alert-success d-flex justify-content-center align-items-center" role="alert">
           <svg
             className="bi flex-shrink-0 me-2"
             width={24}
@@ -129,12 +135,11 @@ export default function CreatePassWord() {
           >
             <use xlinkHref="#check-circle-fill" />
           </svg>
-          <div>Tạo mật khẩu thành công</div>
+          <div style={{marginLeft:"10px"}}>Tạo mật khẩu thành công</div>
         </div>
         <Modal.Footer>
           <div>
-            <p style={{marginRight: "10px"}}>
-              {" "}
+            <p style={{marginRight: "10px",textAlign: "center"}}>
               Xin chờ một chút bạn đang được chuyển hướng đến sang trang chủ
             </p>
           </div>

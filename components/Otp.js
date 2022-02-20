@@ -2,7 +2,6 @@ import OtpInput from 'react-otp-input';
 import { Alert } from 'react-bootstrap';
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
-import Breadcrumb from '../components/Breadcrumb.js'
 import { useRouter } from 'next/router'
 import otpEnums from '../utils/otpEnums.js';
 import { signIn } from "next-auth/react";
@@ -57,9 +56,6 @@ export default function VerifyOtp({ phone, type }) {
   }
   return (
     <>
-      <Breadcrumb previousLink={type == otpEnums.LOGIN ? "/auth/login" : "/auth/register"}
-        previousValue={type == otpEnums.LOGIN ? "Đăng nhập" : "Đăng ký"} currentValue="Xác thực Otp" />
-
       <div className="card form-otp container">
         <div className="text-title-otp mt-5">
           <h3>  Vui Lòng Nhập Mã Xác Minh</h3>
