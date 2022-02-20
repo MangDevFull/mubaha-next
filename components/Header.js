@@ -3,12 +3,12 @@ import Link from "next/link"
 import {useEffect} from "react"
 import {Container, Row, Col, Media, InputGroup, Button, Input} from "reactstrap"
 
-import TopBarDark from "./common/topbar-dark"
+import TopBarDark from "./common/TopbarDark"
 
 import logo from "../assets/images/logo-color.svg"
 import search from "../public/assets/images/icon/search.png"
 
-import NavBar from "./common/navbar"
+import NavBar from "./common/Navbar"
 
 export default function Header({}) {
   useEffect(() => {
