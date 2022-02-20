@@ -82,14 +82,14 @@ export default function LoginPage() {
         router.push('/')
       } else {
         const data = JSON.parse(res.error)
-        if(data.errors[0]=="isCreatPassword"){
-          setMessage(data.message);
-        setInvalid(false)
-        setIsCreatePassword(true)
-        }else{
+        if (data.errors == null ) {
           setMessage(data.message);
           setInvalid(true)
           setIsCreatePassword(false)
+        }else {
+          setMessage(data.message);
+          setInvalid(false)
+          setIsCreatePassword(true)
         }
       }
     }
@@ -145,10 +145,10 @@ export default function LoginPage() {
         <div className="login-page container-fluit">
           <Row className="background_login d-flex justify-content-center">
             <div className="right-login margin-form d-flex">
-              <div className="" style={{width:"50%"}}>
+              <div className="" style={{ width: "50%" }}>
                 <ImageAuthen />
               </div>
-              <div className="theme-card login_form-right " style={{width:"50%"}}>
+              <div className="theme-card login_form-right " style={{ width: "50%" }}>
                 <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
                   <h3 className="text-center">Đăng Nhập</h3>
                 </div>
@@ -230,15 +230,15 @@ export default function LoginPage() {
         </div>
       }
 
-      {isVerifyPhone 
-      && 
-      <div>
-      <Breadcrumb previousLink= "/"
-        previousValue="Trang chủ" currentValue="Xác thực Otp" />
-                  <Row className="background_login d-flex justify-content-center">
-<Otp phone={phone} type={otpEnums.CREATE_PASSWORD} /> 
-</Row>
-      </div>
+      {isVerifyPhone
+        &&
+        <div>
+          <Breadcrumb previousLink="/"
+            previousValue="Trang chủ" currentValue="Xác thực Otp" />
+          <Row className="background_login d-flex justify-content-center">
+            <Otp phone={phone} type={otpEnums.CREATE_PASSWORD} />
+          </Row>
+        </div>
       }
       {/*Section ends*/}
     </>
