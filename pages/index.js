@@ -3,14 +3,14 @@ import Slider from "react-slick";
 import API from "../services/api";
 import MasterBanner from "../components/MasterBanner";
 import MainServiceCollections from "../components/MainServiceCollections";
-import ProductCollection1 from "../components/product-collection1";
+import ProductCollection1 from "../components/ProductCollection1";
 import Layout from "../components/Layout";
 
 import { useSession } from "next-auth/react";
 
-import MainMultipleSlider from "../components/main-multiple-slider";
-import PartitionSlider from "../components/partition-slider";
-import MasterParallaxBanner from "../components/master-parallax-banner";
+import MainMultipleSlider from "../components/MainMultipleSlider";
+import PartitionSlider from "../components/PartitionSlider";
+import MasterParallaxBanner from "../components/MasterParallaxBanner";
 
 const Data = [
   {

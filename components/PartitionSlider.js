@@ -1,8 +1,8 @@
 import Slider from "react-slick";
 import { Col, Container, Row } from "reactstrap";
-import OneColumnProductSlider from "./common/one-column-product-slider";
+import OneColumnProductSlider from "./common/OneColumnProductSlider";
 
-import ProductItem from "./product-item";
+import ProductItem from "./ProductItem";
 
 export default function PartitionSlider({
   leftNewProducts,

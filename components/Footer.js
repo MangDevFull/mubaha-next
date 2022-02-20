@@ -7,8 +7,8 @@ import Link from "next/link";
 import { Container, Row, Col, Form, FormGroup, Input, Button, Collapse } from "reactstrap";
 
 import logo from "../assets/images/logo-color.svg";
-import Copyright from "./common/copyright.js";
-import MasonryCategoryGrid from "./common/Masonry-category-grid";
+import Copyright from "./common/Copyright";
+import MasonryCategoryGrid from "./common/MasonryCategoryGrid";
 
 export default function Footer({ categories }) {
   const [isOpen, setIsOpen] = useState();

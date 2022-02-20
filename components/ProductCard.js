@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Row, Col, Media, Modal, ModalBody } from "reactstrap";
 
-import MasterProductDetail from "./common/product-box/master-product-detail";
+import MasterProductDetail from "./common/product-box/MasterProductDetail";
 
 const currency = {
   ccurrency: "USD",

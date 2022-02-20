@@ -1,12 +1,12 @@
 
-import PostLoader from './common/post-loader';
+import PostLoader from './common/PostLoader';
 import {
   Container, Row, Col,
 } from 'reactstrap'
 
 import { Product5 } from '../services/script'
 
-import ProductItem from './product-item'
+import ProductItem from './ProductItem'
 
 import Slider from 'react-slick';
 

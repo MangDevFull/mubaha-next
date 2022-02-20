@@ -1,6 +1,6 @@
 import React from "react";
 import Masonry from "react-masonry-css";
-import styles from './masonry-category-grid.module.css'
+import styles from './MasonryCategoryGrid.module.css'
 
 export default function MasonryCategoryGrid({ data, grid, colClass }) {
   return (

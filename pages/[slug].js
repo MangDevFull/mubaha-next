@@ -7,7 +7,7 @@ import { Row, Col, Media, Collapse } from "reactstrap";
 import { useRouter } from "next/router";
 import product from "./products.json";
 import API from "../services/api";
-import RelatedProducts from "../components/related-products";
+import RelatedProducts from "../components/RelatedProducts";
 import NumberFormat from "react-number-format";
 import Layout from "../components/Layout";
 
