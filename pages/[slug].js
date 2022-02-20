@@ -4,7 +4,6 @@ import Head from "next/head";
 import SideProductCart from "../components/SideProductCart";
 import { Row, Col, Media, Container } from "reactstrap";
 import { useRouter } from "next/router";
-import API from "../services/api";
 import RelatedProducts from "../components/related-products";
 import Layout from "../components/Layout";
 import ProductTab from "./product-details/common/product-tab";

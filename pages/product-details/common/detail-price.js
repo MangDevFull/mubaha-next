@@ -1,3 +1,4 @@
+import { blue } from "@material-ui/core/colors";
 import React, { useState } from "react";
 import NumberFormat from "react-number-format";
 import { Modal, ModalBody, ModalHeader, Media, Input } from "reactstrap";
@@ -19,14 +20,17 @@ const DetailsWithPrice = ({ data }) => {
     {
       id: 1,
       className: "bg-light0",
+      name: "Blue",
     },
     {
       id: 2,
       className: "bg-light1",
+      name: "Pink",
     },
     {
       id: 3,
       className: "bg-light2",
+      name: "Grey",
     },
   ];
   const selectedColor = (colorVariant) => {
@@ -37,19 +41,19 @@ const DetailsWithPrice = ({ data }) => {
   const Sizes = [
     {
       id: 1,
-      name: "s",
+      name: "S",
     },
     {
       id: 2,
-      name: "m",
+      name: "M",
     },
     {
       id: 3,
-      name: "l",
+      name: "L",
     },
     {
       id: 4,
-      name: "xl",
+      name: "XL",
     },
   ];
   const handleSelectedSize = (size) => {
@@ -94,12 +98,32 @@ const DetailsWithPrice = ({ data }) => {
         <ul className="color-variant">
           {colorVariants.map((colorVariant) => (
             <li
-              style={selectedVariant === colorVariant.id ? { border: "1px solid" } : {}}
+              style={
+                selectedVariant === colorVariant.id
+                  ? { width: "81px !important",
+                  height: "34px",
+                  border: "1px solid #ffa200",
+                  borderRadius: "0",
+                  marginRight: "10px",
+                  textAlign: "center",
+                  lineHeight: "2.3",
+                  color: "#ffa200" }
+                  : {
+                      width: "81px !important",
+                      height: "34px",
+                      border: "1px solid rgba(0,0,0,.09)",
+                      borderRadius: "0",
+                      marginRight: "10px",
+                      textAlign: "center",
+                      lineHeight: "2.3"
+                    }
+              }
               key={colorVariant.id}
-              className={colorVariant.className}
               checked={selectedVariant === colorVariant.id}
               onClick={() => selectedColor(colorVariant)}
-            />
+            >
+              {colorVariant.name}
+            </li>
           ))}
         </ul>
         <div id="selectSize" className="addeffect-section product-description border-product">
@@ -156,8 +180,8 @@ const DetailsWithPrice = ({ data }) => {
                 <li
                   style={
                     selectedSize === size.id
-                      ? { lineHeight: 2.2, border: "1px solid" }
-                      : { lineHeight: 2.2 }
+                      ? { lineHeight: 2.3, border: "1px solid #ffa200" }
+                      : { lineHeight: 2.3 }
                   }
                   checked={selectedSize === size.id}
                   key={size.id}
