@@ -144,12 +144,12 @@ export default function LoginPage() {
       {!isVerifyPhone
         &&
         <div className="login-page container-fluit">
-          <Row className="background_login d-flex justify-content-center">
-            <div className="right-login margin-form d-flex">
-              <div className="" style={{ width: "50%" }}>
+          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
+            <div className={`right-login ${styles.marginForm} d-flex`}>
+              <div style={{ width: "50%" }}>
                 <ImageAuthen />
               </div>
-              <div className="theme-card login_form-right " style={{ width: "50%" }}>
+              <div className={`theme-card ${styles.loginFormRight}`} style={{ width: "50%" }}>
                 <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
                   <h3 className="text-center">Đăng Nhập</h3>
                 </div>
@@ -178,22 +178,22 @@ export default function LoginPage() {
                       <input type={inputValues} className="form-control"
                         ref={inputPassword}
                         placeholder="Nhập mật khẩu của bạn" required="" />
-                      <div onClick={handleShowPassword} style={{ display: showPass }} className="hide-show-password">
-                        <AiFillEye className="icon-password" />
+                      <div onClick={handleShowPassword} style={{ display: showPass }} className={styles.hideShowPassword}>
+                        <AiFillEye className={styles.iconPassword} />
                       </div>
-                      <div onClick={handlHidePassword} style={{ display: hidePass }} className="hide-show-password">
-                        <AiFillEyeInvisible className="icon-password" />
+                      <div onClick={handlHidePassword} style={{ display: hidePass }} className={styles.hideShowPassword}>
+                        <AiFillEyeInvisible className={styles.iconPassword} />
                       </div>
                     </div>
                     <div className="d-flex justify-content-between mb-5">
                       <div >
                         <Link href="#">
-                          <a className="text-link text-secondary">Quên mật khẩu?</a>
+                          <a className={`${styles.textLink} text-secondary`}>Quên mật khẩu?</a>
                         </Link>
                       </div>
                       <div>
                         <Link href="/auth/login-otp">
-                          <a className="text-link text-primary">Đăng nhập SMS</a>
+                          <a className={ `${styles.textLink} text-primary`}>Đăng nhập SMS</a>
                         </Link>
                       </div>
                     </div>
@@ -202,12 +202,12 @@ export default function LoginPage() {
                     <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-block">Đăng nhập</button>
                   </div>
                 </Form>
-                <div className="login-social mx-auto">
-                  <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
+                <div className="mt-5 mx-auto">
+                  <h5 className={styles.textOr}>HOẶC TIẾP TỤC VỚI</h5>
                   <LoginSocail />
                 </div>
-                <Row className='register d-flex justify-content-center  ml-3 mr-3 mb-5'>
-                  <div className="">
+                <Row className='mt-5 d-flex justify-content-center  ml-3 mr-3 mb-5'>
+                  <div>
                     <Link href="/auth/register">
                       <a className="text-primary" >Tạo một tài khoản mới</a>
                     </Link>
@@ -234,9 +234,9 @@ export default function LoginPage() {
       {isVerifyPhone
         &&
         <div>
-          <Breadcrumb previousLink="/"
-            previousValue="Trang chủ" currentValue="Xác thực Otp" />
-          <Row className="background_login d-flex justify-content-center">
+          <Breadcrumb previousLink="/auth/login"
+            previousValue="Trang đăng nhập" currentValue="Xác thực Otp" />
+          <Row className={ `${styles.backgroundLogin} d-flex justify-content-center`}>
             <Otp phone={phone} type={otpEnums.CREATE_PASSWORD} />
           </Row>
         </div>

@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import otpEnums from '../utils/otpEnums.js';
 import { signIn } from "next-auth/react";
-
+import styles from '../styles/authen.module.css'
 export default function VerifyOtp({ phone, type }) {
   const router = useRouter()
   const [otp, setOtp] = useState('')
@@ -56,16 +56,16 @@ export default function VerifyOtp({ phone, type }) {
   }
   return (
     <>
-      <div className="card form-otp container">
-        <div className="text-title-otp mt-5">
+      <div className={`card ${styles.formOtp} container`}>
+        <div className={`${styles.textTitleOtp} mt-5`}>
           <h3>  Vui Lòng Nhập Mã Xác Minh</h3>
         </div>
-        <p className="text-otp">
+        <p className={styles.textOtp}>
           Mã xác minh của bạn sẽ được gửi bằng tin nhắn đến số điện thoại
         </p>
-        <p className="text-phone-otp"><b>({phone})</b></p>
+        <p className={styles.textPhoneOtp}><b>({phone})</b></p>
         {isInvalidOtp &&
-          <Alert className='alert-otp' variant={'danger'}>
+          <Alert className={styles.alertOtp} variant={'danger'}>
             Mã xác minh không hợp lệ
           </Alert>
         }
@@ -77,10 +77,6 @@ export default function VerifyOtp({ phone, type }) {
               width: "4em",
               height: "4em",
             }}
-            // containerStyle={{
-            //   marginLeft: "215px",
-            //   marginBottom: "20px",
-            // }}
             value={otp}
             onChange={checkOtp}
             numInputs={4}
@@ -98,12 +94,19 @@ export default function VerifyOtp({ phone, type }) {
                 <a> Gửi lại</a>
               </Link>
             </span>{" "}
-            hoặc
+            {
+            type == otpEnums.LOGIN && 
+            (
+              <>
+              hoặc
             <span style={{ color: "blue" }}>
               <Link href="/auth/login">
                 <a> thử bằng phương thức xác minh khác</a>
               </Link>
             </span>
+            </>
+            )
+          }
           </p>
         </div>
       </div>

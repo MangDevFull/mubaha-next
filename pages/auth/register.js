@@ -12,6 +12,7 @@ import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
 import Layout from "../../components/Layout";
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 import otpEnums from '../../utils/otpEnums.js';
+import styles from '../../styles/authen.module.css'
 
 const phoneUtil = PhoneNumberUtil.getInstance()
 
@@ -68,12 +69,12 @@ export default function RegisterPage() {
       {!isVerifyPhone
        &&
        <div className="login-page container-fluit">
-          <Row className="background_login d-flex justify-content-center">
-            <div className="right-login margin-form-otp d-flex">
+          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
+            <div className={`right-login ${styles.marginForm} d-flex`}>
               <div className="" style={{width:"50%"}}>
                 <ImageAuthen />
               </div>
-              <div className="theme-card login_form-right " style={{width:"50%"}}>
+              <div className={`theme-card ${styles.loginFormRight}`} style={{width:"50%"}}>
                 <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
                   <h3 className="text-center">Đăng Ký</h3>
                 </div>
@@ -93,17 +94,17 @@ export default function RegisterPage() {
                     <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-block">Đăng Ký</button>
                   </div>
                 </Form>
-                <div className="login-social mx-auto">
-                  <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
+                <div className="mt-5 mx-auto">
+                  <h5 className={styles.textOr}>HOẶC TIẾP TỤC VỚI</h5>
                   <LoginSocail />
                 </div>
-                <Row className='register d-flex justify-content-center  ml-3 mr-3 mb-5'>
+                <Row className='mt-5 d-flex justify-content-center  ml-3 mr-3 mb-5'>
                 <div className=' mb-4 mx-auto'>
             <h6 style={{ textAlign: 'center', fontSize: '13px' }}>
-              Bằng việc đăng kí, bạn đã đồng ý với Mubaha về <br></br>
-              <span className='text-p'>Điều khoản dịch vụ</span>
+              Bằng việc đăng kí, bạn đã đồng ý với Mubaha về 
+              <span className={styles.textPolicies}> Điều khoản dịch vụ</span>
               <span> & </span>
-              <span className='text-p'>Chính sách bảo mật</span></h6>
+              <span className={styles.textPolicies}>Chính sách bảo mật</span></h6>
           </div>
           <div className='d-flex justify-content-center'>
             <p className='mx-auto'>
@@ -118,19 +119,12 @@ export default function RegisterPage() {
             </div>
           </Row>
         </div>
-
-  
-
-         
-    
         }
-     
-
       {isVerifyPhone && 
       <div>
       <Breadcrumb previousLink= "/auth/register"
         previousValue="Đăng ký" currentValue="Xác thực Otp" />
-                  <Row className="background_login d-flex justify-content-center">
+                  <Row className={ `${styles.backgroundLogin} d-flex justify-content-center`}>
 <Otp phone={phone} type={otpEnums.REGISTRATION} /> 
 </Row>
       </div>

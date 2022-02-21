@@ -11,6 +11,8 @@ import Layout from "../../components/Layout";
 import { Row, Form, Input, Col } from 'reactstrap';
 import LoginSocail from '../../components/authen/LoginSocail.js'
 import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
+import styles from '../../styles/authen.module.css'
+
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
@@ -72,12 +74,12 @@ export default function LoginWithOtp() {
       {!isVerifyPhone
         &&
         <div className="login-page container-fluit">
-          <Row className="background_login d-flex justify-content-center">
-            <div className="right-login margin-form-otp d-flex">
+          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
+            <div className={`right-login ${styles.marginForm} d-flex`}>
               <div className="" style={{width:"50%"}}>
                 <ImageAuthen />
               </div>
-              <div className="theme-card login_form-right " style={{width:"50%"}}>
+              <div className={`theme-card ${styles.loginFormRight}`} style={{width:"50%"}}>
                 <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
                   <h3 className="text-center">Đăng Nhập</h3>
                 </div>
@@ -96,7 +98,7 @@ export default function LoginWithOtp() {
                   <div className="d-flex justify-content-end mb-5">
                       <div>
                         <Link href="/auth/login">
-                          <a className="text-link text-primary">Đăng nhập mật khẩu</a>
+                          <a className={ `${styles.textLink} text-primary`}>Đăng nhập mật khẩu</a>
                         </Link>
                       </div>
                     </div>
@@ -104,11 +106,11 @@ export default function LoginWithOtp() {
                     <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-block">Đăng nhập</button>
                   </div>
                 </Form>
-                <div className="login-social mx-auto">
-                  <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
+                <div className="mt-5 mx-auto">
+                  <h5 className={styles.textOr}>HOẶC TIẾP TỤC VỚI</h5>
                   <LoginSocail />
                 </div>
-                <Row className='register d-flex justify-content-center  ml-3 mr-3 mb-5'>
+                <Row className='mt-5 d-flex justify-content-center  ml-3 mr-3 mb-5'>
                   <div className="">
                     <Link href="/auth/register">
                       <a className="text-primary" >Tạo một tài khoản mới</a>
@@ -125,9 +127,9 @@ export default function LoginWithOtp() {
 
 { isVerifyPhone && 
   <div>
-  <Breadcrumb previousLink= "/auth/login"
+  <Breadcrumb previousLink= "/auth/login-otp"
         previousValue="Đăng nhập" currentValue="Xác thực Otp" />
-                  <Row className="background_login d-flex justify-content-center">
+                  <Row className={ `${styles.backgroundLogin} d-flex justify-content-center`}>
 <Otp phone={phone} type={otpEnums.LOGIN} /> 
 </Row>
   </div>
