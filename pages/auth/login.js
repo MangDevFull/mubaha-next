@@ -13,7 +13,7 @@ import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
 import Layout from "../../components/Layout";
 import API from "../../services/api.js";
 import Otp from "../../components/Otp.js";
-import otpEnums from "../../utils/otpEnums.js";
+import otpEnums from "../../enums/otpEnums.js";
 import styles from '../../styles/authen.module.css'
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;

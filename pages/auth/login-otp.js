@@ -6,7 +6,7 @@ import Head from "next/head";
 import libphone from "google-libphonenumber";
 import API from "../../services/api.js";
 import { Alert } from "react-bootstrap";
-import otpEnums from "../../utils/otpEnums.js";
+import otpEnums from "../../enums/otpEnums.js";
 import Layout from "../../components/Layout";
 import { Row, Form, Input, Col } from 'reactstrap';
 import LoginSocail from '../../components/authen/LoginSocail.js'

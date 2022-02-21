@@ -6,7 +6,7 @@ import Breadcrumb from '../../components/Breadcrumb.js'
 import libphone from 'google-libphonenumber';
 import {useSession} from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { getSession } from "next-auth/react"
+import accountType from "../../enums/accountType.enum.js";
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
@@ -49,10 +49,15 @@ export default function AppLyVendor({ data }) {
     },
     detail: "",
   })
-  useEffect( async () => {
-    const ss = await getSession()
-    setUser(ss.user)
-  },[])
+  useEffect(() => {
+    if (session != undefined) {
+      if(session.user.type == accountType.VENDOR || session.user.type == accountType.ADMIN){
+        router.push('/')
+      }else if(session.user.type == accountType.CUSTOMER){
+        setUser(session.user)
+      }
+    }
+  })
   const handleClose = () => setShow(false)
   const handleShow = () => {
     setShow(true)
@@ -174,7 +179,6 @@ export default function AppLyVendor({ data }) {
           body: JSON.stringify(body)
     
         }
-        console.log(body)
         const response = await fetch(`${process.env.API_URL}/vendors/apply`,options)
 
         const data = await response.json()

@@ -11,7 +11,7 @@ import LoginSocail from '../../components/authen/LoginSocail.js'
 import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
 import Layout from "../../components/Layout";
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
-import otpEnums from '../../utils/otpEnums.js';
+import otpEnums from "../../enums/otpEnums.js";
 import styles from '../../styles/authen.module.css'
 
 const phoneUtil = PhoneNumberUtil.getInstance()

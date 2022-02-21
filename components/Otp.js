@@ -3,7 +3,7 @@ import { Alert } from 'react-bootstrap';
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import otpEnums from '../utils/otpEnums.js';
+import otpEnums from "../enums/otpEnums.js";
 import { signIn } from "next-auth/react";
 import styles from '../styles/authen.module.css'
 export default function VerifyOtp({ phone, type }) {
