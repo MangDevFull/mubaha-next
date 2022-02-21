@@ -56,6 +56,8 @@ export default function AppLyVendor({ data }) {
   const handleClose = () => setShow(false)
   const handleShow = () => {
     setShow(true)
+    setMessage("")
+    setShowMessage(false)
   }
   const inputPhoneVendor = useRef()
   const inputBrandName = useRef()
@@ -96,27 +98,34 @@ export default function AppLyVendor({ data }) {
     var reg = /^\d+$/;
     if (!reg.test(inputPhone.current.value)) {
       mess += "Số điện thoại không hợp lệ"
+      setIsDiabledApply(true)
     } else {
       if (inputPhone.current.value.length < 2 || inputPhone.current.value == null) {
         mess += "Số điện thoại không hợp lệ"
+        setIsDiabledApply(true)
       } else {
         const number = phoneUtil.parse(inputPhone.current.value, "VN");
         if (!phoneUtil.isValidNumber(number)) {
-          mess += "Số điện thoại không hợp lệ"
+          mess += "Số điện thoại không hợp lệ, "
+          setIsDiabledApply(true)
         }
       }
     }
     if(inputName.current.value.length<10){
-      mess += ", Tên không hợp lệ"
+      mess += "Tên không hợp lệ, "
+      setIsDiabledApply(true)
     }
     if(selectPrivince.current.value== ""){
-      mess += ", Tỉnh hoặc thành phố không hợp lệ"
+      mess += "Tỉnh hoặc thành phố không hợp lệ, "
+      setIsDiabledApply(true)
     }
     if(selectDistrict.current.value== ""){
-      mess += ", Quận hoặc huyện không hợp lệ"
+      mess += ", Quận hoặc huyện không hợp lệ, "
+      setIsDiabledApply(true)
     }
     if(selectWard.current.value== ""){
-      mess += ", Xã hoặc phường không hợp lệ"
+      mess += "Xã hoặc phường không hợp lệ, "
+      setIsDiabledApply(true)
     }
     if(mess==""){
       const dataAdd = {
@@ -496,9 +505,11 @@ export default function AppLyVendor({ data }) {
                       </p>
                     </div>
                   )}
-                  <button className="btn-solid btn-sm" onClick={handleShow}>
+                  <div className="mt-2">
+                  <button className="btn p-0 m-0" onClick={handleShow}>
                     Cập nhật địa chỉ lấy hàng
                   </button>
+                  </div>
                 </div>
               </div>
             </div>
