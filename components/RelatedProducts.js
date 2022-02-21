@@ -6,6 +6,7 @@ import {Product5} from "../services/script"
 
 export default function RelatedProducts({data}) {
   return (
+    
     <>
       {/* product section start*/}
       <section className="section-b-space ratio_asos">

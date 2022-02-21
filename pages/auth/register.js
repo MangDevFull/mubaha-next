@@ -90,7 +90,7 @@ export default function RegisterPage() {
                       placeholder="Nhập số điện thoại của bạn" required="" />
                   </div>
                   <div className="d-flex justify-content-center">
-                    <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-login">Đăng Ký</button>
+                    <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-block">Đăng Ký</button>
                   </div>
                 </Form>
                 <div className="login-social mx-auto">
