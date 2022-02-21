@@ -38,13 +38,13 @@ export default function VerifyOtp({ phone, type }) {
 
         }
       }else if(type==otpEnums.CREATE_PASSWORD){
-        console.log(phone,e)
+
         const res = await signIn("mubaha", {
           phone: phone,
           code: e,
           redirect: false,
         });
-        console.log(res)
+
         if (res.error == null) {
           router.push('/auth/create-password')
         } else {

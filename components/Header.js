@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
-import {useEffect} from "react"
-import {Container, Row, Col, Media, InputGroup, Button, Input} from "reactstrap"
+import { useEffect } from "react"
+import { Container, Row, Col, Media, InputGroup, Button, Input } from "reactstrap"
 
 import TopBarDark from "./common/TopbarDark"
 
@@ -10,7 +10,7 @@ import search from "../public/assets/images/icon/search.png"
 
 import NavBar from "./common/Navbar"
 
-export default function Header({}) {
+export default function Header({ }) {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
 
@@ -48,17 +48,15 @@ export default function Header({}) {
             <Col>
               <div className="main-menu d-flex">
                 <div className="menu-left">
-                  <div className="brand-logo">
-                    <div style={{width: "260px", maxWidth: "260px"}}>
-                      <Link href="/">
-                        <a>
-                          <Image src={logo} alt="Mubaha" layout="responsive" />
-                        </a>
-                      </Link>
-                    </div>
-                  </div>
+                  <Link href="/">
+                    <a>
+                      <div className="brand-logo" style={{ width: "260px", maxWidth: "260px" }}>
+                        <Image src={logo} alt="Mubaha" layout="responsive" />
+                      </div>
+                    </a>
+                  </Link>
                 </div>
-                <div className="flex-grow-1" style={{maxWidth: "700px"}}>
+                <div className="flex-grow-1" style={{ maxWidth: "500px" }}>
                   <InputGroup>
                     <Input type="search" placeholder="Săn sale #MUBAHASALES" />
                     <Button>
@@ -100,7 +98,7 @@ export default function Header({}) {
         <Container id="navbar-row">
           <Row>
             <Col>
-              <div className="main-nav-center border-section">
+              <div className="main-nav-center border-section border-bottom-0">
                 <NavBar />
               </div>
             </Col>
