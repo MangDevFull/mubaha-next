@@ -10,7 +10,6 @@ import { Row, Form, Input, Col } from 'reactstrap';
 import LoginSocail from '../../components/authen/LoginSocail.js'
 import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
 import Layout from "../../components/Layout";
-import OtpInput from 'react-otp-input';
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 import otpEnums from '../../utils/otpEnums.js';
 
