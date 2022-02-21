@@ -14,7 +14,7 @@ const phoneUtil = PhoneNumberUtil.getInstance()
 export default function AppLyVendor({ data }) {
 
   const router = useRouter();
-  const { data: session, status } = useSession({
+  const {data:session, status } = useSession({
     required: true,
     onUnauthenticated() {
       router.push('/')
@@ -29,6 +29,9 @@ export default function AppLyVendor({ data }) {
   const [message, setMessage] = useState("")
   const [showMessage, setShowMessage] = useState(false)
   const [user,setUser] = useState({})
+  const [messageError, setMessageError] = useState("")
+  const [showMessageError, setShowMessageError] = useState(false)
+  const [isDiabledApply,setIsDiabledApply] = useState(true)
   const [address, setAddress] = useState({
     fullName: "",
     phone: "",
@@ -50,7 +53,6 @@ export default function AppLyVendor({ data }) {
     const ss = await getSession()
     setUser(ss.user)
   },[])
-  console.log('sssss',user)
   const handleClose = () => setShow(false)
   const handleShow = () => {
     setShow(true)
@@ -116,10 +118,6 @@ export default function AppLyVendor({ data }) {
     if(selectWard.current.value== ""){
       mess += ", Xã hoặc phường không hợp lệ"
     }
-    let detail = ""
-    if(inputDetailAddress.current.value== ""){
-      detail = "null"
-    }
     if(mess==""){
       const dataAdd = {
         fullName: inputName.current.value,
@@ -136,15 +134,48 @@ export default function AppLyVendor({ data }) {
           code: selectWard.current.value,
           name: selectWard.current.options[selectWard.current.selectedIndex].text,
         },
-        detail: detail ,
+        detail: inputDetailAddress.current.value ,
       }
       setAddress(dataAdd)
       setShow(false)
       setShowAddress(true)
+      setIsDiabledApply(false)
     }else{
       setMessage(mess)
       setShowMessage(true)
     }
+  }
+  const appLyVendor = async () => {
+        const body = {
+          brandName: inputBrandName.current.value,
+          phone: address.phone,
+          fullName: address.fullName,
+          provinceCode: address.province.code,
+          districtCode: address.district.code,
+          wardCode: address.ward.code,
+          detailAddress: address.detail,
+          fullAddress: `${address.detail}, ${address.province.name}, ${address.district.name}, ${address.ward.name}`
+        }
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + session.accessToken
+          },
+          body: JSON.stringify(body)
+    
+        }
+        console.log(body)
+        const response = await fetch(`${process.env.API_URL}/vendors/apply`,options)
+
+        const data = await response.json()
+        if(data.status === 400){ 
+          setMessageError(data.errors[0].msg)
+          setShowMessageError(true)
+        }else if(data.status == 200){
+          router.push('/')
+        }
+        
   }
   return (
     <>
@@ -159,7 +190,7 @@ export default function AppLyVendor({ data }) {
             <div className="col-lg-12">
               <div className="banner-section">
                 <img
-                  src="../assets/images/about/vendor.jpg"
+                  src="/assets/images/vendor-apply.png"
                   className="img-fluid blur-up lazyload"
                   alt=""
                 />
@@ -409,6 +440,11 @@ export default function AppLyVendor({ data }) {
                 <div className="col-md-6">
                   <div className="col-sm-12">
                     <lable className="lable">Tên shop</lable>
+                    {showMessageError &&
+                    <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
+                      {messageError}
+                    </Alert>
+                  }
                     <input
                       ref={inputBrandName}
                       type="text"
@@ -425,7 +461,8 @@ export default function AppLyVendor({ data }) {
                       type="text"
                       className="form-control"
                       name="email"
-                      placeholder="Nhập email"
+                      value={user.profile?.email == null ? "" : user.profile.email}
+                      readOnly
                     />
                   </div>
                   <br />
@@ -436,11 +473,12 @@ export default function AppLyVendor({ data }) {
                       type="text"
                       name="username"
                       className="form-control"
-                      placeholder="Nhập username"
+                      value={user.phone}
+                      readOnly
                     />
                   </div>
                   <div className="col-md-12 mt-3">
-                <button className="btn-solid btn-sm">Đăng ký</button>
+                <button className="btn-solid btn-sm" disabled={isDiabledApply} onClick={appLyVendor}>Đăng ký</button>
               </div>
                 </div>
                 <div className="col-md-6">
@@ -449,12 +487,12 @@ export default function AppLyVendor({ data }) {
                   {showAddress && (
                     <div className="mt-4 mb-4">
                       <p>Họ và tên: {address.fullName}</p>
-                      <p>Số điện thoại:{address.phone} </p>
+                      <p>Số điện thoại: {address.phone} </p>
                       <p>
                         Địa chỉ chi tiết: {address.detail}
                         </p>
                       <p>
-                        { `${address.ward.name}, ${address.district.name}, ${address.province.name}`}
+                        Địa chỉ: { `${address.ward.name}, ${address.district.name}, ${address.province.name}`}
                       </p>
                     </div>
                   )}
