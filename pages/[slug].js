@@ -103,7 +103,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   return (
     <>
       <Head>
-        <title>{detailProduct.name}</title>
+        <title>{detailProduct.name} | Mubaha</title>
       </Head>
       {/* breadcrumb start */}
       <div className="breadcrumb-section">
@@ -189,7 +189,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                         {/* DetailsWithPrice */}
                         <div className="product-right">
                           <div className="product-count">Chi tiết sản phẩm</div>
-                          <h2>{data?.name}</h2>
+                          <h2>{detailProduct?.name}</h2>
                           <div className="rating-section">
                             <div className="rating">
                               <i className="fa fa-star" /> <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
