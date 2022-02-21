@@ -120,7 +120,7 @@ export default function AppLyVendor({ data }) {
       setIsDiabledApply(true)
     }
     if(selectDistrict.current.value== ""){
-      mess += ", Quận hoặc huyện không hợp lệ, "
+      mess += "Quận hoặc huyện không hợp lệ, "
       setIsDiabledApply(true)
     }
     if(selectWard.current.value== ""){
@@ -150,7 +150,7 @@ export default function AppLyVendor({ data }) {
       setShowAddress(true)
       setIsDiabledApply(false)
     }else{
-      setMessage(mess)
+      setMessage(mess.slice(0, -2))
       setShowMessage(true)
     }
   }
