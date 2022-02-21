@@ -101,7 +101,7 @@ export default function LoginWithOtp() {
                       </div>
                     </div>
                   <div className="d-flex justify-content-center">
-                    <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-login">Đăng nhập</button>
+                    <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-block">Đăng nhập</button>
                   </div>
                 </Form>
                 <div className="login-social mx-auto">

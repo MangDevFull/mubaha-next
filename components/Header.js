@@ -5,7 +5,7 @@ import {Container, Row, Col, Media, InputGroup, Button, Input} from "reactstrap"
 
 import TopBarDark from "./common/TopbarDark"
 
-import logo from "../assets/images/logo-color.svg"
+import logo from "../assets/images/logo-white.svg"
 import search from "../public/assets/images/icon/search.png"
 
 import NavBar from "./common/Navbar"
@@ -39,14 +39,14 @@ export default function Header({}) {
 
   return (
     <div>
-      <header id="sticky" className="sticky marketplace">
+      <header id="sticky" className="sticky marketplace dark">
         <div className="mobile-fix-option"></div>
 
         <TopBarDark topClass="top-header top-header-dark2" />
         <Container>
           <Row>
             <Col>
-              <div className="main-menu border-section border-top-0 d-flex">
+              <div className="main-menu d-flex">
                 <div className="menu-left">
                   <div className="brand-logo">
                     <div style={{width: "260px", maxWidth: "260px"}}>
@@ -100,7 +100,7 @@ export default function Header({}) {
         <Container id="navbar-row">
           <Row>
             <Col>
-              <div className="main-nav-center">
+              <div className="main-nav-center border-section">
                 <NavBar />
               </div>
             </Col>
