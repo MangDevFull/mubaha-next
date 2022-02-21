@@ -123,7 +123,7 @@ export default function LoginPage() {
           const response = await API.instance.post("/auth/login-otp", params);
           const data = response.data;
           if (data.status == 200) {
-            console.log("data", data);
+            // console.log("data", data);
             setIsVerifyPhone(true);
             setMessage("");
           } else {

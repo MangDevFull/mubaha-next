@@ -58,7 +58,7 @@ export default function Header({}) {
                     </div>
                   </div>
                 </div>
-                <div className="flex-grow-1" style={{maxWidth: "700px"}}>
+                <div className="flex-grow-1" style={{maxWidth: "500px"}}>
                   <InputGroup>
                     <Input type="search" placeholder="Săn sale #MUBAHASALES" />
                     <Button>
@@ -100,7 +100,7 @@ export default function Header({}) {
         <Container id="navbar-row">
           <Row>
             <Col>
-              <div className="main-nav-center border-section">
+              <div className="main-nav-center border-section border-bottom-0">
                 <NavBar />
               </div>
             </Col>

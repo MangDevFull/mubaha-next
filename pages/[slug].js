@@ -2,19 +2,75 @@ import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import Head from "next/head";
 import SideProductCart from "../components/SideProductCart";
-import { Row, Col, Media, Container } from "reactstrap";
+import { Row, Col, Media, Container, Modal, Input } from "reactstrap";
 import { useRouter } from "next/router";
 import RelatedProducts from "../components/RelatedProducts";
 import Layout from "../components/Layout";
 import ProductTab from "./product-details/common/product-tab";
 import Services from "./product-details/common/services";
-import DetailsWithPrice from "./product-details/common/detail-price";
 import Filter from "./product-details/common/filter";
+
+import NumberFormat from "react-number-format";
+import CountdownComponent from "../components/common/widgets/countdownComponent";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
   const router = useRouter();
   // const { slug } = router.query;
   // const products = product.products.splice(0, 20);
+
+  const [quantity, setQuantity] = useState(1);
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+  const handleCrease = () => {
+    if (quantity < 2) return;
+    setQuantity(quantity - 1);
+  };
+  const [selectedVariant, setSelectedVariant] = useState();
+  // console.log(selectedVariant);
+  const colorVariants = [
+    {
+      id: 1,
+      className: "bg-light0",
+      variantName: "Blue",
+    },
+    {
+      id: 2,
+      className: "bg-light1",
+      variantName: "Pink",
+    },
+    {
+      id: 3,
+      className: "bg-light2",
+      variantName: "Grey",
+    },
+  ];
+  const selectedColor = (colorVariant) => {
+    setSelectedVariant(colorVariant.id);
+  };
+
+  const [selectedSize, setSlectedSize] = useState();
+  const Sizes = [
+    {
+      id: 1,
+      sizeName: "S",
+    },
+    {
+      id: 2,
+      sizeName: "M",
+    },
+    {
+      id: 3,
+      sizeName: "L",
+    },
+    {
+      id: 4,
+      sizeName: "XL",
+    },
+  ];
+  const handleSelectedSize = (size) => {
+    setSlectedSize(size.id);
+  };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
   const slider1 = useRef();
@@ -131,7 +187,248 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                       {/* Slider end*/}
                       <Col lg={6} className="rtl-text">
                         {/* DetailsWithPrice */}
-                        <DetailsWithPrice data={detailProduct} />
+                        <div className="product-right">
+                          <div className="product-count">Chi tiết sản phẩm</div>
+                          <h2>{data?.name}</h2>
+                          <div className="rating-section">
+                            <div className="rating">
+                              <i className="fa fa-star" /> <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
+                              <i className="fa fa-star" /> <i className="fa fa-star" />
+                            </div>
+                            <h6>120 đánh giá</h6>
+                          </div>
+                          <div className="label-section">
+                            <span className="badge badge-grey-color">#1 Best seller</span>
+                            <span className="label-text">in fashion</span>
+                          </div>
+                          <h3 className="price-detail">
+                            <NumberFormat
+                              value={detailProduct.currentPrice}
+                              thousandSeparator={true}
+                              displayType="text"
+                              suffix={detailProduct.currencySymbol}
+                              decimalScale={0}
+                            />{" "}
+                            {detailProduct.discountPercent > 0 && (
+                              <del>
+                                <NumberFormat
+                                  value={detailProduct.price}
+                                  thousandSeparator={true}
+                                  displayType="text"
+                                  suffix={detailProduct.currencySymbol}
+                                  decimalScale={0}
+                                />
+                              </del>
+                            )}
+                          </h3>
+                          <ul className="color-variant">
+                            {colorVariants.map((colorVariant) => (
+                              <li
+                                style={
+                                  selectedVariant === colorVariant.id
+                                    ? {
+                                      width: "81px !important",
+                                      height: "34px",
+                                      border: "1px solid #ffa200",
+                                      borderRadius: "0",
+                                      marginRight: "10px",
+                                      textAlign: "center",
+                                      lineHeight: "2.3",
+                                      color: "#ffa200"
+                                    }
+                                    : {
+                                      width: "81px !important",
+                                      height: "34px",
+                                      border: "1px solid rgba(0,0,0,.09)",
+                                      borderRadius: "0",
+                                      marginRight: "10px",
+                                      textAlign: "center",
+                                      lineHeight: "2.3"
+                                    }
+                                }
+                                key={colorVariant.id}
+                                checked={selectedVariant === colorVariant.id}
+                                onClick={() => selectedColor(colorVariant)}
+                              >
+                                {colorVariant.variantName}
+                              </li>
+                            ))}
+                          </ul>
+                          <div id="selectSize" className="addeffect-section product-description border-product">
+                            <h6 className="product-title size-text">
+                              Lựa chọn kích thước
+                              <span>
+                                <a
+                                  href={null}
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#sizemodal"
+                                // onClick={toggle}
+                                >
+                                  Bảng kích thước
+                                </a>
+                              </span>
+                            </h6>
+                            <Modal
+                              className="modal fade"
+                              id="sizemodal"
+                              tabIndex={-1}
+                              role="dialog"
+                              aria-labelledby="exampleModalLabel"
+                              aria-hidden="true"
+                            >
+                              <div className="modal-dialog modal-dialog-centered" role="document">
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">
+                                      Sheer Straight Kurta
+                                    </h5>
+                                    <button
+                                      type="button"
+                                      className="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close"
+                                    >
+                                      <span aria-hidden="true">×</span>
+                                    </button>
+                                  </div>
+                                  <div className="modal-body">
+                                    <img
+                                      src="../assets/images/size-chart.jpg"
+                                      alt=""
+                                      className="img-fluid blur-up lazyload"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </Modal>
+
+                            <div className="size-box">
+                              <ul>
+                                {Sizes.map((size) => (
+                                  <li
+                                    style={
+                                      selectedSize === size.id
+                                        ? { lineHeight: 2.3, border: "1px solid #ffa200" }
+                                        : { lineHeight: 2.3 }
+                                    }
+                                    checked={selectedSize === size.id}
+                                    key={size.id}
+                                    onClick={() => handleSelectedSize(size)}
+                                  >
+                                    {size.sizeName}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            <h6 className="product-title">Số lượng</h6>
+                            <div className="qty-box">
+                              <div className="input-group">
+                                <span className="input-group-prepend">
+                                  <button
+                                    type="button"
+                                    className="btn quantity-left-minus"
+                                    // onClick={minusQty}
+                                    onClick={handleCrease}
+                                    data-type="minus"
+                                    data-field=""
+                                  >
+                                    <i className="fa fa-angle-left"></i>
+                                  </button>
+                                </span>
+                                <Input
+                                  type="text"
+                                  name="quantity"
+                                  value={quantity}
+                                  min={1}
+                                  // onChange={changeQty}
+                                  className="form-control input-number"
+                                />
+                                <span className="input-group-prepend">
+                                  <button
+                                    type="button"
+                                    className="btn quantity-right-plus"
+                                    // onClick={() => plusQty(product)}
+                                    onClick={handleIncrease}
+                                    data-type="plus"
+                                    data-field=""
+                                  >
+                                    <i className="fa fa-angle-right"></i>
+                                  </button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="product-buttons">
+                            <button
+                              style={{
+                                background: "transparent",
+                                border: "0px",
+                                padding: "0px",
+                              }}
+                            >
+                              <a style={{ margin: "0px" }} id="cartEffect" className="btn btn-solid btn-animation">
+                                <i className="fa fa-shopping-cart mx-2" aria-hidden="true" />
+                                Thêm giỏ hàng
+                              </a>
+                            </button>
+                            <button
+                              style={{
+                                background: "transparent",
+                                border: "0px",
+                                padding: "1px 6px 1px 0px",
+                              }}
+                            >
+                              <a className="btn btn-solid">
+                                <i className="fa fa-bookmark fz-16 mx-2" aria-hidden="true" />
+                                Mua ngay
+                              </a>
+                            </button>
+                          </div>
+
+                          <div className="border-product">
+                            <h6 className="product-title">Chi tiết sản phẩm</h6>
+
+                            <p id="demo">{detailProduct.description}</p>
+                          </div>
+
+                          <div className="border-product">
+                            <h6 className="product-title">share it</h6>
+                            <div className="product-icon">
+                              <ul className="product-social">
+                                <li>
+                                  <a>
+                                    <i className="fa fa-facebook" />
+                                  </a>
+                                </li>
+                                <li>
+                                  <a>
+                                    <i className="fa fa-google-plus" />
+                                  </a>
+                                </li>
+                                <li>
+                                  <a>
+                                    <i className="fa fa-twitter" />
+                                  </a>
+                                </li>
+                                <li>
+                                  <a>
+                                    <i className="fa fa-instagram" />
+                                  </a>
+                                </li>
+                                <li>
+                                  <a>
+                                    <i className="fa fa-rss" />
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="border-product">
+                            <h6 className="product-title">Time Reminder</h6>
+                            <CountdownComponent />
+                          </div>
+                        </div>
                       </Col>
                     </Row>
                   )}
