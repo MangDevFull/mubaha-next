@@ -3,24 +3,23 @@ import Slider from "react-slick";
 import Head from "next/head";
 import SideProductCart from "../components/SideProductCart";
 import { Row, Col, Media, Container, Modal, Input } from "reactstrap";
-import { useRouter } from "next/router";
+
 import RelatedProducts from "../components/RelatedProducts";
 import Layout from "../components/Layout";
-import ProductTab from "./product-details/common/product-tab";
-import Services from "./product-details/common/services";
-import Filter from "./product-details/common/filter";
+import ProductTab from "../components/common/product-details/product-tab";
+import Services from "../components/common/product-details/services";
+import Filter from "../components/common/product-details/filter";
 
 import NumberFormat from "react-number-format";
 import CountdownComponent from "../components/common/widgets/countdownComponent";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  const router = useRouter();
-  // const { slug } = router.query;
-  // const products = product.products.splice(0, 20);
-
   const [quantity, setQuantity] = useState(1);
   const handleIncrease = () => {
     setQuantity(quantity + 1);
+  };
+  const changeQty = (e) => {
+    setQuantity(parseInt(e.target.value));
   };
   const handleCrease = () => {
     if (quantity < 2) return;
@@ -192,8 +191,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           <h2>{detailProduct?.name}</h2>
                           <div className="rating-section">
                             <div className="rating">
-                              <i className="fa fa-star" /> <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
-                              <i className="fa fa-star" /> <i className="fa fa-star" />
+                              <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
+                              <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
+                              <i className="fa fa-star" />
                             </div>
                             <h6>120 đánh giá</h6>
                           </div>
@@ -227,24 +227,24 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 style={
                                   selectedVariant === colorVariant.id
                                     ? {
-                                      width: "81px !important",
-                                      height: "34px",
-                                      border: "1px solid #ffa200",
-                                      borderRadius: "0",
-                                      marginRight: "10px",
-                                      textAlign: "center",
-                                      lineHeight: "2.3",
-                                      color: "#ffa200"
-                                    }
+                                        width: "81px !important",
+                                        height: "34px",
+                                        border: "1px solid #ffa200",
+                                        borderRadius: "0",
+                                        marginRight: "10px",
+                                        textAlign: "center",
+                                        lineHeight: "2.3",
+                                        color: "#ffa200",
+                                      }
                                     : {
-                                      width: "81px !important",
-                                      height: "34px",
-                                      border: "1px solid rgba(0,0,0,.09)",
-                                      borderRadius: "0",
-                                      marginRight: "10px",
-                                      textAlign: "center",
-                                      lineHeight: "2.3"
-                                    }
+                                        width: "81px !important",
+                                        height: "34px",
+                                        border: "1px solid rgba(0,0,0,.09)",
+                                        borderRadius: "0",
+                                        marginRight: "10px",
+                                        textAlign: "center",
+                                        lineHeight: "2.3",
+                                      }
                                 }
                                 key={colorVariant.id}
                                 checked={selectedVariant === colorVariant.id}
@@ -254,7 +254,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               </li>
                             ))}
                           </ul>
-                          <div id="selectSize" className="addeffect-section product-description border-product">
+                          <div
+                            id="selectSize"
+                            className="addeffect-section product-description border-product"
+                          >
                             <h6 className="product-title size-text">
                               Lựa chọn kích thước
                               <span>
@@ -262,7 +265,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                   href={null}
                                   data-bs-toggle="modal"
                                   data-bs-target="#sizemodal"
-                                // onClick={toggle}
+                                  // onClick={toggle}
                                 >
                                   Bảng kích thước
                                 </a>
@@ -340,7 +343,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                   name="quantity"
                                   value={quantity}
                                   min={1}
-                                  // onChange={changeQty}
+                                  onChange={changeQty}
                                   className="form-control input-number"
                                 />
                                 <span className="input-group-prepend">
@@ -366,7 +369,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 padding: "0px",
                               }}
                             >
-                              <a style={{ margin: "0px" }} id="cartEffect" className="btn btn-solid btn-animation">
+                              <a
+                                style={{ margin: "0px" }}
+                                id="cartEffect"
+                                className="btn btn-solid btn-animation"
+                              >
                                 <i className="fa fa-shopping-cart mx-2" aria-hidden="true" />
                                 Thêm giỏ hàng
                               </a>

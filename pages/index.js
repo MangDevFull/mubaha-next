@@ -1,7 +1,4 @@
 import Head from "next/head";
-import Slider from "react-slick";
-import API from "../services/api";
-import MasterBanner from "../components/MasterBanner";
 import MainServiceCollections from "../components/MainServiceCollections";
 import ProductCollection1 from "../components/ProductCollection1";
 import Layout from "../components/Layout";
