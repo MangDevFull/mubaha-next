@@ -4,8 +4,8 @@
 // };
 
 const developmentServer = {
- host: "http://localhost:3001/",
- baseUrl: "http://localhost:3001/api/v1/",
+ host: "http://127.0.0.1:3001/",
+ baseUrl: "http://127.0.0.1:3001/api/v1/",
 }
 
 export default developmentServer;
