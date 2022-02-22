@@ -51,10 +51,12 @@ export default function AppLyVendor({ data }) {
   })
   useEffect(() => {
     if (session != undefined) {
-      if(session.user.type == accountType.VENDOR || session.user.type == accountType.ADMIN){
-        router.push('/')
+      if(session.user.type == accountType.VENDOR){
+        router.push('/vendor/list-product')
       }else if(session.user.type == accountType.CUSTOMER){
         setUser(session.user)
+      }else if(session.user.type == accountType.ADMIN){
+        router.push('/')
       }
     }
   })
@@ -186,7 +188,7 @@ export default function AppLyVendor({ data }) {
           setMessageError(data.errors[0].msg)
           setShowMessageError(true)
         }else if(data.status == 200){
-          router.push('/')
+          router.push('/vendor/list-product')
         }
         
   }
