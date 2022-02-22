@@ -146,7 +146,7 @@ export default function LoginPage() {
         <div className="login-page container-fluit">
           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
             <div className={`right-login ${styles.marginForm} d-flex`}>
-              <div style={{ width: "50%" }}>
+              <div style={{ width: "50%",position:"relative" }}>
                 <ImageAuthen />
               </div>
               <div className={`theme-card ${styles.loginFormRight}`} style={{ width: "50%" }}>

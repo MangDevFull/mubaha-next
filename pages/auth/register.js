@@ -71,7 +71,7 @@ export default function RegisterPage() {
        <div className="login-page container-fluit">
           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
             <div className={`right-login ${styles.marginForm} d-flex`}>
-              <div className="" style={{width:"50%"}}>
+              <div className="" style={{width:"50%",position:"relative"}}>
                 <ImageAuthen />
               </div>
               <div className={`theme-card ${styles.loginFormRight}`} style={{width:"50%"}}>
