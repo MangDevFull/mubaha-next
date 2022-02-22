@@ -1,4 +1,5 @@
 import API from "../../services/api.js"
+import Head from "next/head";
 import { useRef, useState, useEffect } from "react"
 import { Modal, Button,Row,Alert } from "react-bootstrap"
 import Layout from "../../components/Layout";
@@ -17,7 +18,7 @@ export default function AppLyVendor({ data }) {
   const {data:session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push('/')
+      router.push('/vendor/auth')
     }
   })
 
@@ -194,6 +195,9 @@ export default function AppLyVendor({ data }) {
   }
   return (
     <>
+          <Head>
+        <title>Đăng ký bán hàng</title>
+      </Head>
       <div>
         <Breadcrumb previousLink="/"
           previousValue="Đăng ký" currentValue="Đăng ký bán hàng" />
