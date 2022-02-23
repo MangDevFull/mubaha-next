@@ -480,7 +480,11 @@ export async function getServerSideProps(context) {
   // const data = response.data.data
 
   const response = await fetch(`${process.env.API_URL}/products/${slug}`);
-  const { data } = await response.json();
+  const { data, status, message } = await response.json();
+
+  if(status != 200) return {
+    notFound: true,
+  }
 
   return {
     props: {
