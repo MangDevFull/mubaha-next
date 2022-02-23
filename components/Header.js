@@ -56,7 +56,7 @@ export default function Header({ }) {
                     </a>
                   </Link>
                 </div>
-                <div className="flex-grow-1" style={{ maxWidth: "500px" }}>
+                <div className="flex-grow-1" style={{ maxWidth: "700px" }}>
                   <InputGroup>
                     <Input type="search" placeholder="Săn sale #MUBAHASALES" />
                     <Button>

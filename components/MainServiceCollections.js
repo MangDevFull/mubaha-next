@@ -5,6 +5,7 @@ import {
   svgFreeShipping,
   svgoffer,
   svgservice,
+  svgpayment,
 } from "@/services/script";
 
 import MasterServiceContent from "./MasterServiceContent";
@@ -25,6 +26,11 @@ const Data = [
     title: "Ưu đãi hấp dẫn",
     service: "Hàng ngàn ưu đãi, mã giảm giá",
   },
+  {
+    link: svgpayment,
+    title: "Thanh toán thông minh",
+    service: "Đa kênh, thông minh và linh hoạt",
+  },
 ];
 
 export default function MainServiceCollections() {
@@ -36,7 +42,7 @@ export default function MainServiceCollections() {
             <Row>
               {Data.map((data, i) => {
                 return (
-                  <Col md="4" className="service-block" key={i}>
+                  <Col md="3" className="service-block" key={i}>
                     <MasterServiceContent
                       link={data.link}
                       title={data.title}
