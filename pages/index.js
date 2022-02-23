@@ -72,7 +72,7 @@ Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const response = await fetch(`${process.env.API_URL}`);
   const { data } = await response.json();
 
@@ -85,5 +85,6 @@ export async function getServerSideProps() {
       rightFeatureProducts: data.rightFeatureProducts,
       top5Products: data.top5Products,
     },
+    revalidate: 60,
   };
 }
