@@ -18,7 +18,7 @@ export default function AppLyVendor({ data }) {
   const {data:session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push('/vendor/auth')
+      router.push('/auth/login')
     }
   })
 
@@ -53,7 +53,7 @@ export default function AppLyVendor({ data }) {
   useEffect(() => {
     if (session != undefined) {
       if(session.user.type == accountType.VENDOR){
-        router.push('/vendor/list-product')
+        router.push('/')
       }else if(session.user.type == accountType.CUSTOMER){
         setUser(session.user)
       }else if(session.user.type == accountType.ADMIN){
@@ -105,11 +105,11 @@ export default function AppLyVendor({ data }) {
     let mess = ""
     var reg = /^\d+$/;
     if (!reg.test(inputPhone.current.value)) {
-      mess += "Số điện thoại không hợp lệ"
+      mess += "Số điện thoại không hợp lệ, "
       setIsDiabledApply(true)
     } else {
       if (inputPhone.current.value.length < 2 || inputPhone.current.value == null) {
-        mess += "Số điện thoại không hợp lệ"
+        mess += "Số điện thoại không hợp lệ, "
         setIsDiabledApply(true)
       } else {
         const number = phoneUtil.parse(inputPhone.current.value, "VN");
@@ -497,7 +497,7 @@ export default function AppLyVendor({ data }) {
                     />
                   </div>
                   <div className="col-md-12 mt-3">
-                <button className="btn-solid btn-sm" disabled={isDiabledApply} onClick={appLyVendor}>Đăng ký</button>
+                <button className="btn-solid btn" disabled={isDiabledApply} onClick={appLyVendor}>Đăng ký</button>
               </div>
                 </div>
                 <div className="col-md-6">

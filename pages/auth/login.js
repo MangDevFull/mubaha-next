@@ -174,7 +174,7 @@ export default function LoginPage() {
                       placeholder="Nhập số điện thoại của bạn" required="" />
                   </div>
                   <div className="form-group mb-1">
-                    <div className="d-flex">
+                    <div className="d-flex" style={{position: "relative"}}>
                       <input type={inputValues} className="form-control"
                         ref={inputPassword}
                         placeholder="Nhập mật khẩu của bạn" required="" />
