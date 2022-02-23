@@ -2,8 +2,8 @@ import API from "../../services/api.js"
 import Head from "next/head";
 import { useRef, useState, useEffect } from "react"
 import { Modal, Button,Row,Alert } from "react-bootstrap"
-import Layout from "../../components/Layout";
-import Breadcrumb from '../../components/Breadcrumb.js'
+import Layout from "@/components/Layout";
+import Breadcrumb from '@/components/Breadcrumb.js'
 import libphone from 'google-libphonenumber';
 import {useSession} from 'next-auth/react'
 import { useRouter } from 'next/router'

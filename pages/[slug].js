@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import Head from "next/head";
-import SideProductCart from "../components/SideProductCart";
+import SideProductCart from "@/components/SideProductCart";
 import { Row, Col, Media, Container, Modal, Input } from "reactstrap";
 
-import RelatedProducts from "../components/RelatedProducts";
-import Layout from "../components/Layout";
-import ProductTab from "../components/common/product-details/product-tab";
-import Services from "../components/common/product-details/services";
-import Filter from "../components/common/product-details/filter";
+import RelatedProducts from "@/components/RelatedProducts";
+import Layout from "@/components/Layout";
+import ProductTab from "@/components/common/product-details/product-tab";
+import Services from "@/components/common/product-details/services";
+import Filter from "@/components/common/product-details/filter";
 
 import NumberFormat from "react-number-format";
-import CountdownComponent from "../components/common/widgets/countdownComponent";
+import CountdownComponent from "@/components/common/widgets/countdownComponent";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
   const [quantity, setQuantity] = useState(1);
@@ -480,7 +480,11 @@ export async function getServerSideProps(context) {
   // const data = response.data.data
 
   const response = await fetch(`${process.env.API_URL}/products/${slug}`);
-  const { data } = await response.json();
+  const { data, status, message } = await response.json();
+
+  if(status != 200) return {
+    notFound: true,
+  }
 
   return {
     props: {

@@ -1,21 +1,18 @@
 import Link from "next/link";
 import Head from "next/head";
-import Breadcrumb from "../../components/Breadcrumb.js";
-import { useState, useCallback, useRef, useEffect } from "react";
-import Otp from "../../components/Otp.js";
+import Breadcrumb from "@/components/Breadcrumb.js";
+import { useState, useRef } from "react";
+import Otp from "@/components/Otp.js";
 import libphone from "google-libphonenumber";
-import API from "../../services/api.js";
+import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
 import { Row, Form } from "reactstrap";
-import LoginSocail from "../../components/authen/LoginSocail.js";
-import Layout from "../../components/Layout";
-const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
+import LoginSocail from "@/components/authen/LoginSocail.js";
+import Layout from "@/components/Layout";
+const { PhoneNumberFormat } = libphone;
 import otpEnums from "../../enums/otpEnums.js";
-import styles from '../../styles/authen.module.css'
-import LeftForm from '../../components/authen/LeftForm.js'
-
-const phoneUtil = PhoneNumberUtil.getInstance()
-
+import styles from "@/styles/authen.module.css";
+import LeftForm from "@/components/authen/LeftForm.js";
 
 export default function RegisterPage() {
   const [isNotValidPhone, setIsNotValidPhone] = useState(true);
@@ -24,13 +21,6 @@ export default function RegisterPage() {
   const [isRegisted, setIsRegisted] = useState(false);
   const [message, setMessage] = useState("");
   const inputPhone = useRef();
-  // useEffect(() => {
-  //   inputPhone.current.focus()
-  // },[])
-  // const handleClose = useCallback(() => {
-  //   setIsVerifyPhone(false)
-  // }, [])
-
   const checkPhone = (e) => {
     phone = e.target.value;
     if (phone.length < 2 || phone == null) {

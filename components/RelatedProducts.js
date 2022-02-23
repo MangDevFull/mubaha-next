@@ -2,7 +2,7 @@ import Slider from "react-slick"
 import {Container, Row, Col} from "reactstrap"
 import ProductItem from "./ProductItem"
 import PostLoader from "./common/PostLoader"
-import {Product5} from "../services/script"
+import {Product5} from "@/services/script"
 
 export default function RelatedProducts({data}) {
   return (

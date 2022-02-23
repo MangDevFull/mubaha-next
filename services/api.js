@@ -1,5 +1,5 @@
 import axios from "axios";
-import URL from "./../utils/api_url";
+import URL from "@/utils/api_url";
 
 const getInstance = () => {
   const instance = axios.create({

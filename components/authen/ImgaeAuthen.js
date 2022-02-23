@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from '../../styles/authen.module.css'
+import styles from '@/styles/authen.module.css'
 export default function ImageAuthen(){
   return(
     <>

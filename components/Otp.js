@@ -1,11 +1,11 @@
 import OtpInput from 'react-otp-input';
 import { Alert } from 'react-bootstrap';
 import Link from 'next/link'
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import otpEnums from "../enums/otpEnums.js";
 import { signIn } from "next-auth/react";
-import styles from '../styles/authen.module.css'
+import styles from '@/styles/authen.module.css'
 export default function VerifyOtp({ phone, type }) {
   const router = useRouter()
   const [otp, setOtp] = useState('')

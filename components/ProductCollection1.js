@@ -4,7 +4,7 @@ import {
   Container, Row, Col,
 } from 'reactstrap'
 
-import { Product5 } from '../services/script'
+import { Product5 } from '@/services/script'
 
 import ProductItem from './ProductItem'
 
