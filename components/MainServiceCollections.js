@@ -5,7 +5,7 @@ import {
   svgFreeShipping,
   svgoffer,
   svgservice,
-} from "../services/script";
+} from "@/services/script";
 
 import MasterServiceContent from "./MasterServiceContent";
 

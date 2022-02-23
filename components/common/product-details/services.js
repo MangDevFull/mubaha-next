@@ -1,6 +1,6 @@
 import React from "react";
-import MasterServiceContent from "../../../components/Service/MasterServiceContent";
-import { svgFreeShipping, svgservice, svgoffer, svgpayment } from "../../../services/script";
+import MasterServiceContent from "@/components/Service/MasterServiceContent";
+import { svgFreeShipping, svgservice, svgoffer, svgpayment } from "@/services/script";
 
 const Data = [
   {

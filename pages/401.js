@@ -1,5 +1,5 @@
-import Layout from "../components/Layout";
-import ErrorPage from "../components/errors/ErrorPage"
+import Layout from "@/components/Layout";
+import ErrorPage from "@/components/errors/ErrorPage"
 
 export default function Custom401() {
   return (

@@ -4,10 +4,10 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useSession } from 'next-auth/react'
-import Breadcrumb from '../../components/Breadcrumb.js'
+import Breadcrumb from '@/components/Breadcrumb.js'
 import { Form } from 'reactstrap';
-import Layout from "../../components/Layout";
-import styles from '../../styles/authen.module.css'
+import Layout from "@/components/Layout";
+import styles from '@/styles/authen.module.css'
 export default function CreatePassWord() {
   const [show, setShow] = useState(false);
   const [showPass, setShowPass] = useState('block');

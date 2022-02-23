@@ -1,28 +1,11 @@
 import Head from "next/head";
-import MainServiceCollections from "../components/MainServiceCollections";
-import ProductCollection1 from "../components/ProductCollection1";
-import Layout from "../components/Layout";
+import MainServiceCollections from "@/components/MainServiceCollections";
+import ProductCollection1 from "@/components/ProductCollection1";
+import Layout from "@/components/Layout";
 
-import { useSession } from "next-auth/react";
-
-import MainMultipleSlider from "../components/MainMultipleSlider";
-import PartitionSlider from "../components/PartitionSlider";
-import MasterParallaxBanner from "../components/MasterParallaxBanner";
-
-const Data = [
-  {
-    img: "home39",
-    title: "save 10%",
-    desc: "fresh vegetables",
-    link: "#",
-  },
-  {
-    img: "home38",
-    title: "save upto 10%",
-    desc: "fresh vegetables",
-    link: "#",
-  },
-];
+import MainMultipleSlider from "@/components/MainMultipleSlider";
+import PartitionSlider from "@/components/PartitionSlider";
+import MasterParallaxBanner from "@/components/MasterParallaxBanner";
 
 export default function Home({
   dealsOfTheDay,
@@ -32,12 +15,7 @@ export default function Home({
   rightFeatureProducts,
   top5Products,
 }) {
-  // if(localStorage !=null){
-  //   console.log("localStorage",localStorage);
-  // }
-  const { data: session, status } = useSession();
 
-  // console.log(session);
   return (
     <>
       <Head>

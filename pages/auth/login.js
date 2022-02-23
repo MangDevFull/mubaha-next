@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
-import Breadcrumb from "../../components/Breadcrumb.js";
+import Breadcrumb from "@/components/Breadcrumb.js";
 import { useRef, useState, useEffect } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useRouter } from "next/router";
@@ -8,13 +8,13 @@ import { Alert } from "react-bootstrap";
 import { signIn } from "next-auth/react";
 import { Row, Form, Input, Col } from "reactstrap";
 import libphone from "google-libphonenumber";
-import LoginSocail from "../../components/authen/LoginSocail.js";
-import ImageAuthen from "../../components/authen/ImgaeAuthen.js";
-import Layout from "../../components/Layout";
-import API from "../../services/api.js";
-import Otp from "../../components/Otp.js";
-import otpEnums from "../../utils/otpEnums.js";
-import styles from "../../styles/authen.module.css";
+import LoginSocail from "@/components/authen/LoginSocail.js";
+import ImageAuthen from "@/components/authen/ImgaeAuthen.js";
+import Layout from "@/components/Layout";
+import API from "@/services/api.js";
+import Otp from "@/components/Otp.js";
+import otpEnums from "@/utils/otpEnums.js";
+import styles from "@/styles/authen.module.css";
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 

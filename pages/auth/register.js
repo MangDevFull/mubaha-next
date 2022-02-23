@@ -1,18 +1,18 @@
 import Link from "next/link";
 import Head from "next/head";
-import Breadcrumb from "../../components/Breadcrumb.js";
+import Breadcrumb from "@/components/Breadcrumb.js";
 import { useState, useCallback, useRef, useEffect } from "react";
-import Otp from "../../components/Otp.js";
+import Otp from "@/components/Otp.js";
 import libphone from "google-libphonenumber";
-import API from "../../services/api.js";
+import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
 import { Row, Form, Input, Col } from "reactstrap";
-import LoginSocail from "../../components/authen/LoginSocail.js";
-import ImageAuthen from "../../components/authen/ImgaeAuthen.js";
-import Layout from "../../components/Layout";
+import LoginSocail from "@/components/authen/LoginSocail.js";
+import ImageAuthen from "@/components/authen/ImgaeAuthen.js";
+import Layout from "@/components/Layout";
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
-import otpEnums from "../../utils/otpEnums.js";
-import styles from "../../styles/authen.module.css";
+import otpEnums from "@/utils/otpEnums.js";
+import styles from "@/styles/authen.module.css";
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
