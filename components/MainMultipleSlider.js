@@ -7,13 +7,13 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
   return (
     <Container>
       <Row className="multiple-slider">
-        <Col lg={3} sm={6}>
+        <Col lg={4} sm={12}>
           <div className="theme-card">
             <h5 className="title-border">Sản phẩm HOT</h5>
             <Slider className="offer-slider slide-1">
               <div>
                 {dontMissTheseProducts &&
-                  dontMissTheseProducts.slice(0, 3).map((product, index) => (
+                  dontMissTheseProducts.slice(0, 2).map((product, index) => (
                     <div className="media" key={index}>
                       <Link href={`/${product.slug}`}>
                         <a>
@@ -65,7 +65,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
               </div>
               <div>
                 {dontMissTheseProducts &&
-                  dontMissTheseProducts.slice(4, 7).map((product, index) => (
+                  dontMissTheseProducts.slice(4, 6).map((product, index) => (
                     <div className="media" key={index}>
                       <Link href={`/${product.slug}`}>
                         <a>
@@ -118,13 +118,13 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
             </Slider>
           </div>
         </Col>
-        <Col lg={3} sm={6}>
+        <Col lg={4} sm={12}>
           <div className="theme-card">
             <h5 className="title-border">Đang hạ giá</h5>
             <Slider className="offer-slider slide-1">
               <div>
                 {dontMissTheseProducts &&
-                  dontMissTheseProducts.slice(8, 11).map((product, index) => (
+                  dontMissTheseProducts.slice(8, 10).map((product, index) => (
                     <div className="media" key={index}>
                       <Link href={`/${product.slug}`}>
                         <a>
@@ -176,7 +176,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
               </div>
               <div>
                 {dontMissTheseProducts &&
-                  dontMissTheseProducts.slice(12, 15).map((product, index) => (
+                  dontMissTheseProducts.slice(12, 14).map((product, index) => (
                     <div className="media" key={index}>
                       <Link href={`/${product.slug}`}>
                         <a>
@@ -229,13 +229,13 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
             </Slider>
           </div>
         </Col>
-        <Col lg={3} sm={6}>
+        <Col lg={4} sm={12}>
           <div className="theme-card">
             <h5 className="title-border">Bán chạy nhất</h5>
             <Slider className="offer-slider slide-1">
               <div>
                 {dontMissTheseProducts &&
-                  dontMissTheseProducts.slice(2, 5).map((product, index) => (
+                  dontMissTheseProducts.slice(2, 4).map((product, index) => (
                     <div className="media" key={index}>
                       <Link href={`/${product.slug}`}>
                         <a>
@@ -287,7 +287,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
               </div>
               <div>
                 {dontMissTheseProducts &&
-                  dontMissTheseProducts.slice(7, 10).map((product, index) => (
+                  dontMissTheseProducts.slice(7, 9).map((product, index) => (
                     <div className="media" key={index}>
                       <Link href={`/${product.slug}`}>
                         <a>
@@ -340,7 +340,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
             </Slider>
           </div>
         </Col>
-        <Col lg={3} sm={6}>
+        {/* <Col lg={3} sm={6}>
           <div className="theme-card">
             <h5 className="title-border">Mùa Thu 2022</h5>
             <Slider className="offer-slider slide-1">
@@ -450,7 +450,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
               </div>
             </Slider>
           </div>
-        </Col>
+        </Col> */}
       </Row>
     </Container>
   );

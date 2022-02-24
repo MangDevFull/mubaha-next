@@ -312,7 +312,8 @@ body {
   
     .main-navbar {
       .nav-menu {
-        // background-color: $dark-body;
+        background-color: var(--theme-deafult-3);
+        border-color: var(--theme-deafult-2);
         .back-btn {
           .mobile-back {
             color: $white-1;

@@ -31,7 +31,7 @@ export default function NavBar() {
           <ul className="nav-menu sm pixelstrap sm-horizontal" style={navClose}>
             <li className="back-btn" onClick={closeNav.bind(this)}>
               <div className="mobile-back text-right">
-                <span>Back navbar</span>
+                <span>Quay lại</span>
                 <i className="fa fa-angle-right pl-2" aria-hidden="true"></i>
               </div>
             </li>
@@ -53,12 +53,12 @@ export default function NavBar() {
             <li>
               <a href="#" className="nav-link">Âu Mỹ</a>
             </li>
-            <li>
+            {/* <li>
               <a href="#" className="nav-link">
                 Thương Hiệu
                 <span className="sub-arrow"></span>
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

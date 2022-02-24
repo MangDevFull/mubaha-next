@@ -35,9 +35,9 @@ export default function RelatedProducts({data}) {
                 <Slider {...Product5} className="slide-6-product product-m no-arrow">
                   {data &&
                     data.map((product, index) => (
-                      <divp key={index}>
+                      <div key={index}>
                         <ProductItem product={product} />
-                      </divp>
+                      </div>
                     ))}
                 </Slider>
               )}
