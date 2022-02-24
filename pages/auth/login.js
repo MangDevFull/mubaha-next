@@ -196,7 +196,7 @@ export default function LoginPage() {
                     </div>
                     <div className="d-flex justify-content-between mb-5">
                       <div>
-                        <Link href="#">
+                        <Link href="/auth/recover-password">
                           <a className={`${styles.textLink} text-secondary`}>Quên mật khẩu?</a>
                         </Link>
                       </div>

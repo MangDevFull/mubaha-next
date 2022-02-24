@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import otpEnums from "../enums/otpEnums.js";
 import { signIn } from "next-auth/react";
 import styles from '@/styles/authen.module.css'
+import API from "@/services/api.js";
 export default function VerifyOtp({ phone, type }) {
   const router = useRouter()
   const [otp, setOtp] = useState('')
@@ -38,7 +39,6 @@ export default function VerifyOtp({ phone, type }) {
 
         }
       }else if(type==otpEnums.CREATE_PASSWORD){
-
         const res = await signIn("mubaha", {
           phone: phone,
           code: e,
@@ -51,6 +51,21 @@ export default function VerifyOtp({ phone, type }) {
           setInvalidOtp(true)
 
         }
+      }else if(type = otpEnums.RECOVER_PASSWORD){
+        const params = {
+          phone,
+          code:e
+        }
+          const response = await API.instance.post('/auth/verify-otp-recover-password',params)
+          const data = response.data
+          console.log(data)
+          if(data.status === 400){
+            setInvalidOtp(true)
+          }else if(data.status == 200){
+            localStorage.setItem("userId", data.data.userId);
+        localStorage.setItem("token", data.data.token);
+        router.push('/auth/update-password')
+          }
       }
     }
   }

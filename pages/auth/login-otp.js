@@ -8,7 +8,7 @@ import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
 import otpEnums from "../../enums/otpEnums.js";
 import Layout from "@/components/Layout";
-import { Row, Form, Input, Col } from "reactstrap";
+import { Row, Form } from "reactstrap";
 import LoginSocail from "@/components/authen/LoginSocail.js";
 import styles from "@/styles/authen.module.css";
 import LeftForm from "@/components/authen/LeftForm.js";
@@ -81,7 +81,7 @@ export default function LoginWithOtp() {
                 </div>
                 <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
                   {isNotRegistered && (
-                    <Alert style={{ textAlign: "center", height: "40px" }} variant={"danger"}>
+                    <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
                       {message}
                     </Alert>
                   )}
