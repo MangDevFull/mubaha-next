@@ -31,15 +31,6 @@ export default function HeaderAuthen() {
             </Col>
           </Row>
         </Container>
-        {/* <Container id="navbar-row">
-          <Row>
-            <Col>
-              <div className="main-nav-center border-section border-bottom-0">
-                <NavBar />
-              </div>
-            </Col>
-          </Row>
-        </Container> */}
       </header>
     </>
   )

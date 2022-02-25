@@ -6,7 +6,8 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useSession } from 'next-auth/react'
 import Breadcrumb from '@/components/Breadcrumb.js'
 import { Form } from 'reactstrap';
-import Layout from "@/components/Layout";
+import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
+import Footer from "@/components/Footer.js";
 import styles from '@/styles/authen.module.css'
 export default function CreatePassWord() {
   const [show, setShow] = useState(false);
@@ -70,6 +71,7 @@ export default function CreatePassWord() {
   }
   return (
     <>
+    <HeaderAuthen />
       <Breadcrumb previousLink="/"
         previousValue="Trang chủ" currentValue="Tạo mật khẩu" />
       <section className="pwd-page  section-b-space">
@@ -133,15 +135,7 @@ export default function CreatePassWord() {
           </div>
         </Modal.Footer>
       </Modal>
-      {/*Section ends*/}
+      <Footer />
     </>
-  )
-}
-
-CreatePassWord.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      {page}
-    </Layout>
   )
 }

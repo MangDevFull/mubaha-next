@@ -4,10 +4,11 @@ import { useRouter } from 'next/router'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Breadcrumb from '@/components/Breadcrumb.js'
 import { Form } from 'reactstrap';
-import Layout from "@/components/Layout";
 import styles from '@/styles/authen.module.css'
 import API from '@/services/api.js'
 import {Alert} from 'reactstrap'
+import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
+import Footer from "@/components/Footer.js";
 
 export default function CreatePassWord() {
   const [show, setShow] = useState(false);
@@ -55,6 +56,7 @@ export default function CreatePassWord() {
   }
   return (
     <>
+    <HeaderAuthen />
       <Breadcrumb previousLink="/auth/recover-password"
         previousValue="Quên mật khẩu" currentValue="Đặt lại mật khẩu" />
       <section className="pwd-page  section-b-space">
@@ -125,14 +127,7 @@ export default function CreatePassWord() {
           </div>
         </Modal.Footer>
       </Modal>
+      <Footer />
     </>
-  )
-}
-
-CreatePassWord.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      {page}
-    </Layout>
   )
 }

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Layout from "@/components/Layout";
+import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Breadcrumb from '@/components/Breadcrumb.js'
 import { Container, Row, Form, Col, Alert } from 'reactstrap';
 import { useState } from 'react'
@@ -8,6 +8,7 @@ import API from "@/services/api.js"
 import dynamic from 'next/dynamic'
 import styles from "@/styles/authen.module.css";
 import otpEnums from "../../enums/otpEnums.js";
+import Footer from "@/components/Footer.js";
 const { PhoneNumberUtil, PhoneNumberFormat } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
@@ -64,6 +65,7 @@ export default function RecoverPassword() {
       <Head>
         <title>Lấy lại mật khẩu</title>
       </Head>
+      <HeaderAuthen />
       {
         !isVerifyPhone
         &&
@@ -103,19 +105,16 @@ export default function RecoverPassword() {
       {isVerifyPhone && (
         <div>
           <DynamicBreadcrumbComponent
-    previousLink="/auth/recover-password"
+            previousLink="/auth/recover-password"
             previousValue="Lấy lại mật khẩu"
             currentValue="Xác thực Otp"
-         />
-           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
+          />
+          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
             <DynamicOtpComponent phone={phone} type={otpEnums.RECOVER_PASSWORD} />
           </Row>
         </div>
       )}
+      <Footer />
     </>
   )
 }
-
-RecoverPassword.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
