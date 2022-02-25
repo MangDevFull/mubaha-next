@@ -211,7 +211,6 @@ export default function AppLyVendor({ data }) {
                 <img
                   src="/assets/images/vendor-apply.png"
                   className="img-fluid blur-up lazyload"
-                  alt=""
                 />
               </div>
             </div>
