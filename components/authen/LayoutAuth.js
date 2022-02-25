@@ -1,11 +1,14 @@
 import { Row } from "reactstrap";
 import LoginSocail from "@/components/authen/LoginSocail.js";
 import styles from "@/styles/authen.module.css";
-
+import Footer from "@/components/Footer.js"
+import HeaderAuthen from "./HeaderAuthen.js"
 import ImageAuthen from "./ImgaeAuthen.js";
 
 export default function LayoutAuth({ title, form, bottom }) {
   return (
+    <>
+    <HeaderAuthen />
     <div className="login-page container-fluit">
       <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
         <div className={`right-login ${styles.marginForm} d-flex`}>
@@ -26,5 +29,7 @@ export default function LayoutAuth({ title, form, bottom }) {
         </div>
       </Row>
     </div>
+    <Footer />
+    </>
   )
 }

@@ -129,7 +129,3 @@ export default function LoginWithOtp() {
     </>
   );
 }
-
-LoginWithOtp.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};

@@ -236,10 +236,4 @@ export default function LoginPage() {
   );
 }
 
-LoginPage.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  )
-};
+
