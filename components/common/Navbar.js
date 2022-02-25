@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Container, Row } from "reactstrap";
 
 export default function NavBar() {
@@ -36,9 +37,11 @@ export default function NavBar() {
               </div>
             </li>
             <li>
-              <a href="#" className="nav-link">
+              <Link href="/categories" passHref>
+              <a className="nav-link">
                 Danh mục sản phẩm
               </a>
+              </Link>
             </li>
             <li>
               <a href="#" className="nav-link">Việt Nam</a>

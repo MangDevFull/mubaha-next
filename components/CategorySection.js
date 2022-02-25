@@ -4,7 +4,7 @@ import fetcher from '../libs/fetcher'
 
 const MasterCategory = ({ img, title, slug }) => {
   return (
-    <Col sm="4" className="border-padding">
+    <Col sm={4} className="border-padding">
       <div className="category-banner">
         <div>
           <Media
@@ -15,7 +15,7 @@ const MasterCategory = ({ img, title, slug }) => {
         </div>
         <div className="category-box">
           <a href="#">
-            <h2>{title}</h2>
+            <h3>{title}</h3>
           </a>
         </div>
       </div>
