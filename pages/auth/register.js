@@ -1,18 +1,23 @@
-import Link from "next/link";
 import Head from "next/head";
-import Breadcrumb from "@/components/Breadcrumb.js";
-import { useState, useRef } from "react";
-import Otp from "@/components/Otp.js";
+import { useState, useRef,useEffect } from "react";
 import libphone from "google-libphonenumber";
 import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
 import { Row, Form } from "reactstrap";
-import LoginSocail from "@/components/authen/LoginSocail.js";
 import Layout from "@/components/Layout";
 const { PhoneNumberFormat } = libphone;
 import otpEnums from "../../enums/otpEnums.js";
 import styles from "@/styles/authen.module.css";
-import LeftForm from "@/components/authen/LeftForm.js";
+import dynamic from 'next/dynamic'
+import BottomFormRegister from "@/components/authen/BottomFormRegister.js";
+
+const DynamicOtpComponent = dynamic(() => import('@/components/Otp.js'));
+const DynamicBreadcrumbComponent = dynamic(() => import('@/components/Breadcrumb.js'));
+const DynamicLayoutAuthComponent = dynamic(() => import('@/components/authen/LayoutAuth.js'));
+
+const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
+
+const phoneUtil = PhoneNumberUtil.getInstance();
 
 export default function RegisterPage() {
   const [isNotValidPhone, setIsNotValidPhone] = useState(true);
@@ -57,15 +62,10 @@ export default function RegisterPage() {
         <title>Đăng ký</title>
       </Head>
       {!isVerifyPhone && (
-        <div className="login-page container-fluit">
-          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
-            <div className={`right-login ${styles.marginForm} d-flex`}>
-            <LeftForm />
-              <div className={`theme-card ${styles.loginFormRight}`} style={{ width: "50%" }}>
-                <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
-                  <h3 className="text-center">Đăng Ký</h3>
-                </div>
-                <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
+        <DynamicLayoutAuthComponent
+        title="Đăng ký"
+        form={
+          <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
                   {isRegisted && (
                     <Alert style={{ textAlign: "center", height: "40px" }} variant={"danger"}>
                       {message}
@@ -92,42 +92,23 @@ export default function RegisterPage() {
                     </button>
                   </div>
                 </Form>
-                <div className="mt-5 mx-auto">
-                  <h5 className={styles.textOr}>HOẶC TIẾP TỤC VỚI</h5>
-                  <LoginSocail />
-                </div>
-                <Row className="mt-5 d-flex justify-content-center  ml-3 mr-3 mb-5">
-                  <div className=" mb-4 mx-auto">
-                    <h6 style={{ textAlign: "center", fontSize: "13px" }}>
-                      Bằng việc đăng kí, bạn đã đồng ý với Mubaha về
-                      <span className={styles.textPolicies}> Điều khoản dịch vụ</span>
-                      <span> & </span>
-                      <span className={styles.textPolicies}>Chính sách bảo mật</span>
-                    </h6>
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <p className="mx-auto">
-                      <span>Bạn đã có tài khoản? </span>
-                      <Link href="/auth/login">
-                        <a>Đăng nhập</a>
-                      </Link>
-                    </p>
-                  </div>
-                </Row>
-              </div>
-            </div>
-          </Row>
-        </div>
+        }
+        bottom={<BottomFormRegister />}
+         />
+               
+
       )}
       {isVerifyPhone && (
         <div>
-          <Breadcrumb
-            previousLink="/auth/register"
+          <DynamicBreadcrumbComponent
+     previousLink="/auth/register"
             previousValue="Đăng ký"
             currentValue="Xác thực Otp"
-          />
+         />
           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
-            <Otp phone={phone} type={otpEnums.REGISTRATION} />
+          <DynamicOtpComponent
+          phone={phone} type={otpEnums.REGISTRATION}
+           />
           </Row>
         </div>
       )}

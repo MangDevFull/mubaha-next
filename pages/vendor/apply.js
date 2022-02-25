@@ -171,7 +171,7 @@ export default function AppLyVendor({ data }) {
           districtCode: address.district.code,
           wardCode: address.ward.code,
           detailAddress: address.detail,
-          fullAddress: `${address.detail}, ${address.province.name}, ${address.district.name}, ${address.ward.name}`
+          fullAddress: `${address.detail}, ${address.ward.name}, ${address.district.name}, ${address.province.name}`
         }
         const options = {
           method: 'POST',

@@ -12,7 +12,8 @@ const { PhoneNumberUtil, PhoneNumberFormat } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
-const DynamicComponent = dynamic(() => import('@/components/Otp.js'))
+const DynamicOtpComponent = dynamic(() => import('@/components/Otp.js'));
+const DynamicBreadcrumbComponent = dynamic(() => import('@/components/Breadcrumb.js'));
 
 export default function RecoverPassword() {
   const [isNotValidPhone, setIsNotValidPhone] = useState(true);
@@ -101,13 +102,13 @@ export default function RecoverPassword() {
       }
       {isVerifyPhone && (
         <div>
-          <Breadcrumb
-            previousLink="/auth/recover-password"
+          <DynamicBreadcrumbComponent
+    previousLink="/auth/recover-password"
             previousValue="Lấy lại mật khẩu"
             currentValue="Xác thực Otp"
-          />
-          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
-            <DynamicComponent phone={phone} type={otpEnums.RECOVER_PASSWORD} />
+         />
+           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
+            <DynamicOtpComponent phone={phone} type={otpEnums.RECOVER_PASSWORD} />
           </Row>
         </div>
       )}
