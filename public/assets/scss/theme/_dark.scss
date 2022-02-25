@@ -312,7 +312,8 @@ body {
   
     .main-navbar {
       .nav-menu {
-        // background-color: $dark-body;
+        background-color: var(--theme-deafult-3);
+        border-color: var(--theme-deafult-2);
         .back-btn {
           .mobile-back {
             color: $white-1;
@@ -2207,6 +2208,11 @@ body {
         .category-banner {
           .category-box {
             h2 {
+              background-color: $dark-top;
+              transition: all 0.3s ease;
+            }
+
+            h3 {
               background-color: $dark-top;
               transition: all 0.3s ease;
             }

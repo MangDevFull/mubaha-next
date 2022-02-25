@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Container, Row } from "reactstrap";
 
 export default function NavBar() {
@@ -31,14 +32,16 @@ export default function NavBar() {
           <ul className="nav-menu sm pixelstrap sm-horizontal" style={navClose}>
             <li className="back-btn" onClick={closeNav.bind(this)}>
               <div className="mobile-back text-right">
-                <span>Back navbar</span>
+                <span>Quay lại</span>
                 <i className="fa fa-angle-right pl-2" aria-hidden="true"></i>
               </div>
             </li>
             <li>
-              <a href="#" className="nav-link">
+              <Link href="/categories" passHref>
+              <a className="nav-link">
                 Danh mục sản phẩm
               </a>
+              </Link>
             </li>
             <li>
               <a href="#" className="nav-link">Việt Nam</a>
@@ -53,12 +56,12 @@ export default function NavBar() {
             <li>
               <a href="#" className="nav-link">Âu Mỹ</a>
             </li>
-            <li>
+            {/* <li>
               <a href="#" className="nav-link">
                 Thương Hiệu
                 <span className="sub-arrow"></span>
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

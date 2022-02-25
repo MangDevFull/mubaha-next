@@ -26,13 +26,6 @@ export default function Home({
       </section>
       <MainServiceCollections />
       <ProductCollection1 title="gợi ý hôm nay" data={dealsOfTheDay} />
-      <div className="section-b-space">
-        <PartitionSlider
-          dealsOfTheDay={dealsOfTheDay}
-          leftNewProducts={leftNewProducts}
-          rightFeatureProducts={rightFeatureProducts}
-        />
-      </div>
       <MasterParallaxBanner
         bg="parallax-mubaha"
         parallaxClass="text-center p-left"
@@ -40,8 +33,14 @@ export default function Home({
         subTitle1="xu hướng mới"
         subTitle2="rất nhiều ưu đãi"
       />
-
       <ProductCollection1 title="đừng bỏ lỡ" data={dontMissTheseProducts} />
+      <div className="section-b-space">
+        <PartitionSlider
+          dealsOfTheDay={dealsOfTheDay}
+          leftNewProducts={leftNewProducts}
+          rightFeatureProducts={rightFeatureProducts}
+        />
+      </div>
     </>
   );
 }
