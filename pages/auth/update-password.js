@@ -125,7 +125,6 @@ export default function CreatePassWord() {
           </div>
         </Modal.Footer>
       </Modal>
-      {/*Section ends*/}
     </>
   )
 }

@@ -5,7 +5,6 @@ import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
 import { Row, Form } from "reactstrap";
 import Layout from "@/components/Layout";
-const { PhoneNumberFormat } = libphone;
 import otpEnums from "../../enums/otpEnums.js";
 import styles from "@/styles/authen.module.css";
 import dynamic from 'next/dynamic'
