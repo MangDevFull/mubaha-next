@@ -7,7 +7,6 @@ import { Alert } from "react-bootstrap";
 import { signIn } from "next-auth/react";
 import { Row, Form } from "reactstrap";
 import libphone from "google-libphonenumber";
-import Layout from "@/components/Layout";
 import API from "@/services/api.js";
 import otpEnums from "../../enums/otpEnums.js";
 import styles from "@/styles/authen.module.css";
@@ -120,7 +119,6 @@ export default function LoginPage() {
           const response = await API.instance.post("/auth/login-otp", params);
           const data = response.data;
           if (data.status == 200) {
-            // console.log("data", data);
             setIsVerifyPhone(true);
             setMessage("");
           } else {
@@ -144,12 +142,12 @@ export default function LoginPage() {
           form={
             <Form className="theme-form ml-3 mr-3" onSubmit={getValueForm}>
               {isInvalid && (
-                <Alert style={{ textAlign: "center", height: "40px" }} variant={"danger"}>
+                <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
                   {message}
                 </Alert>
               )}
               {isCreatePassword && (
-                <Alert style={{ textAlign: "center", height: "70px" }} variant={"danger"}>
+                <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
                   <span>{message}</span>
                   <br></br>
                   <br></br>
@@ -165,7 +163,6 @@ export default function LoginPage() {
                   type="text"
                   className="form-control"
                   placeholder="Nhập số điện thoại của bạn"
-                  required=""
                   autoFocus
                 />
               </div>

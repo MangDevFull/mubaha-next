@@ -8,28 +8,28 @@ import ImageAuthen from "./ImgaeAuthen.js";
 export default function LayoutAuth({ title, form, bottom }) {
   return (
     <>
-    <HeaderAuthen />
-    <div className="login-page container-fluit">
-      <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
-        <div className={`right-login ${styles.marginForm} d-flex`}>
-          <div style={{ width: "50%", position: "relative" }}>
-            <ImageAuthen />
-          </div>
-          <div className={`theme-card ${styles.loginFormRight}`} style={{ width: "50%" }}>
-            <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
-              <h3 className="text-center">{title}</h3>
+      <HeaderAuthen />
+      <div className="login-page container-fluit">
+        <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
+          <div className={`right-login ${styles.marginForm} d-flex`}>
+            <div style={{ width: "50%", position: "relative" }}>
+              <ImageAuthen />
             </div>
-            {form}
-            <div className="mt-5 mx-auto">
-              <h5 className={styles.textOr}>HOẶC TIẾP TỤC VỚI</h5>
-              <LoginSocail />
+            <div className={`theme-card ${styles.loginFormRight}`} style={{ width: "50%" }}>
+              <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
+                <h3 className="text-center">{title}</h3>
+              </div>
+              {form}
+              <div className="mt-4 mx-auto">
+                <h5 className={styles.textOr}>HOẶC TIẾP TỤC VỚI</h5>
+                <LoginSocail />
+              </div>
+              {bottom}
             </div>
-            {bottom}
           </div>
-        </div>
-      </Row>
-    </div>
-    <Footer />
+        </Row>
+      </div>
+      <Footer />
     </>
   )
 }

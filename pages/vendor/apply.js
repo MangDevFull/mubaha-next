@@ -1,11 +1,11 @@
 import API from "../../services/api.js"
 import Head from "next/head";
 import { useRef, useState, useEffect } from "react"
-import { Modal, Button,Row,Alert } from "react-bootstrap"
+import { Modal, Button, Row, Alert } from "react-bootstrap"
 import Layout from "@/components/Layout";
 import Breadcrumb from '@/components/Breadcrumb.js'
 import libphone from 'google-libphonenumber';
-import {useSession} from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import accountType from "../../enums/accountType.enum.js";
 
@@ -15,7 +15,7 @@ const phoneUtil = PhoneNumberUtil.getInstance()
 export default function AppLyVendor({ data }) {
 
   const router = useRouter();
-  const {data:session, status } = useSession({
+  const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
       router.push('/auth/login')
@@ -29,10 +29,10 @@ export default function AppLyVendor({ data }) {
   const [wards, setWards] = useState([])
   const [message, setMessage] = useState("")
   const [showMessage, setShowMessage] = useState(false)
-  const [user,setUser] = useState({})
+  const [user, setUser] = useState({})
   const [messageError, setMessageError] = useState("")
   const [showMessageError, setShowMessageError] = useState(false)
-  const [isDiabledApply,setIsDiabledApply] = useState(true)
+  const [isDiabledApply, setIsDiabledApply] = useState(true)
   const [address, setAddress] = useState({
     fullName: "",
     phone: "",
@@ -52,11 +52,11 @@ export default function AppLyVendor({ data }) {
   })
   useEffect(() => {
     if (session != undefined) {
-      if(session.user.type == accountType.VENDOR){
+      if (session.user.type == accountType.VENDOR) {
         router.push('/')
-      }else if(session.user.type == accountType.CUSTOMER){
+      } else if (session.user.type == accountType.CUSTOMER) {
         setUser(session.user)
-      }else if(session.user.type == accountType.ADMIN){
+      } else if (session.user.type == accountType.ADMIN) {
         router.push('/')
       }
     }
@@ -87,7 +87,6 @@ export default function AppLyVendor({ data }) {
   }, [])
   const handleDistrict = async (e) => {
     const id = e.target.value
-
     const res = await API.instance.get(`/locations/provinces/${id}/districts/`)
     const data = res.data.data
     setDistricts(data)
@@ -119,23 +118,23 @@ export default function AppLyVendor({ data }) {
         }
       }
     }
-    if(inputName.current.value.length<10){
+    if (inputName.current.value.length < 10) {
       mess += "Tên không hợp lệ, "
       setIsDiabledApply(true)
     }
-    if(selectPrivince.current.value== ""){
+    if (selectPrivince.current.value == "") {
       mess += "Tỉnh hoặc thành phố không hợp lệ, "
       setIsDiabledApply(true)
     }
-    if(selectDistrict.current.value== ""){
+    if (selectDistrict.current.value == "") {
       mess += "Quận hoặc huyện không hợp lệ, "
       setIsDiabledApply(true)
     }
-    if(selectWard.current.value== ""){
+    if (selectWard.current.value == "") {
       mess += "Xã hoặc phường không hợp lệ, "
       setIsDiabledApply(true)
     }
-    if(mess==""){
+    if (mess == "") {
       const dataAdd = {
         fullName: inputName.current.value,
         phone: inputPhone.current.value,
@@ -151,51 +150,51 @@ export default function AppLyVendor({ data }) {
           code: selectWard.current.value,
           name: selectWard.current.options[selectWard.current.selectedIndex].text,
         },
-        detail: inputDetailAddress.current.value ,
+        detail: inputDetailAddress.current.value,
       }
       setAddress(dataAdd)
       setShow(false)
       setShowAddress(true)
       setIsDiabledApply(false)
-    }else{
+    } else {
       setMessage(mess.slice(0, -2))
       setShowMessage(true)
     }
   }
   const appLyVendor = async () => {
-        const body = {
-          brandName: inputBrandName.current.value,
-          phone: address.phone,
-          fullName: address.fullName,
-          provinceCode: address.province.code,
-          districtCode: address.district.code,
-          wardCode: address.ward.code,
-          detailAddress: address.detail,
-          fullAddress: `${address.detail}, ${address.ward.name}, ${address.district.name}, ${address.province.name}`
-        }
-        const options = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + session.accessToken
-          },
-          body: JSON.stringify(body)
-    
-        }
-        const response = await fetch(`${process.env.API_URL}/vendors/apply`,options)
+    const body = {
+      brandName: inputBrandName.current.value,
+      phone: address.phone,
+      fullName: address.fullName,
+      provinceCode: address.province.code,
+      districtCode: address.district.code,
+      wardCode: address.ward.code,
+      detailAddress: address.detail,
+      fullAddress: `${address.detail}, ${address.ward.name}, ${address.district.name}, ${address.province.name}`
+    }
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.accessToken
+      },
+      body: JSON.stringify(body)
 
-        const data = await response.json()
-        if(data.status === 400){ 
-          setMessageError(data.errors[0].msg)
-          setShowMessageError(true)
-        }else if(data.status == 200){
-          router.push('/vendor/list-product')
-        }
-        
+    }
+    const response = await fetch(`${process.env.API_URL}/vendors/apply`, options)
+
+    const data = await response.json()
+    if (data.status === 400) {
+      setMessageError(data.errors[0].msg)
+      setShowMessageError(true)
+    } else if (data.status == 200) {
+      router.push('/')
+    }
+
   }
   return (
     <>
-          <Head>
+      <Head>
         <title>Đăng ký bán hàng</title>
       </Head>
       <div>
@@ -459,10 +458,10 @@ export default function AppLyVendor({ data }) {
                   <div className="col-sm-12">
                     <lable className="lable">Tên shop</lable>
                     {showMessageError &&
-                    <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
-                      {messageError}
-                    </Alert>
-                  }
+                      <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
+                        {messageError}
+                      </Alert>
+                    }
                     <input
                       ref={inputBrandName}
                       type="text"
@@ -496,8 +495,8 @@ export default function AppLyVendor({ data }) {
                     />
                   </div>
                   <div className="col-md-12 mt-3">
-                <button className="btn-solid btn" disabled={isDiabledApply} onClick={appLyVendor}>Đăng ký</button>
-              </div>
+                    <button className="btn-solid btn" disabled={isDiabledApply} onClick={appLyVendor}>Đăng ký</button>
+                  </div>
                 </div>
                 <div className="col-md-6">
                   <lable className="lable">Địa chỉ lấy hàng</lable>
@@ -508,16 +507,16 @@ export default function AppLyVendor({ data }) {
                       <p>Số điện thoại: {address.phone} </p>
                       <p>
                         Địa chỉ chi tiết: {address.detail}
-                        </p>
+                      </p>
                       <p>
-                        Địa chỉ: { `${address.ward.name}, ${address.district.name}, ${address.province.name}`}
+                        Địa chỉ: {`${address.ward.name}, ${address.district.name}, ${address.province.name}`}
                       </p>
                     </div>
                   )}
                   <div className="mt-2">
-                  <button className="btn p-0 m-0" onClick={handleShow}>
-                    Cập nhật địa chỉ lấy hàng
-                  </button>
+                    <button className="btn p-0 m-0" onClick={handleShow}>
+                      Cập nhật địa chỉ lấy hàng
+                    </button>
                   </div>
                 </div>
               </div>
@@ -526,157 +525,157 @@ export default function AppLyVendor({ data }) {
         </div>
       </section>
 
-      <Modal 
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      show={show}>
+      <Modal
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={show}>
         <Modal.Header>
           <Modal.Title>Cập nhật địa chỉ</Modal.Title>
         </Modal.Header>
         <Modal.Body class="container-fluid">
-        <div className="col-md-12 mt-3">
-        { showMessage &&
-        <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
-                  {message}
-                    </Alert>
-                  }
-        </div>
-        <Row className="mt-5 ml-1 mb-5 mr-1">
-          <form id="add_address">
-            <div className="row">
-              <div className="col-lg-6">
-                <div className="mb-3">
-                  <label htmlFor="productname">Họ và tên</label>
-                  <input
-                    ref={inputName}
-                    name="productname"
-                    type="text"
-                    defaultValue={address.fullName}
-                    className="form-control productname"
-                  />
+          <div className="col-md-12 mt-3">
+            {showMessage &&
+              <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
+                {message}
+              </Alert>
+            }
+          </div>
+          <Row className="mt-5 ml-1 mb-5 mr-1">
+            <form id="add_address">
+              <div className="row">
+                <div className="col-lg-6">
+                  <div className="mb-3">
+                    <label htmlFor="productname">Họ và tên</label>
+                    <input
+                      ref={inputName}
+                      name="productname"
+                      type="text"
+                      defaultValue={address.fullName}
+                      className="form-control productname"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="mb-3">
-                  <label htmlFor="number_phone">Số điện thoại</label>
-                  <input
-                    ref={inputPhone}
-                    name="number_phone"
-                    defaultValue={address.phone}
-                    type="text"
-                    className="form-control number_phone"
-                    maxLength={10}
-                  />
+                <div className="col-lg-6">
+                  <div className="mb-3">
+                    <label htmlFor="number_phone">Số điện thoại</label>
+                    <input
+                      ref={inputPhone}
+                      name="number_phone"
+                      defaultValue={address.phone}
+                      type="text"
+                      className="form-control number_phone"
+                      maxLength={10}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="col-lg-12 col-md-12">
-                <div className="mb-3">
-                  <label
-                    htmlFor="choices-single-groups"
-                    className="form-label font-size-13 text-muted"
-                  >
-                    Tỉnh/Thành phố
-                  </label>
-                  <select
-                    className="form-control"
-                    ref={selectPrivince}
-                    data-trigger
-                    name="choices-single-groups"
-                    onChange={handleDistrict}
-                  >
-                    {address.province.code ? (
-                      <option value={address.province.code}>{address.province.name}</option>
-                    ) : (
-                      <option value="">Chọn một tỉnh/thành phố</option>
-                    )}
-                    {provinces.map((p) => {
-                      return (
-                        <option key={p.code} value={p.code}>
-                          {p.name}
-                        </option>
-                      )
-                    })}
-                  </select>
+                <div className="col-lg-12 col-md-12">
+                  <div className="mb-3">
+                    <label
+                      htmlFor="choices-single-groups"
+                      className="form-label font-size-13 text-muted"
+                    >
+                      Tỉnh/Thành phố
+                    </label>
+                    <select
+                      className="form-control"
+                      ref={selectPrivince}
+                      data-trigger
+                      name="choices-single-groups"
+                      onChange={handleDistrict}
+                    >
+                      {address.province.code ? (
+                        <option value={address.province.code}>{address.province.name}</option>
+                      ) : (
+                        <option value="">Chọn một tỉnh/thành phố</option>
+                      )}
+                      {provinces.map((p) => {
+                        return (
+                          <option key={p.code} value={p.code}>
+                            {p.name}
+                          </option>
+                        )
+                      })}
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div className="col-lg-12 col-md-12">
-                <div className="mb-3">
-                  <label
-                    htmlFor="choices-single-groups"
-                    className="form-label font-size-13 text-muted"
-                  >
-                    Quận/Huyện
-                  </label>
-                  <select
-                    ref={selectDistrict}
-                    className="form-control"
-                    data-trigger
-                    name="choices-single-groups"
-                    onChange={handleWards}
-                  >
-                    {address.district.code ? (
-                      <option value={address.district.code}>{address.district.name}</option>
-                    ) : (
-                      <option value="">Chọn một quận/huyện</option>
-                    )}
+                <div className="col-lg-12 col-md-12">
+                  <div className="mb-3">
+                    <label
+                      htmlFor="choices-single-groups"
+                      className="form-label font-size-13 text-muted"
+                    >
+                      Quận/Huyện
+                    </label>
+                    <select
+                      ref={selectDistrict}
+                      className="form-control"
+                      data-trigger
+                      name="choices-single-groups"
+                      onChange={handleWards}
+                    >
+                      {address.district.code ? (
+                        <option value={address.district.code}>{address.district.name}</option>
+                      ) : (
+                        <option value="">Chọn một quận/huyện</option>
+                      )}
 
-                    {districts.map((p) => {
-                      return (
-                        <option key={p.code} value={p.code}>
-                          {p.name}
-                        </option>
-                      )
-                    })}
-                  </select>
+                      {districts.map((p) => {
+                        return (
+                          <option key={p.code} value={p.code}>
+                            {p.name}
+                          </option>
+                        )
+                      })}
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div className="col-lg-12 col-md-12">
-                <div className="mb-3">
-                  <label
-                    htmlFor="choices-single-groups"
-                    className="form-label font-size-13 text-muted"
-                  >
-                    Xã/Phường
+                <div className="col-lg-12 col-md-12">
+                  <div className="mb-3">
+                    <label
+                      htmlFor="choices-single-groups"
+                      className="form-label font-size-13 text-muted"
+                    >
+                      Xã/Phường
+                    </label>
+                    <select
+                      ref={selectWard}
+                      className="form-control"
+                      data-trigger
+                      name="choices-single-groups"
+                      id="ward"
+                    >
+                      {address.ward.code ? (
+                        <option value={address.ward.code}>{address.ward.name}</option>
+                      ) : (
+                        <option value="">Chọn một xã/phường</option>
+                      )}
+                      {wards.map((p) => {
+                        return (
+                          <option key={p.code} value={p.code}>
+                            {p.name}
+                          </option>
+                        )
+                      })}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-lg-12">
+                  <label htmlFor="message-text" className="col-form-label">
+                    Địa chỉ chi tiết
                   </label>
-                  <select
-                    ref={selectWard}
+                  <textarea
                     className="form-control"
-                    data-trigger
-                    name="choices-single-groups"
-                    id="ward"
-                  >
-                    {address.ward.code ? (
-                      <option value={address.ward.code}>{address.ward.name}</option>
-                    ) : (
-                      <option value="">Chọn một xã/phường</option>
-                    )}
-                    {wards.map((p) => {
-                      return (
-                        <option key={p.code} value={p.code}>
-                          {p.name}
-                        </option>
-                      )
-                    })}
-                  </select>
+                    ref={inputDetailAddress}
+                    defaultValue={address.detail}
+                  />
                 </div>
               </div>
-              <div className="col-lg-12">
-                <label htmlFor="message-text" className="col-form-label">
-                  Địa chỉ chi tiết
-                </label>
-                <textarea
-                  className="form-control"
-                  ref={inputDetailAddress}
-                  defaultValue={address.detail}
-                />
-              </div>
-            </div>
-          </form>
+            </form>
           </Row>
         </Modal.Body>
         <Modal.Footer>
-          <Button className="btn btn-secondary btn-lg" style={{width:'120px',height:'50px'}}  onClick={handleClose}>
+          <Button className="btn btn-secondary btn-lg" style={{ width: '120px', height: '50px' }} onClick={handleClose}>
             Huỷ
           </Button>
           <button className="btn-solid btn" onClick={handleAdd}>

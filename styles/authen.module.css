@@ -19,6 +19,7 @@
   border-start-end-radius: 1rem;
   border-bottom-right-radius: 1rem;
   box-shadow: 10px 10px 10px 10px rgb(0 0 0 / 14%);
+  height: 100%;
 }
 .hideShowPassword{
   position: absolute; 
