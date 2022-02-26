@@ -2,6 +2,7 @@ import { Col, Container, Row, Media } from "reactstrap";
 import Slider from "react-slick";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
+import ProductPrice from "./common/ProductDetails/ProductPrice";
 
 export default function MainMultipleSlider({ dontMissTheseProducts }) {
   return (
@@ -35,30 +36,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
                             <h6>{product.name}</h6>
                           </a>
                         </Link>
-                        <h4>
-                          <NumberFormat
-                            value={product.currentPrice}
-                            thousandSeparator={true}
-                            displayType="text"
-                            suffix={product.currencySymbol}
-                            decimalScale={0}
-                          />
-                          {product.discountPercent > 1 ? (
-                            <del>
-                              <span className="money ml-1">
-                                <NumberFormat
-                                  value={product.price}
-                                  thousandSeparator={true}
-                                  displayType="text"
-                                  suffix={product.currencySymbol}
-                                  decimalScale={0}
-                                />
-                              </span>
-                            </del>
-                          ) : (
-                            ""
-                          )}
-                        </h4>
+                        <h4><ProductPrice price={product.price} discount={product.discount} currencySymbol={product.currencySymbol} /></h4>
                       </div>
                     </div>
                   ))}
@@ -87,30 +65,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
                             <h6>{product.name}</h6>
                           </a>
                         </Link>
-                        <h4>
-                          <NumberFormat
-                            value={product.currentPrice}
-                            thousandSeparator={true}
-                            displayType="text"
-                            suffix={product.currencySymbol}
-                            decimalScale={0}
-                          />
-                          {product.discountPercent > 1 ? (
-                            <del>
-                              <span className="money ml-1">
-                                <NumberFormat
-                                  value={product.price}
-                                  thousandSeparator={true}
-                                  displayType="text"
-                                  suffix={product.currencySymbol}
-                                  decimalScale={0}
-                                />
-                              </span>
-                            </del>
-                          ) : (
-                            ""
-                          )}
-                        </h4>
+                        <h4><ProductPrice price={product.price} discount={product.discount} currencySymbol={product.currencySymbol} /></h4>
                       </div>
                     </div>
                   ))}
@@ -146,30 +101,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
                             <h6>{product.name}</h6>
                           </a>
                         </Link>
-                        <h4>
-                          <NumberFormat
-                            value={product.currentPrice}
-                            thousandSeparator={true}
-                            displayType="text"
-                            suffix={product.currencySymbol}
-                            decimalScale={0}
-                          />
-                          {product.discountPercent > 1 ? (
-                            <del>
-                              <span className="money ml-1">
-                                <NumberFormat
-                                  value={product.price}
-                                  thousandSeparator={true}
-                                  displayType="text"
-                                  suffix={product.currencySymbol}
-                                  decimalScale={0}
-                                />
-                              </span>
-                            </del>
-                          ) : (
-                            ""
-                          )}
-                        </h4>
+                        <h4><ProductPrice price={product.price} discount={product.discount} currencySymbol={product.currencySymbol} /></h4>
                       </div>
                     </div>
                   ))}
@@ -198,30 +130,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
                             <h6>{product.name}</h6>
                           </a>
                         </Link>
-                        <h4>
-                          <NumberFormat
-                            value={product.currentPrice}
-                            thousandSeparator={true}
-                            displayType="text"
-                            suffix={product.currencySymbol}
-                            decimalScale={0}
-                          />
-                          {product.discountPercent > 1 ? (
-                            <del>
-                              <span className="money ml-1">
-                                <NumberFormat
-                                  value={product.price}
-                                  thousandSeparator={true}
-                                  displayType="text"
-                                  suffix={product.currencySymbol}
-                                  decimalScale={0}
-                                />
-                              </span>
-                            </del>
-                          ) : (
-                            ""
-                          )}
-                        </h4>
+                        <h4><ProductPrice price={product.price} discount={product.discount} currencySymbol={product.currencySymbol} /></h4>
                       </div>
                     </div>
                   ))}
@@ -257,30 +166,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
                             <h6>{product.name}</h6>
                           </a>
                         </Link>
-                        <h4>
-                          <NumberFormat
-                            value={product.currentPrice}
-                            thousandSeparator={true}
-                            displayType="text"
-                            suffix={product.currencySymbol}
-                            decimalScale={0}
-                          />
-                          {product.discountPercent > 1 ? (
-                            <del>
-                              <span className="money ml-1">
-                                <NumberFormat
-                                  value={product.price}
-                                  thousandSeparator={true}
-                                  displayType="text"
-                                  suffix={product.currencySymbol}
-                                  decimalScale={0}
-                                />
-                              </span>
-                            </del>
-                          ) : (
-                            ""
-                          )}
-                        </h4>
+                        <h4><ProductPrice price={product.price} discount={product.discount} currencySymbol={product.currencySymbol} /></h4>
                       </div>
                     </div>
                   ))}
@@ -309,30 +195,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
                             <h6>{product.name}</h6>
                           </a>
                         </Link>
-                        <h4>
-                          <NumberFormat
-                            value={product.currentPrice}
-                            thousandSeparator={true}
-                            displayType="text"
-                            suffix={product.currencySymbol}
-                            decimalScale={0}
-                          />
-                          {product.discountPercent > 1 ? (
-                            <del>
-                              <span className="money ml-1">
-                                <NumberFormat
-                                  value={product.price}
-                                  thousandSeparator={true}
-                                  displayType="text"
-                                  suffix={product.currencySymbol}
-                                  decimalScale={0}
-                                />
-                              </span>
-                            </del>
-                          ) : (
-                            ""
-                          )}
-                        </h4>
+                        <h4><ProductPrice price={product.price} discount={product.discount} currencySymbol={product.currencySymbol} /></h4>
                       </div>
                     </div>
                   ))}

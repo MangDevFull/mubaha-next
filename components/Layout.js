@@ -5,7 +5,7 @@ import fetcher from '../libs/fetcher'
 import HeaderTwo from './HeaderTwo'
 
 export default function Layout({ children }) {
-  const { data, error } = useSWR(`${process.env.API_URL}/categories/mega`, fetcher)
+  const { data, error } = useSWR(`${process.env.API_URL}/categories`, fetcher)
 
   return (
     <>

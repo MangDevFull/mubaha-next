@@ -1,5 +1,7 @@
 import Link from "next/link"
 import NumberFormat from "react-number-format";
+import price from "@/utils/priceCalculator";
+import ProductPrice from "../ProductDetails/ProductPrice";
 
 const MasterProductDetail = ({
   product,
@@ -28,29 +30,7 @@ const MasterProductDetail = ({
         </Link>
 
         {des ? <p>{product.description}</p> : ""}
-        <h4>
-          <NumberFormat
-            value={product.currentPrice}
-            thousandSeparator={true}
-            displayType="text"
-            suffix={currency.symbol}
-            decimalScale={0}
-          />
-          {product.discountPercent > 1 ? 
-            <del>
-              <span className="money ml-1">
-                <NumberFormat
-                  value={product.price}
-                  thousandSeparator={true}
-                  displayType="text"
-                  suffix={currency.symbol}
-                  decimalScale={0}
-                />
-              </span>
-            </del>
-            : ""
-          }
-        </h4>
+        <h4><ProductPrice price={product.price} discount={product.discount} currencySymbol={product.currencySymbol} /></h4>
 
         {/* {product.variants.map((vari) => {
           var findItem = uniqueTags.find((x) => x.color === vari.color);
