@@ -39,7 +39,7 @@ export default function CreatePassWord() {
     const params ={
       password: inputPassword.current.value
     }
-    const response = await API.instance.put('/auth/recover-password',params)
+    const response = await API.instance.put(`${process.env.API_AUTH_URL}/recover-password`,params)
     const data = response.data
     if(data.status == 200){
       localStorage.removeItem("userId")

@@ -56,7 +56,7 @@ export default function VerifyOtp({ phone, type }) {
           phone,
           code:e
         }
-          const response = await API.instance.post('/auth/verify-otp-recover-password',params)
+          const response = await API.instance.post(`${process.env.API_AUTH_URL}/verify-otp-recover-password`,params)
           const data = response.data
           console.log(data)
           if(data.status === 400){

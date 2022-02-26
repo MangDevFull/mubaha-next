@@ -4,7 +4,8 @@ import libphone from "google-libphonenumber";
 import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
 import { Row, Form } from "reactstrap";
-import Layout from "@/components/Layout";
+import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
+import Footer from "@/components/Footer.js";
 import otpEnums from "../../enums/otpEnums.js";
 import styles from "@/styles/authen.module.css";
 import dynamic from 'next/dynamic'
@@ -46,8 +47,14 @@ export default function RegisterPage() {
     const params = {
       phone,
     };
-    const response = await API.instance.post("/auth/register-otp", params);
-    const data = response.data;
+    // const response = await API.instance.post("/auth/register-otp", params);
+    // const data = response.data;
+    const response = await fetch(`${process.env.API_AUTH_URL}/register-otp`, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json()
     if (data.status == 200) {
       setIsVerifyPhone(true);
     } else {
@@ -99,6 +106,7 @@ export default function RegisterPage() {
       )}
       {isVerifyPhone && (
         <div>
+        <HeaderAuthen />
           <DynamicBreadcrumbComponent
      previousLink="/auth/register"
             previousValue="Đăng ký"
@@ -109,6 +117,7 @@ export default function RegisterPage() {
           phone={phone} type={otpEnums.REGISTRATION}
            />
           </Row>
+          <Footer />
         </div>
       )}
     </>

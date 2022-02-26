@@ -12,6 +12,7 @@ import Filter from "@/components/common/product-details/filter";
 
 import NumberFormat from "react-number-format";
 import CountdownComponent from "@/components/common/widgets/countdownComponent";
+import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
   const [quantity, setQuantity] = useState(1);
@@ -202,24 +203,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             <span className="label-text">in fashion</span>
                           </div>
                           <h3 className="price-detail">
-                            <NumberFormat
-                              value={detailProduct.currentPrice}
-                              thousandSeparator={true}
-                              displayType="text"
-                              suffix={detailProduct.currencySymbol}
-                              decimalScale={0}
-                            />{" "}
-                            {detailProduct.discountPercent > 0 && (
-                              <del>
-                                <NumberFormat
-                                  value={detailProduct.price}
-                                  thousandSeparator={true}
-                                  displayType="text"
-                                  suffix={detailProduct.currencySymbol}
-                                  decimalScale={0}
-                                />
-                              </del>
-                            )}
+                            <ProductPrice price={detailProduct.price} discount={detailProduct.discount} currencySymbol={detailProduct.currencySymbol} />
                           </h3>
                           <ul className="color-variant">
                             {colorVariants.map((colorVariant) => (

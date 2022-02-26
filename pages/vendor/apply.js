@@ -79,7 +79,7 @@ export default function AppLyVendor({ data }) {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await API.instance.get("/locations/provinces")
+      const res = await API.instance.get("/provinces")
       const data = res.data.data
       setProvinces(data)
     }
@@ -87,7 +87,7 @@ export default function AppLyVendor({ data }) {
   }, [])
   const handleDistrict = async (e) => {
     const id = e.target.value
-    const res = await API.instance.get(`/locations/provinces/${id}/districts/`)
+    const res = await API.instance.get(`/provinces/${id}/districts/`)
     const data = res.data.data
     setDistricts(data)
     setWards([])
@@ -95,7 +95,7 @@ export default function AppLyVendor({ data }) {
   const handleWards = async (e) => {
     const id = e.target.value
 
-    const res = await API.instance.get(`/locations/districts/${id}/wards`)
+    const res = await API.instance.get(`/districts/${id}/wards`)
     const data = res.data.data
     setWards(data)
   }
@@ -181,9 +181,10 @@ export default function AppLyVendor({ data }) {
       body: JSON.stringify(body)
 
     }
-    const response = await fetch(`${process.env.API_URL}/web/customer/apply`, options)
+    const response = await fetch(`${process.env.API_URL}/customer/apply`, options)
 
     const data = await response.json()
+    console.log(data)
     if (data.status === 400) {
       setMessageError(data.errors[0].msg)
       setShowMessageError(true)

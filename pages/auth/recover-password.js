@@ -48,7 +48,7 @@ export default function RecoverPassword() {
       phone: phone
     }
 
-    const response = await API.instance.post('/auth/recover-password', params)
+    const response = await API.instance.post(`${process.env.API_AUTH_URL}/recover-password`, params)
     const data = response.data
 
     if (data.status == 200) {

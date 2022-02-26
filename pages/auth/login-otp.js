@@ -2,10 +2,10 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import libphone from "google-libphonenumber";
-import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
 import otpEnums from "../../enums/otpEnums.js";
-import Layout from "@/components/Layout";
+import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
+import Footer from "@/components/Footer.js";
 import { Row, Form } from "reactstrap";
 import styles from "@/styles/authen.module.css";
 import BottomFornLogin from "@/components/authen/BottomFornLogin.js";
@@ -53,8 +53,14 @@ export default function LoginWithOtp() {
     const params = {
       phone: phone,
     };
-    const response = await API.instance.post("/auth/login-otp", params);
-    const data = response.data;
+    // const response = await API.instance.post("/auth/login-otp", params);
+    // const data = response.data;
+    const response = await fetch(`${process.env.API_AUTH_URL}/login-otp`, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json()
     if (data.status == 200) {
       setIsVerifyPhone(true);
       setMessage("");
@@ -114,6 +120,7 @@ export default function LoginWithOtp() {
 
       {isVerifyPhone && (
         <div>
+        <HeaderAuthen />
           <DynamicBreadcrumbComponent
             previousLink="/auth/login-otp"
             previousValue="Trang đăng nhập"
@@ -124,6 +131,7 @@ export default function LoginWithOtp() {
               phone={phone} type={otpEnums.LOGIN}
             />
           </Row>
+          <Footer />
         </div>
       )}
     </>

@@ -7,7 +7,8 @@ import { Alert } from "react-bootstrap";
 import { signIn } from "next-auth/react";
 import { Row, Form } from "reactstrap";
 import libphone from "google-libphonenumber";
-import API from "@/services/api.js";
+import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
+import Footer from "@/components/Footer.js";
 import otpEnums from "../../enums/otpEnums.js";
 import styles from "@/styles/authen.module.css";
 import BottomFornLogin from "@/components/authen/BottomFornLogin.js";
@@ -116,8 +117,14 @@ export default function LoginPage() {
           const params = {
             phone: phoneNumber,
           };
-          const response = await API.instance.post("/auth/login-otp", params);
-          const data = response.data;
+          // const response = await API.instance.post("/auth/login-otp", params);
+          // const data = response.data;
+          const response = await fetch(`${process.env.API_AUTH_URL}/login-otp`, {
+            method: "POST",
+            body: JSON.stringify(params),
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await response.json()
           if (data.status == 200) {
             setIsVerifyPhone(true);
             setMessage("");
@@ -217,16 +224,18 @@ export default function LoginPage() {
 
       {isVerifyPhone && (
         <div>
-        <DynamicOtpComponent
+        <HeaderAuthen />
+        <DynamicBreadcrumbComponent
         previousLink="/auth/login"
             previousValue="Trang đăng nhập"
             currentValue="Xác thực Otp"
          />
           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
-          <DynamicBreadcrumbComponent
+          <DynamicOtpComponent
           phone={phone} type={otpEnums.CREATE_PASSWORD}
            />
           </Row>
+          <Footer />
         </div>
       )}
     </>
