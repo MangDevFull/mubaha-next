@@ -1,31 +1,11 @@
 import Head from "next/head";
-import Slider from "react-slick";
-import API from "../services/api";
-import MasterBanner from "../components/MasterBanner";
-import MainServiceCollections from "../components/MainServiceCollections";
-import ProductCollection1 from "../components/ProductCollection1";
-import Layout from "../components/Layout";
+import MainServiceCollections from "@/components/MainServiceCollections";
+import ProductCollection1 from "@/components/ProductCollection1";
+import Layout from "@/components/Layout";
 
-import { useSession } from "next-auth/react";
-
-import MainMultipleSlider from "../components/MainMultipleSlider";
-import PartitionSlider from "../components/PartitionSlider";
-import MasterParallaxBanner from "../components/MasterParallaxBanner";
-
-const Data = [
-  {
-    img: "home39",
-    title: "save 10%",
-    desc: "fresh vegetables",
-    link: "#",
-  },
-  {
-    img: "home38",
-    title: "save upto 10%",
-    desc: "fresh vegetables",
-    link: "#",
-  },
-];
+import MainMultipleSlider from "@/components/MainMultipleSlider";
+import PartitionSlider from "@/components/PartitionSlider";
+import MasterParallaxBanner from "@/components/MasterParallaxBanner";
 
 export default function Home({
   dealsOfTheDay,
@@ -35,12 +15,7 @@ export default function Home({
   rightFeatureProducts,
   top5Products,
 }) {
-  // if(localStorage !=null){
-  //   console.log("localStorage",localStorage);
-  // }
-  const { data: session, status } = useSession();
 
-  // console.log(session);
   return (
     <>
       <Head>
@@ -51,13 +26,6 @@ export default function Home({
       </section>
       <MainServiceCollections />
       <ProductCollection1 title="gợi ý hôm nay" data={dealsOfTheDay} />
-      <div className="section-b-space">
-        <PartitionSlider
-          dealsOfTheDay={dealsOfTheDay}
-          leftNewProducts={leftNewProducts}
-          rightFeatureProducts={rightFeatureProducts}
-        />
-      </div>
       <MasterParallaxBanner
         bg="parallax-mubaha"
         parallaxClass="text-center p-left"
@@ -65,8 +33,14 @@ export default function Home({
         subTitle1="xu hướng mới"
         subTitle2="rất nhiều ưu đãi"
       />
-
       <ProductCollection1 title="đừng bỏ lỡ" data={dontMissTheseProducts} />
+      <div className="section-b-space">
+        <PartitionSlider
+          dealsOfTheDay={dealsOfTheDay}
+          leftNewProducts={leftNewProducts}
+          rightFeatureProducts={rightFeatureProducts}
+        />
+      </div>
     </>
   );
 }
@@ -75,7 +49,7 @@ Home.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const response = await fetch(`${process.env.API_URL}`);
   const { data } = await response.json();
 
@@ -88,5 +62,6 @@ export async function getServerSideProps() {
       rightFeatureProducts: data.rightFeatureProducts,
       top5Products: data.top5Products,
     },
+    revalidate: 60,
   };
 }

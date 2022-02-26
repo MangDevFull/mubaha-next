@@ -2,7 +2,7 @@ import Slider from "react-slick"
 import {Container, Row, Col} from "reactstrap"
 import ProductItem from "./ProductItem"
 import PostLoader from "./common/PostLoader"
-import {Product5} from "../services/script"
+import {Product5} from "@/services/script"
 
 export default function RelatedProducts({data}) {
   return (
@@ -35,9 +35,9 @@ export default function RelatedProducts({data}) {
                 <Slider {...Product5} className="slide-6-product product-m no-arrow">
                   {data &&
                     data.map((product, index) => (
-                      <divp key={index}>
+                      <div key={index}>
                         <ProductItem product={product} />
-                      </divp>
+                      </div>
                     ))}
                 </Slider>
               )}

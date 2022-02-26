@@ -1,6 +1,7 @@
 import Slider from "react-slick";
 import Link from "next/link";
 import Image from "next/image";
+import ProductPrice from "./common/ProductDetails/ProductPrice";
 
 export default function SideProductCart({ product }) {
   return (
@@ -30,7 +31,9 @@ export default function SideProductCart({ product }) {
               </a>
             </Link>
 
-            <h4>${product.price}</h4>
+            <h4>
+              <ProductPrice price={product.price} discount={product.discount} currencySymbol={product.currencySymbol} />
+            </h4>
           </div>
         </div>
       </div>

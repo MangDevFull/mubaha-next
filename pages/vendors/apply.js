@@ -1,13 +1,37 @@
-import API from "../../services/api.js"
-import {useRef, useState, useEffect} from "react"
-import {Modal, Button} from "react-bootstrap"
+import API from "@/services/api.js"
+import { useRef, useState, useEffect } from "react"
+import { Modal, Button,Row,Alert } from "react-bootstrap"
+import Layout from "@/components/Layout";
+import Breadcrumb from '@/components/Breadcrumb.js'
+import libphone from 'google-libphonenumber';
+import {useSession} from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { getSession } from "next-auth/react"
 
-export default function AppLyVendor({data}) {
+const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
+
+const phoneUtil = PhoneNumberUtil.getInstance()
+export default function AppLyVendor({ data }) {
+
+  const router = useRouter();
+  const {data:session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/')
+    }
+  })
+
   const [showAddress, setShowAddress] = useState(false)
   const [show, setShow] = useState(false)
   const [provinces, setProvinces] = useState([])
   const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
+  const [message, setMessage] = useState("")
+  const [showMessage, setShowMessage] = useState(false)
+  const [user,setUser] = useState({})
+  const [messageError, setMessageError] = useState("")
+  const [showMessageError, setShowMessageError] = useState(false)
+  const [isDiabledApply,setIsDiabledApply] = useState(true)
   const [address, setAddress] = useState({
     fullName: "",
     phone: "",
@@ -25,12 +49,17 @@ export default function AppLyVendor({data}) {
     },
     detail: "",
   })
-
+  useEffect( async () => {
+    const ss = await getSession()
+    setUser(ss.user)
+  },[])
   const handleClose = () => setShow(false)
   const handleShow = () => {
     setShow(true)
+    setMessage("")
+    setShowMessage(false)
   }
-  const inputUS = useRef()
+  const inputPhoneVendor = useRef()
   const inputBrandName = useRef()
   const inputEmail = useRef()
   const inputName = useRef()
@@ -48,7 +77,6 @@ export default function AppLyVendor({data}) {
     }
     fetchData()
   }, [])
-
   const handleDistrict = async (e) => {
     const id = e.target.value
 
@@ -66,54 +94,104 @@ export default function AppLyVendor({data}) {
   }
 
   const handleAdd = () => {
-    const dataAdd = {
-      fullName: inputName.current.value,
-      phone: inputPhone.current.value,
-      province: {
-        code: selectPrivince.current.value,
-        name: selectPrivince.current.options[selectPrivince.current.selectedIndex].text,
-      },
-      district: {
-        code: selectDistrict.current.value,
-        name: selectDistrict.current.options[selectDistrict.current.selectedIndex].text,
-      },
-      ward: {
-        code: selectWard.current.value,
-        name: selectWard.current.options[selectWard.current.selectedIndex].text,
-      },
-      detail: inputDetailAddress.current.value,
+    let mess = ""
+    var reg = /^\d+$/;
+    if (!reg.test(inputPhone.current.value)) {
+      mess += "Số điện thoại không hợp lệ"
+      setIsDiabledApply(true)
+    } else {
+      if (inputPhone.current.value.length < 2 || inputPhone.current.value == null) {
+        mess += "Số điện thoại không hợp lệ"
+        setIsDiabledApply(true)
+      } else {
+        const number = phoneUtil.parse(inputPhone.current.value, "VN");
+        if (!phoneUtil.isValidNumber(number)) {
+          mess += "Số điện thoại không hợp lệ, "
+          setIsDiabledApply(true)
+        }
+      }
     }
-    setAddress(dataAdd)
-    setShow(false)
-    setShowAddress(true)
+    if(inputName.current.value.length<10){
+      mess += "Tên không hợp lệ, "
+      setIsDiabledApply(true)
+    }
+    if(selectPrivince.current.value== ""){
+      mess += "Tỉnh hoặc thành phố không hợp lệ, "
+      setIsDiabledApply(true)
+    }
+    if(selectDistrict.current.value== ""){
+      mess += "Quận hoặc huyện không hợp lệ, "
+      setIsDiabledApply(true)
+    }
+    if(selectWard.current.value== ""){
+      mess += "Xã hoặc phường không hợp lệ, "
+      setIsDiabledApply(true)
+    }
+    if(mess==""){
+      const dataAdd = {
+        fullName: inputName.current.value,
+        phone: inputPhone.current.value,
+        province: {
+          code: selectPrivince.current.value,
+          name: selectPrivince.current.options[selectPrivince.current.selectedIndex].text,
+        },
+        district: {
+          code: selectDistrict.current.value,
+          name: selectDistrict.current.options[selectDistrict.current.selectedIndex].text,
+        },
+        ward: {
+          code: selectWard.current.value,
+          name: selectWard.current.options[selectWard.current.selectedIndex].text,
+        },
+        detail: inputDetailAddress.current.value ,
+      }
+      setAddress(dataAdd)
+      setShow(false)
+      setShowAddress(true)
+      setIsDiabledApply(false)
+    }else{
+      setMessage(mess.slice(0, -2))
+      setShowMessage(true)
+    }
+  }
+  const appLyVendor = async () => {
+        const body = {
+          brandName: inputBrandName.current.value,
+          phone: address.phone,
+          fullName: address.fullName,
+          provinceCode: address.province.code,
+          districtCode: address.district.code,
+          wardCode: address.ward.code,
+          detailAddress: address.detail,
+          fullAddress: `${address.detail}, ${address.province.name}, ${address.district.name}, ${address.ward.name}`
+        }
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + session.accessToken
+          },
+          body: JSON.stringify(body)
+    
+        }
+        console.log(body)
+        const response = await fetch(`${process.env.API_URL}/vendors/apply`,options)
+
+        const data = await response.json()
+        if(data.status === 400){ 
+          setMessageError(data.errors[0].msg)
+          setShowMessageError(true)
+        }else if(data.status == 200){
+          router.push('/')
+        }
+        
   }
   return (
     <>
-      {/* breadcrumb start */}
-      <div className="breadcrumb-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="page-title">
-                <h2>Trở thành nhà cung cấp</h2>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <nav aria-label="breadcrumb" className="theme-breadcrumb">
-                <ol className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <a href="index.html">Trang chủ</a>
-                  </li>
-                  <li className="breadcrumb-item active" aria-current="page">
-                    Đăng ký shop
-                  </li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-        </div>
+      <div>
+        <Breadcrumb previousLink="/"
+          previousValue="Đăng ký" currentValue="Đăng ký bán hàng" />
       </div>
-      {/* breadcrumb End */}
       {/* about section start */}
       <section className="about-page section-b-space">
         <div className="container">
@@ -121,7 +199,7 @@ export default function AppLyVendor({data}) {
             <div className="col-lg-12">
               <div className="banner-section">
                 <img
-                  src="../assets/images/about/vendor.jpg"
+                  src="/assets/images/vendor-apply.png"
                   className="img-fluid blur-up lazyload"
                   alt=""
                 />
@@ -202,7 +280,7 @@ export default function AppLyVendor({data}) {
                 x="0px"
                 y="0px"
                 viewBox="0 0 512 512"
-                style={{enableBackground: "new 0 0 512 512"}}
+                style={{ enableBackground: "new 0 0 512 512" }}
                 xmlSpace="preserve"
               >
                 <g>
@@ -371,6 +449,11 @@ export default function AppLyVendor({data}) {
                 <div className="col-md-6">
                   <div className="col-sm-12">
                     <lable className="lable">Tên shop</lable>
+                    {showMessageError &&
+                    <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
+                      {messageError}
+                    </Alert>
+                  }
                     <input
                       ref={inputBrandName}
                       type="text"
@@ -387,51 +470,70 @@ export default function AppLyVendor({data}) {
                       type="text"
                       className="form-control"
                       name="email"
-                      placeholder="Nhập email"
+                      value={user.profile?.email == null ? "" : user.profile.email}
+                      readOnly
                     />
                   </div>
                   <br />
                   <div className="col-sm-12">
-                    <lable className="lable">Username</lable>
+                    <lable className="lable">Số điện thoại</lable>
                     <input
-                      ref={inputUS}
+                      ref={inputPhoneVendor}
                       type="text"
                       name="username"
                       className="form-control"
-                      placeholder="Nhập username"
+                      value={user.phone}
+                      readOnly
                     />
                   </div>
+                  <div className="col-md-12 mt-3">
+                <button className="btn-solid btn-sm" disabled={isDiabledApply} onClick={appLyVendor}>Đăng ký</button>
+              </div>
                 </div>
                 <div className="col-md-6">
                   <lable className="lable">Địa chỉ lấy hàng</lable>
                   <br></br>
                   {showAddress && (
-                    <div style={{marginLeft: "10px"}}>
+                    <div className="mt-4 mb-4">
                       <p>Họ và tên: {address.fullName}</p>
-                      <p>Số điện thoại:{address.phone} </p>
+                      <p>Số điện thoại: {address.phone} </p>
                       <p>
-                        Địa chỉ:
-                        {`${address.detail}, ${address.ward.name}, ${address.district.name}, ${address.province.name}`}
+                        Địa chỉ chi tiết: {address.detail}
+                        </p>
+                      <p>
+                        Địa chỉ: { `${address.ward.name}, ${address.district.name}, ${address.province.name}`}
                       </p>
                     </div>
                   )}
-                  <button className="btn-solid btn-sm" onClick={handleShow}>
+                  <div className="mt-2">
+                  <button className="btn p-0 m-0" onClick={handleShow}>
                     Cập nhật địa chỉ lấy hàng
                   </button>
+                  </div>
                 </div>
               </div>
-              <br />
-              <button className="btn-solid btn-sm">Đăng ký</button>
             </div>
           </div>
         </div>
       </section>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+      <Modal 
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      show={show}>
+        <Modal.Header>
           <Modal.Title>Cập nhật địa chỉ</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="container-fluid">
+        <div className="col-md-12 mt-3">
+        { showMessage &&
+        <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
+                  {message}
+                    </Alert>
+                  }
+        </div>
+        <Row className="mt-5 ml-1 mb-5 mr-1">
           <form id="add_address">
             <div className="row">
               <div className="col-lg-6">
@@ -477,12 +579,11 @@ export default function AppLyVendor({data}) {
                     {address.province.code ? (
                       <option value={address.province.code}>{address.province.name}</option>
                     ) : (
-                      <option>Chọn một tỉnh/thành phố</option>
+                      <option value="">Chọn một tỉnh/thành phố</option>
                     )}
                     {provinces.map((p) => {
                       return (
                         <option key={p.code} value={p.code}>
-                          {" "}
                           {p.name}
                         </option>
                       )
@@ -508,13 +609,12 @@ export default function AppLyVendor({data}) {
                     {address.district.code ? (
                       <option value={address.district.code}>{address.district.name}</option>
                     ) : (
-                      <option>Chọn một quận/huyện</option>
+                      <option value="">Chọn một quận/huyện</option>
                     )}
 
                     {districts.map((p) => {
                       return (
                         <option key={p.code} value={p.code}>
-                          {" "}
                           {p.name}
                         </option>
                       )
@@ -540,12 +640,11 @@ export default function AppLyVendor({data}) {
                     {address.ward.code ? (
                       <option value={address.ward.code}>{address.ward.name}</option>
                     ) : (
-                      <option>Chọn một xã/phường</option>
+                      <option value="">Chọn một xã/phường</option>
                     )}
                     {wards.map((p) => {
                       return (
                         <option key={p.code} value={p.code}>
-                          {" "}
                           {p.name}
                         </option>
                       )
@@ -565,21 +664,28 @@ export default function AppLyVendor({data}) {
               </div>
             </div>
           </form>
+          </Row>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button className="btn btn-secondary btn-lg" style={{width:'120px',height:'50px'}}  onClick={handleClose}>
             Huỷ
           </Button>
-          <Button variant="primary" onClick={handleAdd}>
+          <button className="btn-solid btn" onClick={handleAdd}>
             Cập nhật
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
       {/* start selling section end */}
     </>
   )
 }
-
+AppLyVendor.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
+  )
+}
 export async function getServerSideProps() {
   // Fetch data from external API
   const res = await API.instance.get("/accounts/me")
@@ -587,5 +693,7 @@ export async function getServerSideProps() {
   const data = res.data
 
   // Pass data to the page via props
-  return {props: {data}}
+  return { props: { data } }
 }
+
+

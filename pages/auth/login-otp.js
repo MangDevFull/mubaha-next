@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { useState, useCallback, useRef, useEffect } from "react";
-import Otp from "../../components/Otp.js";
-import Breadcrumb from '../../components/Breadcrumb.js'
+import Otp from "@/components/Otp.js";
+import Breadcrumb from "@/components/Breadcrumb.js";
 import Head from "next/head";
 import libphone from "google-libphonenumber";
-import API from "../../services/api.js";
+import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
-import otpEnums from "../../utils/otpEnums.js";
-import Layout from "../../components/Layout";
-import { Row, Form, Input, Col } from 'reactstrap';
-import LoginSocail from '../../components/authen/LoginSocail.js'
-import ImageAuthen from '../../components/authen/ImgaeAuthen.js'
+import otpEnums from "@/utils/otpEnums.js";
+import Layout from "@/components/Layout";
+import { Row, Form, Input, Col } from "reactstrap";
+import LoginSocail from "@/components/authen/LoginSocail.js";
+import ImageAuthen from "@/components/authen/ImgaeAuthen.js";
+import styles from "@/styles/authen.module.css";
+
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance();
@@ -22,9 +24,9 @@ export default function LoginWithOtp() {
   const [message, setMessage] = useState("");
   const [isNotRegistered, setIsNotRegistered] = useState(false);
   const inputPhone = useRef();
-  useEffect(() => {
-    inputPhone.current.focus();
-  }, [])
+  // useEffect(() => {
+  //   inputPhone.current.focus();
+  // }, [])
 
   const checkPhone = (e) => {
     phone = e.target.value;
@@ -52,8 +54,14 @@ export default function LoginWithOtp() {
     const params = {
       phone: phone,
     };
-    const response = await API.instance.post("/auth/login-otp", params);
-    const data = response.data;
+    // const response = await API.instance.post("/auth/login-otp", params);
+    // const data = response.data;
+    const response = await fetch(`${process.env.API_URL}/auth/login-otp`, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: { "Content-Type": "application/json" },
+    });
+    const {data} = await response.json()
     if (data.status == 200) {
       setIsVerifyPhone(true);
       setMessage("");
@@ -69,49 +77,59 @@ export default function LoginWithOtp() {
         <title>Đăng nhập với SMS</title>
       </Head>
       {/* breadcrumb start */}
-      {!isVerifyPhone
-        &&
+      {!isVerifyPhone && (
         <div className="login-page container-fluit">
-          <Row className="background_login d-flex justify-content-center">
-            <div className="right-login margin-form-otp d-flex">
-              <div className="" style={{width:"50%"}}>
+          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
+            <div className={`right-login ${styles.marginForm} d-flex`}>
+              <div className="" style={{ width: "50%" }}>
                 <ImageAuthen />
               </div>
-              <div className="theme-card login_form-right " style={{width:"50%"}}>
+              <div className={`theme-card ${styles.loginFormRight}`} style={{ width: "50%" }}>
                 <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
                   <h3 className="text-center">Đăng Nhập</h3>
                 </div>
                 <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
-                  {isNotRegistered &&
-                    <Alert style={{ textAlign: 'center', height: '40px' }} variant={'danger'}>
+                  {isNotRegistered && (
+                    <Alert style={{ textAlign: "center", height: "40px" }} variant={"danger"}>
                       {message}
                     </Alert>
-                  }
+                  )}
                   <div className="form-group mb-1">
-                    <input ref={inputPhone}
+                    <input
+                      ref={inputPhone}
                       onChange={checkPhone}
-                      type="text" className="form-control"
-                      placeholder="Nhập số điện thoại của bạn" required="" />
+                      type="text"
+                      className="form-control"
+                      placeholder="Nhập số điện thoại của bạn"
+                      required=""
+                      autoFocus
+                    />
                   </div>
                   <div className="d-flex justify-content-end mb-5">
-                      <div>
-                        <Link href="/auth/login">
-                          <a className="text-link text-primary">Đăng nhập mật khẩu</a>
-                        </Link>
-                      </div>
+                    <div>
+                      <Link href="/auth/login">
+                        <a className={`${styles.textLink} text-primary`}>Đăng nhập mật khẩu</a>
+                      </Link>
                     </div>
+                  </div>
                   <div className="d-flex justify-content-center">
-                    <button type='submit' disabled={isNotValidPhone} className="btn btn-solid btn-block">Đăng nhập</button>
+                    <button
+                      type="submit"
+                      disabled={isNotValidPhone}
+                      className="btn btn-solid btn-block"
+                    >
+                      Đăng nhập
+                    </button>
                   </div>
                 </Form>
-                <div className="login-social mx-auto">
-                  <h5 className="text-or">HOẶC TIẾP TỤC VỚI</h5>
+                <div className="mt-5 mx-auto">
+                  <h5 className={styles.textOr}>HOẶC TIẾP TỤC VỚI</h5>
                   <LoginSocail />
                 </div>
-                <Row className='register d-flex justify-content-center  ml-3 mr-3 mb-5'>
+                <Row className="mt-5 d-flex justify-content-center  ml-3 mr-3 mb-5">
                   <div className="">
                     <Link href="/auth/register">
-                      <a className="text-primary" >Tạo một tài khoản mới</a>
+                      <a className="text-primary">Tạo một tài khoản mới</a>
                     </Link>
                   </div>
                 </Row>
@@ -119,29 +137,24 @@ export default function LoginWithOtp() {
             </div>
           </Row>
         </div>
+      )}
 
-}
-
-
-{ isVerifyPhone && 
-  <div>
-  <Breadcrumb previousLink= "/auth/login"
-        previousValue="Đăng nhập" currentValue="Xác thực Otp" />
-                  <Row className="background_login d-flex justify-content-center">
-<Otp phone={phone} type={otpEnums.LOGIN} /> 
-</Row>
-  </div>
-
-}
-
+      {isVerifyPhone && (
+        <div>
+          <Breadcrumb
+            previousLink="/auth/login-otp"
+            previousValue="Đăng nhập"
+            currentValue="Xác thực Otp"
+          />
+          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
+            <Otp phone={phone} type={otpEnums.LOGIN} />
+          </Row>
+        </div>
+      )}
     </>
   );
 }
 
 LoginWithOtp.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  )
-}
+  return <Layout>{page}</Layout>;
+};

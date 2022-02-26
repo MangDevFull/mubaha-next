@@ -1,45 +1,52 @@
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Container, Row, Col, Media, InputGroup, Button, Input } from "reactstrap"
 
-import TopBarDark from "./common/TopbarDark"
+import TopBarDark from "@/components/common/TopbarDark"
 
 import logo from "../assets/images/logo-white.svg"
 import search from "../public/assets/images/icon/search.png"
 
-import NavBar from "./common/Navbar"
+import NavBar from "@/components/common/Navbar"
+import SearchOverlay from "@/components/common/SearchOverlay";
+import StickyHeader from "@/components/common/StickyHeader"
 
 export default function Header({ }) {
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll)
+  const {headerRef, isSticky} = StickyHeader();
+  const [toggleSearch, setToggleSearch] = useState(false)
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll)
 
-  const handleScroll = () => {
-    let number =
-      window.pageXOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
-    if (number >= 300) {
-      if (window.innerWidth < 576) {
-        document.getElementById("sticky").classList.remove("fixed")
-        document.getElementById("navbar-row").style.display = "block";
-      }
-      else {
-        document.getElementById("sticky").classList.add("fixed")
-        document.getElementById("navbar-row").style.display = "none";
-      }
-    } else {
-      document.getElementById("sticky").classList.remove("fixed")
-      document.getElementById("navbar-row").style.display = "block";
-    }
-  }
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll)
+  //   }
+  // }, [])
+
+  // const handleScroll = () => {
+  //   let number =
+  //     window.pageXOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+  //   if (number >= 300) {
+  //     if (window.innerWidth < 576) {
+  //       document.getElementById("sticky").classList.remove("fixed")
+  //     }
+  //     else {
+  //       document.getElementById("sticky").classList.add("fixed")
+  //     }
+  //   } else {
+  //     document.getElementById("sticky").classList.remove("fixed")
+  //   }
+  // }
+
+  const openSearch = () => {
+    setToggleSearch(true);
+  };
 
   return (
     <div>
-      <header id="sticky" className="sticky marketplace dark">
+
+      <header className={`${isSticky ? 'sticky fixed': 'sticky'} marketplace dark`} ref={headerRef}>
         <div className="mobile-fix-option"></div>
 
         <TopBarDark topClass="top-header top-header-dark2" />
@@ -50,23 +57,23 @@ export default function Header({ }) {
                 <div className="menu-left">
                   <Link href="/">
                     <a>
-                      <div className="brand-logo" style={{ width: "260px", maxWidth: "260px" }}>
+                      <div className="brand-logo" style={{ width: "200px", maxWidth: "200px" }}>
                         <Image src={logo} alt="Mubaha" layout="responsive" />
                       </div>
                     </a>
                   </Link>
                 </div>
-                <div className="flex-grow-1" style={{ maxWidth: "500px" }}>
+                {/* <div className="flex-grow-1" style={{ maxWidth: "700px" }}>
                   <InputGroup>
                     <Input type="search" placeholder="Săn sale #MUBAHASALES" />
                     <Button>
                       <i className="fa fa-search"></i>
                     </Button>
                   </InputGroup>
-                </div>
+                </div> */}
                 <div className="menu-right pull-right">
                   {/*Top Navigation Bar Component*/}
-                  {/* <NavBar /> */}
+                  <NavBar />
 
                   <div>
                     <div className="icon-nav">
@@ -75,6 +82,7 @@ export default function Header({ }) {
                           <div>
                             <Media
                               src="/assets/images/icon/search.png"
+                              onClick={openSearch}
                               className="img-fluid"
                               alt=""
                             />
@@ -95,7 +103,7 @@ export default function Header({ }) {
             </Col>
           </Row>
         </Container>
-        <Container id="navbar-row">
+        {/* <Container id="navbar-row">
           <Row>
             <Col>
               <div className="main-nav-center border-section border-bottom-0">
@@ -103,8 +111,10 @@ export default function Header({ }) {
               </div>
             </Col>
           </Row>
-        </Container>
+        </Container> */}
       </header>
+      <SearchOverlay toggleSearch={toggleSearch} setToggleSearch={setToggleSearch} />
+
     </div>
   )
 }
