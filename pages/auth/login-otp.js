@@ -54,8 +54,14 @@ export default function LoginWithOtp() {
     const params = {
       phone: phone,
     };
-    const response = await API.instance.post("/auth/login-otp", params);
-    const data = response.data;
+    // const response = await API.instance.post("/auth/login-otp", params);
+    // const data = response.data;
+    const response = await fetch(`${process.env.API_URL}/auth/login-otp`, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: { "Content-Type": "application/json" },
+    });
+    const {data} = await response.json()
     if (data.status == 200) {
       setIsVerifyPhone(true);
       setMessage("");

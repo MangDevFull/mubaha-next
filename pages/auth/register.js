@@ -51,8 +51,14 @@ export default function RegisterPage() {
     const params = {
       phone,
     };
-    const response = await API.instance.post("/auth/register-otp", params);
-    const data = response.data;
+    // const response = await API.instance.post("/auth/register-otp", params);
+    // const data = response.data;
+    const response = await fetch(`${process.env.API_URL}/auth/register-otp`, {
+      method: "POST",
+      body: JSON.stringify(params),
+      headers: { "Content-Type": "application/json" },
+    });
+    const {data} = await response.json()
     if (data.status == 200) {
       setIsVerifyPhone(true);
     } else {
