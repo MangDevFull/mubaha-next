@@ -126,7 +126,7 @@ export default function LoginPage() {
             body: JSON.stringify(params),
             headers: { "Content-Type": "application/json" },
           });
-          const {data} = await response.json()
+          const data = await response.json()
           if (data.status == 200) {
             // console.log("data", data);
             setIsVerifyPhone(true);
