@@ -181,7 +181,7 @@ export default function AppLyVendor({ data }) {
       body: JSON.stringify(body)
 
     }
-    const response = await fetch(`${process.env.API_URL}/vendors/apply`, options)
+    const response = await fetch(`${process.env.API_URL}/web/customer/apply`, options)
 
     const data = await response.json()
     if (data.status === 400) {

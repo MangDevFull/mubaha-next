@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState, useRef,useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import libphone from "google-libphonenumber";
 import API from "@/services/api.js";
@@ -72,57 +72,57 @@ export default function LoginWithOtp() {
       {/* breadcrumb start */}
       {!isVerifyPhone && (
         <DynamicLayoutAuthComponent
-        title="Đăng nhập SMS"
-        form={
-          <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
-                  {isNotRegistered && (
-                    <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
-                      {message}
-                    </Alert>
-                  )}
-                  <div className="form-group mb-1">
-                    <input
-                      ref={inputPhone}
-                      onChange={checkPhone}
-                      type="text"
-                      className="form-control"
-                      placeholder="Nhập số điện thoại của bạn"
-                      autoFocus
-                    />
-                  </div>
-                  <div className="d-flex justify-content-end mb-5">
-                    <div>
-                      <Link href="/auth/login">
-                        <a className={`${styles.textLink} text-primary`}>Đăng nhập mật khẩu</a>
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <button
-                      type="submit"
-                      disabled={isNotValidPhone}
-                      className="btn btn-solid btn-block"
-                    >
-                      Đăng nhập
-                    </button>
-                  </div>
-                </Form>
-        }
-        bottom={<BottomFornLogin />}
-         />
+          title="Đăng nhập SMS"
+          form={
+            <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
+              {isNotRegistered && (
+                <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
+                  {message}
+                </Alert>
+              )}
+              <div className="form-group mb-1">
+                <input
+                  ref={inputPhone}
+                  onChange={checkPhone}
+                  type="text"
+                  className="form-control"
+                  placeholder="Nhập số điện thoại của bạn"
+                  autoFocus
+                />
+              </div>
+              <div className="d-flex justify-content-end mb-5">
+                <div>
+                  <Link href="/auth/login">
+                    <a className={`${styles.textLink} text-primary`}>Đăng nhập mật khẩu</a>
+                  </Link>
+                </div>
+              </div>
+              <div className="d-flex justify-content-center">
+                <button
+                  type="submit"
+                  disabled={isNotValidPhone}
+                  className="btn btn-solid btn-block"
+                >
+                  Đăng nhập
+                </button>
+              </div>
+            </Form>
+          }
+          bottom={<BottomFornLogin />}
+        />
       )}
 
       {isVerifyPhone && (
         <div>
-        <DynamicBreadcrumbComponent
-        previousLink="/auth/login-OTP"
+          <DynamicBreadcrumbComponent
+            previousLink="/auth/login-otp"
             previousValue="Trang đăng nhập"
             currentValue="Xác thực Otp"
-         />
+          />
           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
-          <DynamicOtpComponent
-          phone={phone} type={otpEnums.LOGIN}
-           />
+            <DynamicOtpComponent
+              phone={phone} type={otpEnums.LOGIN}
+            />
           </Row>
         </div>
       )}
