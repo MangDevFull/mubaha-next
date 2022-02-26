@@ -20,7 +20,7 @@ export default NextAuth({
           phone: credentials.phone,
           code: credentials.code,
         }
-        const res = await fetch(`${process.env.API_URL}/auth/verify-login-otp`, {
+        const res = await fetch(`${process.env.API_AUTH_URL}/verify-login-otp`, {
           method: "POST",
           body: JSON.stringify(payload),
           headers: { "Content-Type": "application/json" },
@@ -55,7 +55,7 @@ export default NextAuth({
           phone: credentials.phone,
           password: credentials.password,
         }
-        const res = await fetch(`${process.env.API_URL}/auth/login`, {
+        const res = await fetch(`${process.env.API_AUTH_URL}/login`, {
           method: "POST",
           body: JSON.stringify(payload),
           headers: { "Content-Type": "application/json" },
@@ -92,7 +92,7 @@ export default NextAuth({
           phone: credentials.phone,
           code: credentials.code,
         }
-        const res = await fetch(`${process.env.API_URL}/auth/verify-register-otp`, {
+        const res = await fetch(`${process.env.API_AUTH_URL}/verify-register-otp`, {
           method: "POST",
           body: JSON.stringify(payload),
           headers: { "Content-Type": "application/json" },

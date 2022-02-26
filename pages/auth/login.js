@@ -121,7 +121,7 @@ export default function LoginPage() {
           };
           // const response = await API.instance.post("/auth/login-otp", params);
           // const data = response.data;
-          const response = await fetch(`${process.env.API_URL}/auth/login-otp`, {
+          const response = await fetch(`${process.env.API_AUTH_URL}/login-otp`, {
             method: "POST",
             body: JSON.stringify(params),
             headers: { "Content-Type": "application/json" },

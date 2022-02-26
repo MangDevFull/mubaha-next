@@ -10,7 +10,7 @@ const StickyHeader = (defaultSticky = false) => {
       ? setIsSticky(true)
       : setIsSticky(false);
     },
-    [isSticky]
+    []
   );
 
   const debounce = (func, wait = 20, immediate = true) => {

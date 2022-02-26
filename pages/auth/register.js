@@ -53,7 +53,7 @@ export default function RegisterPage() {
     };
     // const response = await API.instance.post("/auth/register-otp", params);
     // const data = response.data;
-    const response = await fetch(`${process.env.API_URL}/auth/register-otp`, {
+    const response = await fetch(`${process.env.API_AUTH_URL}/register-otp`, {
       method: "POST",
       body: JSON.stringify(params),
       headers: { "Content-Type": "application/json" },

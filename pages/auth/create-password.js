@@ -58,7 +58,7 @@ export default function CreatePassWord() {
       body: JSON.stringify(body)
 
     }
-    const response = await fetch(`${process.env.API_URL}/auth/create-password`, options)
+    const response = await fetch(`${process.env.API_AUTH_URL}/create-password`, options)
 
     const data = await response.json()
 
