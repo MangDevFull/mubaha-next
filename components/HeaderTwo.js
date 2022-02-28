@@ -10,6 +10,8 @@ import logo from "../assets/images/logo-white.svg"
 import NavBar from "@/components/common/Navbar"
 import HeaderSettings from "./common/HeaderSettings"
 
+import styles from "./HeaderTwo.module.css"
+
 export default function HeaderTwo({ }) {
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function HeaderTwo({ }) {
       }
     } else {
       document.getElementById("sticky").classList.remove("fixed")
-      document.getElementById("navbar-row").style.display = "none";
+      document.getElementById("navbar-row").style.display = "block";
 
     }
   }
@@ -54,19 +56,21 @@ export default function HeaderTwo({ }) {
                 <div className="menu-left">
                   <Link href="/">
                     <a>
-                      <div className="brand-logo" style={{ width: "200px", maxWidth: "200px" }}>
+                      <div className="brand-logo" style={{ width: "260px", maxWidth: "260px" }}>
                         <Image src={logo} alt="Mubaha" layout="responsive" />
                       </div>
                     </a>
                   </Link>
                 </div>
-                <div className="flex-grow-1" style={{ maxWidth: "700px" }}>
-                  <InputGroup>
-                    <Input type="search" placeholder="Săn sale #MUBAHASALES" />
-                    <Button>
-                      <i className="fa fa-search"></i>
-                    </Button>
-                  </InputGroup>
+                <div>
+                  <form className={styles.form_search} role="form">
+                    <input id="query search-autocomplete" type="search"
+                      placeholder="Tìm kiếm sản phẩm..." className="nav-search nav-search-field"
+                      aria-expanded="true" />
+                      <button type="submit" name="nav-submit-button" className="btn-search">
+                        <i className="fa fa-search"></i>
+                      </button>
+                  </form>
                 </div>
                 <div className="menu-right pull-right">
                   {/* <NavBar /> */}
