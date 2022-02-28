@@ -79,25 +79,25 @@ export default function AppLyVendor({ data }) {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await API.instance.get("/provinces")
-      const data = res.data.data
-      setProvinces(data)
+      const res = await fetch(`${process.env.API_LOCATION_URL}/provinces`)
+   const data = await res.json()
+   setProvinces(data.data)
+     
     }
     fetchData()
   }, [])
   const handleDistrict = async (e) => {
     const id = e.target.value
-    const res = await API.instance.get(`/provinces/${id}/districts/`)
-    const data = res.data.data
-    setDistricts(data)
+    const res = await fetch(`${process.env.API_LOCATION_URL}/provinces/${id}/districts`)
+    const data = await res.json()
+    setDistricts(data.data)
     setWards([])
   }
   const handleWards = async (e) => {
     const id = e.target.value
-
-    const res = await API.instance.get(`/districts/${id}/wards`)
-    const data = res.data.data
-    setWards(data)
+    const res = await fetch(`${process.env.API_LOCATION_URL}/districts/${id}/wards`)
+    const data = await res.json()
+    setWards(data.data)
   }
 
   const handleAdd = () => {

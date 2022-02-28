@@ -1,7 +1,6 @@
 import Head from "next/head";
-import { useState, useRef,useEffect } from "react";
+import { useState } from "react";
 import libphone from "google-libphonenumber";
-import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
 import { Row, Form } from "reactstrap";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
@@ -25,7 +24,7 @@ export default function RegisterPage() {
   const [isVerifyPhone, setIsVerifyPhone] = useState(false);
   const [isRegisted, setIsRegisted] = useState(false);
   const [message, setMessage] = useState("");
-  const inputPhone = useRef();
+  const [fullName, setFullName] = useState("");
   const checkPhone = (e) => {
     phone = e.target.value;
     if (phone.length < 2 || phone == null) {
@@ -41,25 +40,33 @@ export default function RegisterPage() {
       }
     }
   };
+  const handleFullname = (e) => {
+    setFullName(e.target.value)
+  }
 
   const getOtp = async (e) => {
     e.preventDefault();
-    const params = {
-      phone,
-    };
-    // const response = await API.instance.post("/auth/register-otp", params);
-    // const data = response.data;
-    const response = await fetch(`${process.env.API_AUTH_URL}/register-otp`, {
-      method: "POST",
-      body: JSON.stringify(params),
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await response.json()
-    if (data.status == 200) {
-      setIsVerifyPhone(true);
-    } else {
-      setMessage(data.message);
+    if(fullName == ""){
+      setMessage("Họ và tên không hợp lệ");
       setIsRegisted(true);
+    }else{
+      const params = {
+        phone,
+        fullName:fullName
+      };
+      const response = await fetch(`${process.env.API_AUTH_URL}/register-otp`, {
+        method: "POST",
+        body: JSON.stringify(params),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json()
+      console.log(data);
+      if (data.status == 200) {
+        setIsVerifyPhone(true);
+      } else {
+        setMessage(data.message);
+        setIsRegisted(true);
+      }
     }
   };
   return (
@@ -79,7 +86,6 @@ export default function RegisterPage() {
                   )}
                   <div className="form-group mb-1">
                     <input
-                      ref={inputPhone}
                       onChange={checkPhone}
                       type="text"
                       className="form-control"
@@ -87,12 +93,18 @@ export default function RegisterPage() {
                       required=""
                       autoFocus
                     />
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Nhập họ và tên"
+                    />
                   </div>
                   <div className="d-flex justify-content-center">
                     <button
                       type="submit"
                       disabled={isNotValidPhone}
                       className="btn btn-solid btn-block"
+                      onChange={handleFullname}
                     >
                       Đăng Ký
                     </button>
@@ -114,7 +126,7 @@ export default function RegisterPage() {
          />
           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
           <DynamicOtpComponent
-          phone={phone} type={otpEnums.REGISTRATION}
+          phone={phone} type={otpEnums.REGISTRATION} fullName={fullName}
            />
           </Row>
           <Footer />

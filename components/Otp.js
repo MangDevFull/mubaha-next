@@ -7,18 +7,21 @@ import otpEnums from "../enums/otpEnums.js";
 import { signIn } from "next-auth/react";
 import styles from '@/styles/authen.module.css'
 import API from "@/services/api.js";
-export default function VerifyOtp({ phone, type }) {
+export default function VerifyOtp({ phone, type,fullName }) {
   const router = useRouter()
   const [otp, setOtp] = useState('')
   const [isInvalidOtp, setInvalidOtp] = useState(false);
+  const [isNotFullOtp, setNotFullOtp] = useState(true);
 
   const checkOtp = async (e) => {
     setOtp(e)
     if (e.length == 4) {
+      setNotFullOtp(false);
       if (type == otpEnums.REGISTRATION) {
         const res = await signIn("mubaha-signup", {
           phone: phone,
           code: e,
+          fullName: fullName,
           redirect: false,
         });
         if (res.error == null) {
@@ -38,7 +41,7 @@ export default function VerifyOtp({ phone, type }) {
           setInvalidOtp(true)
 
         }
-      }else if(type==otpEnums.CREATE_PASSWORD){
+      } else if (type == otpEnums.CREATE_PASSWORD) {
         const res = await signIn("mubaha", {
           phone: phone,
           code: e,
@@ -51,21 +54,21 @@ export default function VerifyOtp({ phone, type }) {
           setInvalidOtp(true)
 
         }
-      }else if(type = otpEnums.RECOVER_PASSWORD){
+      } else if (type = otpEnums.RECOVER_PASSWORD) {
         const params = {
           phone,
-          code:e
+          code: e
         }
-          const response = await API.instance.post(`${process.env.API_AUTH_URL}/verify-otp-recover-password`,params)
-          const data = response.data
-          console.log(data)
-          if(data.status === 400){
-            setInvalidOtp(true)
-          }else if(data.status == 200){
-            localStorage.setItem("userId", data.data.userId);
-        localStorage.setItem("token", data.data.token);
-        router.push('/auth/update-password')
-          }
+        const response = await API.instance.post(`${process.env.API_AUTH_URL}/verify-otp-recover-password`, params)
+        const data = response.data
+        console.log(data)
+        if (data.status === 400) {
+          setInvalidOtp(true)
+        } else if (data.status == 200) {
+          localStorage.setItem("userId", data.data.userId);
+          localStorage.setItem("token", data.data.token);
+          router.push('/auth/update-password')
+        }
       }
     }
   }
@@ -110,18 +113,21 @@ export default function VerifyOtp({ phone, type }) {
               </Link>
             </span>{" "}
             {
-            type == otpEnums.LOGIN && 
-            (
-              <>
-              hoặc
-            <span style={{ color: "blue" }}>
-              <Link href="/auth/login">
-                <a> thử bằng phương thức xác minh khác</a>
-              </Link>
-            </span>
-            </>
-            )
-          }
+              type == otpEnums.LOGIN &&
+              (
+                <>
+                  hoặc
+                  <span style={{ color: "blue" }}>
+                    <Link href="/auth/login">
+                      <a> thử bằng phương thức xác minh khác</a>
+                    </Link>
+                  </span>
+                </>
+              )
+            }
+            <div className="mt-4">
+            <button disabled={isNotFullOtp} className={`btn btn-solid ${styles.otpButton}`}>Tiếp tục</button>
+            </div>
           </p>
         </div>
       </div>

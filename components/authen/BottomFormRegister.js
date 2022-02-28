@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function BottomFormRegister() {
   return (
     <>
-      <Row className="mt-5 d-flex justify-content-center  ml-3 mr-3 mb-5">
+      <Row className="mt-2 d-flex justify-content-center  ml-3 mr-3">
         <div className=" mb-4 mx-auto">
           <h6 style={{ textAlign: "center", fontSize: "13px" }}>
             Bằng việc đăng kí, bạn đã đồng ý với Mubaha về
