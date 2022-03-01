@@ -1,7 +1,7 @@
 import "../public/assets/scss/app.scss";
 import { ToastContainer } from "react-toastify";
 import { SessionProvider } from "next-auth/react";
-
+import "../assets-backend/scss/app.scss"
 // export function reportWebVitals(metric) {
 //   console.log(metric)
 // }

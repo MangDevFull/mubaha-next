@@ -2,13 +2,13 @@ import React from "react";
 
 // imgaes import
 
-import user from "../../public/assets/images/dashboard/user.png";
-import user1 from "../../public/assets/images/dashboard/user1.jpg";
-import user2 from "../../public/assets/images/dashboard/user2.jpg";
-import user3 from "../../public/assets/images/dashboard/user3.jpg";
-import man from "../../public/assets/images/dashboard/man.png";
-import user5 from "../../public/assets/images/dashboard/user5.jpg";
-import designer from "../../public/assets/images/dashboard/designer.jpg";
+import user from "../../../assets-backend/images/dashboard/user.png";
+import user1 from "../../../assets-backend/images/dashboard/user1.jpg";
+import user2 from "../../../assets-backend/images/dashboard/user2.jpg";
+import user3 from "../../../assets-backend/images/dashboard/user3.jpg";
+import man from "../../../assets-backend/images/dashboard/man.png";
+import user5 from "../../../assets-backend/images/dashboard/user5.jpg";
+import designer from "../../../assets-backend/images/dashboard/designer.jpg";
 
 const RightSidebar = () => {
 	return (

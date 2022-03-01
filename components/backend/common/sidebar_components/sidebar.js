@@ -2,10 +2,10 @@ import React, { Fragment, useEffect, useState } from "react";
 import UserPanel from "./user-panel";
 
 import Link from "next/link";
-import { MENUITEMS } from "../../../components/constants/menu";
+import { MENUITEMS } from "@/components/backend/constants/menu";
 
 // image import
-import logo from "../../../public/assets/images/dashboard/mubaha-logo.png";
+import logo from "../../../../assets-backend/images/dashboard/MUBAHA-logo.png";
 
 const Sidebar = () => {
 	const [mainmenu, setMainMenu] = useState(MENUITEMS);

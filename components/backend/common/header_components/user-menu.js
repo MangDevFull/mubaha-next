@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import  Link  from "next/link";
 //images import
-import man from "../../../public/assets/images/dashboard/man.png";
+import man from "../../../../assets-backend/images/dashboard/man.png";
 
 const UserMenu = () => {
 	return (

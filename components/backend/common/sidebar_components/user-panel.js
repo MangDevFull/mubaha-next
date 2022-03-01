@@ -1,5 +1,5 @@
 import React from "react";
-import man from "../../../public/assets/images/dashboard/man.png";
+// import man from "../../../public/assets/images/dashboard/man.png";
 
 const UserPanel = () => {
 	return (
