@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect} from "react";
 import { Col, Media } from "reactstrap";
 import sideBanner from "../../../public/assets/images/side-banner.png";
 import Slider from "react-slick";
@@ -6,7 +6,6 @@ import Category from "./Category";
 import Brand from "./Brand";
 import Color from "./Color";
 import Size from "./Size";
-import Price from "./Price";
 import SideProductCart from "@/components/SideProductCart";
 import InputRange from "react-input-range";
 
@@ -27,7 +26,21 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, newProducts }) => {
           <Brand />
           <Color />
           <Size />
-          <Price />
+          <div className="collection-collapse-block border-0 open">
+            <h3 className="collapse-block-title">Giá</h3>
+            <div className="collection-collapse-block-content">
+              <div className="wrapper mt-3">
+                <div className="range-slider">
+                  <InputRange
+                    maxValue={500}
+                    minValue={0}
+                    value={value}
+                    onChange={(value) => setValue({ value })}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {/* side-bar single product slider start */}
         <div className="theme-card">

@@ -14,8 +14,8 @@ const Price = () => {
           <div className="range-slider">
            
              <InputRange
-             maxValue={500}
-             minValue={0}
+             maxValue={value[0]}
+             minValue={value[1]}
              value={value}
              onChange={value => setValue({value})}
              />
