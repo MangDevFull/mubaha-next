@@ -1,15 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import { Col, Media } from "reactstrap";
 import sideBanner from "../../../public/assets/images/side-banner.png";
 import Slider from "react-slick";
-import Category from "./category";
-import Brand from "./brand";
-import Color from "./color";
-import Size from "./size";
-import Price from "./price";
+import Category from "./Category";
+import Brand from "./Brand";
+import Color from "./Color";
+import Size from "./Size";
+import Price from "./Price";
 import SideProductCart from "@/components/SideProductCart";
+import InputRange from "react-input-range";
 
 const FilterPage = ({ sm, sidebarView, closeSidebar, newProducts }) => {
+  const [value, setValue] = useState([0, 500]);
   return (
     <>
       <Col sm={sm} className="collection-filter" style={sidebarView ? { left: "0px" } : {}}>

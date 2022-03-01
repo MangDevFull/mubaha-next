@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import Menu2 from "../../../public/assets/images/mega-menu/2.jpg";
-import PostLoader from "../../../components/common/PostLoader";
-import ProductItem2 from "../../../components/common/product-box/ProductBox1.js";
+import PostLoader from "../../common/PostLoader";
+import ProductItem2 from "../../common/product-box/ProductBox1.js";
 
 const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products }) => {
   
@@ -13,12 +13,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products })
   const [sortBy, setSortBy] = useState("AscOrder");
 
   const handlePagination = () => {
-    try {
-      isLoading(true);
-    }catch{
-      isLoading(false);
-      
-    }
+    isLoading(false);
     
   };
   return (

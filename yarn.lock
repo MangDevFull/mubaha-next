@@ -393,67 +393,6 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.1.0.tgz#7f698254aadf921e48dda8c0a6b304026b8a9323"
   integrity sha512-JLo+Y592QzIE+q7Dl2pMUtt4q8SKYI5jDrZxrozEQxnGVOyYE+GWK9eLkwTaeN9DDctlaRAQ3TBmzZ1qdLE30A==
 
-"@syncfusion/ej2-base@~19.4.52":
-  version "19.4.52"
-  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-base/-/ej2-base-19.4.52.tgz#9fa0d3de351a82c99f423491f64d09c40fdea520"
-  integrity sha512-BMJGjscgl5CGpWQW1y1osv+rcKBPYgPBpSfz8FA0XcqhL6wNjGomALmxHznk7QGWC/4bdUhx6AKsGHutMGm/PA==
-  dependencies:
-    "@syncfusion/ej2-icons" "~19.4.52"
-
-"@syncfusion/ej2-buttons@~19.4.52", "@syncfusion/ej2-buttons@~19.4.53":
-  version "19.4.53"
-  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-buttons/-/ej2-buttons-19.4.53.tgz#223113104e3ca9bb82963ab0cc05e32e209c078f"
-  integrity sha512-zH1qvShUfiO8hNfBjzz5abkKgy3fPCusEDXgkaqvBhbbNn7jI73nKR8bLsy+DiIT8JDIivBzrvetKJCqfrrwEw==
-  dependencies:
-    "@syncfusion/ej2-base" "~19.4.52"
-
-"@syncfusion/ej2-icons@~19.4.52":
-  version "19.4.52"
-  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-icons/-/ej2-icons-19.4.52.tgz#f6d69a9829e21ee527d56f4fb5d1d15126f93351"
-  integrity sha512-hkEvuVA/soEdqFwFSGbj2Z9u6Ajb+4HZNYIKtw6aCwjn/FE5vFuGMFBdkLEX9BRkUl/e/uvyP6/TKBM/nfkY8A==
-
-"@syncfusion/ej2-inputs@19.4.52":
-  version "19.4.52"
-  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-inputs/-/ej2-inputs-19.4.52.tgz#44d7859ecc10d0a8cfaebb18320c66616c4aaed9"
-  integrity sha512-141wT1W8DbXM50A1RVHOtruCyPncF6CDOU8RdhtFx9ydbXvbSXH+2i+vKr8UK23qC07z8+YB8/wV7ZAQ5vI0Bw==
-  dependencies:
-    "@syncfusion/ej2-base" "~19.4.52"
-    "@syncfusion/ej2-buttons" "~19.4.52"
-    "@syncfusion/ej2-popups" "~19.4.52"
-    "@syncfusion/ej2-splitbuttons" "~19.4.52"
-
-"@syncfusion/ej2-popups@~19.4.52":
-  version "19.4.53"
-  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-popups/-/ej2-popups-19.4.53.tgz#fa9487b451fbc31db1cca0a8714bad014b863283"
-  integrity sha512-B0Uen6IFsmPR3Ws8NIIszJ2ECpWrH7VFCqcGL1DQnp9tm6+iEafv84ziffVoC4nGj2mHaHl7tNSoZTnOo/TcgQ==
-  dependencies:
-    "@syncfusion/ej2-base" "~19.4.52"
-    "@syncfusion/ej2-buttons" "~19.4.53"
-
-"@syncfusion/ej2-react-base@~19.4.52":
-  version "19.4.53"
-  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-react-base/-/ej2-react-base-19.4.53.tgz#153e4eb394033e17d676b7323eb89e8d844b44ab"
-  integrity sha512-xQnnwDRv0STBauqxLXtTDshuUYYCT+PljeDXzcyupEckAJI/+B1jhsp8/p4nEQVtGhZadWh2G0Mrzoe55sYjjw==
-  dependencies:
-    "@syncfusion/ej2-base" "~19.4.52"
-
-"@syncfusion/ej2-react-inputs@^19.4.52":
-  version "19.4.52"
-  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-react-inputs/-/ej2-react-inputs-19.4.52.tgz#e3742beaa2b579d914bab9fa185d546ae7e4d6cd"
-  integrity sha512-ib+YUSOwEobysJPn/vDjhvDs3S8QvMEZtywVgPhAtiPoK8UZtM5YOl9Ejpp422wCFA5U2vXzBeGoK6Wamm9S9Q==
-  dependencies:
-    "@syncfusion/ej2-base" "~19.4.52"
-    "@syncfusion/ej2-inputs" "19.4.52"
-    "@syncfusion/ej2-react-base" "~19.4.52"
-
-"@syncfusion/ej2-splitbuttons@~19.4.52":
-  version "19.4.52"
-  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-splitbuttons/-/ej2-splitbuttons-19.4.52.tgz#3b19cba2edb52d73b180936bde9c7902277e627f"
-  integrity sha512-EmUh/3gwW04nCF/0UUfS6w3nl6Sy62ysPFqzwFTu9972DHr4R5W7t147PMJnFRa9Q0i/ud5a9/jERU7quaxBDw==
-  dependencies:
-    "@syncfusion/ej2-base" "~19.4.52"
-    "@syncfusion/ej2-popups" "~19.4.52"
-
 "@types/invariant@^2.2.33":
   version "2.2.35"
   resolved "https://registry.yarnpkg.com/@types/invariant/-/invariant-2.2.35.tgz#cd3ebf581a6557452735688d8daba6cf0bd5a3be"
@@ -2979,21 +2918,6 @@ react-dom@17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-fast-compare@^3.1.1:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
-  integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
-
-react-helmet@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-6.1.0.tgz#a750d5165cb13cf213e44747502652e794468726"
-  integrity sha512-4uMzEY9nlDlgxr61NL3XbKRy1hEkXmKNXhjbAIOVw5vcFrsdYbH2FEwcNyWvWinl103nXgzYNlns9ca+8kFiWw==
-  dependencies:
-    object-assign "^4.1.1"
-    prop-types "^15.7.2"
-    react-fast-compare "^3.1.1"
-    react-side-effect "^2.1.0"
-
 react-icons@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.3.1.tgz#2fa92aebbbc71f43d2db2ed1aed07361124e91ca"
@@ -3074,11 +2998,6 @@ react-refresh@0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
-
-react-side-effect@^2.1.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.1.tgz#66c5701c3e7560ab4822a4ee2742dee215d72eb3"
-  integrity sha512-2FoTQzRNTncBVtnzxFOk2mCpcfxQpenBMbk5kSVBg5UcPqV9fRbgY2zhb7GTWWOlpFmAxhClBDlIq8Rsubz1yQ==
 
 react-slick@^0.28.1:
   version "0.28.1"

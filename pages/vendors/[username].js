@@ -30,7 +30,7 @@ const VenderProfile = ({
     try {
       setPage(page + 1);
       const respone = await fetch(
-        `${process.env.API_URL}/vendors/${username}?limit=8&page=${page + 1}`
+        `${process.env.API_URL}/vendors/${username}?limit=8&page=${page + 1}&maxPrice=10000000&minPrice=0`
       );
       const { data, status, message } = await respone.json();
       const { products } = data;
@@ -370,7 +370,7 @@ export async function getServerSideProps(context) {
 
   // const page = 1;
   // const limit = 8;
-  const respone = await fetch(`${process.env.API_URL}/vendors/${username}?limit=8&page=1`);
+  const respone = await fetch(`${process.env.API_URL}/vendors/${username}?limit=8&page=1&maxPrice=10000000&minPrice=0`);
   const { data, status, message } = await respone.json();
   if (status != 200)
     return {
