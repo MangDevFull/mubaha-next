@@ -26,6 +26,7 @@ export default NextAuth({
           headers: { "Content-Type": "application/json" },
         });
         const response = await res.json();
+        console.log("res",response)
         if (response.status ===400) {
           const error = new Error(JSON.stringify(response));
           throw error
@@ -40,7 +41,6 @@ export default NextAuth({
     }),
     CredentialsProvider({
       id: "mubaha-login",
-      // The name to display on the sign in form (e.g. 'Sign in with...')
       name: "Credentials-login",
       // The credentials is used to generate a suitable form on the sign in page.
       // You can specify whatever fields you are expecting to be submitted.
