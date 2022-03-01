@@ -91,6 +91,7 @@ export default NextAuth({
         const payload = {
           phone: credentials.phone,
           code: credentials.code,
+          fullName: credentials.fullName
         }
         const res = await fetch(`${process.env.API_AUTH_URL}/verify-register-otp`, {
           method: "POST",

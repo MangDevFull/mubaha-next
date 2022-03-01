@@ -1,17 +1,19 @@
 import Link from "next/link";
-import { useState, useCallback, useRef, useEffect } from "react";
-import Otp from "@/components/Otp.js";
-import Breadcrumb from "@/components/Breadcrumb.js";
+import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import libphone from "google-libphonenumber";
-import API from "@/services/api.js";
 import { Alert } from "react-bootstrap";
-import otpEnums from "@/utils/otpEnums.js";
-import Layout from "@/components/Layout";
-import { Row, Form, Input, Col } from "reactstrap";
-import LoginSocail from "@/components/authen/LoginSocail.js";
-import ImageAuthen from "@/components/authen/ImgaeAuthen.js";
+import otpEnums from "../../enums/otpEnums.js";
+import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
+import Footer from "@/components/Footer.js";
+import { Row, Form } from "reactstrap";
 import styles from "@/styles/authen.module.css";
+import BottomFornLogin from "@/components/authen/BottomFornLogin.js";
+import dynamic from 'next/dynamic'
+
+const DynamicOtpComponent = dynamic(() => import('@/components/Otp.js'));
+const DynamicBreadcrumbComponent = dynamic(() => import('@/components/Breadcrumb.js'));
+const DynamicLayoutAuthComponent = dynamic(() => import('@/components/authen/LayoutAuth.js'));
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
@@ -24,9 +26,6 @@ export default function LoginWithOtp() {
   const [message, setMessage] = useState("");
   const [isNotRegistered, setIsNotRegistered] = useState(false);
   const inputPhone = useRef();
-  // useEffect(() => {
-  //   inputPhone.current.focus();
-  // }, [])
 
   const checkPhone = (e) => {
     phone = e.target.value;
@@ -78,83 +77,63 @@ export default function LoginWithOtp() {
       </Head>
       {/* breadcrumb start */}
       {!isVerifyPhone && (
-        <div className="login-page container-fluit">
-          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
-            <div className={`right-login ${styles.marginForm} d-flex`}>
-              <div className="" style={{ width: "50%" }}>
-                <ImageAuthen />
+        <DynamicLayoutAuthComponent
+          title="Đăng nhập SMS"
+          form={
+            <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
+              {isNotRegistered && (
+                <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
+                  {message}
+                </Alert>
+              )}
+              <div className="form-group mb-1">
+                <input
+                  ref={inputPhone}
+                  onChange={checkPhone}
+                  type="text"
+                  className="form-control"
+                  placeholder="Nhập số điện thoại của bạn"
+                  autoFocus
+                />
               </div>
-              <div className={`theme-card ${styles.loginFormRight}`} style={{ width: "50%" }}>
-                <div className="justify-content-center mt-4 mb-5 ml-3 mr-3">
-                  <h3 className="text-center">Đăng Nhập</h3>
+              <div className="d-flex justify-content-end mb-5">
+                <div>
+                  <Link href="/auth/login">
+                    <a className={`${styles.textLink} text-primary`}>Đăng nhập mật khẩu</a>
+                  </Link>
                 </div>
-                <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
-                  {isNotRegistered && (
-                    <Alert style={{ textAlign: "center", height: "40px" }} variant={"danger"}>
-                      {message}
-                    </Alert>
-                  )}
-                  <div className="form-group mb-1">
-                    <input
-                      ref={inputPhone}
-                      onChange={checkPhone}
-                      type="text"
-                      className="form-control"
-                      placeholder="Nhập số điện thoại của bạn"
-                      required=""
-                      autoFocus
-                    />
-                  </div>
-                  <div className="d-flex justify-content-end mb-5">
-                    <div>
-                      <Link href="/auth/login">
-                        <a className={`${styles.textLink} text-primary`}>Đăng nhập mật khẩu</a>
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <button
-                      type="submit"
-                      disabled={isNotValidPhone}
-                      className="btn btn-solid btn-block"
-                    >
-                      Đăng nhập
-                    </button>
-                  </div>
-                </Form>
-                <div className="mt-5 mx-auto">
-                  <h5 className={styles.textOr}>HOẶC TIẾP TỤC VỚI</h5>
-                  <LoginSocail />
-                </div>
-                <Row className="mt-5 d-flex justify-content-center  ml-3 mr-3 mb-5">
-                  <div className="">
-                    <Link href="/auth/register">
-                      <a className="text-primary">Tạo một tài khoản mới</a>
-                    </Link>
-                  </div>
-                </Row>
               </div>
-            </div>
-          </Row>
-        </div>
+              <div className="d-flex justify-content-center">
+                <button
+                  type="submit"
+                  disabled={isNotValidPhone}
+                  className="btn btn-solid btn-block"
+                >
+                  Đăng nhập
+                </button>
+              </div>
+            </Form>
+          }
+          bottom={<BottomFornLogin />}
+        />
       )}
 
       {isVerifyPhone && (
         <div>
-          <Breadcrumb
+        <HeaderAuthen />
+          <DynamicBreadcrumbComponent
             previousLink="/auth/login-otp"
-            previousValue="Đăng nhập"
+            previousValue="Trang đăng nhập"
             currentValue="Xác thực Otp"
           />
           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
-            <Otp phone={phone} type={otpEnums.LOGIN} />
+            <DynamicOtpComponent
+              phone={phone} type={otpEnums.LOGIN}
+            />
           </Row>
+          <Footer />
         </div>
       )}
     </>
   );
 }
-
-LoginWithOtp.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
