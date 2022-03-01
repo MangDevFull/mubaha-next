@@ -15,7 +15,6 @@ export default function Home({
   rightFeatureProducts,
   top5Products,
 }) {
-
   return (
     <>
       <Head>

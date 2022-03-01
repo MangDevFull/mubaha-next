@@ -18,12 +18,14 @@ export default function VerifyOtp({ phone, type,fullName }) {
     if (e.length == 4) {
       setNotFullOtp(false);
       if (type == otpEnums.REGISTRATION) {
+        
         const res = await signIn("mubaha-signup", {
           phone: phone,
           code: e,
           fullName: fullName,
           redirect: false,
         });
+        console.log('res',res)
         if (res.error == null) {
           router.push('/auth/create-password')
         } else {
