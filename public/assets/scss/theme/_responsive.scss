@@ -989,6 +989,14 @@ body {
           h2 {
             padding: 13px 27px;
           }
+
+          h3 {
+            padding: 10px 24px;
+          }
+          h5 {
+            background-color: $dark-top;
+            transition: all 0.3s ease;
+          }
         }
       }
     }
@@ -1947,6 +1955,14 @@ body {
           h2 {
             padding: 5px 15px;
             font-size: 30px;
+          }
+          h3 {
+            padding: 4px 13px;
+            font-size: 27px;
+          }
+          h5 {
+            background-color: $dark-top;
+            transition: all 0.3s ease;
           }
         }
       }
@@ -3595,6 +3611,13 @@ body {
           h2 {
             font-size: 25px;
           }
+          h3 {
+            font-size: 22px;
+          }
+          h5 {
+            background-color: $dark-top;
+            transition: all 0.3s ease;
+          }
         }
       }
     }
@@ -5041,6 +5064,14 @@ body {
           h2 {
             font-size: 30px;
             padding: 10px 20px;
+          }
+          h3 {
+            font-size: 26px;
+            padding: 7px 17px;
+          }
+          h5 {
+            background-color: $dark-top;
+            transition: all 0.3s ease;
           }
         }
       }
@@ -6575,6 +6606,13 @@ body {
           h2 {
             font-size: 25px;
           }
+          h3 {
+            font-size: 22px;
+          }
+          h5 {
+            background-color: $dark-top;
+            transition: all 0.3s ease;
+          }
         }
       }
     }
@@ -7189,6 +7227,13 @@ body {
         .category-box {
           h2 {
             padding: 7px 15px;
+          }
+          h3 {
+            padding: 5px 13px;
+          }
+          h5 {
+            background-color: $dark-top;
+            transition: all 0.3s ease;
           }
         }
       }

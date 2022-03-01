@@ -1,5 +1,6 @@
 import axios from "axios";
-import URL from "./../utils/api_url";
+import URL from "@/utils/api_url";
+
 const getInstance = () => {
   const instance = axios.create({
     baseURL: URL.baseUrl,
@@ -20,12 +21,12 @@ const getInstance = () => {
       //   Authorization: token,
       // };
 
-     
+      
 
       return config;
     },
     (err) => {
-      console.log("err: " + err);
+      // console.log("err: " + err);
       return Promise.reject(err);
     }
   );

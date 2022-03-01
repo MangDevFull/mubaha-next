@@ -431,8 +431,8 @@ del {
     top: 0;
     z-index: 999;
     transition: all 300ms ease;
-    background: #fff;
-    box-shadow: 0px 0px 8px #ddd;
+    background: var(--theme-deafult-3);
+    box-shadow: 0px 0px 8px var(--theme-deafult-2);
     animation: smoothScroll 1s forwards;
 
     .brand-logo {
@@ -724,6 +724,28 @@ button {
   &.btn-xs {
     padding: 5px 8px;
     text-transform: capitalize;
+  }
+
+  &.btn-block {
+    padding: 13px 29px;
+    color: $white !important;
+    letter-spacing: 0.05em;
+    border: 2px solid var(--theme-deafult);
+    background-image: -webkit-linear-gradient(30deg, var(--theme-deafult) 50%, transparent 50%);
+    background-image: linear-gradient(30deg, var(--theme-deafult) 50%, transparent 50%);
+    background-size: 1200px;
+    background-repeat: no-repeat;
+    background-position: 0;
+    -webkit-transition: background 500ms ease-in-out;
+    transition: background 500ms ease-in-out;
+    display: block;
+    width: 100%;
+
+    &:hover {
+      background-position: 100%;
+      color: $black !important;
+      background-color: $white;
+    }
   }
 }
 
@@ -1059,10 +1081,11 @@ button {
 ==========================*/
 header {
   background-color: $white;
+  // background-color: var(--theme-deafult-3);
 
   .marketplace {
     .top-header {
-      background-color: rgba(var(--theme-deafult), 0.75);
+      background-color: rgba(var(--theme-deafult-2), 0.75);
     }
   }
 
@@ -1222,6 +1245,9 @@ header {
   }
 
   &.marketplace {
+    background-color: var(--theme-deafult-3);
+    box-shadow: 0px 0px 8px var(--theme-deafult-2);
+
     &.header-tools {
       position: relative;
       width: 100%;
@@ -1229,7 +1255,7 @@ header {
     }
 
     .top-header {
-      background-color: var(--theme-deafult);
+      background-color: var(--theme-deafult-2);
 
       .header-contact {
         li {
@@ -1350,7 +1376,7 @@ header {
   z-index: 999;
   top: 0;
   left: 0;
-  background-color: lighten($white, 5%);
+  background-color: rgba(0, 0, 0, .92);
 
   >div {
     height: 100%;
@@ -1369,33 +1395,38 @@ header {
       }
 
       input {
+        text-align: center;
         background-color: transparent;
         border: 0;
-        border-bottom: 2px solid lighten($black, 46.5%);
+        border-bottom: 2px solid $white;
+        color: $white;
         border-radius: 0;
         padding: 20px 0;
 
         &::-webkit-input-placeholder {
           /* Chrome/Opera/Safari */
-          color: lighten($black, 46.5%);
+          color: $white;
           font-size: 18px;
         }
 
         &::-moz-placeholder {
           /* Firefox 19+ */
-          color: lighten($black, 46.5%);
+          // color: lighten($black, 46.5%);
+          color: $white;
           font-size: 18px;
         }
 
         &:-ms-input-placeholder {
           /* IE 10+ */
-          color: lighten($black, 46.5%);
+          // color: lighten($black, 46.5%);
+          color: $white;
           font-size: 18px;
         }
 
         &:-moz-placeholder {
           /* Firefox 18- */
-          color: lighten($black, 46.5%);
+          // color: lighten($black, 46.5%);
+          color: $white;
           font-size: 18px;
         }
       }
@@ -1406,7 +1437,8 @@ header {
         background-color: transparent;
         border: 0;
         font-size: 24px;
-        color: lighten($black, 46.5%);
+        // color: lighten($black, 46.5%);
+        color: $white;
         right: 10px;
       }
     }
@@ -1415,7 +1447,7 @@ header {
       position: fixed;
       top: 10px;
       right: 25px;
-      color: lighten($black, 46.5%);
+      color: $white;
       font-size: 40px;
       cursor: pointer;
     }
@@ -2759,7 +2791,7 @@ header {
           transition: 0.5s ease;
         }
 
-        h2 {
+        h2,h3,h5 {
           color: var(--theme-deafult);
           transition: 0.5s ease;
         }
@@ -2779,6 +2811,15 @@ header {
           background-color: $white;
           display: inline-block;
           padding: 20px 35px;
+          margin-bottom: 0;
+          box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.4);
+          transition: 0.5s ease;
+        }
+
+        h3 {
+          background-color: $white;
+          display: inline-block;
+          padding: 15px 20px;
           margin-bottom: 0;
           box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.4);
           transition: 0.5s ease;
@@ -4459,6 +4500,10 @@ header {
     &.parallax-banner#{$i} {
       background-image: url("#{$assetspath}/parallax/#{$i}.jpg");
     }
+  }
+
+  &.parallax-mubaha {
+    background-image: url("/assets/images/parallax/banner1.jpg");
   }
 
   &.parallax-christmas {
