@@ -4,18 +4,15 @@ import Menu2 from "../../../public/assets/images/mega-menu/2.jpg";
 import PostLoader from "../../common/PostLoader";
 import ProductItem2 from "../../common/product-box/ProductBox1.js";
 
-const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products }) => {
-  
-  const [layout, setLayout] = useState(layoutList);
-  const [grid, setGrid] = useState(colClass);
-  const [isLoading, setIsLoading] = useState(false);
-  const [limit, setLimit] = useState(8);
-  const [sortBy, setSortBy] = useState("AscOrder");
+const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, listProduct, handlePagination }) => {
+  console.log("handlePagination", onClick);
 
-  const handlePagination = () => {
-    isLoading(false);
-    
-  };
+  const [layout, setLayout] = useState(layoutList);
+  const [grid, setGrid] = useState("col-xl-3 col-md-6 col-grid-box");
+  const [isLoading, setIsLoading] = useState(false);
+  const [sortBy, setSortBy] = useState("AscOrder");
+  const [visible, setVisible] = useState(8);
+
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -70,9 +67,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products })
                     <div className="product-filter-content">
                       <div className="search-count">
                         <h5>
-                          {products.docs
-                            ? `Showing Products 1-${products.docs.length}`
-                            : "loading"}{" "}
+                          {listProduct ? `Showing Products 1-${listProduct.length}` : "loading"}{" "}
                           Result
                         </h5>
                       </div>
@@ -138,7 +133,8 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products })
                         </ul>
                       </div>
                       <div className="product-page-per-view">
-                        <select onChange={(e) => setLimit(parseInt(e.target.value))}>
+                        <select onChange={(e) => setVisible(parseInt(e.target.value))}>
+                          <option value="8">8 Products Par Page</option>
                           <option value="10">10 Products Par Page</option>
                           <option value="15">15 Products Par Page</option>
                           <option value="20">20 Products Par Page</option>
@@ -161,8 +157,8 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products })
               <div className={`product-wrapper-grid ${layout}`}>
                 <Row>
                   {/* Product Box */}
-                  {!products || !products.docs || products.docs.length === 0 ? (
-                    products && products.docs && products.docs.length === 0 ? (
+                  {!listProduct || !listProduct || listProduct.length === 0 ? (
+                    listProduct && listProduct && listProduct.length === 0 ? (
                       <Col xs="12">
                         <div>
                           <div className="col-sm-12 empty-cart-cls text-center">
@@ -195,8 +191,8 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products })
                       </div>
                     )
                   ) : (
-                    products &&
-                    products.docs.map((product, i) => (
+                    listProduct &&
+                    listProduct.map((product, i) => (
                       <div className={grid} key={i}>
                         <div className="product">
                           <div>
@@ -216,7 +212,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products })
                 <div className="text-center">
                   <Row>
                     <Col xl="12" md="12" sm="12">
-                      {products && products.docs && (
+                      {listProduct && listProduct && (
                         <Button onClick={() => handlePagination()}>
                           {isLoading && <Spinner animation="border" variant="light" />}
                           Xem thêm
