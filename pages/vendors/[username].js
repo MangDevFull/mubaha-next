@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import CommonLayout from "../../components/shop/common-layout";
-import Profile from "../../assets/images/vendors/profile.jpg";
 import seventeen from "../../public/assets/images/logos/17.png";
 import Layout from "../../components/Layout";
 import { Container, Media, Row, Col } from "reactstrap";
