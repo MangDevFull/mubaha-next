@@ -18,19 +18,19 @@ export default function CreatePassWord() {
   const router = useRouter();
 
   const { data: session, status } = useSession({
-    // required: true,
-    // onUnauthenticated() {
-    //   router.push('/')
-    // }
+    required: true,
+    onUnauthenticated() {
+      router.push('/')
+    }
   })
-  // useEffect(() => {
-  //   if (session != undefined) {
-  //     const checkisCreatePass = session.user.authentication.isCreatedPassword
-  //     if (checkisCreatePass) {
-  //       router.push('/')
-  //     }
-  //   }
-  // })
+  useEffect(() => {
+    if (session != undefined) {
+      const checkisCreatePass = session.user.authentication.isCreatedPassword
+      if (checkisCreatePass) {
+        router.push('/')
+      }
+    }
+  })
 
   useEffect(() => {
     inputPassword.current.focus()

@@ -23,6 +23,7 @@ export default function NavBar() {
   };
 
   return (
+    
     <div>
       <div className="main-navbar">
         <div id="mainnav">
