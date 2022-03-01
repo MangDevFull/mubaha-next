@@ -55,9 +55,9 @@ const VenderProfile = ({
 
   const handleCallApi = async (limit,page,maxPrice,minPrice) =>{
     try {
-      setPage(page + 1);
+      // setPage(page + 1);
       const respone = await fetch(
-        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page + 1}&maxPrice=10000000&minPrice=0`
+        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page}&maxPrice=10000000&minPrice=0`
       );
       const { data, status, message } = await respone.json();
       const { products } = data;
