@@ -97,6 +97,7 @@ export default function RegisterPage() {
                       type="text"
                       className="form-control"
                       placeholder="Nhập họ và tên"
+                      onChange={handleFullname}
                     />
                   </div>
                   <div className="d-flex justify-content-center">
@@ -104,7 +105,6 @@ export default function RegisterPage() {
                       type="submit"
                       disabled={isNotValidPhone}
                       className="btn btn-solid btn-block"
-                      onChange={handleFullname}
                     >
                       Đăng Ký
                     </button>
