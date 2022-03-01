@@ -5,7 +5,6 @@ import PostLoader from "../../../components/common/PostLoader";
 import ProductItem2 from "../../../components/common/product-box/ProductBox1.js";
 
 const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products }) => {
-  const page = 1;
   
   const [layout, setLayout] = useState(layoutList);
   const [grid, setGrid] = useState(colClass);
