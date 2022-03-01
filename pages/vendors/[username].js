@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CommonLayout from "../../components/shop/CommonLayout.js";
+import CommonLayout from "../../components/shop/CommonLayout";
 import seventeen from "../../public/assets/images/logos/17.png";
 import Layout from "../../components/Layout";
 import { Container, Col, Row, Media, Button, Spinner } from "reactstrap";
@@ -20,8 +20,7 @@ const VenderProfile = ({
   const [layout, setLayout] = useState(layoutList);
   const [grid, setGrid] = useState("col-xl-3 col-md-6 col-grid-box");
   const [isLoading, setIsLoading] = useState(false);
-  const [sortBy, setSortBy] = useState("AscOrder");
-  const [visible, setVisible] = useState(8);
+  const [orderBy, setOrderBy] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8)
   const [listProduct, setListProduct] = useState(products.docs);
@@ -52,16 +51,30 @@ const VenderProfile = ({
       setSidebarView(!sidebarView);
     }
   };
-
-  const handleCallApi = async (limit,page,maxPrice,minPrice) =>{
+  const handleProductOfView = async (limit,page) =>{
     try {
-      setPage(page + 1);
+      setPage(page);
       const respone = await fetch(
-        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page + 1}&maxPrice=10000000&minPrice=0`
+        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page}&maxPrice=10000000&minPrice=0`
       );
       const { data, status, message } = await respone.json();
       const { products } = data;
       setListProduct(products.docs);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const handleProductFilter = async (limit,page,orderBy) =>{
+    try {
+      setLimit(limit)
+      setPage(page);
+      const respone = await fetch(
+        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page}&orderBy=${orderBy}&maxPrice=10000000&minPrice=0`
+      );
+      
+      const { data, status, message } = await respone.json();
+      const { products } = data;
+      console.log('data', products.docs)
     } catch (error) {
       console.log(error);
     }
@@ -269,23 +282,24 @@ const VenderProfile = ({
                       <div className="product-page-per-view">
                         <select onChange={(e) => {
                           setLimit(parseInt(e.target.value))
-                          setPage(1)
-                          handleCallApi(e.target.value,1,0,0)
+                          console.log(e.target.value)
+                          handleProductOfView(e.target.value,1,0,0)
                         }}>
-                          <option value="8">8 Products Par Page</option>
-                          <option value="10">10 Products Par Page</option>
-                          <option value="15">15 Products Par Page</option>
-                          <option value="20">20 Products Par Page</option>
+                          <option value="8">8 Sản phẩm </option>
+                          <option value="10">10 Sản phẩm</option>
+                          <option value="15">15 Sản phẩm</option>
+                          <option value="20">20 Sản phẩm</option>
                         </select>
                       </div>
                       <div className="product-page-filter">
-                        <select onChange={(e) => setSortBy(e.target.value)}>
-                          <option value="AscOrder">Sorting items</option>
-                          <option value="HighToLow">High To Low</option>
-                          <option value="LowToHigh">Low To High</option>
-                          <option value="Newest">Newest</option>
-                          <option value="AscOrder">Asc Order</option>
-                          <option value="DescOrder">Desc Order</option>
+                        <select onChange={(e) => {
+                          // console.log(e.target.value);
+                          setOrderBy(e.target.value)
+                          handleProductFilter(limit,1,e.target.value)
+                        }}>
+                          <option value="">Sắp xếp theo</option>
+                          <option value="ascPrice">Tăng dần</option>
+                          <option value="descPrice">Giảm dần</option>
                         </select>
                       </div>
                     </div>
