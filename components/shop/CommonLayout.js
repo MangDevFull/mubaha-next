@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import Breadcrumbs from "../common/widgets/Breadcrubs.js";
 
 const CommonLayout = ({ children, title, parent, subTitle }) => {

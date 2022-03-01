@@ -534,7 +534,7 @@ export default function AppLyVendor({ data }) {
         <Modal.Header>
           <Modal.Title>Cập nhật địa chỉ</Modal.Title>
         </Modal.Header>
-        <Modal.Body class="container-fluid">
+        <Modal.Body className="container-fluid">
           <div className="col-md-12 mt-3">
             {showMessage &&
               <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>

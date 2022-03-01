@@ -105,22 +105,22 @@ const VenderProfile = ({
                       <div className="footer-social">
                         <ul>
                           <li>
-                            <a href={vendorProfile.socialLinks.facebook} target="_blank">
+                            <a href={vendorProfile.socialLinks.facebook}>
                               <i className="fa fa-facebook" aria-hidden="true"></i>
                             </a>
                           </li>
                           <li>
-                            <a href={vendorProfile.socialLinks.youtube} target="_blank">
+                            <a href={vendorProfile.socialLinks.youtube}>
                               <i className="fa fa-youtube" aria-hidden="true"></i>
                             </a>
                           </li>
                           <li>
-                            <a href={vendorProfile.socialLinks.tiktok} target="_blank">
-                              <i class="fa fa-twitter" aria-hidden="true"></i>
+                            <a href={vendorProfile.socialLinks.tiktok}>
+                              <i className="fa fa-twitter" aria-hidden="true"></i>
                             </a>
                           </li>
                           <li>
-                            <a href={vendorProfile.socialLinks.instagram} target="_blank">
+                            <a href={vendorProfile.socialLinks.instagram}>
                               <i className="fa fa-instagram" aria-hidden="true"></i>
                             </a>
                           </li>
