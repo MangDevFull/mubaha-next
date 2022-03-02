@@ -2,10 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import Breadcrumb from "../common/BreadCrumb";
 import CKEditors from "react-ckeditor-component";
 import MyDropzone from "../common/Dropzone";
-// import TableCustom from "../common/Table";
 import Pickcolor from "../common/Pickcolor";
-import { Message } from "semantic-ui-react";
-
+import {StockStatus,StockCountry} from "../../../enums/product.enum.js"
 import {
   Button,
   Card,
@@ -14,14 +12,91 @@ import {
   Col,
   Container,
   FormGroup,
-  Input,
+  input,
   Label,
   Row,
 } from "reactstrap";
+import currencyEnum from "../../../enums/currency.enum.js";
+import Select from 'react-select/creatable';
 
 const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
 
   const [content] = useState("content");
+  const [categoryFirst,setCategoryFirst] = useState([])
+  const [categorySecond,setCategorySecond] = useState([])
+  const [categoryThird,setCategoryThird] = useState([])
+  const [isDisableSecond,setIsDisableSecond] = useState(true)
+  const [isDisableThird,setIsDisableThird] = useState(true)
+  const [status,setStatus] = useState([])
+  const [countries,setCountries] = useState([])
+  const [currencies,setCurrencies] = useState([])
+
+
+    const inputName = useRef()
+    const inputSKU = useRef()
+    const inputPrice = useRef()
+    const inputDiscount= useRef()
+
+    const aquaticCreatures = [
+      { label: 'Shark', value: 'Shark' },
+      { label: 'Dolphin', value: 'Dolphin' },
+      { label: 'Whale', value: 'Whale' },
+      { label: 'Octopus', value: 'Octopus' },
+      { label: 'Crab', value: 'Crab' },
+      { label: 'Lobster', value: 'Lobster' },
+    ];
+
+    
+
+  useEffect(async () => {
+
+    const response = await fetch(`${process.env.API_URL}/categories/first`)
+
+    const data = await response.json()
+
+    setCategoryFirst(data.data)
+
+    setStatus(Object.keys(StockStatus).map((key) => [StockStatus[key]]))
+
+    setCountries(Object.keys(StockCountry).map((key) => [StockCountry[key]]))
+
+    setCurrencies(Object.keys(currencyEnum).map((key) => [currencyEnum[key]]))
+
+  },[])
+
+  const handleCategoryFirst = async (e) =>{
+      const id = e.target.value
+      const response = await fetch(`${process.env.API_URL}/categories/${id}`)
+
+      const data = await response.json()
+
+      setCategorySecond(data.data)
+      setCategoryThird([])
+      setIsDisableSecond(false)
+      
+  }
+
+  const handleCategorySecond = async (e) =>{
+    const id = e.target.value
+    const response = await fetch(`${process.env.API_URL}/categories/${id}`)
+
+    const data = await response.json()
+
+    setCategoryThird(data.data)
+    setIsDisableThird(false)
+  }
+
+  const handeSubmit = async () =>{
+    const body = {
+      name: inputName.current.value,
+      price: inputPrice.current.value,
+      discount: inputDiscount.current.value,
+      sku: inputSKU.current.value,
+    }
+    console.log(body)
+
+  }
+
   return (
     <>
       <Breadcrumb title="Thêm sản phẩm" />
@@ -39,22 +114,20 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                       <Label className="col-form-label pt-0">
                         <span>*</span> Tên sản phẩm
                       </Label>
-                      <Input
+                      <input
                         className="form-control"
-                        name={`name`}
                         type="text"
-                        required=""
+                        ref={inputName}
                       />
                     </FormGroup>
                     <FormGroup>
                       <Label className="col-form-label pt-0">
                         <span>*</span> SKU
                       </Label>
-                      <Input
+                      <input
                         className="form-control"
-                        name={`sku`}
                         type="text"
-                        required=""
+                        ref={inputSKU}
                       />
                     </FormGroup>
                   </div>
@@ -73,8 +146,41 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                       className="custom-select"
                       required=""
                       name={`firstLevelCat`}
+                      onChange={handleCategoryFirst}
+                    >
+                      <option value="">--Lưạ chọn--</option>
+                      {
+                        categoryFirst.map((x)=>{
+                          return (
+                            <option key={x._id} value={x._id}>
+                            {x.name}
+                          </option>
+                          )
+                        })
+                      }
+                    </select>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="col-form-label">
+                      <span>*</span> Danh mục
+                    </Label>
+                    <select
+                      disabled={isDisableSecond}
+                      className="custom-select"
+                      required=""
+                      name={`firstLevelCat`}
+                      onChange={handleCategorySecond}
                     >
                       <option value="">--Select--</option>
+                      {
+                        categorySecond.map((x)=>{
+                          return (
+                            <option key={x._id} value={x._id}>
+                            {x.name}
+                          </option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <FormGroup>
@@ -85,53 +191,50 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                       className="custom-select"
                       required=""
                       name={`firstLevelCat`}
+                      disabled={isDisableThird}
                     >
                       <option value="">--Select--</option>
-                    </select>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label className="col-form-label">
-                      <span>*</span> Danh mục
-                    </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`firstLevelCat`}
-                    >
-                      <option value="">--Select--</option>
+                      {
+                        categoryThird.map((x)=>{
+                          return (
+                            <option key={x._id} value={x._id}>
+                            {x.name}
+                          </option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Giá
                     </Label>
-                    <Input
+                    <input
                       className="form-control"
                       type="number"
-                      required=""
-                      name={`price`}
+                      min="0"
+                      ref={inputPrice}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Giảm giá
                     </Label>
-                    <Input
+                    <input
                       className="form-control"
                       type="number"
-                      required=""
-                      name={`discount`}
+                      min="0"
+                      max="100"
+                      ref={inputDiscount}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Số lượng
                     </Label>
-                    <Input
+                    <input
                       className="form-control"
                       type="number"
-                      required=""
-                      name={`quantity`}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -143,8 +246,14 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                       required=""
                       name={`stockStatus`}
                     >
-                      <option value="">--Select--</option>
-                      <option value="available">Available</option>
+                      <option value="">--Lựa chọn--</option>
+                      {
+                        status.map((status,id) =>{
+                          return(
+                            <option value={status} key={id}>{status}</option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <FormGroup>
@@ -156,24 +265,24 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                       required=""
                       name={`currencyUnit`}
                     >
-                      <option value="">--Select--</option>
-                      <option value="₫">VNĐ</option>
+                      <option value="">--Lựa chọn--</option>
+                      {
+                        currencies.map((curr, i) =>{
+                          return(
+                            <option value={curr} key={i}>{curr}</option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Thương hiệu
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`brand`}
-                    >
-                      <option value="">--Select--</option>
-                      <option value="61e544bb67bec3d3a883aa61">
-                        Rau củ quả
-                      </option>
-                    </select>
+                    <Select
+        options={aquaticCreatures}
+        onChange={(opt, meta) => console.log(opt, meta)}
+      />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
@@ -181,11 +290,16 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     </Label>
                     <select
                       className="custom-select"
-                      required=""
-                      name={`stockCountry`}
+             
                     >
-                      <option value="">--Select--</option>
-                      <option value="VN">eBooks</option>
+                      <option value="">--Lựa chọn--</option>
+                      {
+                        countries.map((country,id) =>{
+                          return(
+                            <option value={country} key={id}>{country}</option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <Label className="col-form-label pt-0"> Ảnh sản phẩm</Label>
@@ -240,7 +354,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     </FormGroup>
                     <FormGroup>
                       <Label className="col-form-label pt-0"> Size</Label>
-                        <Input
+                        <input
                           className="form-control"
                           type="text"
                           required=""
@@ -250,7 +364,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                           value="Size"
                         />
 
-                        <Input
+                        <input
                           className="form-control mb-2"
                           type="text"
                           required=""
@@ -275,7 +389,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
               <FormGroup className="m-10">
                 <div className="product-buttons text-center">
                   <Button type="button" color="primary" 
-                  // onClick={handleSubmit}
+                  onClick={handeSubmit}
                   >
                     Thêm sản phẩm
                   </Button>

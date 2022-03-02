@@ -35,6 +35,7 @@
     "react-number-format": "^4.9.1",
     "react-otp-input": "^2.4.0",
     "react-router-dom": "^6.2.2",
+    "react-select": "^5.2.2",
     "react-slick": "^0.28.1",
     "react-sticky": "^6.0.3",
     "react-table-6": "^6.11.0",
