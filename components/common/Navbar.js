@@ -51,12 +51,15 @@ export default function NavBar() {
             <li>
               <a href="#" className="nav-link">Âu Mỹ</a>
             </li>
-            {/* <li>
+            <li>
               <a href="#" className="nav-link">
                 Thương Hiệu
                 <span className="sub-arrow"></span>
               </a>
-            </li> */}
+            </li>
+            <li>
+              <a href="#" className="nav-link">Tin tức</a>
+            </li>
           </ul>
         </div>
       </div>

@@ -33,10 +33,12 @@ const Data = [
   },
 ];
 
+import styles from "./MainServiceCollections.module.css"
+
 export default function MainServiceCollections() {
   return (
     <>
-      <section className="banner-padding absolute-banner mt-2">
+      <section className={`banner-padding absolute-banner ${styles.absoluteMub}`}>
         <Container className="absolute-bg">
           <div className="service p-0">
             <Row>

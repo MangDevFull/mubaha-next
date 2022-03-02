@@ -63,7 +63,7 @@ export default function HeaderTwo({ }) {
                   </Link>
                 </div>
                 <div>
-                  <form className={styles.form_search} role="form">
+                  <form className={`${styles.form_search} d-none d-xl-block`} role="form">
                     <input id="query search-autocomplete" type="search"
                       placeholder="Tìm kiếm sản phẩm..." className="nav-search nav-search-field"
                       aria-expanded="true" />
@@ -103,16 +103,20 @@ export default function HeaderTwo({ }) {
             </Col>
           </Row>
         </Container>
-        <Container id="navbar-row" >
+        <Container id="navbar-row">
 
           <div className={styles.bottom_part}>
             <Row>
-              <Col xl={3}>
-                <div class={`${styles.category_menu} d-none d-xl-block h-100`}>
-                  <h5 class={`mb-0 ${styles.txt_white}`}><strong><i class="fa fa-bars mr-2"></i>DANH MỤC SẢN PHẨM</strong></h5>
+              <Col lg={3} className="d-none d-xl-block">
+                <div className={`${styles.category_menu} h-100`}>
+                  <Link href="/categories">
+                  <a>
+                  <h5 className={`mb-0 ${styles.txt_white}`}><strong><i className="fa fa-bars mr-2"></i>DANH MỤC SẢN PHẨM</strong></h5>
+                  </a>
+                  </Link>
                 </div>
               </Col>
-              <Col xl={9}>
+              <Col sm={12} lg={9}>
                 <div className={`main-nav-center`}>
                   <NavBar />
                 </div>

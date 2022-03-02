@@ -37,6 +37,12 @@
   /* color: var(--theme-deafult); */
 }
 
+@media (max-width: 1430px) {
+  .form_search {
+    width: 500px;
+  }
+}
+
 .bottom_part {
   background-color: white;
   margin-bottom: -20px;
@@ -57,5 +63,5 @@
 }
 
 .txt_white {
-  color: white;
+  color: white !important;
 }
