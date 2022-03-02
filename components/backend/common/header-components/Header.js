@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
-import SearchHeader from "./searchHeader";
-import Notification from "./notification";
-import UserMenu from "./user-menu";
-import Language from "./language";
+import SearchHeader from "./SearchHeader";
+import Notification from "./Notification";
+import UserMenu from "./UserMenu";
+import Language from "./Language";
 import {
 	AlignLeft,
 	Maximize2,

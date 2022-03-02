@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
-import Breadcrumb from "../common/breadcrumb.js";
+import Breadcrumb from "../common/BreadCrumb.js";
 import data from "../../public/assets/data/pro_list"
-import Datatable from "../common/datatable";
+import Datatable from "../common/Datatable";
 import { Card, CardBody, CardHeader, Col, Container, Row } from "reactstrap";
 
 const Digital_pro_list = ({dataIndexProduct}) => {

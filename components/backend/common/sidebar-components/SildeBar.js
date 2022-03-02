@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
-import UserPanel from "./user-panel";
+import UserPanel from "./UserPanel";
 
 import Link from "next/link";
-import { MENUITEMS } from "@/components/backend/constants/menu";
+import { MENUITEMS } from "@/components/backend/constants/Menu";
 
 // image import
 import logo from "../../../../assets-backend/images/dashboard/MUBAHA-logo.png";

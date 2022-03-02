@@ -1,8 +1,8 @@
 import React, { Fragment, useRef, useState } from "react";
-import Breadcrumb from "../common/breadcrumb";
+import Breadcrumb from "../common/BreadCrumb";
 import CKEditors from "react-ckeditor-component";
-import MyDropzone from "../common/dropzone";
-import TableCustom from "../common/table";
+import MyDropzone from "../common/Dropzone";
+import TableCustom from "../common/Table";
 import Pickcolor from "../common/Pickcolor";
 
 import {
