@@ -2,11 +2,10 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import libphone from "google-libphonenumber";
-import { Alert } from "react-bootstrap";
 import otpEnums from "../../enums/otpEnums.js";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
-import { Row, Form } from "reactstrap";
+import { Row, Form, Alert } from "reactstrap";
 import styles from "@/styles/authen.module.css";
 import BottomFornLogin from "@/components/authen/BottomFornLogin.js";
 import dynamic from 'next/dynamic'

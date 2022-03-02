@@ -1,8 +1,7 @@
 import Head from "next/head";
 import { useState } from "react";
 import libphone from "google-libphonenumber";
-import { Alert } from "react-bootstrap";
-import { Row, Form } from "reactstrap";
+import { Row, Form, Alert } from "reactstrap";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
 import otpEnums from "../../enums/otpEnums.js";

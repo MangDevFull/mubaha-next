@@ -1,5 +1,5 @@
 import OtpInput from 'react-otp-input';
-import { Alert } from 'react-bootstrap';
+import { Alert } from 'reactstrap';
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'

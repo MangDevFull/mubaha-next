@@ -1,11 +1,10 @@
 import Link from 'next/link'
-import { Modal } from 'react-bootstrap'
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useSession } from 'next-auth/react'
 import Breadcrumb from '@/components/Breadcrumb.js'
-import { Form } from 'reactstrap';
+import { Form, Modal } from 'reactstrap';
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
 import styles from '@/styles/authen.module.css'
