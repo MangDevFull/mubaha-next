@@ -32,17 +32,17 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     {
       id: 1,
       className: "bg-light0",
-      variantName: "Blue",
+      variantName: "Xanh",
     },
     {
       id: 2,
       className: "bg-light1",
-      variantName: "Pink",
+      variantName: "Hồng",
     },
     {
       id: 3,
       className: "bg-light2",
-      variantName: "Grey",
+      variantName: "Xám",
     },
   ];
   const selectedColor = (colorVariant) => {
@@ -200,10 +200,14 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           </div>
                           <div className="label-section">
                             <span className="badge badge-grey-color">#1 Best seller</span>
-                            <span className="label-text">in fashion</span>
                           </div>
                           <h3 className="price-detail">
-                            <ProductPrice price={detailProduct.price} discount={detailProduct.discount} currencySymbol={detailProduct.currencySymbol} />
+                            <ProductPrice
+                              price={detailProduct.price}
+                              discount={detailProduct.discount}
+                              currencySymbol={detailProduct.currencySymbol}
+                            />
+                            
                           </h3>
                           <ul className="color-variant">
                             {colorVariants.map((colorVariant) => (
@@ -211,24 +215,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 style={
                                   selectedVariant === colorVariant.id
                                     ? {
-                                        width: "81px !important",
-                                        height: "34px",
                                         border: "1px solid #ffa200",
-                                        borderRadius: "0",
-                                        marginRight: "10px",
-                                        textAlign: "center",
-                                        lineHeight: "2.3",
                                         color: "#ffa200",
                                       }
-                                    : {
-                                        width: "81px !important",
-                                        height: "34px",
-                                        border: "1px solid rgba(0,0,0,.09)",
-                                        borderRadius: "0",
-                                        marginRight: "10px",
-                                        textAlign: "center",
-                                        lineHeight: "2.3",
-                                      }
+                                    : {}
                                 }
                                 key={colorVariant.id}
                                 checked={selectedVariant === colorVariant.id}
@@ -236,8 +226,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               >
                                 {colorVariant.variantName}
                               </li>
+                              
                             ))}
+                            
                           </ul>
+                          
                           <div
                             id="selectSize"
                             className="addeffect-section product-description border-product"
@@ -383,7 +376,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           </div>
 
                           <div className="border-product">
-                            <h6 className="product-title">share it</h6>
+                            <h6 className="product-title">Chia sẻ</h6>
                             <div className="product-icon">
                               <ul className="product-social">
                                 <li>
@@ -416,7 +409,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           </div>
 
                           <div className="border-product">
-                            <h6 className="product-title">Time Reminder</h6>
+                            <h6 className="product-title">Thời gian khuyễn mãi</h6>
                             <CountdownComponent />
                           </div>
                         </div>
@@ -435,7 +428,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                 {/* Services end */}
                 {/* side-bar single product slider start */}
                 <div className="theme-card">
-                  <h5 className="title-border">new product</h5>
+                  <h5 className="title-border">Sản phẩm mới</h5>
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
                     {newProducts.map((product) => {
                       return <SideProductCart key={product._id} product={product} />;
@@ -466,9 +459,10 @@ export async function getServerSideProps(context) {
   const response = await fetch(`${process.env.API_URL}/products/${slug}`);
   const { data, status, message } = await response.json();
 
-  if(status != 200) return {
-    notFound: true,
-  }
+  if (status != 200)
+    return {
+      notFound: true,
+    };
 
   return {
     props: {
