@@ -4,7 +4,6 @@ import CKEditors from "react-ckeditor-component";
 import MyDropzone from "../common/Dropzone";
 // import TableCustom from "../common/Table";
 import Pickcolor from "../common/Pickcolor";
-import { Message } from "semantic-ui-react";
 
 import {
   Button,
@@ -20,7 +19,76 @@ import {
 } from "reactstrap";
 
 const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
+//Handle Form Product
 
+
+//End Handle Form Product
+
+//Handle Variant
+  const [variantList, setVariantList] = useState([
+    {
+      variantName: "",
+    },
+  ]);
+
+  const [sizeList, setSizeList] = useState([
+    {
+      sizes: [
+        {
+          name: "",
+          sku: "",
+          price: "",
+          discount: "",
+          stock: {
+            quantity: "",
+            status: "",
+          },
+        },
+      ],
+    },
+  ]);
+
+  const handleAddSize = async (e) => {
+    setSizeList([
+      ...sizeList,
+      {
+        sizes: [
+          {
+            sku: "",
+            price: "",
+            discount: "",
+            stock: {
+              quantity: "",
+              status: "",
+            },
+          },
+        ],
+      },
+    ]);
+  };
+
+  const handleAddVariant = async (e) => {
+    console.log("8=====D");
+    setVariantList([...variantList, { variantName: "" }]);
+  };
+
+  const handleVariantChange = (color, index) => {
+    const list = [...variantList];
+    list[index]["variantName"] = color.hex;
+    setVariantList(list);
+  };
+
+  const handleSizeChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...sizeList];
+    list[index]["sizes"][0][name] = value
+    setSizeList(list)
+    
+  };
+  console.log("variantList", variantList)
+  console.log("sizeList", sizeList)
+
+  //end Variant
   const [content] = useState("content");
   return (
     <>
@@ -39,23 +107,13 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                       <Label className="col-form-label pt-0">
                         <span>*</span> Tên sản phẩm
                       </Label>
-                      <Input
-                        className="form-control"
-                        name={`name`}
-                        type="text"
-                        required=""
-                      />
+                      <Input className="form-control" name={`name`} type="text" required="" />
                     </FormGroup>
                     <FormGroup>
                       <Label className="col-form-label pt-0">
                         <span>*</span> SKU
                       </Label>
-                      <Input
-                        className="form-control"
-                        name={`sku`}
-                        type="text"
-                        required=""
-                      />
+                      <Input className="form-control" name={`sku`} type="text" required="" />
                     </FormGroup>
                   </div>
                 </CardBody>
@@ -69,11 +127,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <Label className="col-form-label">
                       <span>*</span> Danh mục
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`firstLevelCat`}
-                    >
+                    <select className="custom-select" required="" name={`firstLevelCat`}>
                       <option value="">--Select--</option>
                     </select>
                   </FormGroup>
@@ -81,11 +135,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <Label className="col-form-label">
                       <span>*</span> Danh mục
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`firstLevelCat`}
-                    >
+                    <select className="custom-select" required="" name={`firstLevelCat`}>
                       <option value="">--Select--</option>
                     </select>
                   </FormGroup>
@@ -93,11 +143,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <Label className="col-form-label">
                       <span>*</span> Danh mục
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`firstLevelCat`}
-                    >
+                    <select className="custom-select" required="" name={`firstLevelCat`}>
                       <option value="">--Select--</option>
                     </select>
                   </FormGroup>
@@ -105,44 +151,25 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <Label className="col-form-label">
                       <span>*</span> Giá
                     </Label>
-                    <Input
-                      className="form-control"
-                      type="number"
-                      required=""
-                      name={`price`}
-                    />
+                    <Input className="form-control" type="number" required="" name={`price`} />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Giảm giá
                     </Label>
-                    <Input
-                      className="form-control"
-                      type="number"
-                      required=""
-                      name={`discount`}
-                    />
+                    <Input className="form-control" type="number" required="" name={`discount`} />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Số lượng
                     </Label>
-                    <Input
-                      className="form-control"
-                      type="number"
-                      required=""
-                      name={`quantity`}
-                    />
+                    <Input className="form-control" type="number" required="" name={`quantity`} />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Trạng thái
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`stockStatus`}
-                    >
+                    <select className="custom-select" required="" name={`stockStatus`}>
                       <option value="">--Select--</option>
                       <option value="available">Available</option>
                     </select>
@@ -151,11 +178,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <Label className="col-form-label">
                       <span>*</span> Đơn vị tiền
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`currencyUnit`}
-                    >
+                    <select className="custom-select" required="" name={`currencyUnit`}>
                       <option value="">--Select--</option>
                       <option value="₫">VNĐ</option>
                     </select>
@@ -164,26 +187,16 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <Label className="col-form-label">
                       <span>*</span> Thương hiệu
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`brand`}
-                    >
+                    <select className="custom-select" required="" name={`brand`}>
                       <option value="">--Select--</option>
-                      <option value="61e544bb67bec3d3a883aa61">
-                        Rau củ quả
-                      </option>
+                      <option value="61e544bb67bec3d3a883aa61">Rau củ quả</option>
                     </select>
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Vị trí kho hàng
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`stockCountry`}
-                    >
+                    <select className="custom-select" required="" name={`stockCountry`}>
                       <option value="">--Select--</option>
                       <option value="VN">eBooks</option>
                     </select>
@@ -225,43 +238,41 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <FormGroup>
                       <div className="">
                         <Label className="col-form-label pt-0">Màu sắc</Label>
-                        <div className="variants">
-                            <Pickcolor
-                              // onChangeColor={handleVariantChange}
-                            />
-                          <div
+                        {variantList.map((x, i) => {
+                          return (
+                            <div className="variants">
+                              <Pickcolor
+                              index={i}
+                              onChangeColor={handleVariantChange}
+                              />
+                            </div>
+                          );
+                        })}
+                        <div
                             className="btn btn-block mt-4 btn-primary"
-                            // onClick={handleAddVariant}
+                            onClick={handleAddVariant}
                           >
                             Thêm màu sắc
                           </div>
-                        </div>
                       </div>
                     </FormGroup>
                     <FormGroup>
                       <Label className="col-form-label pt-0"> Size</Label>
-                        <Input
-                          className="form-control"
-                          type="text"
-                          required=""
-                          name={`attributeKey`}
-                          placeholder="S, M, L, Xl"
-                          type="hidden"
-                          value="Size"
-                        />
-
-                        <Input
-                          className="form-control mb-2"
-                          type="text"
-                          required=""
-                          name={`attributeValue`}
-                          placeholder="S, M, L, Xl"
-                          // onChange={(e) => handleAttributeChange(e, i)}
-                        />
-                      <div
-                        className="btn btn-block mt-4 btn-primary"
-                        // onClick={handleAddAttribute}
-                      >
+                      {sizeList.map((x, i) => {
+                        return(
+                          <>
+                          <Input
+                            className="form-control mb-2"
+                            type="text"
+                            required=""
+                            name={`name`}
+                            placeholder="S, M, L, Xl"
+                            onChange={(e) => handleSizeChange(e, i)}
+                          />
+                          </>
+                        )
+                        })}
+                      <div className="btn btn-block mt-4 btn-primary" onClick={handleAddSize}>
                         Thêm Size
                       </div>
                     </FormGroup>
@@ -274,8 +285,10 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
               </Card>
               <FormGroup className="m-10">
                 <div className="product-buttons text-center">
-                  <Button type="button" color="primary" 
-                  // onClick={handleSubmit}
+                  <Button
+                    type="button"
+                    color="primary"
+                    // onClick={handleSubmit}
                   >
                     Thêm sản phẩm
                   </Button>
@@ -289,7 +302,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
         </form>
       </Container>
       <style></style>
-      </>
+    </>
   );
 };
 
