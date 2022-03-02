@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from 'react';
 import fetch from 'isomorphic-unfetch';
-import Digital_pro_list from './../../../components/digital/digital-pro-list.js'
+import Digital_pro_list from '@/components/digital/digital-pro-list.js'
 
 const IndexProduct = ({dataIndexProduct}) => (
 <>
