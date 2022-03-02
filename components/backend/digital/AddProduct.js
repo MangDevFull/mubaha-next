@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from "react";
+import { Fragment, useRef, useState,useEffect } from "react";
 import Breadcrumb from "../common/BreadCrumb";
 import CKEditors from "react-ckeditor-component";
 import MyDropzone from "../common/Dropzone";
@@ -17,7 +17,7 @@ import {
   Label,
   Row,
 } from "reactstrap";
-import { Message, Form } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 
 const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
   const [
@@ -39,8 +39,22 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
     attributeQuantity,
     attributeStatus,
   ] = useRef();
+  const [categoryFirst,setCategoryFirst] = useState([])
 
-  const columns = React.useMemo(() => [
+  async function test (){
+    const response = await fetch(`${process.env.API_URL}/categories/first`)
+
+    const data = await response.json()
+
+    console.log("data1",data)
+  }
+
+
+  useEffect(async () => {
+  console.log("Aaaaaa")
+  },[])
+
+  const columns = [
     {
       Header: "Màu sắc",
       columns: [
@@ -152,7 +166,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
     //     },
     //   ],
     // },
-  ]);
+  ];
 
   // ])
   const [variantList, setVariantList] = useState([
@@ -283,7 +297,6 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
   // }
 
   // console.log("attributeList", attributeList);
-  console.log("variantList", variantList);
 
   const [formSuccess, isFormSuccess] = useState(false);
   // const addProduct = useRef(null);
@@ -405,11 +418,32 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                       name={`firstLevelCat`}
                     >
                       <option value="">--Select--</option>
-                      <option value="61d983553335d8873f1abacc">eBooks</option>
-                      <option value="2">Graphic Design</option>
-                      <option value="3">3D Impact</option>
-                      <option value="4">Application</option>
-                      <option value="5">Websites</option>
+                    </select>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="col-form-label">
+                      <span>*</span> Danh mục
+                    </Label>
+                    <select
+                      className="custom-select"
+                      required=""
+                      ref={firstLevelCat}
+                      name={`firstLevelCat`}
+                    >
+                      <option value="">--Select--</option>
+                    </select>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="col-form-label">
+                      <span>*</span> Danh mục
+                    </Label>
+                    <select
+                      className="custom-select"
+                      required=""
+                      ref={firstLevelCat}
+                      name={`firstLevelCat`}
+                    >
+                      <option value="">--Select--</option>
                     </select>
                   </FormGroup>
                   <FormGroup>
