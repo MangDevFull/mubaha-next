@@ -17125,9 +17125,13 @@ header.stickycls {
   margin-bottom: 10px;
 }
 .product-right .color-variant li {
-  height: 30px;
-  width: 30px;
-  cursor: pointer;
+  width: 81px !important;
+  height: 34px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 0;
+  margin-right: 10px;
+  text-align: center;
+  line-height: 2.3;
 }
 .product-right .color-variant li.active {
   position: relative;

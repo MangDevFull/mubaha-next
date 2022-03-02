@@ -17,6 +17,7 @@ const VenderProfile = ({
   noSidebar,
   username,
 }) => {
+  
   const [layout, setLayout] = useState(layoutList);
   const [grid, setGrid] = useState("col-xl-3 col-md-6 col-grid-box");
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,7 @@ const VenderProfile = ({
   const [limit, setLimit] = useState(8)
   const [listProduct, setListProduct] = useState(products.docs);
   
+  console.log(listProduct)
 
   const handlePagination = async () => {
     try {
@@ -282,7 +284,6 @@ const VenderProfile = ({
                       <div className="product-page-per-view">
                         <select onChange={(e) => {
                           setLimit(parseInt(e.target.value))
-                          console.log(e.target.value)
                           handleProductOfView(e.target.value,1,0,0)
                         }}>
                           <option value="8">8 Sản phẩm </option>
