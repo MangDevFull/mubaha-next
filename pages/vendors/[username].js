@@ -331,7 +331,7 @@ const VenderProfile = ({
                                           alt=""
                                         />
                                         <h3>
-                                          <strong>Your Cart is Empty</strong>
+                                          <strong>Không có sản phẩm nào</strong>
                                         </h3>
                                         <h4>Explore more shortlist some items.</h4>
                                       </div>
@@ -409,10 +409,7 @@ export async function getServerSideProps(context) {
   const { username } = context.query;
 
   const respone = await fetch(
-    `${process.env.API_URL}/vendors/${username}?limit=8&page=1&maxPrice=10000000&minPrice=0`
-  );
-  console.log(
-    `${process.env.API_URL}/vendors/${username}?limit=8&page=1&maxPrice=10000000&minPrice=0`
+    `${process.env.API_URL}/vendors/${username}?limit=8&page=1`
   );
   const { data, status, message } = await respone.json();
   if (status != 200)
