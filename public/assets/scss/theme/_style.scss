@@ -432,7 +432,7 @@ del {
     z-index: 999;
     transition: all 300ms ease;
     background: var(--theme-deafult-3);
-    box-shadow: 0px 0px 8px var(--theme-deafult-2);
+    // box-shadow: 0px 0px 8px var(--theme-deafult-2);
     animation: smoothScroll 1s forwards;
 
     .brand-logo {
@@ -1246,7 +1246,7 @@ header {
 
   &.marketplace {
     background-color: var(--theme-deafult-3);
-    box-shadow: 0px 0px 8px var(--theme-deafult-2);
+    // box-shadow: 0px 0px 8px var(--theme-deafult-2);
 
     &.header-tools {
       position: relative;
@@ -7037,8 +7037,8 @@ footer {
 
 .main-nav-center {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
 }
 
 .header-gym {

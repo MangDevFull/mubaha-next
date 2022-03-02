@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Container, Row } from "reactstrap";
+import styles from "./Navbar.module.css"
 
 export default function NavBar() {
   const [navClose, setNavClose] = useState({ right: "0px" });
@@ -36,13 +37,6 @@ export default function NavBar() {
                 <span>Quay lại</span>
                 <i className="fa fa-angle-right pl-2" aria-hidden="true"></i>
               </div>
-            </li>
-            <li>
-              <Link href="/categories" passHref>
-              <a className="nav-link">
-                Danh mục sản phẩm
-              </a>
-              </Link>
             </li>
             <li>
               <a href="#" className="nav-link">Việt Nam</a>

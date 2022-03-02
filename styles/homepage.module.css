@@ -1,0 +1,7 @@
+.bgHead {
+  /* margin-top: -50px; */
+  background-image: url("/assets/images/bg.jpg");
+  background-size: cover;
+  display: block;
+  background-position: center center;
+}

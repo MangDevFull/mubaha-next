@@ -312,17 +312,17 @@ body {
   
     .main-navbar {
       .nav-menu {
-        background-color: var(--theme-deafult-3);
+        // background-color: var(--theme-deafult-3);
         border-color: var(--theme-deafult-2);
         .back-btn {
           .mobile-back {
-            color: $white-1;
+            color: black;
           }
         }
   
         > li {
           > a {
-            color: $white-1;
+            color: black;
           }
   
           .nav-submenu {
@@ -331,7 +331,7 @@ body {
   
             li {
               a {
-                color: $white-1;
+                color: black;
               }
   
               .nav-sub-childmenu {
@@ -340,7 +340,7 @@ body {
   
                 li {
                   a {
-                    color: $white-1;
+                    color: black;
                   }
                 }
               }
@@ -357,7 +357,7 @@ body {
                   ul {
                     li {
                       a {
-                        color: $white-1;
+                        color: black;
                       }
                     }
                   }

@@ -67,9 +67,9 @@ export default function HeaderTwo({ }) {
                     <input id="query search-autocomplete" type="search"
                       placeholder="Tìm kiếm sản phẩm..." className="nav-search nav-search-field"
                       aria-expanded="true" />
-                      <button type="submit" name="nav-submit-button" className="btn-search">
-                        <i className="fa fa-search"></i>
-                      </button>
+                    <button type="submit" name="nav-submit-button" className="btn-search">
+                      <i className="fa fa-search"></i>
+                    </button>
                   </form>
                 </div>
                 <div className="menu-right pull-right">
@@ -103,16 +103,26 @@ export default function HeaderTwo({ }) {
             </Col>
           </Row>
         </Container>
-        <Container id="navbar-row">
-          <Row>
-            <Col>
-              <div className="main-nav-center border-section border-bottom-0">
-                <NavBar />
-              </div>
-            </Col>
-          </Row>
+        <Container id="navbar-row" >
+
+          <div className={styles.bottom_part}>
+            <Row>
+              <Col xl={3}>
+                <div class={`${styles.category_menu} d-none d-xl-block h-100`}>
+                  <h5 class={`mb-0 ${styles.txt_white}`}><strong><i class="fa fa-bars mr-2"></i>DANH MỤC SẢN PHẨM</strong></h5>
+                </div>
+              </Col>
+              <Col xl={9}>
+                <div className={`main-nav-center`}>
+                  <NavBar />
+                </div>
+              </Col>
+            </Row>
+          </div>
         </Container>
       </header>
+
+
     </div>
   )
 }
