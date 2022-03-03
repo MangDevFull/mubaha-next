@@ -11,10 +11,32 @@ import NavBar from "@/components/common/Navbar"
 import HeaderSettings from "./common/HeaderSettings"
 
 import styles from "./HeaderTwo.module.css"
+import CartContainer from "./common/CartContainer"
+
+import cart from "../assets/icons/cart.png";
+import SearchOverlay from "@/components/common/SearchOverlay";
 
 export default function HeaderTwo({ }) {
 
+  const [toggleSearch, setToggleSearch] = useState(false)
+  const [navClose, setNavClose] = useState({ right: "0px" });
+
+  const openNav = () => {
+    setNavClose({ right: "0px" });
+  };
+
+  const closeNav = () => {
+    setNavClose({ right: "-410px" });
+  };
+
   useEffect(() => {
+    if (window.innerWidth < 750) {
+      setNavClose({ right: "-410px" });
+    }
+    if (window.innerWidth < 1199) {
+      setNavClose({ right: "-300px" });
+    }
+
     window.addEventListener("scroll", handleScroll)
 
     return () => {
@@ -42,6 +64,10 @@ export default function HeaderTwo({ }) {
     }
   }
 
+  const openSearch = () => {
+    setToggleSearch(true);
+  };
+
   return (
     <div>
 
@@ -56,7 +82,7 @@ export default function HeaderTwo({ }) {
                 <div className="menu-left">
                   <Link href="/">
                     <a>
-                      <div className="brand-logo" style={{ width: "260px", maxWidth: "260px" }}>
+                      <div className="brand-logo" style={{ width: "15vw", maxWidth: "15vw" }}>
                         <Image src={logo} alt="Mubaha" layout="responsive" />
                       </div>
                     </a>
@@ -74,20 +100,25 @@ export default function HeaderTwo({ }) {
                 </div>
                 <div className="menu-right pull-right">
                   {/* <NavBar /> */}
+                  <nav className="text-start">
+                    <div className="toggle-nav" onClick={openNav.bind(this)}><i className="fa fa-bars sidebar-bar"></i></div>
+                  </nav>
 
                   <div>
                     <div className="icon-nav">
                       <ul>
-                        {/* <li className="onhover-div mobile-search">
+                        <li className="onhover-div mobile-search d-xl-none d-inline-block">
                           <div>
                             <Media
                               src="/assets/images/icon/search.png"
                               className="img-fluid"
+                              onClick={openSearch}
                               alt=""
                             />
                           </div>
-                        </li> */}
+                        </li>
                         <HeaderSettings />
+                        <CartContainer icon={cart} />
                         {/* <Currency icon={settings} /> */}
 
                         {/* {direction === undefined ? (
@@ -110,23 +141,22 @@ export default function HeaderTwo({ }) {
               <Col lg={3} className="d-none d-xl-block">
                 <div className={`${styles.category_menu} h-100`}>
                   <Link href="/categories">
-                  <a>
-                  <h5 className={`mb-0 ${styles.txt_white}`}><strong><i className="fa fa-bars mr-2"></i>DANH MỤC SẢN PHẨM</strong></h5>
-                  </a>
+                    <a>
+                      <h5 className={`mb-0 ${styles.txt_white}`}><strong><i className="fa fa-bars mr-2"></i>DANH MỤC SẢN PHẨM</strong></h5>
+                    </a>
                   </Link>
                 </div>
               </Col>
               <Col sm={12} lg={9}>
                 <div className={`main-nav-center`}>
-                  <NavBar />
+                  <NavBar navClose={navClose} closeNav={closeNav} />
                 </div>
               </Col>
             </Row>
           </div>
         </Container>
       </header>
-
-
+      <SearchOverlay toggleSearch={toggleSearch} setToggleSearch={setToggleSearch} />
     </div>
   )
 }

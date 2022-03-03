@@ -3,34 +3,34 @@ import Link from "next/link";
 import { Container, Row } from "reactstrap";
 import styles from "./Navbar.module.css"
 
-export default function NavBar() {
-  const [navClose, setNavClose] = useState({ right: "0px" });
+export default function NavBar({navClose, closeNav}) {
+  // const [navClose, setNavClose] = useState({ right: "0px" });
 
-  useEffect(() => {
-    if (window.innerWidth < 750) {
-      setNavClose({ right: "-410px" });
-    }
-    if (window.innerWidth < 1199) {
-      setNavClose({ right: "-300px" });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (window.innerWidth < 750) {
+  //     setNavClose({ right: "-410px" });
+  //   }
+  //   if (window.innerWidth < 1199) {
+  //     setNavClose({ right: "-300px" });
+  //   }
+  // }, []);
 
-  const openNav = () => {
-    setNavClose({ right: "0px" });
-  };
+  // const openNav = () => {
+  //   setNavClose({ right: "0px" });
+  // };
 
-  const closeNav = () => {
-    setNavClose({ right: "-410px" });
-  };
+  // const closeNav = () => {
+  //   setNavClose({ right: "-410px" });
+  // };
 
   return (
     
     <div>
       <div className="main-navbar">
         <div id="mainnav">
-          <div className="toggle-nav" onClick={openNav.bind(this)}>
+          {/* <div className="toggle-nav" onClick={openNav.bind(this)}>
             <i className="fa fa-bars sidebar-bar"></i>
-          </div>
+          </div> */}
           <ul className="nav-menu sm pixelstrap sm-horizontal" style={navClose}>
             <li className="back-btn" onClick={closeNav.bind(this)}>
               <div className="mobile-back text-right">

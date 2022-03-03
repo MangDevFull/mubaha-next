@@ -187,13 +187,13 @@ body {
           }
         }
   
-        // .onhover-div {
-        //   > div {
-        //     img {
-        //       filter: invert(100);
-        //     }
-        //   }
-        // }
+        .onhover-div {
+          > div {
+            img {
+              filter: invert(100);
+            }
+          }
+        }
   
         .sidenav {
           nav {
@@ -465,11 +465,11 @@ body {
     }
   
     .onhover-div {
-      // > div {
-      //   img {
-      //     filter: brightness(100);
-      //   }
-      // }
+      > div {
+        img {
+          filter: brightness(100);
+        }
+      }
   
       .show-div {
         background-color: $dark-top;
@@ -2883,19 +2883,19 @@ body {
     .bg_cls {
       background-color: $dark-body;
     }
-    // .onhover-div {
-    //   img {
-    //     filter: invert(1);
-    //   }
-    //   .show-div {
-    //     img {
-    //       filter: invert(0);
-    //     }
-    //   }
-    //   > div img {
-    //     filter: invert(1);
-    //   }
-    // }
+    .onhover-div {
+      img {
+        filter: invert(1);
+      }
+      .show-div {
+        img {
+          filter: invert(0);
+        }
+      }
+      > div img {
+        filter: invert(1);
+      }
+    }
     .toggle-nav {
       i {
         color: #ffffff;
