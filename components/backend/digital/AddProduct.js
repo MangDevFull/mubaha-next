@@ -3,7 +3,7 @@ import Breadcrumb from "../common/BreadCrumb";
 import CKEditors from "react-ckeditor-component";
 import MyDropzone from "../common/Dropzone";
 import Pickcolor from "../common/Pickcolor";
-import {StockStatus,StockCountry} from "../../../enums/product.enum.js"
+import { StockStatus, StockCountry } from "../../../enums/product.enum.js"
 import {
   Button,
   Card,
@@ -17,7 +17,8 @@ import {
   Row,
 } from "reactstrap";
 import currencyEnum from "../../../enums/currency.enum.js";
-import Select from 'react-select/creatable';
+import SelectAdd from 'react-select/creatable';
+import Select from 'react-select'
 
 const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
 //Handle Form Product
@@ -69,7 +70,6 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
   };
 
   const handleAddVariant = async (e) => {
-    console.log("8=====D");
     setVariantList([...variantList, { variantName: "" }]);
   };
 
@@ -91,31 +91,30 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
 
   //end Variant
   const [content] = useState("content");
-  const [categoryFirst,setCategoryFirst] = useState([])
-  const [categorySecond,setCategorySecond] = useState([])
-  const [categoryThird,setCategoryThird] = useState([])
-  const [isDisableSecond,setIsDisableSecond] = useState(true)
-  const [isDisableThird,setIsDisableThird] = useState(true)
-  const [status,setStatus] = useState([])
-  const [countries,setCountries] = useState([])
-  const [currencies,setCurrencies] = useState([])
+  const [categoryFirst, setCategoryFirst] = useState([])
+  const [categorySecond, setCategorySecond] = useState([])
+  const [categoryThird, setCategoryThird] = useState([])
+  const [isDisableSecond, setIsDisableSecond] = useState(true)
+  const [isDisableThird, setIsDisableThird] = useState(true)
+  const [status, setStatus] = useState([])
+  const [countries, setCountries] = useState([])
+  const [currencies, setCurrencies] = useState([])
+  const [brands, setBrands] = useState([])
+  const [placeholderCategory, setPlaceholderCategory] = useState('')
+
+  const [selectBrand, setSelectBrand] = useState('')
+  const [selectStatus, setSelectStatus] = useState('')
+  const [slectCurrency, setSelectCurrency] = useState('')
+  const [selectCountry, setSelectCountry] = useState('')
+  const [selectFirstCategory, setSelectFirstCategory] = useState('')
+  const [selectSecondCategory, setSelectSecondCategory] = useState('')
+  const [selectThirdCategory, setSelectThirdCategory] = useState('')
 
 
-    const inputName = useRef()
-    const inputSKU = useRef()
-    const inputPrice = useRef()
-    const inputDiscount= useRef()
-
-    const aquaticCreatures = [
-      { label: 'Shark', value: 'Shark' },
-      { label: 'Dolphin', value: 'Dolphin' },
-      { label: 'Whale', value: 'Whale' },
-      { label: 'Octopus', value: 'Octopus' },
-      { label: 'Crab', value: 'Crab' },
-      { label: 'Lobster', value: 'Lobster' },
-    ];
-
-    
+  const inputName = useRef()
+  const inputSKU = useRef()
+  const inputPrice = useRef()
+  const inputDiscount = useRef()
 
   useEffect(async () => {
 
@@ -123,44 +122,116 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
 
     const data = await response.json()
 
-    setCategoryFirst(data.data)
+    const categories = data.data.map((category) => {
+      return { label: category.name, value: category._id }
+    })
+    if (data.status === 200) {
+      setCategoryFirst(categories)
+    }
+    const stockStatuses = Object.keys(StockStatus).map((key) => {
+      return { label: key, value: key }
+    })
 
-    setStatus(Object.keys(StockStatus).map((key) => [StockStatus[key]]))
+    setStatus(stockStatuses)
 
-    setCountries(Object.keys(StockCountry).map((key) => [StockCountry[key]]))
+    const stockCountries = Object.keys(StockCountry).map((key) => {
+      return { label: key, value: key }
+    })
 
-    setCurrencies(Object.keys(currencyEnum).map((key) => [currencyEnum[key]]))
+    setCountries(stockCountries)
 
-  },[])
+    const currencies = Object.keys(currencyEnum).map((key) => {
+      const data = currencyEnum[key]
+      return { label: key, value: data }
+    })
 
-  const handleCategoryFirst = async (e) =>{
-      const id = e.target.value
-      const response = await fetch(`${process.env.API_URL}/categories/${id}`)
+    setCurrencies(currencies)
 
-      const data = await response.json()
+    const brands = await fetch(`${process.env.API_URL}/barnds`)
 
-      setCategorySecond(data.data)
-      setCategoryThird([])
-      setIsDisableSecond(false)
-      
-  }
+    const brandDatas = await brands.json()
 
-  const handleCategorySecond = async (e) =>{
-    const id = e.target.value
+    const brandOptions = brandDatas.data.map((key) => {
+      return { label: key.name, value: key._id }
+    })
+
+    setBrands(brandOptions)
+
+  }, [])
+
+  const handleCategoryFirst = async (e) => {
+    const id = e.value
+    setSelectFirstCategory(id)
     const response = await fetch(`${process.env.API_URL}/categories/${id}`)
 
     const data = await response.json()
 
-    setCategoryThird(data.data)
-    setIsDisableThird(false)
+    const categoriesSecond = data.data.map((category) => {
+      return { label: category.name, value: category._id }
+    })
+    if (data.status == 200) {
+      setCategorySecond(categoriesSecond)
+      setCategoryThird([])
+      setIsDisableSecond(false)
+    }
   }
 
-  const handeSubmit = async () =>{
+  const handleCategorySecond = async (e) => {
+    const id = e.value
+    setSelectSecondCategory(id)
+    const response = await fetch(`${process.env.API_URL}/categories/${id}`)
+
+    const data = await response.json()
+    const categoriesThird = data.data.map((category) => {
+      return { label: category.name, value: category._id }
+    })
+    if (data.status == 200) {
+      if (categoriesThird.length > 0) {
+        setCategoryThird(categoriesThird)
+        setIsDisableThird(false)
+        setPlaceholderCategory("Lựa chọn")
+      } else {
+        setIsDisableThird(true)
+        setPlaceholderCategory("Danh mục chưa có")
+      }
+    }
+  }
+
+  const handleCreateBrand = async (e) => {
+    if (e.__isNew__) {
+      const body = {
+        name: e.value
+      }
+      const response = await fetch(`${process.env.API_URL}/create-brand`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+
+      const data = await response.json()
+      if (data.status == 400) {
+        alert(data.message)
+      }
+    }else{
+      setSelectBrand(e.value)
+    }
+  }
+
+  const handeSubmit = async () => {
     const body = {
       name: inputName.current.value,
       price: inputPrice.current.value,
       discount: inputDiscount.current.value,
       sku: inputSKU.current.value,
+      stockCountry:selectCountry,
+      stockStatus: selectStatus,
+      brand: selectBrand,
+      currencyUnit: slectCurrency,
+      firstLevelCat: selectFirstCategory,
+      secondLevelCat: selectSecondCategory,
+      threeLevelCat: selectThirdCategory,
     }
   }
 
@@ -207,70 +278,37 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                 <CardBody>
                   <FormGroup>
                     <Label className="col-form-label">
-                      <span>*</span> Danh mục
+                      <span>*</span> Danh mục 1
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`firstLevelCat`}
+                    <Select
                       onChange={handleCategoryFirst}
-                    >
-                      <option value="">--Lưạ chọn--</option>
-                      {
-                        categoryFirst.map((x)=>{
-                          return (
-                            <option key={x._id} value={x._id}>
-                            {x.name}
-                          </option>
-                          )
-                        })
-                      }
-                    </select>
+                      options={categoryFirst}
+                      placeholder={"Lựa chọn"}
+                    />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
-                      <span>*</span> Danh mục
+                      <span>*</span> Danh mục 2
                     </Label>
-                    <select
-                      disabled={isDisableSecond}
-                      className="custom-select"
-                      required=""
-                      name={`firstLevelCat`}
+                    <Select
+                      isDisabled={isDisableSecond}
                       onChange={handleCategorySecond}
-                    >
-                      <option value="">--Select--</option>
-                      {
-                        categorySecond.map((x)=>{
-                          return (
-                            <option key={x._id} value={x._id}>
-                            {x.name}
-                          </option>
-                          )
-                        })
-                      }
-                    </select>
+                      options={categorySecond}
+                      placeholder={"Lựa chọn"}
+                    />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
-                      <span>*</span> Danh mục
+                      <span>*</span> Danh mục 3
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`firstLevelCat`}
-                      disabled={isDisableThird}
-                    >
-                      <option value="">--Select--</option>
-                      {
-                        categoryThird.map((x)=>{
-                          return (
-                            <option key={x._id} value={x._id}>
-                            {x.name}
-                          </option>
-                          )
-                        })
-                      }
-                    </select>
+                    <Select
+                      isDisabled={isDisableThird}
+                      options={categoryThird}
+                      placeholder={placeholderCategory}
+                      onChange={(e) =>{
+                        setSelectThirdCategory(e.value)
+                      }}
+                    />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
@@ -308,66 +346,47 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <Label className="col-form-label">
                       <span>*</span> Trạng thái
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`stockStatus`}
-                    >
-                      <option value="">--Lựa chọn--</option>
-                      {
-                        status.map((status,id) =>{
-                          return(
-                            <option value={status} key={id}>{status}</option>
-                          )
-                        })
-                      }
-                    </select>
+                    <Select
+                      options={status}
+                      placeholder="Lựa chọn"
+                      onChange={(e) => {
+                        setSelectStatus(e.value)
+                      }}
+                    />
+
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Đơn vị tiền
                     </Label>
-                    <select
-                      className="custom-select"
-                      required=""
-                      name={`currencyUnit`}
-                    >
-                      <option value="">--Lựa chọn--</option>
-                      {
-                        currencies.map((curr, i) =>{
-                          return(
-                            <option value={curr} key={i}>{curr}</option>
-                          )
-                        })
-                      }
-                    </select>
+                    <Select
+                      options={currencies}
+                      placeholder="Lựa chọn"
+                      onChange={(e)=>{
+                        setSelectCurrency(e.value)
+                      }}
+                    />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Thương hiệu
                     </Label>
-                    <Select
-        options={aquaticCreatures}
-        onChange={(opt, meta) => console.log(opt, meta)}
-      />
+                    <SelectAdd
+                      options={brands}
+                      onChange={handleCreateBrand}
+                    />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Vị trí kho hàng
                     </Label>
-                    <select
-                      className="custom-select"
-             
-                    >
-                      <option value="">--Lựa chọn--</option>
-                      {
-                        countries.map((country,id) =>{
-                          return(
-                            <option value={country} key={id}>{country}</option>
-                          )
-                        })
-                      }
-                    </select>
+                    <Select
+                      options={countries}
+                      placeholder="Lựa chọn"
+                      onChange={(e) => {
+                        setSelectCountry(e.value)
+                      }}
+                    />
                   </FormGroup>
                   <Label className="col-form-label pt-0"> Ảnh sản phẩm</Label>
                   <MyDropzone />
@@ -453,8 +472,8 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
               </Card>
               <FormGroup className="m-10">
                 <div className="product-buttons text-center">
-                  <Button type="button" color="primary" 
-                  onClick={handeSubmit}
+                  <Button type="button" color="primary"
+                    onClick={handeSubmit}
                   >
                     Thêm sản phẩm
                   </Button>
