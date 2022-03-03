@@ -157,12 +157,12 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
     const brands = await fetch(`${process.env.API_URL}/brands`)
 
     const brandDatas = await brands.json()
+    console.log('b',brandDatas)
+    // const brandOptions = brandDatas.data.map((key) => {
+    //   return { label: key.name, value: key._id }
+    // })
 
-    const brandOptions = brandDatas.data.map((key) => {
-      return { label: key.name, value: key._id }
-    })
-
-    setBrands(brandOptions)
+    // setBrands(brandOptions)
 
   }, [])
 
@@ -412,7 +412,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     />
                   </FormGroup>
                   <Label className="col-form-label pt-0"> Ảnh sản phẩm</Label>
-                  <MyDropzone sendImages={getImages} />
+                  <MyDropzone sendImages={getImages()} />
                 </CardBody>
               </Card>
             </Col>
