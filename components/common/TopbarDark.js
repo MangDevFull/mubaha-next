@@ -15,29 +15,29 @@ export default function TopBarDark({ topClass, fluid }) {
           <Col lg="6">
             <div className="header-contact">
               <ul>
-                <li>
+                {/* <li>
                   <Link href="/vendors/apply">
                     <a>
                       Trở thành người bán Mubaha
                     </a>
                   </Link>
-                </li>
-                {/* <li>Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam</li>
+                </li> */}
+                <li>Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam</li>
                 <li>
                   Hotline: 1900 9999
-                </li> */}
+                </li>
               </ul>
             </div>
           </Col>
           <Col lg="6" className="text-right">
             <ul className="header-dropdown">
-              {/* <li>
+              <li>
                 <Link href="/vendors/apply">
                   <a>
                     Trở thành người bán Mubaha
                   </a>
                 </Link>
-              </li> */}
+              </li>
               {!session ?
                 <>
                   <li>
