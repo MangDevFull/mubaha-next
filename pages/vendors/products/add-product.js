@@ -4,8 +4,9 @@ import LayoutBackEnd from "@/components/backend/Layout";
 
 import { useRef, useState, useEffect } from "react";
 import Breadcrumb from "@/components/backend/common/BreadCrumb";
-
+import Url from "url-parse"
 import dynamic from "next/dynamic"
+import queryString from 'query-string'
 
 const Editor = dynamic(() => import("@/components/backend/Editor"), {
   ssr: false
@@ -236,9 +237,15 @@ export default function AddProductPage() {
   const handeSubmit = async () => {
     images.forEach(async (value)=>{
      const url = value.uploadUrl
-    console.log(url)
-     console.log(encodeURI(url))
-     console.log(URI(url))
+     const uri = new Url(url)
+
+     const query = queryString.parse(uri.query)
+
+     console.log('uri',uri)
+     console.log('query',query)
+    
+
+
 
       // const response = await fetch(value.uploadUrl,{
       //   method: 'PUT',

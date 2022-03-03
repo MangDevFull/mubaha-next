@@ -35,6 +35,7 @@ const MyUploader = ({sendImages}) => {
     }
 
   }
+  console.log(images)
   sendImages(images)
 
 
