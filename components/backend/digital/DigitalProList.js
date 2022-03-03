@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import Breadcrumb from "../common/BreadCrumb.js";
-import data from "../../public/assets/data/pro_list"
-import Datatable from "../common/Datatable";
+// import data from "../../public/assets/data/pro_list"
+// import Datatable from "../common/Datatable";
 import { Card, CardBody, CardHeader, Col, Container, Row } from "reactstrap";
 
-const Digital_pro_list = ({dataIndexProduct}) => {
+const DigitalProList = ({dataIndexProduct}) => {
 	return (
 		<Fragment>
 			<Breadcrumb title="Danh sách sản phẩm" />
@@ -19,13 +19,13 @@ const Digital_pro_list = ({dataIndexProduct}) => {
 							<CardBody>
 								<div className="clearfix"></div>
 								<div id="basicScenario" className="product-physical">
-									<Datatable
+									{/* <Datatable
 										multiSelectOption={false}
 										myData={dataIndexProduct}
 										pageSize={9}
 										pagination={true}
 										class="-striped -highlight"
-									/>
+									/> */}
 								</div>
 							</CardBody>
 						</Card>
@@ -37,4 +37,4 @@ const Digital_pro_list = ({dataIndexProduct}) => {
 	);
 };
 
-export default Digital_pro_list;
+export default DigitalProList;

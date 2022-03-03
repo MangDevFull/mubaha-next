@@ -1,10 +1,10 @@
 import Link from "next/link";
 import React from 'react';
-import Digital_pro_list from '@/components/digital/digital-pro-list.js'
+import DigitalProList from '@/components/backend/digital/DigitalProList'
 
 const IndexProduct = ({dataIndexProduct}) => (
 <>
-<Digital_pro_list dataIndexProduct={dataIndexProduct}/>
+<DigitalProList dataIndexProduct={dataIndexProduct}/>
 
 </>
 )
