@@ -29,9 +29,7 @@ const VenderProfile = ({
     try {
       setPage(page + 1);
       const respone = await fetch(
-        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${
-          page + 1
-        }&maxPrice=10000000&minPrice=0`
+        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page + 1}`
       );
       const { data, status, message } = await respone.json();
       const { products } = data;
@@ -56,7 +54,7 @@ const VenderProfile = ({
     try {
       setPage(page);
       const respone = await fetch(
-        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page}&maxPrice=10000000&minPrice=0`
+        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page}`
       );
       const { data, status, message } = await respone.json();
       const { products } = data;
@@ -105,7 +103,7 @@ const VenderProfile = ({
                         <i className="fa fa-star"></i>
                         <i className="fa fa-star"></i>
                         <i className="fa fa-star"></i>
-                        <h6>750 followers | 10 review</h6>
+                        <h6>750 Người theo dõi | 10 Đánh giá</h6>
                       </div>
                     </div>
                   </div>
@@ -219,10 +217,8 @@ const VenderProfile = ({
                                 <div className="product-filter-content">
                                   <div className="search-count">
                                     <h5>
-                                      {listProduct
-                                        ? `Showing Products 1-${listProduct.length}`
-                                        : "loading"}{" "}
-                                      Result
+                                      {listProduct ? `Hiển thị ${listProduct.length}` : "loading"}{" "}
+                                      Sản phẩm
                                     </h5>
                                   </div>
                                   <div className="collection-view">
@@ -304,7 +300,7 @@ const VenderProfile = ({
                                       onChange={(e) => {
                                         // console.log(e.target.value);
                                         setOrderBy(e.target.value);
-                                        setPage(1)
+                                        setPage(1);
                                         handleProductFilter(8, 1, e.target.value);
                                       }}
                                     >
@@ -354,7 +350,6 @@ const VenderProfile = ({
                                   </div>
                                 )
                               ) : (
-                                listProduct &&
                                 listProduct.map((product, i) => (
                                   <div className={grid} key={i}>
                                     <div className="product">
@@ -408,9 +403,7 @@ export default VenderProfile;
 export async function getServerSideProps(context) {
   const { username } = context.query;
 
-  const respone = await fetch(
-    `${process.env.API_URL}/vendors/${username}?limit=8&page=1`
-  );
+  const respone = await fetch(`${process.env.API_URL}/vendors/${username}?limit=8&page=1`);
   const { data, status, message } = await respone.json();
   if (status != 200)
     return {
