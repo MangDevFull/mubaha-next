@@ -2,9 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import Breadcrumb from "../common/BreadCrumb";
 import CKEditors from "react-ckeditor-component";
 import MyDropzone from "../common/Dropzone";
-// import TableCustom from "../common/Table";
 import Pickcolor from "../common/Pickcolor";
-
+import {StockStatus,StockCountry} from "../../../enums/product.enum.js"
 import {
   Button,
   Card,
@@ -17,6 +16,8 @@ import {
   Label,
   Row,
 } from "reactstrap";
+import currencyEnum from "../../../enums/currency.enum.js";
+import Select from 'react-select/creatable';
 
 const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
 //Handle Form Product
@@ -85,11 +86,84 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
     setSizeList(list)
     
   };
-  console.log("variantList", variantList)
-  console.log("sizeList", sizeList)
+  // console.log("variantList", variantList)
+  // console.log("sizeList", sizeList)
 
   //end Variant
   const [content] = useState("content");
+  const [categoryFirst,setCategoryFirst] = useState([])
+  const [categorySecond,setCategorySecond] = useState([])
+  const [categoryThird,setCategoryThird] = useState([])
+  const [isDisableSecond,setIsDisableSecond] = useState(true)
+  const [isDisableThird,setIsDisableThird] = useState(true)
+  const [status,setStatus] = useState([])
+  const [countries,setCountries] = useState([])
+  const [currencies,setCurrencies] = useState([])
+
+
+    const inputName = useRef()
+    const inputSKU = useRef()
+    const inputPrice = useRef()
+    const inputDiscount= useRef()
+
+    const aquaticCreatures = [
+      { label: 'Shark', value: 'Shark' },
+      { label: 'Dolphin', value: 'Dolphin' },
+      { label: 'Whale', value: 'Whale' },
+      { label: 'Octopus', value: 'Octopus' },
+      { label: 'Crab', value: 'Crab' },
+      { label: 'Lobster', value: 'Lobster' },
+    ];
+
+    
+
+  useEffect(async () => {
+
+    const response = await fetch(`${process.env.API_URL}/categories/first`)
+
+    const data = await response.json()
+
+    setCategoryFirst(data.data)
+
+    setStatus(Object.keys(StockStatus).map((key) => [StockStatus[key]]))
+
+    setCountries(Object.keys(StockCountry).map((key) => [StockCountry[key]]))
+
+    setCurrencies(Object.keys(currencyEnum).map((key) => [currencyEnum[key]]))
+
+  },[])
+
+  const handleCategoryFirst = async (e) =>{
+      const id = e.target.value
+      const response = await fetch(`${process.env.API_URL}/categories/${id}`)
+
+      const data = await response.json()
+
+      setCategorySecond(data.data)
+      setCategoryThird([])
+      setIsDisableSecond(false)
+      
+  }
+
+  const handleCategorySecond = async (e) =>{
+    const id = e.target.value
+    const response = await fetch(`${process.env.API_URL}/categories/${id}`)
+
+    const data = await response.json()
+
+    setCategoryThird(data.data)
+    setIsDisableThird(false)
+  }
+
+  const handeSubmit = async () =>{
+    const body = {
+      name: inputName.current.value,
+      price: inputPrice.current.value,
+      discount: inputDiscount.current.value,
+      sku: inputSKU.current.value,
+    }
+  }
+
   return (
     <>
       <Breadcrumb title="Thêm sản phẩm" />
@@ -107,13 +181,21 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                       <Label className="col-form-label pt-0">
                         <span>*</span> Tên sản phẩm
                       </Label>
-                      <Input className="form-control" name={`name`} type="text" required="" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        ref={inputName}
+                      />
                     </FormGroup>
                     <FormGroup>
                       <Label className="col-form-label pt-0">
                         <span>*</span> SKU
                       </Label>
-                      <Input className="form-control" name={`sku`} type="text" required="" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        ref={inputSKU}
+                      />
                     </FormGroup>
                   </div>
                 </CardBody>
@@ -127,78 +209,164 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <Label className="col-form-label">
                       <span>*</span> Danh mục
                     </Label>
-                    <select className="custom-select" required="" name={`firstLevelCat`}>
-                      <option value="">--Select--</option>
+                    <select
+                      className="custom-select"
+                      required=""
+                      name={`firstLevelCat`}
+                      onChange={handleCategoryFirst}
+                    >
+                      <option value="">--Lưạ chọn--</option>
+                      {
+                        categoryFirst.map((x)=>{
+                          return (
+                            <option key={x._id} value={x._id}>
+                            {x.name}
+                          </option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Danh mục
                     </Label>
-                    <select className="custom-select" required="" name={`firstLevelCat`}>
+                    <select
+                      disabled={isDisableSecond}
+                      className="custom-select"
+                      required=""
+                      name={`firstLevelCat`}
+                      onChange={handleCategorySecond}
+                    >
                       <option value="">--Select--</option>
+                      {
+                        categorySecond.map((x)=>{
+                          return (
+                            <option key={x._id} value={x._id}>
+                            {x.name}
+                          </option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Danh mục
                     </Label>
-                    <select className="custom-select" required="" name={`firstLevelCat`}>
+                    <select
+                      className="custom-select"
+                      required=""
+                      name={`firstLevelCat`}
+                      disabled={isDisableThird}
+                    >
                       <option value="">--Select--</option>
+                      {
+                        categoryThird.map((x)=>{
+                          return (
+                            <option key={x._id} value={x._id}>
+                            {x.name}
+                          </option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Giá
                     </Label>
-                    <Input className="form-control" type="number" required="" name={`price`} />
+                    <input
+                      className="form-control"
+                      type="number"
+                      min="0"
+                      ref={inputPrice}
+                    />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Giảm giá
                     </Label>
-                    <Input className="form-control" type="number" required="" name={`discount`} />
+                    <input
+                      className="form-control"
+                      type="number"
+                      min="0"
+                      max="100"
+                      ref={inputDiscount}
+                    />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Số lượng
                     </Label>
-                    <Input className="form-control" type="number" required="" name={`quantity`} />
+                    <input
+                      className="form-control"
+                      type="number"
+                    />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Trạng thái
                     </Label>
-                    <select className="custom-select" required="" name={`stockStatus`}>
-                      <option value="">--Select--</option>
-                      <option value="available">Available</option>
+                    <select
+                      className="custom-select"
+                      required=""
+                      name={`stockStatus`}
+                    >
+                      <option value="">--Lựa chọn--</option>
+                      {
+                        status.map((status,id) =>{
+                          return(
+                            <option value={status} key={id}>{status}</option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Đơn vị tiền
                     </Label>
-                    <select className="custom-select" required="" name={`currencyUnit`}>
-                      <option value="">--Select--</option>
-                      <option value="₫">VNĐ</option>
+                    <select
+                      className="custom-select"
+                      required=""
+                      name={`currencyUnit`}
+                    >
+                      <option value="">--Lựa chọn--</option>
+                      {
+                        currencies.map((curr, i) =>{
+                          return(
+                            <option value={curr} key={i}>{curr}</option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Thương hiệu
                     </Label>
-                    <select className="custom-select" required="" name={`brand`}>
-                      <option value="">--Select--</option>
-                      <option value="61e544bb67bec3d3a883aa61">Rau củ quả</option>
-                    </select>
+                    <Select
+        options={aquaticCreatures}
+        onChange={(opt, meta) => console.log(opt, meta)}
+      />
                   </FormGroup>
                   <FormGroup>
                     <Label className="col-form-label">
                       <span>*</span> Vị trí kho hàng
                     </Label>
-                    <select className="custom-select" required="" name={`stockCountry`}>
-                      <option value="">--Select--</option>
-                      <option value="VN">eBooks</option>
+                    <select
+                      className="custom-select"
+             
+                    >
+                      <option value="">--Lựa chọn--</option>
+                      {
+                        countries.map((country,id) =>{
+                          return(
+                            <option value={country} key={id}>{country}</option>
+                          )
+                        })
+                      }
                     </select>
                   </FormGroup>
                   <Label className="col-form-label pt-0"> Ảnh sản phẩm</Label>
@@ -285,10 +453,8 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
               </Card>
               <FormGroup className="m-10">
                 <div className="product-buttons text-center">
-                  <Button
-                    type="button"
-                    color="primary"
-                    // onClick={handleSubmit}
+                  <Button type="button" color="primary" 
+                  onClick={handeSubmit}
                   >
                     Thêm sản phẩm
                   </Button>
