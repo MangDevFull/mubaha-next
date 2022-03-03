@@ -109,12 +109,15 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
   const [selectFirstCategory, setSelectFirstCategory] = useState('')
   const [selectSecondCategory, setSelectSecondCategory] = useState('')
   const [selectThirdCategory, setSelectThirdCategory] = useState('')
-
-
+  const [images,setImage] = useState([])
   const inputName = useRef()
   const inputSKU = useRef()
   const inputPrice = useRef()
   const inputDiscount = useRef()
+
+  const getImages = (e) => {
+    setImage(e)
+  }
 
   useEffect(async () => {
 
@@ -213,6 +216,11 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
       const data = await response.json()
       if (data.status == 400) {
         alert(data.message)
+      }else if(data.status == 200){
+        const brandOptions = data.data.map((key) => {
+          return { label: key.name, value: key._id }
+        })
+        setBrands(brandOptions)
       }
     }else{
       setSelectBrand(e.value)
@@ -220,6 +228,17 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
   }
 
   const handeSubmit = async () => {
+    images.forEach(async (value)=>{
+      console.log(value)
+      const response = await fetch(value.uploadUrl,{
+        method: 'PUT',
+        headers: {'Content-Type': 'multipart/form-data','Access-Control-Allow-Origin': '*'},
+
+        body: JSON.stringify(value.formData)
+      })
+      const data = await response.json()
+      console.log(data)
+    })
     const body = {
       name: inputName.current.value,
       price: inputPrice.current.value,
@@ -389,7 +408,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     />
                   </FormGroup>
                   <Label className="col-form-label pt-0"> Ảnh sản phẩm</Label>
-                  <MyDropzone />
+                  <MyDropzone sendImages={getImages} />
                 </CardBody>
               </Card>
             </Col>
