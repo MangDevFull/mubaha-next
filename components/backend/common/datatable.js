@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import DataTable from "react-data-table-component";
+// import DataTable from "react-data-table-component";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -224,14 +224,14 @@ const Datatable = ({ myData, myClass, multiSelectOption, pagination }) => {
 	return (
 		<div>
 			<Fragment>
-				<DataTable
+				{/* <DataTable
 					data={data}
 					columns={columns}
 					className={myClass}
 					pagination={pagination}
 					striped={true}
 					center={true}
-				/>
+				/> */}
 
 				<ToastContainer />
 			</Fragment>

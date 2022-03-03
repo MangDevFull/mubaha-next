@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table className="table table-bordered">
 <thead>
 <tr className="header-table d-flex">
 <th >Màu sắc</th>
@@ -8,7 +8,7 @@
 <th >SKU phân loại</th>
 </tr>
 </thead>
-<tbody class="border-row variants">
+<tbody className="border-row variants">
 <th>
 {variantList.map((x, i) => {
 return (

@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import Breadcrumb from "../common/BreadCrumb.js";
-import data from "../../../assets/data/digital-category";
-import Datatable from "../../common/datatable";
+// import data from "../../../assets/data/digital-category";
+// import Datatable from "../../common/datatable";
 // import Modal from "react-responsive-modal";
 import {Modal, Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, ModalBody, ModalFooter, ModalHeader, Row } from "reactstrap";
 
@@ -93,13 +93,13 @@ const Digital_category = () => {
 								</div>
 								<div className="clearfix"></div>
 								<div id="basicScenario" className="product-physical">
-									<Datatable
+									{/* <Datatable
 										multiSelectOption={false}
 										myData={data}
 										pageSize={5}
 										pagination={false}
 										class="-striped -highlight"
-									/>
+									/> */}
 								</div>
 							</CardBody>
 						</Card>

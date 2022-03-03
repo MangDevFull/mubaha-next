@@ -1,6 +1,10 @@
 import { useRef, useState, useEffect } from "react";
 import Breadcrumb from "../common/BreadCrumb";
-import CKEditors from "react-ckeditor-component";
+// import CKEditors from "react-ckeditor-component";
+
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import MyDropzone from "../common/Dropzone";
 import Pickcolor from "../common/Pickcolor";
 import { StockStatus, StockCountry } from "../../../enums/product.enum.js"
@@ -21,12 +25,12 @@ import SelectAdd from 'react-select/creatable';
 import Select from 'react-select'
 
 const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
-//Handle Form Product
+  //Handle Form Product
 
 
-//End Handle Form Product
+  //End Handle Form Product
 
-//Handle Variant
+  //Handle Variant
   const [variantList, setVariantList] = useState([
     {
       variantName: "",
@@ -84,7 +88,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
     const list = [...sizeList];
     list[index]["sizes"][0][name] = value
     setSizeList(list)
-    
+
   };
   // console.log("variantList", variantList)
   // console.log("sizeList", sizeList)
@@ -147,7 +151,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
 
     setCurrencies(currencies)
 
-    const brands = await fetch(`${process.env.API_URL}/barnds`)
+    const brands = await fetch(`${process.env.API_URL}/brands`)
 
     const brandDatas = await brands.json()
 
@@ -214,7 +218,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
       if (data.status == 400) {
         alert(data.message)
       }
-    }else{
+    } else {
       setSelectBrand(e.value)
     }
   }
@@ -225,7 +229,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
       price: inputPrice.current.value,
       discount: inputDiscount.current.value,
       sku: inputSKU.current.value,
-      stockCountry:selectCountry,
+      stockCountry: selectCountry,
       stockStatus: selectStatus,
       brand: selectBrand,
       currencyUnit: slectCurrency,
@@ -305,7 +309,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                       isDisabled={isDisableThird}
                       options={categoryThird}
                       placeholder={placeholderCategory}
-                      onChange={(e) =>{
+                      onChange={(e) => {
                         setSelectThirdCategory(e.value)
                       }}
                     />
@@ -362,7 +366,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                     <Select
                       options={currencies}
                       placeholder="Lựa chọn"
-                      onChange={(e)=>{
+                      onChange={(e) => {
                         setSelectCurrency(e.value)
                       }}
                     />
@@ -427,38 +431,38 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                         <Label className="col-form-label pt-0">Màu sắc</Label>
                         {variantList.map((x, i) => {
                           return (
-                            <div className="variants">
+                            <div key={i} className="variants">
                               <Pickcolor
-                              index={i}
-                              onChangeColor={handleVariantChange}
+                                index={i}
+                                onChangeColor={handleVariantChange}
                               />
                             </div>
                           );
                         })}
                         <div
-                            className="btn btn-block mt-4 btn-primary"
-                            onClick={handleAddVariant}
-                          >
-                            Thêm màu sắc
-                          </div>
+                          className="btn btn-block mt-4 btn-primary"
+                          onClick={handleAddVariant}
+                        >
+                          Thêm màu sắc
+                        </div>
                       </div>
                     </FormGroup>
                     <FormGroup>
                       <Label className="col-form-label pt-0"> Size</Label>
                       {sizeList.map((x, i) => {
-                        return(
+                        return (
                           <>
-                          <Input
-                            className="form-control mb-2"
-                            type="text"
-                            required=""
-                            name={`name`}
-                            placeholder="S, M, L, Xl"
-                            onChange={(e) => handleSizeChange(e, i)}
-                          />
+                            <Input
+                              className="form-control mb-2"
+                              type="text"
+                              required=""
+                              name={`name`}
+                              placeholder="S, M, L, Xl"
+                              onChange={(e) => handleSizeChange(e, i)}
+                            />
                           </>
                         )
-                        })}
+                      })}
                       <div className="btn btn-block mt-4 btn-primary" onClick={handleAddSize}>
                         Thêm Size
                       </div>
@@ -486,7 +490,6 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
           </Row>
         </form>
       </Container>
-      <style></style>
     </>
   );
 };
