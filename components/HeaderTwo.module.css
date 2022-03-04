@@ -36,3 +36,32 @@
   color: white;
   /* color: var(--theme-deafult); */
 }
+
+@media (max-width: 1430px) {
+  .form_search {
+    width: 500px;
+  }
+}
+
+.bottom_part {
+  background-color: white;
+  margin-bottom: -20px;
+  position: relative;
+  /* z-index: 1; */
+  /* border:  1px solid; */
+}
+
+.category_menu {
+  background-color: var(--theme-deafult);
+  display: block !important;
+  width: 100%;
+  text-align: center;
+  height: 100%;
+  padding-top: 20px;
+  color: red;
+  cursor: pointer;
+}
+
+.txt_white {
+  color: white !important;
+}

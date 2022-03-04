@@ -44,7 +44,7 @@ export default function Footer({ categories }) {
             <Container fluid="">
               <section className="small-section border-section border-top-0">
                 <h5 className="text-muted text-uppercase">Danh mục sản phẩm</h5>
-                <MasonryCategoryGrid data={categories} grid={4} colClass="col-lg-3 col-sm-6" />
+                <MasonryCategoryGrid data={categories} grid={4} colClass="col-lg-3 col-md-4 col-sm-6 col-12" />
               </section>
             </Container>
           </div>
