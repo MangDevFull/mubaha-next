@@ -1,12 +1,11 @@
-import { Modal } from 'react-bootstrap'
+
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Breadcrumb from '@/components/Breadcrumb.js'
-import { Form } from 'reactstrap';
+import { Form, Modal, Alert } from 'reactstrap';
 import styles from '@/styles/authen.module.css'
 import API from '@/services/api.js'
-import {Alert} from 'reactstrap'
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
 

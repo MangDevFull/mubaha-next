@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import Menu2 from "../../../public/assets/images/mega-menu/2.jpg";
 import PostLoader from "../../common/PostLoader";
-import ProductItem2 from "../../common/product-box/ProductBox1.js";
+import ProductItem2 from "../../common/product-box/ProductBox1";
 
 const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, listProduct, handlePagination }) => {
   console.log("handlePagination", onClick);

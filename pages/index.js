@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import MainMultipleSlider from "@/components/MainMultipleSlider";
 import PartitionSlider from "@/components/PartitionSlider";
 import MasterParallaxBanner from "@/components/MasterParallaxBanner";
+import styles from "@/styles/homepage.module.css"
 
 export default function Home({
   dealsOfTheDay,
@@ -20,7 +21,7 @@ export default function Home({
       <Head>
         <title>Trang chủ | Mubaha</title>
       </Head>
-      <section>
+      <section className={`section-b-space ${styles.bgHead}`}>
         <MainMultipleSlider dontMissTheseProducts={dontMissTheseProducts} />
       </section>
       <MainServiceCollections />
