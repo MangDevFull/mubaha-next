@@ -8,6 +8,16 @@ import Menu2 from "../../public/assets/images/mega-menu/2.jpg";
 import PostLoader from "../../components/common/PostLoader";
 import ProductItem2 from "../../components/common/product-box/ProductBox1.js";
 import ProductList from "../../components/shop/common/ProductList";
+import sideBanner from "../../public/assets/images/side-banner.png";
+import Slider from "react-slick";
+import Category from "../../components/shop/common/Category";
+import Brand from "../../components/shop/common/Brand";
+import Color from "../../components/shop/common/Color";
+import Size from "../../components/shop/common/Size";
+import Price from "../../components/shop/common/Price";
+import SideProductCart from "@/components/SideProductCart";
+import InputRange from "react-input-range";
+import NumberFormat from "react-number-format";
 
 const VenderProfile = ({
   vendorProfile,
@@ -23,6 +33,7 @@ const VenderProfile = ({
   const [orderBy, setOrderBy] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8);
+  const [value, setValue] = useState({ min: 0, max: 10000000 });
   const [listProduct, setListProduct] = useState(products.docs);
 
   const handlePagination = async () => {
@@ -40,9 +51,7 @@ const VenderProfile = ({
     }
     // setVisible((prevValue) => prevValue + 8)
   };
-
   const [sidebarView, setSidebarView] = useState(false);
-
   const openCloseSidebar = () => {
     if (sidebarView) {
       setSidebarView(!sidebarView);
@@ -50,30 +59,14 @@ const VenderProfile = ({
       setSidebarView(!sidebarView);
     }
   };
-  const handleProductOfView = async (limit, page) => {
+  const handleCallApi = async (limit, page, orderBy, value) => {
     try {
       setPage(page);
       const respone = await fetch(
-        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page}`
+        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page}&orderBy=${orderBy}&minPrice=${value.min}&maxPrice=${value.max}`
       );
       const { data, status, message } = await respone.json();
       const { products } = data;
-      setListProduct(products.docs);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleProductFilter = async (limit, page, orderBy) => {
-    try {
-      setLimit(limit);
-      setPage(page);
-      const respone = await fetch(
-        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page}&orderBy=${orderBy}`
-      );
-      const { data, status, message } = await respone.json();
-
-      const { products } = data;
-      // console.log("data", products.docs);
       setListProduct(products.docs);
     } catch (error) {
       console.log(error);
@@ -154,12 +147,72 @@ const VenderProfile = ({
           <div className="collection-wrapper">
             <Container>
               <Row>
-                <FilterPage
+                <Col
                   sm="3"
-                  sidebarView={sidebarView}
-                  closeSidebar={() => openCloseSidebar(sidebarView)}
-                  newProducts={newProducts}
-                />
+                  className="collection-filter"
+                  style={sidebarView ? { left: "0px" } : {}}
+                >
+                  {/* <!-- side-bar colleps block stat --> */}
+                  <div className="collection-filter-block">
+                    {/* <!-- brand filter start --> */}
+                    <div className="collection-mobile-back" onClick={() => closeSidebar()}>
+                      <span className="filter-back">
+                        <i className="fa fa-angle-left" aria-hidden="true"></i> back
+                      </span>
+                    </div>
+                    <Category />
+                    <Brand />
+                    <Color />
+                    <Size />
+                    <div className="collection-collapse-block border-0 open">
+                      <h3 className="collapse-block-title">Giá</h3>
+                      <div className="collection-collapse-block-content">
+                        <div className="wrapper mt-3">
+                          <div className="range-slider">
+                            <InputRange
+                              minValue={0}
+                              maxValue={10000000}
+                              step={500000}
+                              value={value}
+                              formatLabel={(value) => (
+                                <NumberFormat
+                                  value={value}
+                                  thousandSeparator={true}
+                                  displayType="text"
+                                  suffix="₫"
+                                  decimalScale={0}
+                                />
+                              )}
+                              onChangeComplete={(value) => {
+                                setPage(1);
+                                handleCallApi(limit, 1, orderBy, value);
+                              }}
+                              onChange={(value) => {
+                                setValue(value);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* side-bar single product slider start */}
+                  <div className="theme-card">
+                    <h5 className="title-border">Sản phẩm mới</h5>
+                    <Slider slidesPerRow={3} className="offer-slider slide-1">
+                      {newProducts.map((product) => {
+                        return <SideProductCart key={product._id} product={product} />;
+                      })}
+                    </Slider>
+                  </div>
+                  {/* side-bar single product slider end */}
+                  <div className="collection-sidebar-banner">
+                    <a href={null}>
+                      <Media src={sideBanner.src} className="img-fluid blur-up lazyload" alt="" />
+                    </a>
+                  </div>
+                  {/* <!-- side-bar banner end here --> */}
+                </Col>
 
                 <Col className="collection-content">
                   <div className="page-main-content">
@@ -285,8 +338,9 @@ const VenderProfile = ({
                                   <div className="product-page-per-view">
                                     <select
                                       onChange={(e) => {
+                                        console.log(e.target.value);
                                         setLimit(parseInt(e.target.value));
-                                        handleProductOfView(e.target.value, 1, 0, 0);
+                                        handleCallApi(e.target.value, 1, orderBy, value);
                                       }}
                                     >
                                       <option value="8">8 Sản phẩm </option>
@@ -301,7 +355,7 @@ const VenderProfile = ({
                                         // console.log(e.target.value);
                                         setOrderBy(e.target.value);
                                         setPage(1);
-                                        handleProductFilter(8, 1, e.target.value);
+                                        handleCallApi(8, 1, e.target.value, value);
                                       }}
                                     >
                                       <option value="">Sắp xếp theo</option>
