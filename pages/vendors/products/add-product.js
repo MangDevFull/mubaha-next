@@ -121,10 +121,10 @@ export default function AddProductPage() {
   const inputSKU = useRef()
   const inputPrice = useRef()
   const inputDiscount = useRef()
-
+  
   const getImages = (e) => {
     setImage(e)
-  }
+  } 
 
   useEffect(async () => {
 
@@ -235,27 +235,29 @@ export default function AddProductPage() {
   }
 
   const handeSubmit = async () => {
-    images.forEach(async (value)=>{
+    let uploadImages = []
+     await images.forEach(async (value)=>{
      const url = value.uploadUrl
      const uri = new Url(url)
 
      const query = queryString.parse(uri.query)
+     const body = value.file
+     const headers = {
+       ...query,
+     }
+      const response = await fetch(uri.href,{
+        method: 'PUT',
+        headers: headers,
+        body: body
+      })
 
-     console.log('uri',uri)
-     console.log('query',query)
-    
-
-
-
-      // const response = await fetch(value.uploadUrl,{
-      //   method: 'PUT',
-      //   headers: {'Content-Type': 'multipart/form-data','Access-Control-Allow-Origin': '*'},
-
-      //   body: JSON.stringify(value.formData)
-      // })
-      // const data = await response.json()
-      // console.log(data)
+      if(response.ok){
+        uploadImages.push( value.downloadUrl)
+      }else{
+        alert('Error downloading')
+      }
     })
+
     const body = {
       name: inputName.current.value,
       price: inputPrice.current.value,
@@ -268,7 +270,9 @@ export default function AddProductPage() {
       firstLevelCat: selectFirstCategory,
       secondLevelCat: selectSecondCategory,
       threeLevelCat: selectThirdCategory,
+      image:uploadImages
     }
+    console.log("body",body)
   }
 
 
