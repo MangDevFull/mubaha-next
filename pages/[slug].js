@@ -15,6 +15,8 @@ import CountdownComponent from "@/components/common/widgets/countdownComponent";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  const uniqueColor = [];
+  const uniqueSize = [];
   const [quantity, setQuantity] = useState(1);
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -28,25 +30,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   };
   const [selectedVariant, setSelectedVariant] = useState();
   // console.log(selectedVariant);
-  const colorVariants = [
-    {
-      id: 1,
-      className: "bg-light0",
-      variantName: "Xanh",
-    },
-    {
-      id: 2,
-      className: "bg-light1",
-      variantName: "Hồng",
-    },
-    {
-      id: 3,
-      className: "bg-light2",
-      variantName: "Xám",
-    },
-  ];
-  const selectedColor = (colorVariant) => {
-    setSelectedVariant(colorVariant.id);
+  const selectedColor = (variant) => {
+    setSelectedVariant(variant._id);
   };
 
   const [selectedSize, setSlectedSize] = useState();
@@ -70,6 +55,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   ];
   const handleSelectedSize = (size) => {
     setSlectedSize(size.id);
+  };
+
+  const changeColorVar = (variant) => {
+    slider2.current.slickGoTo(variant._id);
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
@@ -175,12 +164,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           ref={(slider) => (slider2.current = slider)}
                         >
                           {detailProduct.media.data.map((item) => (
-                            <Media
-                              key={item._id}
-                              src={item.path}
-                              alt=""
-                              className="img-fluid blur-up lazyload"
-                            />
+                            <Media src={`${item.path}`} key={item._id} className="img-fluid" />
                           ))}
                         </Slider>
                       </Col>
@@ -189,7 +173,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                         {/* DetailsWithPrice */}
                         <div className="product-right">
                           <div className="product-count">Chi tiết sản phẩm</div>
-                          <h2>{detailProduct?.name}</h2>
+                          <h2>{detailProduct.name}</h2>
                           <div className="rating-section">
                             <div className="rating">
                               <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
@@ -207,30 +191,71 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               discount={detailProduct.discount}
                               currencySymbol={detailProduct.currencySymbol}
                             />
-                            
                           </h3>
-                          <ul className="color-variant">
-                            {colorVariants.map((colorVariant) => (
+                          {detailProduct.variants.map((variant) => {
+                            var findItem = uniqueColor.find((x) => x.color === variant.colorName);
+                            if (!findItem) uniqueColor.push(variant);
+                            var findItemSize = uniqueSize.find((x) => x === variant.size);
+                            if (!findItemSize) uniqueSize.push(variant.size);
+                          })}
+                          {changeColorVar === undefined ? (
+                            <>
+                              {uniqueColor ? (
+                                <ul className="color-variant">
+                                  {uniqueColor.map((variant) => {
+                                    return (
+                                      <li
+                                        className={variant.colorName}
+                                        key={variant._id}
+                                        title={variant.colorName}
+                                      ></li>
+                                    );
+                                  })}
+                                </ul>
+                              ) : (
+                                ""
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {uniqueColor ? (
+                                <ul className="color-variant">
+                                  {uniqueColor.map((variant) => {
+                                    return (
+                                      <li
+                                        className={variant.colorName}
+                                        key={variant._id}
+                                        title={variant.colorName}
+                                        onClick={() => changeColorVar(variant)}
+                                      ></li>
+                                    );
+                                  })}
+                                </ul>
+                              ) : (
+                                ""
+                              )}
+                            </>
+                          )}
+                          {/* <ul className="color-variant">
+                            {detailProduct.variants.map((variant) => (
                               <li
                                 style={
-                                  selectedVariant === colorVariant.id
+                                  selectedVariant === variant._id
                                     ? {
                                         border: "1px solid #ffa200",
                                         color: "#ffa200",
                                       }
                                     : {}
                                 }
-                                key={colorVariant.id}
-                                checked={selectedVariant === colorVariant.id}
-                                onClick={() => selectedColor(colorVariant)}
+                                key={variant._id}
+                                checked={selectedVariant === variant._id}
+                                onClick={() => selectedColor(variant)}
                               >
-                                {colorVariant.variantName}
+                                {variant.colorName}
                               </li>
-                              
                             ))}
-                            
-                          </ul>
-                          
+                          </ul> */}
+
                           <div
                             id="selectSize"
                             className="addeffect-section product-description border-product"
@@ -369,11 +394,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             </button>
                           </div>
 
-                          <div className="border-product">
-                            <h6 className="product-title">Chi tiết sản phẩm</h6>
+                          {/* <div className="border-product">
+                            <h6 className="product-title"> ngắn</h6>
 
-                            <p id="demo">{detailProduct.description}</p>
-                          </div>
+                            <p id="demo">{detailProduct.shortDescription}</p>
+                          </div> */}
 
                           <div className="border-product">
                             <h6 className="product-title">Chia sẻ</h6>
@@ -418,7 +443,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                   )}
                 </div>
                 {/* Product Tab */}
-                <ProductTab />
+                <ProductTab detailProduct={detailProduct} />
                 {/* Product Tab end */}
               </Col>
               <Col sm={3} className="collection-filter">
