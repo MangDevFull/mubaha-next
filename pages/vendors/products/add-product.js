@@ -115,7 +115,7 @@ export default function AddProductPage() {
   const [selectSecondCategory, setSelectSecondCategory] = useState('')
   const [selectThirdCategory, setSelectThirdCategory] = useState('')
   const [images,setImage] = useState([])
-
+  const [description, setDescription] = useState([])
 
   const inputName = useRef()
   const inputSKU = useRef()
@@ -234,18 +234,17 @@ export default function AddProductPage() {
     }
   }
 
+  const handleEditor = async (e) => {
+    setDescription(e)
+  }
+  
+
   const handeSubmit = async () => {
     images.forEach(async (value)=>{
      const url = value.uploadUrl
      const uri = new Url(url)
 
      const query = queryString.parse(uri.query)
-
-     console.log('uri',uri)
-     console.log('query',query)
-    
-
-
 
       // const response = await fetch(value.uploadUrl,{
       //   method: 'PUT',
@@ -440,7 +439,8 @@ export default function AddProductPage() {
                   <div className="digital-add needs-validation">
                     <FormGroup className=" mb-0">
                       <div className="description-sm">
-                      <Editor />
+                      <Editor onChangeEditor ={handleEditor}
+                      />
                       </div>
                     </FormGroup>
                   </div>

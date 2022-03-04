@@ -13,7 +13,6 @@ const MyUploader = ({sendImages}) => {
 
   const handleChangeStatus = async ({ meta }) => {
     if (meta.status === 'done') {
-      console.log('meta',meta)
       var formData = new FormData();
       const extension = meta.name.split('.').pop();
       formData.append('Content-Type', extension);
@@ -35,7 +34,6 @@ const MyUploader = ({sendImages}) => {
     }
 
   }
-  console.log(images)
   sendImages(images)
 
 

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-// import DataTable from "react-data-table-component";
+import DataTable from "react-data-table-component";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -76,19 +76,19 @@ const Datatable = ({ myData, myClass, multiSelectOption, pagination }) => {
 	const columns = [];
 	for (var key in myData[0]) {
 		let editable = renderEditable;
-		if (key === "image") {
+		if (key === "name") {
 			editable = null;
 		}
-		if (key === "status") {
+		if (key === "price") {
 			editable = null;
 		}
-		if (key === "avtar") {
+		if (key === "currencySymbol") {
 			editable = null;
 		}
-		if (key === "vendor") {
+		if (key === "category") {
 			editable = null;
 		}
-		if (key === "order_status") {
+		if (key === "brand") {
 			editable = null;
 		}
 
@@ -224,15 +224,14 @@ const Datatable = ({ myData, myClass, multiSelectOption, pagination }) => {
 	return (
 		<div>
 			<Fragment>
-				{/* <DataTable
-					data={data}
+				<DataTable
+					data={myData}
 					columns={columns}
 					className={myClass}
 					pagination={pagination}
 					striped={true}
 					center={true}
-				/> */}
-
+				/>
 				<ToastContainer />
 			</Fragment>
 		</div>
