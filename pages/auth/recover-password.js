@@ -7,7 +7,7 @@ import libphone from "google-libphonenumber";
 import API from "@/services/api.js"
 import dynamic from 'next/dynamic'
 import styles from "@/styles/authen.module.css";
-import otpEnums from "../../enums/otpEnums.js";
+import otpEnums from "../../enums/otp.enum.js";
 import Footer from "@/components/Footer.js";
 const { PhoneNumberUtil, PhoneNumberFormat } = libphone;
 

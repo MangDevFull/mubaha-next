@@ -6,6 +6,7 @@ import Category from "./Category";
 import Brand from "./Brand";
 import Color from "./Color";
 import Size from "./Size";
+import Price from "./Price";
 import SideProductCart from "@/components/SideProductCart";
 import InputRange from "react-input-range";
 
@@ -26,21 +27,7 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, newProducts }) => {
           <Brand />
           <Color />
           <Size />
-          <div className="collection-collapse-block border-0 open">
-            <h3 className="collapse-block-title">Giá</h3>
-            <div className="collection-collapse-block-content">
-              <div className="wrapper mt-3">
-                <div className="range-slider">
-                  <InputRange
-                    maxValue={500}
-                    minValue={0}
-                    value={value}
-                    onChange={(value) => setValue({ value })}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <Price />
         </div>
         {/* side-bar single product slider start */}
         <div className="theme-card">

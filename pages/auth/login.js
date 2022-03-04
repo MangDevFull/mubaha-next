@@ -3,13 +3,12 @@ import Head from "next/head";
 import { useRef, useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useRouter } from "next/router";
-import { Alert } from "react-bootstrap";
 import { signIn } from "next-auth/react";
-import { Row, Form } from "reactstrap";
+import { Row, Form, Alert } from "reactstrap";
 import libphone from "google-libphonenumber";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
-import otpEnums from "../../enums/otpEnums.js";
+import otpEnums from "../../enums/otp.enum.js";
 import styles from "@/styles/authen.module.css";
 import BottomFornLogin from "@/components/authen/BottomFornLogin.js";
 import dynamic from 'next/dynamic'

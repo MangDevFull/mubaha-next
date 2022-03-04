@@ -14,7 +14,7 @@ export default function RelatedProducts({data}) {
           <Row>
             <Col>
               <div className="product-related">
-                <h2>RELATED PRODUCTS</h2>
+                <h2>Các sản phẩm liên quan</h2>
               </div>
               {!data ? (
                 <div className="row mx-0 margin-default">
