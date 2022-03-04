@@ -8,7 +8,7 @@ import { Row, Form, Alert } from "reactstrap";
 import libphone from "google-libphonenumber";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
-import otpEnums from "../../enums/otpEnums.js";
+import otpEnums from "../../enums/otp.enum.js";
 import styles from "@/styles/authen.module.css";
 import BottomFornLogin from "@/components/authen/BottomFornLogin.js";
 import dynamic from 'next/dynamic'

@@ -1,12 +1,16 @@
 
 import LayoutBackEnd from "@/components/backend/Layout";
-// import { Card, CardBody, CardHeader, Col, Container, FormGroup, Input, Label, Row } from "reactstrap";
-
+import Form from 'react-bootstrap/Form';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { useRef, useState, useEffect } from "react";
 import Breadcrumb from "@/components/backend/common/BreadCrumb";
 import Url from "url-parse"
 import dynamic from "next/dynamic"
 import queryString from 'query-string'
+import productVariant from "@/enums/productVariant.enum.js"
+import productVariantValue from "@/enums/productVariantValue.enum.js"
+import { Table } from "reactstrap";
+import 'react-table-v6/react-table.css'
 
 const Editor = dynamic(() => import("@/components/backend/Editor"), {
   ssr: false
@@ -31,70 +35,10 @@ import currencyEnum from "../../../enums/currency.enum.js";
 import SelectAdd from 'react-select/creatable';
 import Select from 'react-select'
 
+const productVariants = productVariant
+const productVariantValues = productVariantValue
 export default function AddProductPage() {
-  const [variantList, setVariantList] = useState([
-    {
-      variantName: "",
-    },
-  ]);
 
-  const [sizeList, setSizeList] = useState([
-    {
-      sizes: [
-        {
-          name: "",
-          sku: "",
-          price: "",
-          discount: "",
-          stock: {
-            quantity: "",
-            status: "",
-          },
-        },
-      ],
-    },
-  ]);
-
-  const handleAddSize = async (e) => {
-    setSizeList([
-      ...sizeList,
-      {
-        sizes: [
-          {
-            sku: "",
-            price: "",
-            discount: "",
-            stock: {
-              quantity: "",
-              status: "",
-            },
-          },
-        ],
-      },
-    ]);
-  };
-
-  const handleAddVariant = async (e) => {
-    setVariantList([...variantList, { variantName: "" }]);
-  };
-
-  const handleVariantChange = (color, index) => {
-    const list = [...variantList];
-    list[index]["variantName"] = color.hex;
-    setVariantList(list);
-  };
-
-  const handleSizeChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...sizeList];
-    list[index]["sizes"][0][name] = value
-    setSizeList(list)
-
-  };
-  // console.log("variantList", variantList)
-  // console.log("sizeList", sizeList)
-
-  //end Variant
   const [content] = useState("");
   const [categoryFirst, setCategoryFirst] = useState([])
   const [categorySecond, setCategorySecond] = useState([])
@@ -114,17 +58,18 @@ export default function AddProductPage() {
   const [selectFirstCategory, setSelectFirstCategory] = useState('')
   const [selectSecondCategory, setSelectSecondCategory] = useState('')
   const [selectThirdCategory, setSelectThirdCategory] = useState('')
-  const [images,setImage] = useState([])
+  const [images, setImage] = useState([])
 
+  const getvalue = useRef()
 
   const inputName = useRef()
   const inputSKU = useRef()
   const inputPrice = useRef()
   const inputDiscount = useRef()
-  
+
   const getImages = (e) => {
     setImage(e)
-  } 
+  }
 
   useEffect(async () => {
 
@@ -160,7 +105,7 @@ export default function AddProductPage() {
     const brands = await fetch(`${process.env.API_URL}/brands`)
 
     const brandDatas = await brands.json()
- 
+
     const brandOptions = brandDatas.data.map((key) => {
       return { label: key.name, value: key._id }
     })
@@ -223,7 +168,7 @@ export default function AddProductPage() {
       const data = await response.json()
       if (data.status == 400) {
         alert(data.message)
-      }else if (data.status == 200){
+      } else if (data.status == 200) {
         const brandOptions = data.data.map((key) => {
           return { label: key.name, value: key._id }
         })
@@ -235,25 +180,26 @@ export default function AddProductPage() {
   }
 
   const handeSubmit = async () => {
+    console.log('ref', getvalue.current.value)
     let uploadImages = []
-     await images.forEach(async (value)=>{
-     const url = value.uploadUrl
-     const uri = new Url(url)
+    await images.forEach(async (value) => {
+      const url = value.uploadUrl
+      const uri = new Url(url)
 
-     const query = queryString.parse(uri.query)
-     const body = value.file
-     const headers = {
-       ...query,
-     }
-      const response = await fetch(uri.href,{
+      const query = queryString.parse(uri.query)
+      const body = value.file
+      const headers = {
+        ...query,
+      }
+      const response = await fetch(uri.href, {
         method: 'PUT',
         headers: headers,
         body: body
       })
 
-      if(response.ok){
-        uploadImages.push( value.downloadUrl)
-      }else{
+      if (response.ok) {
+        uploadImages.push(value.downloadUrl)
+      } else {
         alert('Error downloading')
       }
     })
@@ -270,10 +216,46 @@ export default function AddProductPage() {
       firstLevelCat: selectFirstCategory,
       secondLevelCat: selectSecondCategory,
       threeLevelCat: selectThirdCategory,
-      image:uploadImages
+      image: uploadImages
     }
-    console.log("body",body)
+
   }
+  const [productVariant1, setProductVariant1] = useState('')
+  const [productVariant2, setProductVariant2] = useState('')
+  const [productValues1, setProductValues1] = useState([])
+  const [productValues2, setProductValues2] = useState([])
+  const [formAttributes, setFormAttributes] = useState([])
+  const [formAttributes2, setFormAttributes2] = useState([])
+  const [variantAtrributes1,setVariantAtrributes1] = useState([])
+
+  const onAddBtnClick1 = event => {
+    setFormAttributes(formAttributes.concat(
+      <>
+        <SelectAdd
+          options={productValues1}
+          onChange={(e) => {
+            setProductVariant1(e.value);
+          }}
+          placeholder="Nhập loại hàng"
+        />
+        <br />
+      </>
+    ));
+  };
+  const onAddBtnClick2 = event => {
+    setFormAttributes2(formAttributes2.concat(
+      <>
+        <SelectAdd
+          options={productValues1}
+          onChange={(e) => {
+            setProductVariant1(e.value);
+          }}
+          placeholder="Nhập loại hàng"
+        />
+        <br />
+      </>
+    ));
+  };
 
 
 
@@ -444,7 +426,7 @@ export default function AddProductPage() {
                   <div className="digital-add needs-validation">
                     <FormGroup className=" mb-0">
                       <div className="description-sm">
-                      <Editor />
+                        <Editor />
                       </div>
                     </FormGroup>
                   </div>
@@ -458,49 +440,107 @@ export default function AddProductPage() {
                   <div className="digital-add needs-validation">
                     <FormGroup>
                       <div className="">
-                        <Label className="col-form-label pt-0">Màu sắc</Label>
-                        {variantList.map((x, i) => {
-                          return (
-                            <div key={i} className="variants">
-                              <Pickcolor
-                                index={i}
-                                onChangeColor={handleVariantChange}
-                              />
-                            </div>
-                          );
-                        })}
-                        <div
-                          className="btn btn-block mt-4 btn-primary"
-                          onClick={handleAddVariant}
-                        >
-                          Thêm màu sắc
+                        <Label className="col-form-label pt-0"><h3>Nhóm phân loại 1</h3></Label>
+                        <Form.Group>
+                          <SelectAdd
+                            options={productVariants}
+                            onChange={(e) => {
+                              setProductVariant1(e.value);
+                              if (e.value === 'color') {
+                                setProductValues1(productVariantValues.COLOR)
+                              }
+                              else if (e.value === 'size') {
+                                setProductValues1(productVariantValues.SIZE)
+                              }else{
+                                setProductVariant1([])
+                              }
+                            }}
+                            placeholder="Nhập tên nhóm phân loại 1"
+                          />
+                        </Form.Group>
+                        <div className="mt-1">
+                          <Label className="col-form-label pt-0">Loại hàng</Label>
+                          <SelectAdd
+                            options={productValues1}
+                            onChange={(e) => {
+                              setVariantAtrributes1(e.value);
+                            }}
+                            placeholder="Nhập loại hàng"
+                          />
+                          <br />
+                          {formAttributes}
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          <div className="mt-4 btn-primary p-2" onClick={onAddBtnClick1}>
+                          Thêm phân loại hàng
+                          </div>
                         </div>
                       </div>
-                    </FormGroup>
-                    <FormGroup>
-                      <Label className="col-form-label pt-0"> Size</Label>
-                      {sizeList.map((x, i) => {
-                        return (
-                          <>
-                            <Input
-                              className="form-control mb-2"
-                              type="text"
-                              required=""
-                              name={`name`}
-                              placeholder="S, M, L, Xl"
-                              onChange={(e) => handleSizeChange(e, i)}
-                            />
-                          </>
-                        )
-                      })}
-                      <div className="btn btn-block mt-4 btn-primary" onClick={handleAddSize}>
-                        Thêm Size
+                      <hr></hr>
+                      <div className="mt-3">
+                        <Label className="col-form-label pt-0"><h3>Nhóm phân loại 2</h3></Label>
+                        <Form.Group>
+                          <SelectAdd
+                            options={productVariants}
+                            onChange={(e) => {
+                              setProductVariant2(e.value);
+                              if (e.value === 'color') {
+                                setProductValues2(productVariantValues.COLOR)
+                              }
+                              else if (e.value === 'size') {
+                                setProductValues2(productVariantValues.SIZE)
+                              }else{
+                                setProductVariant1([])
+                              }
+                            }}
+                            placeholder="Nhập tên nhóm phân loại 2"
+                          />
+                        </Form.Group>
+                        <div className="mt-1">
+                          <Label className="col-form-label pt-0">Loại hàng</Label>
+                          <SelectAdd
+                            options={productValues2}
+                            onChange={(e) => {
+                              setProductVariant1(variantAtrributes1);
+                            }}
+                            placeholder="Nhập loại hàng"
+                          />
+                          <br />
+                          {formAttributes2}
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          <div className="mt-4 btn-primary p-2" onClick={onAddBtnClick2}>
+                          Thêm phân loại hàng
+                          </div>
+                        </div>
                       </div>
+
                     </FormGroup>
-                    {/* <TableCustom
-                      columns={columns}
-                      data={variantList}
-                    ></TableCustom> */}
+
+                    <Table bordered>
+  <thead>
+    <tr>
+      <th>
+        {productVariant1}
+      </th>
+      <th>
+      {productVariant2}
+      </th>
+      <th>
+        Giá
+      </th>
+      <th>
+        Kho hàng
+      </th>
+      <th>
+        SKU
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+
+  </tbody>
+</Table>
                   </div>
                 </CardBody>
               </Card>
