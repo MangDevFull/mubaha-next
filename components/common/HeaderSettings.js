@@ -5,12 +5,14 @@ export default function HeaderSettings() {
 
   return (
     <li className="onhover-div mobile-setting">
-      {/* <div>
+      <div>
         <Media src="/assets/images/icon/setting.png" className="img-fluid" alt="" />
         <i className="fa fa-cog"></i>
+      </div>
+      {/* <div>
+        <Media src="/assets/svg/flags/vn.svg" width="32"
+          className="img-fluid mr-2" alt="" /><span>VNĐ</span>
       </div> */}
-      <div><img src="/assets/svg/flags/vn.svg" width="32"
-        className="img-fluid blur-up lazyload mr-2" alt="" />VNĐ</div>
       <div className="show-div setting">
         <h6>Ngôn ngữ</h6>
         <ul>

@@ -3,13 +3,14 @@ import Slider from "react-slick";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
 import ProductPrice from "./common/ProductDetails/ProductPrice";
+import styles from "./MainMultipleSlider.module.css";
 
 export default function MainMultipleSlider({ dontMissTheseProducts }) {
   return (
     <Container>
-      <Row className="multiple-slider">
+      <Row className={`multiple-slider`}>
         <Col lg={4} sm={12}>
-          <div className="theme-card">
+          <div className={`theme-card card-border bg-light border-0`}>
             <h5 className="title-border">Sản phẩm HOT</h5>
             <Slider className="offer-slider slide-1">
               <div>
@@ -74,7 +75,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
           </div>
         </Col>
         <Col lg={4} sm={12}>
-          <div className="theme-card">
+          <div className="theme-card card-border bg-light border-0">
             <h5 className="title-border">Đang hạ giá</h5>
             <Slider className="offer-slider slide-1">
               <div>
@@ -139,7 +140,7 @@ export default function MainMultipleSlider({ dontMissTheseProducts }) {
           </div>
         </Col>
         <Col lg={4} sm={12}>
-          <div className="theme-card">
+          <div className="theme-card card-border bg-light border-0">
             <h5 className="title-border">Bán chạy nhất</h5>
             <Slider className="offer-slider slide-1">
               <div>
