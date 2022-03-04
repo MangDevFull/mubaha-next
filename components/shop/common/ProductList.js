@@ -13,14 +13,16 @@ const ProductList = ({
   products,
   limit,
   handleCallApi,
-  value,
   handlePagination,
+  value,
+  orderBy,
+  totalProduct
 }) => {
   const [layout, setLayout] = useState(layoutList);
   const [grid, setGrid] = useState(colClass);
   const [isLoading, setIsLoading] = useState(false);
-  const [limitt, setLimitt] = useState(limit);
-  const [orderBy, setOrderBy] = useState("");
+  const [limitView, setLimitView] = useState(limit);
+  const [orderByView, setOrderByView] = useState(orderBy);
   const [isLoadingMore, setIsLoadingMore] = useState(true);
   return (
     <Col className="collection-content">
@@ -77,7 +79,7 @@ const ProductList = ({
                       <div className="search-count">
                         <h5>
                           {listProduct
-                            ? `Hiển thị 1 - ${listProduct.length} trên ${products.totalDocs}`
+                            ? `Hiển thị 1 - ${listProduct.length} trên ${totalProduct}`
                             : "loading..."}{" "}
                           Sản phẩm
                         </h5>
@@ -146,8 +148,8 @@ const ProductList = ({
                       <div className="product-page-per-view">
                         <select
                           onChange={(e) => {
-                            setLimitt(parseInt(e.target.value));
-                            handleCallApi(e.target.value, 1, orderBy, value);
+                            setLimitView(parseInt(e.target.value));
+                            handleCallApi(e.target.value, 1, orderByView, value);
                           }}
                         >
                           <option value="8">8 Sản phẩm </option>
@@ -159,8 +161,8 @@ const ProductList = ({
                       <div className="product-page-filter">
                         <select
                           onChange={(e) => {
-                            setOrderBy(e.target.value);
-                            handleCallApi(8, 1, e.target.value, value);
+                            setOrderByView(e.target.value);
+                            handleCallApi(limitView, 1, e.target.value, value);
                           }}
                         >
                           <option value="">Sắp xếp theo</option>

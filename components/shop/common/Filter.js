@@ -11,7 +11,8 @@ import SideProductCart from "@/components/SideProductCart";
 import InputRange from "react-input-range";
 import NumberFormat from "react-number-format";
 
-const FilterPage = ({ sm, sidebarView, closeSidebar, newProducts, handleCallApi, limit }) => {
+const FilterPage = ({ sm, sidebarView, closeSidebar, newProducts, handleCallApi, limit, orderBy }) => {
+  console.log("limit", limit);
   const [value, setValue] = useState({ min: 0, max: 10000000 });
   return (
     <>
@@ -48,7 +49,7 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, newProducts, handleCallApi,
                       />
                     )}
                     onChangeComplete={(value) => {
-                      handleCallApi(limit, 1, 0, value);
+                      handleCallApi(limit, 1, orderBy, value);
                     }}
                     onChange={(value) => {
                       setValue(value);

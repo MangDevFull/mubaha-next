@@ -16,14 +16,16 @@ const VenderProfile = ({
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8);
-  const [value, setValue] = useState({ min: 0, max: 10000000 });
   const [listProduct, setListProduct] = useState(products.docs);
-
+  const [totalProduct, setTotalProduct] = useState(products.totalDocs)
+  const [value, setValue] = useState({ min: 0, max: 10000000 });
+  const [orderBy,setOrderBy] = useState("")
+  
   const handlePagination = async () => {
     try {
       setPage(page + 1);
       const respone = await fetch(
-        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page + 1}`
+        `${process.env.API_URL}/vendors/${username}?limit=${limit}&page=${page + 1}&orderBy=${orderBy}&minPrice=${value.min}&maxPrice=${value.max}`
       );
       const { data, status, message } = await respone.json();
       const { products } = data;
@@ -42,7 +44,11 @@ const VenderProfile = ({
       setSidebarView(!sidebarView);
     }
   };
+
   const handleCallApi = async (limit, page, orderBy, value) => {
+    setValue(value);
+    setLimit(limit);
+    setOrderBy(orderBy);
     try {
       setPage(page);
       const respone = await fetch(
@@ -51,6 +57,8 @@ const VenderProfile = ({
       const { data, status, message } = await respone.json();
       const { products } = data;
       setListProduct(products.docs);
+      setTotalProduct(products.totalDocs)
+      
     } catch (error) {
       console.log(error);
     }
@@ -138,6 +146,8 @@ const VenderProfile = ({
                   handleCallApi={handleCallApi}
                   newProducts={newProducts}
                   limit={limit}
+                  orderBy={orderBy}
+                  
                 />
                 {/* Filter by end*/}
 
@@ -149,8 +159,9 @@ const VenderProfile = ({
                   products={products}
                   limit={8}
                   handleCallApi={handleCallApi}
-                  value={value}
                   handlePagination={handlePagination}
+                  value={value}
+                  totalProduct={totalProduct}
                 />
                 {/* Product List End */}
               </Row>
@@ -171,7 +182,7 @@ export default VenderProfile;
 export async function getServerSideProps(context) {
   const { username } = context.query;
 
-  const respone = await fetch(`${process.env.API_URL}/vendors/${username}?limit=8&page=1`);
+  const respone = await fetch(`${process.env.API_URL}/vendors/${username}?limit=8&page=1&minPrice=0&maxPrice=10000000`);
   const { data, status, message } = await respone.json();
   if (status != 200)
     return {
