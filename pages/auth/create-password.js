@@ -35,7 +35,6 @@ export default function CreatePassWord() {
     inputPassword.current.focus()
   }, [])
 
-  console.log(session)
 
   const handleShowPassword = () => {
     setHidePass('block');
