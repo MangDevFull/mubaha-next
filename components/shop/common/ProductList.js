@@ -21,7 +21,7 @@ const ProductList = ({
   const [isLoading, setIsLoading] = useState(false);
   const [limitt, setLimitt] = useState(limit);
   const [orderBy, setOrderBy] = useState("");
-
+  const [isLoadingMore, setIsLoadingMore] = useState(true);
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -224,24 +224,29 @@ const ProductList = ({
                   )}
                 </Row>
               </div>
-              <div className="section-t-space">
-                <div className="text-center">
-                  <Row>
-                    <Col xl="12" md="12" sm="12">
-                      {listProduct && listProduct && (
-                        <Button
-                          onClick={() => {
-                            handlePagination();
-                          }}
-                        >
-                          {isLoading && <Spinner animation="border" variant="light" />}
-                          Xem thêm
-                        </Button>
-                      )}
-                    </Col>
-                  </Row>
-                </div>
-              </div>
+
+              {listProduct.length > 0 && (
+                <>
+                  <div className="section-t-space">
+                    <div className="text-center">
+                      <Row>
+                        <Col xl="12" md="12" sm="12">
+                          {listProduct && listProduct && (
+                            <Button
+                              onClick={() => {
+                                handlePagination();
+                              }}
+                            >
+                              {isLoading && <Spinner animation="border" variant="light" />}
+                              Xem thêm
+                            </Button>
+                          )}
+                        </Col>
+                      </Row>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </Col>
         </Row>
