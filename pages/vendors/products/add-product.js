@@ -247,14 +247,14 @@ export default function AddProductPage() {
 
 
 
-      // const response = await fetch(value.uploadUrl,{
-      //   method: 'PUT',
-      //   headers: {'Content-Type': 'multipart/form-data','Access-Control-Allow-Origin': '*'},
+      const response = await fetch(value.uploadUrl,{
+        method: 'PUT',
+        headers: {'Access-Control-Allow-Credentials': true, 'Access-Control-Allow-Origin': '*', 'Content-Type': 'multipart/form-data'},
 
-      //   body: JSON.stringify(value.formData)
-      // })
-      // const data = await response.json()
-      // console.log(data)
+        body: JSON.stringify(value.formData)
+      })
+      const data = await response.json()
+      console.log(data)
     })
     const body = {
       name: inputName.current.value,
