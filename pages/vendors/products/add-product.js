@@ -224,38 +224,29 @@ export default function AddProductPage() {
   const [productVariant2, setProductVariant2] = useState('')
   const [productValues1, setProductValues1] = useState([])
   const [productValues2, setProductValues2] = useState([])
-  const [formAttributes, setFormAttributes] = useState([])
-  const [formAttributes2, setFormAttributes2] = useState([])
-  const [variantAtrributes1,setVariantAtrributes1] = useState([])
+  const [variants, setVariants] = useState([
+    { label: 'Nhập phân loại', value: '' }
+  ])
+  const [attributes, setAttributes] = useState([
+    { label: 'Nhập phân loại', value: '' }
+  ])
 
-  const onAddBtnClick1 = event => {
-    setFormAttributes(formAttributes.concat(
-      <>
-        <SelectAdd
-          options={productValues1}
-          onChange={(e) => {
-            setProductVariant1(e.value);
-          }}
-          placeholder="Nhập loại hàng"
-        />
-        <br />
-      </>
-    ));
+  const handleSetVariant = (e, idx) => {
+    variants[idx] = { label: e.value, value: e.value }
+    setVariants([...variants])
+  }
+  const handleSetAtribute = (e, idx) => {
+    attributes[idx] = { label: e.value, value: e.value }
+    setAttributes([...attributes])
+  }
+
+  const onAddBtnClick1 = () => {
+    setVariants([...variants, { label: '', value: '' }])
   };
   const onAddBtnClick2 = event => {
-    setFormAttributes2(formAttributes2.concat(
-      <>
-        <SelectAdd
-          options={productValues1}
-          onChange={(e) => {
-            setProductVariant1(e.value);
-          }}
-          placeholder="Nhập loại hàng"
-        />
-        <br />
-      </>
-    ));
+    setAttributes([...attributes, { label: '', value: '' }])
   };
+
 
 
 
@@ -451,28 +442,35 @@ export default function AddProductPage() {
                               }
                               else if (e.value === 'size') {
                                 setProductValues1(productVariantValues.SIZE)
-                              }else{
+                              } else {
                                 setProductVariant1([])
                               }
                             }}
                             placeholder="Nhập tên nhóm phân loại 1"
                           />
                         </Form.Group>
+
                         <div className="mt-1">
                           <Label className="col-form-label pt-0">Loại hàng</Label>
-                          <SelectAdd
-                            options={productValues1}
-                            onChange={(e) => {
-                              setVariantAtrributes1(e.value);
-                            }}
-                            placeholder="Nhập loại hàng"
-                          />
+                          {variants.map((x, i) => {
+                            return (
+                              <>
+                                <SelectAdd
+                                  key={i}
+                                  defaultValue={variants[i]}
+                                  options={productValues1}
+                                  onChange={e => handleSetVariant(e, i)}
+                                  placeholder="Nhập loại hàng"
+                                />
+                              </>
+                            )
+                          })}
                           <br />
-                          {formAttributes}
+                          {/* {formAttributes} */}
                         </div>
                         <div className="d-flex justify-content-center">
                           <div className="mt-4 btn-primary p-2" onClick={onAddBtnClick1}>
-                          Thêm phân loại hàng
+                            Thêm phân loại hàng
                           </div>
                         </div>
                       </div>
@@ -489,8 +487,8 @@ export default function AddProductPage() {
                               }
                               else if (e.value === 'size') {
                                 setProductValues2(productVariantValues.SIZE)
-                              }else{
-                                setProductVariant1([])
+                              } else {
+                                setProductValues2([])
                               }
                             }}
                             placeholder="Nhập tên nhóm phân loại 2"
@@ -498,19 +496,25 @@ export default function AddProductPage() {
                         </Form.Group>
                         <div className="mt-1">
                           <Label className="col-form-label pt-0">Loại hàng</Label>
-                          <SelectAdd
-                            options={productValues2}
-                            onChange={(e) => {
-                              setProductVariant1(variantAtrributes1);
-                            }}
-                            placeholder="Nhập loại hàng"
-                          />
-                          <br />
-                          {formAttributes2}
+                          {attributes.map((x, i) => {
+                            return (
+                              <>
+                                <SelectAdd
+                                  key={i}
+                                  defaultValue={attributes[i]}
+                                  options={productValues2}
+                                  onChange={e => handleSetAtribute(e, i)}
+                                  placeholder="Nhập loại hàng"
+                                />
+                                <br />
+                              </>
+                            )
+                          })}
+
                         </div>
                         <div className="d-flex justify-content-center">
                           <div className="mt-4 btn-primary p-2" onClick={onAddBtnClick2}>
-                          Thêm phân loại hàng
+                            Thêm phân loại hàng
                           </div>
                         </div>
                       </div>
@@ -518,29 +522,49 @@ export default function AddProductPage() {
                     </FormGroup>
 
                     <Table bordered>
-  <thead>
-    <tr>
-      <th>
-        {productVariant1}
-      </th>
-      <th>
-      {productVariant2}
-      </th>
-      <th>
-        Giá
-      </th>
-      <th>
-        Kho hàng
-      </th>
-      <th>
-        SKU
-      </th>
-    </tr>
-  </thead>
-  <tbody>
+                      <thead>
+                        <tr>
+                          <th>
+                            {productVariant1}
+                          </th>
+                          <th>
+                            {productVariant2}
+                          </th>
+                          <th>
+                            Giá
+                          </th>
+                          <th>
+                            Kho hàng
+                          </th>
+                          <th>
+                            SKU
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          variants.map(variant => {
+                            return (
+                              <tr>
+                                <td rowspan={attributes.length}>
+                                  {variant.label}
+                                </td>
 
-  </tbody>
-</Table>
+                                  {attributes.map(attr => (
+                                    <tr>
+                                    <td>
+                                      {attr.value}
+                                      </td>
+                                      </tr>
+                                  ))}
+                               
+                              </tr>
+                            )
+                          })
+                        }
+
+                      </tbody>
+                    </Table>
                   </div>
                 </CardBody>
               </Card>
