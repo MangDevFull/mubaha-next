@@ -1,18 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import Menu2 from "../../../public/assets/images/mega-menu/2.jpg";
 import PostLoader from "../../common/PostLoader";
 import ProductItem2 from "../../common/product-box/ProductBox1";
 
-const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, listProduct, handlePagination }) => {
-  console.log("handlePagination", onClick);
-
+const ProductList = ({
+  colClass,
+  layoutList,
+  openSidebar,
+  noSidebar,
+  listProduct,
+  products,
+  limit,
+  handleCallApi,
+  handlePagination,
+  value,
+  orderBy,
+  totalProduct
+}) => {
   const [layout, setLayout] = useState(layoutList);
-  const [grid, setGrid] = useState("col-xl-3 col-md-6 col-grid-box");
+  const [grid, setGrid] = useState(colClass);
   const [isLoading, setIsLoading] = useState(false);
-  const [sortBy, setSortBy] = useState("AscOrder");
-  const [visible, setVisible] = useState(8);
-
+  const [limitView, setLimitView] = useState(limit);
+  const [orderByView, setOrderByView] = useState(orderBy);
+  const [isLoadingMore, setIsLoadingMore] = useState(true);
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -67,8 +78,10 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, listProduct
                     <div className="product-filter-content">
                       <div className="search-count">
                         <h5>
-                          {listProduct ? `Showing Products 1-${listProduct.length}` : "loading"}{" "}
-                          Result
+                          {listProduct
+                            ? `Hiển thị 1 - ${listProduct.length} trên ${totalProduct}`
+                            : "loading..."}{" "}
+                          Sản phẩm
                         </h5>
                       </div>
                       <div className="collection-view">
@@ -133,21 +146,28 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, listProduct
                         </ul>
                       </div>
                       <div className="product-page-per-view">
-                        <select onChange={(e) => setVisible(parseInt(e.target.value))}>
-                          <option value="8">8 Products Par Page</option>
-                          <option value="10">10 Products Par Page</option>
-                          <option value="15">15 Products Par Page</option>
-                          <option value="20">20 Products Par Page</option>
+                        <select
+                          onChange={(e) => {
+                            setLimitView(parseInt(e.target.value));
+                            handleCallApi(e.target.value, 1, orderByView, value);
+                          }}
+                        >
+                          <option value="8">8 Sản phẩm </option>
+                          <option value="10">10 Sản phẩm</option>
+                          <option value="15">15 Sản phẩm</option>
+                          <option value="20">20 Sản phẩm</option>
                         </select>
                       </div>
                       <div className="product-page-filter">
-                        <select onChange={(e) => setSortBy(e.target.value)}>
-                          <option value="AscOrder">Sorting items</option>
-                          <option value="HighToLow">High To Low</option>
-                          <option value="LowToHigh">Low To High</option>
-                          <option value="Newest">Newest</option>
-                          <option value="AscOrder">Asc Order</option>
-                          <option value="DescOrder">Desc Order</option>
+                        <select
+                          onChange={(e) => {
+                            setOrderByView(e.target.value);
+                            handleCallApi(limitView, 1, e.target.value, value);
+                          }}
+                        >
+                          <option value="">Sắp xếp theo</option>
+                          <option value="ascPrice">Tăng dần</option>
+                          <option value="descPrice">Giảm dần</option>
                         </select>
                       </div>
                     </div>
@@ -168,9 +188,8 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, listProduct
                               alt=""
                             />
                             <h3>
-                              <strong>Your Cart is Empty</strong>
+                              <strong>Không có sản phẩm nào</strong>
                             </h3>
-                            <h4>Explore more shortlist some items.</h4>
                           </div>
                         </div>
                       </Col>
@@ -191,7 +210,6 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, listProduct
                       </div>
                     )
                   ) : (
-                    listProduct &&
                     listProduct.map((product, i) => (
                       <div className={grid} key={i}>
                         <div className="product">
@@ -208,20 +226,29 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, listProduct
                   )}
                 </Row>
               </div>
-              <div className="section-t-space">
-                <div className="text-center">
-                  <Row>
-                    <Col xl="12" md="12" sm="12">
-                      {listProduct && listProduct && (
-                        <Button onClick={() => handlePagination()}>
-                          {isLoading && <Spinner animation="border" variant="light" />}
-                          Xem thêm
-                        </Button>
-                      )}
-                    </Col>
-                  </Row>
-                </div>
-              </div>
+
+              {listProduct.length > 0 && (
+                <>
+                  <div className="section-t-space">
+                    <div className="text-center">
+                      <Row>
+                        <Col xl="12" md="12" sm="12">
+                          {listProduct && listProduct && (
+                            <Button
+                              onClick={() => {
+                                handlePagination();
+                              }}
+                            >
+                              {isLoading && <Spinner animation="border" variant="light" />}
+                              Xem thêm
+                            </Button>
+                          )}
+                        </Col>
+                      </Row>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </Col>
         </Row>
