@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
+import StarRatings from "react-star-ratings";
 
 const ProductTab = ({ detailProduct }) => {
   const [activeTab, setActiveTab] = useState("1");
@@ -66,13 +67,18 @@ const ProductTab = ({ detailProduct }) => {
                 </TabPane>
                 <TabPane tabId="4">
                   {detailProduct.reviews.map((review) => {
-                    <div key={review._id}>
-                      <h3 className="mt-3">{review.reviewer.profile.fullName}</h3>
-                      <p className="p-0">{review.content}</p>
-                    </div>
+                    return (
+                      <div key={review._id}>
+                        <h3 className="mt-3">{review.reviewer.profile.fullName}</h3>
+                        <div class="rating-section">
+                          <div class="rating">
+                            <StarRatings rating={review.rating} starDimension="18px" starSpacing="1px" starRatedColor="orange"/>
+                          </div>
+                        </div>
+                        <p className="p-0">{review.content}</p>
+                      </div>
+                    );
                   })}
-                  <h3 className="mt-3">Nguyễn Minh Quang</h3>
-                      <p className="p-0">ok</p>
                 </TabPane>
               </TabContent>
             </Row>

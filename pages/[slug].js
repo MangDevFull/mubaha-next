@@ -3,20 +3,15 @@ import Slider from "react-slick";
 import Head from "next/head";
 import SideProductCart from "@/components/SideProductCart";
 import { Row, Col, Media, Container, Modal, Input } from "reactstrap";
-
 import RelatedProducts from "@/components/RelatedProducts";
 import Layout from "@/components/Layout";
 import ProductTab from "@/components/common/product-details/product-tab";
 import Services from "@/components/common/product-details/services";
 import Filter from "@/components/common/product-details/filter";
-
-import NumberFormat from "react-number-format";
 import CountdownComponent from "@/components/common/widgets/countdownComponent";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  const uniqueColor = [];
-  const uniqueSize = [];
   const [quantity, setQuantity] = useState(1);
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -29,9 +24,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setQuantity(quantity - 1);
   };
   const [selectedVariant, setSelectedVariant] = useState();
-  // console.log(selectedVariant);
-  const selectedColor = (variant) => {
+
+  const selectedColor = (e, variant) => {
     setSelectedVariant(variant._id);
+    const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
+    slider1.current.slickGoTo(index);
   };
 
   const [selectedSize, setSlectedSize] = useState();
@@ -57,8 +54,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setSlectedSize(size.id);
   };
 
-  const changeColorVar = (variant) => {
-    slider2.current.slickGoTo(variant._id);
+  const changeColorVar = (imageId) => {
+    const index = detailProduct.media.data.findIndex((e) => e._id === imageId);
+
+    slider1.current.slickGoTo(index);
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
@@ -119,7 +118,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         </div>
       </div>
       {/* breadcrumb start end */}
-
       {/* section start */}
       <section>
         <div className="collection-wrapper">
@@ -148,13 +146,14 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           ref={(slider) => (slider1.current = slider)}
                           className="product-slick"
                         >
-                          {detailProduct.media.data.map((item) => (
-                            <Media
-                              key={item._id}
-                              src={item.path}
-                              alt=""
-                              className="img-fluid blur-up lazyload"
-                            />
+                          {detailProduct.media.data.map((item, index) => (
+                            <div key={index}>
+                              <Media
+                                src={item.path}
+                                alt=""
+                                className="img-fluid blur-up lazyload"
+                              />
+                            </div>
                           ))}
                         </Slider>
                         <Slider
@@ -163,9 +162,13 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           asNavFor={nav1}
                           ref={(slider) => (slider2.current = slider)}
                         >
-                          {detailProduct.media.data.map((item) => (
-                            <Media src={`${item.path}`} key={item._id} className="img-fluid" />
-                          ))}
+                          {detailProduct.variants
+                            ? detailProduct.media.data.map((item, index) => (
+                                <div key={index}>
+                                  <Media src={`${item.path}`} className="img-fluid" />
+                                </div>
+                              ))
+                            : ""}
                         </Slider>
                       </Col>
                       {/* Slider end*/}
@@ -192,51 +195,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               currencySymbol={detailProduct.currencySymbol}
                             />
                           </h3>
-                          {detailProduct.variants.map((variant) => {
-                            var findItem = uniqueColor.find((x) => x.color === variant.colorName);
-                            if (!findItem) uniqueColor.push(variant);
-                            var findItemSize = uniqueSize.find((x) => x === variant.size);
-                            if (!findItemSize) uniqueSize.push(variant.size);
-                          })}
-                          {changeColorVar === undefined ? (
-                            <>
-                              {uniqueColor ? (
-                                <ul className="color-variant">
-                                  {uniqueColor.map((variant) => {
-                                    return (
-                                      <li
-                                        className={variant.colorName}
-                                        key={variant._id}
-                                        title={variant.colorName}
-                                      ></li>
-                                    );
-                                  })}
-                                </ul>
-                              ) : (
-                                ""
-                              )}
-                            </>
-                          ) : (
-                            <>
-                              {uniqueColor ? (
-                                <ul className="color-variant">
-                                  {uniqueColor.map((variant) => {
-                                    return (
-                                      <li
-                                        className={variant.colorName}
-                                        key={variant._id}
-                                        title={variant.colorName}
-                                        onClick={() => changeColorVar(variant)}
-                                      ></li>
-                                    );
-                                  })}
-                                </ul>
-                              ) : (
-                                ""
-                              )}
-                            </>
-                          )}
-                          {/* <ul className="color-variant">
+                          <ul className="color-variant">
                             {detailProduct.variants.map((variant) => (
                               <li
                                 style={
@@ -249,12 +208,12 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 }
                                 key={variant._id}
                                 checked={selectedVariant === variant._id}
-                                onClick={() => selectedColor(variant)}
+                                onClick={(e) => selectedColor(e, variant)}
                               >
                                 {variant.colorName}
                               </li>
                             ))}
-                          </ul> */}
+                          </ul>
 
                           <div
                             id="selectSize"
@@ -263,12 +222,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             <h6 className="product-title size-text">
                               Lựa chọn kích thước
                               <span>
-                                <a
-                                  href={null}
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#sizemodal"
-                                  // onClick={toggle}
-                                >
+                                <a href={null} data-bs-toggle="modal" data-bs-target="#sizemodal">
                                   Bảng kích thước
                                 </a>
                               </span>
@@ -393,13 +347,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               </a>
                             </button>
                           </div>
-
-                          {/* <div className="border-product">
-                            <h6 className="product-title"> ngắn</h6>
-
-                            <p id="demo">{detailProduct.shortDescription}</p>
-                          </div> */}
-
                           <div className="border-product">
                             <h6 className="product-title">Chia sẻ</h6>
                             <div className="product-icon">
@@ -442,16 +389,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                     </Row>
                   )}
                 </div>
-                {/* Product Tab */}
                 <ProductTab detailProduct={detailProduct} />
-                {/* Product Tab end */}
               </Col>
               <Col sm={3} className="collection-filter">
                 <Filter />
-                {/* Services */}
                 <Services />
-                {/* Services end */}
-                {/* side-bar single product slider start */}
                 <div className="theme-card">
                   <h5 className="title-border">Sản phẩm mới</h5>
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
@@ -460,13 +402,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                     })}
                   </Slider>
                 </div>
-                {/* side-bar single product slider end */}
               </Col>
             </Row>
           </Container>
         </div>
       </section>
-      {/* Section ends */}
       <RelatedProducts data={relatedProducts} />
     </>
   );
@@ -494,6 +434,6 @@ export async function getServerSideProps(context) {
       detailProduct: data.detailProduct,
       relatedProducts: data.relatedProducts,
       newProducts: data.newProducts,
-    }, // will be passed to the page component as props
+    },
   };
 }
