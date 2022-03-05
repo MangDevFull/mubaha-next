@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import Breadcrumb from "../common/breadcrumb";
+import Breadcrumb from "../common/Breadcrumb";
 import { Edit, Trash2 } from "react-feather";
 import { Button, Card, CardBody, Col, Container, Row } from "reactstrap";
 import LayoutBackEnd from "@/components/backend/Layout";
@@ -45,7 +45,7 @@ const ProductList = ({dataIndexProduct, Click}) => {
 										<CardBody className="product-box text-center">
 											<div className="img-wrapper">
 												<div className="front">
-													<a href="/#" className="">
+													<a href="#" className="">
 														<img 
 															alt=""
 															style={{height: "300px", objectFit: "cover" }}
