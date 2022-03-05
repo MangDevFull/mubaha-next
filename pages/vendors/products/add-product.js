@@ -237,20 +237,17 @@ export default function AddProductPage() {
       ...body,
       variants: bodyVariants,
     }
-    console.log(body)
-    console.log(`${process.env.API_URL}/vendor/products`)
-    const res = fetch(`${process.env.API_URL}/vendor/products`,{
+    const res = await fetch(`http://localhost:3001/web/vendor/products`,{
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body)
     })
-    console.log(res)
-    console.log(`${process.env.API_URL}/vendor/products`)
+    console.log('res',res)
     const data = await res.json();
 
-    console.log(data)
+    console.log("data",data)
   };
   const [productVariant1, setProductVariant1] = useState("");
   const [productVariant2, setProductVariant2] = useState("");
