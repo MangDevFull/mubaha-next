@@ -58,7 +58,6 @@ export default function AddProductPage() {
   const [selectThirdCategory, setSelectThirdCategory] = useState("");
   const [images, setImage] = useState([]);
 
-  const getvalue = useRef();
 
   const inputName = useRef();
   const inputSKU = useRef();
@@ -179,7 +178,6 @@ export default function AddProductPage() {
   };
 
   const handeSubmit = async () => {
-    console.log("ref", getvalue.current.value);
     let uploadImages = [];
     await images.forEach(async (value) => {
       const url = value.uploadUrl;
@@ -202,7 +200,12 @@ export default function AddProductPage() {
         alert("Error downloading");
       }
     });
-
+   const bodyVariants = variants.map((variant) => {
+        variant.attrs = variant.attrs.map((attr) => {
+          return {name:attr.label,...attr}
+        })
+        return {name:variant.label,sizes:variant.attrs}
+    })
     const body = {
       name: inputName.current.value,
       price: inputPrice.current.value,
@@ -215,8 +218,10 @@ export default function AddProductPage() {
       firstLevelCat: selectFirstCategory,
       secondLevelCat: selectSecondCategory,
       threeLevelCat: selectThirdCategory,
-      image: uploadImages,
+      images: uploadImages,
+      variants:bodyVariants,
     };
+    console.log('body',body)
   };
   const [productVariant1, setProductVariant1] = useState("");
   const [productVariant2, setProductVariant2] = useState("");
@@ -581,7 +586,6 @@ export default function AddProductPage() {
                                       <input
                                         className="form-control"
                                         placeholder="Nhập số hàng tồn kho"
-                                        defaultValue="0"
                                         onChange={(e) => { handleStockAtrr(e.target.value, idx, i) }}
                                       />
                                     </td>

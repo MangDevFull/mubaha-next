@@ -37,7 +37,7 @@ const MyUploader = ({sendImages}) => {
         onChangeStatus={handleChangeStatus}
         accept="image/*"
         maxSizeBytes={2097152}
-        maxFiles={2}
+        maxFiles={10}
       />
     </div>
 
