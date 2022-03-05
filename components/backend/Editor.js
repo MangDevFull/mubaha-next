@@ -5,7 +5,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 export default function Editor({onChangeEditor}) {
   const handleChange = ( event, editor ) => {
     const data = editor.getData();
-    console.log(data);
+    // console.log(data);
     onChangeEditor(data)
   };
 

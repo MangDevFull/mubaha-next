@@ -42,9 +42,9 @@ const UserMenu = () => {
 						</a>
 					</li> */}
 					<li>
-						<Link href={`${process.env.PUBLIC_URL}/`}>
-							<a><i data-feather="log-out"></i>Logout</a>
-						</Link>
+						{/* <Link href={`${process.env.PUBLIC_URL}/`}> */}
+							<a href="#"><i data-feather="log-out"></i>Logout</a>
+						{/* </Link> */}
 					</li>
 				</ul>
 			</li>

@@ -17,7 +17,7 @@ export const MENUITEMS = [
     //     path: '/dashboard', title: 'Dashboard', icon: Home, type: 'link', badgeType: 'primary', active: false
     // },
     {
-        title: 'Products', icon: Box, type: 'sub', active: true, children: [
+        title: 'Sản phẩm', icon: Box, type: 'sub', active: true, children: [
             // {
             //     title: 'Physical', type: 'sub', active: false, children: [
             //         { path: '/products/physical/category', title: 'Category', type: 'link' },
@@ -30,8 +30,8 @@ export const MENUITEMS = [
            
             // { path: '/add-product', title: 'Category', type: 'link' },
             // { path: '/products/digital/digital-sub-category', title: 'Sub Category', type: 'link' },
-            { path: '/admin/products', title: 'Danh sách sản phẩm', type: 'link' },
-            { path: '/admin/products/add-product', title: 'Thêm sản phẩm', type: 'link' },
+            { path: '/vendors/products', title: 'Danh sách sản phẩm', type: 'link' },
+            { path: '/vendors/products/add-product', title: 'Thêm sản phẩm', type: 'link' },
         ]
     }
     // {

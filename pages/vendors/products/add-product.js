@@ -1,8 +1,8 @@
 import LayoutBackEnd from "@/components/backend/Layout";
 import Form from "react-bootstrap/Form";
 import "react-bootstrap-typeahead/css/Typeahead.css";
-import { useRef, useState, useEffect } from "react";
-import Breadcrumb from "@/components/backend/common/BreadCrumb";
+import { useRef, useState, useEffect, Fragment } from "react";
+import Breadcrumb from "@/components/backend/common/Breadcrumb";
 import Url from "url-parse";
 import dynamic from "next/dynamic";
 import queryString from "query-string";
@@ -33,10 +33,14 @@ import {
 import currencyEnum from "../../../enums/currency.enum.js";
 import SelectAdd from "react-select/creatable";
 import Select from "react-select";
+import { useRouter } from "next/router";
 
 const productVariants = productVariant;
 const productVariantValues = productVariantValue;
 export default function AddProductPage() {
+
+  const router = useRouter();
+
   const [content] = useState("");
   const [categoryFirst, setCategoryFirst] = useState([]);
   const [categorySecond, setCategorySecond] = useState([]);
@@ -81,13 +85,13 @@ export default function AddProductPage() {
         setCategoryFirst(categories);
       }
       const stockStatuses = Object.keys(StockStatus).map((key) => {
-        return { label: key, value: key };
+        return { label: key, value: StockStatus[key] };
       });
 
       setStatus(stockStatuses);
 
       const stockCountries = Object.keys(StockCountry).map((key) => {
-        return { label: key, value: key };
+        return { label: key, value: StockCountry[key] };
       });
 
       setCountries(stockCountries);
@@ -181,7 +185,7 @@ export default function AddProductPage() {
     setDescription(e);
   };
 
-  const handeSubmit = async () => {
+  const handleSubmit = async () => {
     let uploadImages = [];
     await Promise.all(images.map(async (value) => {
       try {
@@ -205,7 +209,7 @@ export default function AddProductPage() {
           alert("Error downloading");
         }
       } catch (error) {
-        console.log('error'+ error);
+        console.log('error' + error);
       }
     }))
 
@@ -230,24 +234,30 @@ export default function AddProductPage() {
         return { name: attr.label, ...attr }
       })
 
-      return { name: variant.label, sizes: variant.attrs, imgae: uploadImages[0] }
+      return { name: variant.label, sizes: variant.attrs, image: uploadImages[0] }
     })
 
     body = {
       ...body,
       variants: bodyVariants,
     }
-    const res = await fetch(`http://localhost:3001/web/vendor/products`,{
+
+    const res = await fetch(`${process.env.API_URL}/vendor/products`, {
       method: "POST",
+      mode: "cors",
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: JSON.stringify(body)
     })
-    console.log('res',res)
+    // console.log('res',res)
     const data = await res.json();
 
-    console.log("data",data)
+    if (data.status === 200) {
+      router.push('/vendors/products')
+    }
+    // console.log("data",data)
   };
   const [productVariant1, setProductVariant1] = useState("");
   const [productVariant2, setProductVariant2] = useState("");
@@ -503,7 +513,7 @@ export default function AddProductPage() {
                           <Label className="col-form-label pt-0">Loại hàng</Label>
                           {variants.map((x, i) => {
                             return (
-                              <>
+                              <div key={i}>
                                 <SelectAdd
                                   key={i}
                                   options={productValues1}
@@ -518,7 +528,7 @@ export default function AddProductPage() {
                                   Xoá
                                 </Button>
                                 <br />
-                              </>
+                              </div>
                             );
                           })}
                           <br />
@@ -554,7 +564,7 @@ export default function AddProductPage() {
                           <Label className="col-form-label pt-0">Loại hàng</Label>
                           {attributes.map((x, i) => {
                             return (
-                              <>
+                              <div key={i}>
                                 <SelectAdd
                                   key={i}
                                   options={productValues2}
@@ -569,7 +579,7 @@ export default function AddProductPage() {
                                   Xoá
                                 </Button>
                                 <br />
-                              </>
+                              </div>
                             );
                           })}
                         </div>
@@ -594,35 +604,34 @@ export default function AddProductPage() {
                       <tbody>
                         {variants.map((variant, i) => {
                           return (
-                            <>
-                              <tr>
+                            <Fragment key={i}>
+                              <tr key={i}>
                                 <td rowSpan={attributes.length + 1} className="align-middle text-center">{variant.label}</td>
                               </tr>
                               {attributes.map((attr, idx) => (
-                                <>
-                                  <tr>
-                                    <td className="align-middle text-center">{attr.label}</td>
-                                    <td className="align-middle text-center">
-                                      <input className="form-control" placeholder="Nhập giá"
-                                        onChange={(e) => handlePriceAttr(e.target.value, idx, i)}
-                                      />
-                                    </td>
-                                    <td className="align-middle text-center">
-                                      <input
-                                        className="form-control"
-                                        placeholder="Nhập số hàng tồn kho"
-                                        onChange={(e) => { handleStockAtrr(e.target.value, idx, i) }}
-                                      />
-                                    </td>
-                                    <td className="align-middle text-center">
-                                      <input className="form-control" placeholder="Nhập SKU"
-                                        onChange={(e) => { handleSKUAtrr(e.target.value, idx, i) }}
-                                      />
-                                    </td>
-                                  </tr>
-                                </>
+
+                                <tr key={idx}>
+                                  <td className="align-middle text-center">{attr.label}</td>
+                                  <td className="align-middle text-center">
+                                    <input className="form-control" placeholder="Nhập giá"
+                                      onChange={(e) => handlePriceAttr(e.target.value, idx, i)}
+                                    />
+                                  </td>
+                                  <td className="align-middle text-center">
+                                    <input
+                                      className="form-control"
+                                      placeholder="Nhập số hàng tồn kho"
+                                      onChange={(e) => { handleStockAtrr(e.target.value, idx, i) }}
+                                    />
+                                  </td>
+                                  <td className="align-middle text-center">
+                                    <input className="form-control" placeholder="Nhập SKU"
+                                      onChange={(e) => { handleSKUAtrr(e.target.value, idx, i) }}
+                                    />
+                                  </td>
+                                </tr>
                               ))}
-                            </>
+                            </Fragment>
                           );
                         })}
                       </tbody>
@@ -632,7 +641,7 @@ export default function AddProductPage() {
               </Card>
               <FormGroup className="m-10">
                 <div className="product-buttons text-center">
-                  <Button type="button" color="primary" onClick={handeSubmit}>
+                  <Button type="button" color="primary" onClick={handleSubmit}>
                     Thêm sản phẩm
                   </Button>
                   <Button type="button" color="light">

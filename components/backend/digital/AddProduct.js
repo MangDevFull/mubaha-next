@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import Breadcrumb from "../common/BreadCrumb";
+import Breadcrumb from "../common/Breadcrumb";
 // import CKEditors from "react-ckeditor-component";
 
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
