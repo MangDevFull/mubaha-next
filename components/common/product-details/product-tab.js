@@ -1,16 +1,8 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-} from "reactstrap";
+import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
+import StarRatings from "react-star-ratings";
 
-const ProductTab = () => {
+const ProductTab = ({ detailProduct }) => {
   const [activeTab, setActiveTab] = useState("1");
 
   return (
@@ -49,65 +41,44 @@ const ProductTab = () => {
                     className={activeTab === "4" ? "active" : ""}
                     onClick={() => setActiveTab("4")}
                   >
-                    Đánh giá 
+                    Đánh giá
                   </NavLink>
                 </NavItem>
               </Nav>
               <TabContent activeTab={activeTab} className="nav-material">
                 <TabPane tabId="1">
-                  <p className="mb-0 pb-0">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.&quot; sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris nisi
-                    ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                    reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id
-                    est laborum.&quot;
-                  </p>
+                  <p className="mb-0 pb-0">{detailProduct.shortDescription}</p>
                 </TabPane>
                 <TabPane tabId="2">
-                  <p className="mb-0 pb-0">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.&quot;
-                  </p>
+                  <p className="mb-0 pb-0">{detailProduct.description}</p>
                 </TabPane>
                 <TabPane tabId="3">
                   <p className="mb-0 pb-0">
-                    {" "}
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.&quot;
+                    <iframe
+                      width="560"
+                      height="315"
+                      src="https://www.youtube.com/embed/PsSq48UFPMs"
+                      title="YouTube video player"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>
                   </p>
                 </TabPane>
                 <TabPane tabId="4">
-                  <p className="mb-0 pb-0">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.&quot;
-                  </p>
+                  {detailProduct.reviews.map((review) => {
+                    return (
+                      <div key={review._id}>
+                        <h3 className="mt-3">{review.reviewer.profile.fullName}</h3>
+                        <div class="rating-section">
+                          <div class="rating">
+                            <StarRatings rating={review.rating} starDimension="18px" starSpacing="1px" starRatedColor="orange"/>
+                          </div>
+                        </div>
+                        <p className="p-0">{review.content}</p>
+                      </div>
+                    );
+                  })}
                 </TabPane>
               </TabContent>
             </Row>

@@ -3,14 +3,11 @@ import Slider from "react-slick";
 import Head from "next/head";
 import SideProductCart from "@/components/SideProductCart";
 import { Row, Col, Media, Container, Modal, Input } from "reactstrap";
-
 import RelatedProducts from "@/components/RelatedProducts";
 import Layout from "@/components/Layout";
 import ProductTab from "@/components/common/product-details/product-tab";
 import Services from "@/components/common/product-details/services";
 import Filter from "@/components/common/product-details/filter";
-
-import NumberFormat from "react-number-format";
 import CountdownComponent from "@/components/common/widgets/countdownComponent";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 
@@ -27,26 +24,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setQuantity(quantity - 1);
   };
   const [selectedVariant, setSelectedVariant] = useState();
-  // console.log(selectedVariant);
-  const colorVariants = [
-    {
-      id: 1,
-      className: "bg-light0",
-      variantName: "Xanh",
-    },
-    {
-      id: 2,
-      className: "bg-light1",
-      variantName: "Hồng",
-    },
-    {
-      id: 3,
-      className: "bg-light2",
-      variantName: "Xám",
-    },
-  ];
-  const selectedColor = (colorVariant) => {
-    setSelectedVariant(colorVariant.id);
+
+  const selectedColor = (e, variant) => {
+    setSelectedVariant(variant._id);
+    const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
+    slider1.current.slickGoTo(index);
   };
 
   const [selectedSize, setSlectedSize] = useState();
@@ -70,6 +52,12 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   ];
   const handleSelectedSize = (size) => {
     setSlectedSize(size.id);
+  };
+
+  const changeColorVar = (imageId) => {
+    const index = detailProduct.media.data.findIndex((e) => e._id === imageId);
+
+    slider1.current.slickGoTo(index);
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
@@ -130,7 +118,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         </div>
       </div>
       {/* breadcrumb start end */}
-
       {/* section start */}
       <section>
         <div className="collection-wrapper">
@@ -159,13 +146,14 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           ref={(slider) => (slider1.current = slider)}
                           className="product-slick"
                         >
-                          {detailProduct.media.data.map((item) => (
-                            <Media
-                              key={item._id}
-                              src={item.path}
-                              alt=""
-                              className="img-fluid blur-up lazyload"
-                            />
+                          {detailProduct.media.data.map((item, index) => (
+                            <div key={index}>
+                              <Media
+                                src={item.path}
+                                alt=""
+                                className="img-fluid blur-up lazyload"
+                              />
+                            </div>
                           ))}
                         </Slider>
                         <Slider
@@ -174,14 +162,13 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           asNavFor={nav1}
                           ref={(slider) => (slider2.current = slider)}
                         >
-                          {detailProduct.media.data.map((item) => (
-                            <Media
-                              key={item._id}
-                              src={item.path}
-                              alt=""
-                              className="img-fluid blur-up lazyload"
-                            />
-                          ))}
+                          {detailProduct.variants
+                            ? detailProduct.media.data.map((item, index) => (
+                                <div key={index}>
+                                  <Media src={`${item.path}`} className="img-fluid" />
+                                </div>
+                              ))
+                            : ""}
                         </Slider>
                       </Col>
                       {/* Slider end*/}
@@ -189,7 +176,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                         {/* DetailsWithPrice */}
                         <div className="product-right">
                           <div className="product-count">Chi tiết sản phẩm</div>
-                          <h2>{detailProduct?.name}</h2>
+                          <h2>{detailProduct.name}</h2>
                           <div className="rating-section">
                             <div className="rating">
                               <i className="fa fa-star" /> <i className="fa fa-star" />{" "}
@@ -207,30 +194,27 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               discount={detailProduct.discount}
                               currencySymbol={detailProduct.currencySymbol}
                             />
-                            
                           </h3>
                           <ul className="color-variant">
-                            {colorVariants.map((colorVariant) => (
+                            {detailProduct.variants.map((variant) => (
                               <li
                                 style={
-                                  selectedVariant === colorVariant.id
+                                  selectedVariant === variant._id
                                     ? {
                                         border: "1px solid #ffa200",
                                         color: "#ffa200",
                                       }
                                     : {}
                                 }
-                                key={colorVariant.id}
-                                checked={selectedVariant === colorVariant.id}
-                                onClick={() => selectedColor(colorVariant)}
+                                key={variant._id}
+                                checked={selectedVariant === variant._id}
+                                onClick={(e) => selectedColor(e, variant)}
                               >
-                                {colorVariant.variantName}
+                                {variant.colorName}
                               </li>
-                              
                             ))}
-                            
                           </ul>
-                          
+
                           <div
                             id="selectSize"
                             className="addeffect-section product-description border-product"
@@ -238,12 +222,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             <h6 className="product-title size-text">
                               Lựa chọn kích thước
                               <span>
-                                <a
-                                  href={null}
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#sizemodal"
-                                  // onClick={toggle}
-                                >
+                                <a href={null} data-bs-toggle="modal" data-bs-target="#sizemodal">
                                   Bảng kích thước
                                 </a>
                               </span>
@@ -368,13 +347,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               </a>
                             </button>
                           </div>
-
-                          <div className="border-product">
-                            <h6 className="product-title">Chi tiết sản phẩm</h6>
-
-                            <p id="demo">{detailProduct.description}</p>
-                          </div>
-
                           <div className="border-product">
                             <h6 className="product-title">Chia sẻ</h6>
                             <div className="product-icon">
@@ -417,16 +389,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                     </Row>
                   )}
                 </div>
-                {/* Product Tab */}
-                <ProductTab />
-                {/* Product Tab end */}
+                <ProductTab detailProduct={detailProduct} />
               </Col>
               <Col sm={3} className="collection-filter">
                 <Filter />
-                {/* Services */}
                 <Services />
-                {/* Services end */}
-                {/* side-bar single product slider start */}
                 <div className="theme-card">
                   <h5 className="title-border">Sản phẩm mới</h5>
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
@@ -435,13 +402,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                     })}
                   </Slider>
                 </div>
-                {/* side-bar single product slider end */}
               </Col>
             </Row>
           </Container>
         </div>
       </section>
-      {/* Section ends */}
       <RelatedProducts data={relatedProducts} />
     </>
   );
@@ -469,6 +434,6 @@ export async function getServerSideProps(context) {
       detailProduct: data.detailProduct,
       relatedProducts: data.relatedProducts,
       newProducts: data.newProducts,
-    }, // will be passed to the page component as props
+    },
   };
 }

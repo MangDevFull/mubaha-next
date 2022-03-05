@@ -17,21 +17,21 @@ const CountdownComponent = () => {
                 <span>
                   {days}
                   <span className="padding-l">:</span>
-                  <span className="timer-cal">Days</span>
+                  <span className="timer-cal">Ngày</span>
                 </span>
                 <span>
                   {hours}
                   <span className="padding-l">:</span>
-                  <span className="timer-cal">Hrs</span>
+                  <span className="timer-cal">Giờ</span>
                 </span>
                 <span>
                   {minutes}
                   <span className="padding-l">:</span>
-                  <span className="timer-cal">Min</span>
+                  <span className="timer-cal">Phút</span>
                 </span>
                 <span>
                   {seconds}
-                  <span className="timer-cal">Sec</span>
+                  <span className="timer-cal">Giây</span>
                 </span>
               </div>
             </div>
