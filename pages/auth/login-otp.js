@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import Head from "next/head";
 import libphone from "google-libphonenumber";
-import otpEnums from "../../enums/otpEnums.js";
+import otpEnums from "../../enums/otp.enum.js";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
 import { Row, Form, Alert } from "reactstrap";
