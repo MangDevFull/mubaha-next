@@ -25,11 +25,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   };
   const [selectedVariant, setSelectedVariant] = useState();
 
-
   const selectedColor = (e, variant) => {
-    e.preventDefault();
     setSelectedVariant(variant._id);
-    const index = detailProduct.media.data.findIndex(e => e._id === variant.imageId)
+    const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
   };
 
@@ -57,10 +55,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   };
 
   const changeColorVar = (imageId) => {
-    const index = detailProduct.media.data.findIndex(e => e._id === imageId)
+    const index = detailProduct.media.data.findIndex((e) => e._id === imageId);
 
     slider1.current.slickGoTo(index);
-   
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
@@ -121,7 +118,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         </div>
       </div>
       {/* breadcrumb start end */}
-
       {/* section start */}
       <section>
         <div className="collection-wrapper">
@@ -226,11 +222,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             <h6 className="product-title size-text">
                               Lựa chọn kích thước
                               <span>
-                                <a
-                                  href={null}
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#sizemodal"
-                                >
+                                <a href={null} data-bs-toggle="modal" data-bs-target="#sizemodal">
                                   Bảng kích thước
                                 </a>
                               </span>
@@ -355,13 +347,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               </a>
                             </button>
                           </div>
-
-                          {/* <div className="border-product">
-                            <h6 className="product-title"> ngắn</h6>
-
-                            <p id="demo">{detailProduct.shortDescription}</p>
-                          </div> */}
-
                           <div className="border-product">
                             <h6 className="product-title">Chia sẻ</h6>
                             <div className="product-icon">
@@ -404,16 +389,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                     </Row>
                   )}
                 </div>
-                {/* Product Tab */}
                 <ProductTab detailProduct={detailProduct} />
-                {/* Product Tab end */}
               </Col>
               <Col sm={3} className="collection-filter">
                 <Filter />
-                {/* Services */}
                 <Services />
-                {/* Services end */}
-                {/* side-bar single product slider start */}
                 <div className="theme-card">
                   <h5 className="title-border">Sản phẩm mới</h5>
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
@@ -422,13 +402,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                     })}
                   </Slider>
                 </div>
-                {/* side-bar single product slider end */}
               </Col>
             </Row>
           </Container>
         </div>
       </section>
-      {/* Section ends */}
       <RelatedProducts data={relatedProducts} />
     </>
   );
@@ -456,6 +434,6 @@ export async function getServerSideProps(context) {
       detailProduct: data.detailProduct,
       relatedProducts: data.relatedProducts,
       newProducts: data.newProducts,
-    }, // will be passed to the page component as props
+    },
   };
 }
