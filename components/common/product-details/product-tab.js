@@ -59,9 +59,9 @@ const ProductTab = ({ detailProduct }) => {
                       height="315"
                       src="https://www.youtube.com/embed/PsSq48UFPMs"
                       title="YouTube video player"
-                      frameborder="0"
+                      frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen
+                      allowFullScreen
                     ></iframe>
                   </p>
                 </TabPane>
@@ -70,8 +70,8 @@ const ProductTab = ({ detailProduct }) => {
                     return (
                       <div key={review._id}>
                         <h3 className="mt-3">{review.reviewer.profile.fullName}</h3>
-                        <div class="rating-section">
-                          <div class="rating">
+                        <div className="rating-section">
+                          <div className="rating">
                             <StarRatings rating={review.rating} starDimension="18px" starSpacing="1px" starRatedColor="orange"/>
                           </div>
                         </div>

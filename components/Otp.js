@@ -3,7 +3,7 @@ import { Alert } from 'reactstrap';
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import otpEnums from "../enums/otpEnums.js";
+import otpEnums from "../enums/otp.enum.js";
 import { signIn } from "next-auth/react";
 import styles from '@/styles/authen.module.css'
 import API from "@/services/api.js";

@@ -4,7 +4,7 @@ import libphone from "google-libphonenumber";
 import { Row, Form, Alert } from "reactstrap";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
-import otpEnums from "../../enums/otpEnums.js";
+import otpEnums from "../../enums/otp.enum.js";
 import styles from "@/styles/authen.module.css";
 import dynamic from 'next/dynamic'
 import BottomFormRegister from "@/components/authen/BottomFormRegister.js";

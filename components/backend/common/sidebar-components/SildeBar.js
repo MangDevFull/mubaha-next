@@ -88,7 +88,7 @@ const Sidebar = () => {
 			)}
 			{menuItem.type === "link" ? (
 				<Link
-					href="/admin/products"
+					href="/vendors/products"
 					className={`sidebar-header ${menuItem.active ? "active" : ""}`}
 					onClick={() => setNavActive(menuItem)}
 				>

@@ -77,7 +77,7 @@ const Header = () => {
 				<div className="main-header-right row">
 					<div className="main-header-left d-lg-none">
 						<div className="logo-wrapper">
-							<a href="index.html">
+							<a href="#">
 								<img className="blur-up lazyloaded" src={logo} alt="" />
 							</a>
 						</div>
@@ -85,7 +85,7 @@ const Header = () => {
 					<div className="mobile-sidebar">
 						<div className="media-body text-right switch-sm">
 							<label className="switch">
-								<a href="#javaScript" onClick={openCloseSidebar}>
+								<a href="#" onClick={openCloseSidebar}>
 									<AlignLeft />
 								</a>
 							</label>

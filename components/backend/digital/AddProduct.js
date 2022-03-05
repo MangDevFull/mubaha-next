@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import Breadcrumb from "../common/BreadCrumb";
-// // import CKEditors from "react-ckeditor-component";
+import Breadcrumb from "../common/Breadcrumb";
+// import CKEditors from "react-ckeditor-component";
 
 // import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -425,7 +425,7 @@ const Digital_add_pro = ({ onBlur, onChange, afterPaste }) => {
                   <div className="digital-add needs-validation">
                     <FormGroup className=" mb-0">
                       <div className="description-sm">
-                        {/* <CKEditors
+                        {/* <CKEditor
                           activeclassName="p10"
                           content={content}
                           events={{

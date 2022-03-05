@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import Breadcrumb from "../common/BreadCrumb.js";
+import Breadcrumb from "../common/Breadcrumb.js";
 // import data from "../../../assets/data/digital-category";
 // import Datatable from "../../common/datatable";
 // import Modal from "react-responsive-modal";
