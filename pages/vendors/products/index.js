@@ -12,7 +12,8 @@ const IndexProduct = ({dataIndexProduct}) => (
 )
 
 export async function getServerSideProps(context) {
-  const res = await fetch('http://localhost:3001/web/vendor/products/listing')
+  const res = await fetch(`${process.env.API_URL}/web/vendor/products/listing`)
+
   const data = await res.json()
   return {
     props: {

@@ -69,45 +69,48 @@ export default function AddProductPage() {
     setImage(e);
   };
 
-  useEffect(async () => {
-    const response = await fetch(`${process.env.API_URL}/categories/first`);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`${process.env.API_URL}/categories/first`);
 
-    const data = await response.json();
+      const data = await response.json();
 
-    const categories = data.data.map((category) => {
-      return { label: category.name, value: category._id };
-    });
-    if (data.status === 200) {
-      setCategoryFirst(categories);
+      const categories = data.data.map((category) => {
+        return { label: category.name, value: category._id };
+      });
+      if (data.status === 200) {
+        setCategoryFirst(categories);
+      }
+      const stockStatuses = Object.keys(StockStatus).map((key) => {
+        return { label: key, value: key };
+      });
+
+      setStatus(stockStatuses);
+
+      const stockCountries = Object.keys(StockCountry).map((key) => {
+        return { label: key, value: key };
+      });
+
+      setCountries(stockCountries);
+
+      const currencies = Object.keys(currencyEnum).map((key) => {
+        const data = currencyEnum[key];
+        return { label: key, value: data };
+      });
+
+      setCurrencies(currencies);
+
+      const brands = await fetch(`${process.env.API_URL}/brands`);
+
+      const brandDatas = await brands.json();
+
+      const brandOptions = brandDatas.data.map((key) => {
+        return { label: key.name, value: key._id };
+      });
+
+      setBrands(brandOptions);
     }
-    const stockStatuses = Object.keys(StockStatus).map((key) => {
-      return { label: key, value: key };
-    });
-
-    setStatus(stockStatuses);
-
-    const stockCountries = Object.keys(StockCountry).map((key) => {
-      return { label: key, value: key };
-    });
-
-    setCountries(stockCountries);
-
-    const currencies = Object.keys(currencyEnum).map((key) => {
-      const data = currencyEnum[key];
-      return { label: key, value: data };
-    });
-
-    setCurrencies(currencies);
-
-    const brands = await fetch(`${process.env.API_URL}/brands`);
-
-    const brandDatas = await brands.json();
-
-    const brandOptions = brandDatas.data.map((key) => {
-      return { label: key.name, value: key._id };
-    });
-
-    setBrands(brandOptions);
+    fetchData();
   }, []);
 
   const handleCategoryFirst = async (e) => {
@@ -223,42 +226,71 @@ export default function AddProductPage() {
   const [productVariant2, setProductVariant2] = useState("");
   const [productValues1, setProductValues1] = useState([]);
   const [productValues2, setProductValues2] = useState([]);
-  const [formAttributes, setFormAttributes] = useState([]);
-  const [formAttributes2, setFormAttributes2] = useState([]);
-  const [variantAtrributes1, setVariantAtrributes1] = useState([]);
+  const [attributes, setAttributes] = useState([{ value: "", label: "" }]);
+  const [variants, setVariants] = useState([{ value: "", label: "", attrs: [] }]);
 
-  const onAddBtnClick1 = (event) => {
-    setFormAttributes(
-      formAttributes.concat(
-        <>
-          <SelectAdd
-            options={productValues1}
-            onChange={(e) => {
-              setProductVariant1(e.value);
-            }}
-            placeholder="Nhập loại hàng"
-          />
-          <br />
-        </>
-      )
-    );
+  const handleSetVariant = (e, idx) => {
+    variants[idx] = { label: e.value, value: e.value, attrs: variants[idx].attrs };
+    setVariants([...variants]);
+  };
+  const handleSetAtribute = (e, idx) => {
+    attributes[idx] = { label: e.value, value: e.value };
+    setAttributes([...attributes]);
+  };
+  const deletVariant = (idx) => { 
+    if(variants.length >1){
+      variants.splice(idx, 1);
+      setVariants([...variants]);
+    }
+  
+  }
+
+  const deleteAtrr = (idx) => {
+    if(attributes.length >1){
+      attributes.splice(idx, 1);
+      setAttributes([...attributes]);
+      variants.map(variant=> {
+        return variant.attrs.splice(idx,1)
+      })
+    }
+  }
+
+  const onAddBtnClick1 = () => {
+    setVariants([...variants, { label: "", value: "", attrs: [] }]);
   };
   const onAddBtnClick2 = (event) => {
-    setFormAttributes2(
-      formAttributes2.concat(
-        <>
-          <SelectAdd
-            options={productValues1}
-            onChange={(e) => {
-              setProductVariant1(e.value);
-            }}
-            placeholder="Nhập loại hàng"
-          />
-          <br />
-        </>
-      )
-    );
+    setAttributes([...attributes, { label: "", value: "" }]);
   };
+
+  const handlePriceAttr = (e, idx, i) => {
+    const attrs = {
+      ...variants[i].attrs[idx],
+      ...attributes[idx],
+      price: e
+    }
+    variants[i].attrs[idx] = attrs
+    setVariants([...variants])
+    console.log(variants)
+
+  }
+  const handleStockAtrr = (e, idx, i) => {
+    const attrs = {
+      ...attributes[idx],
+      ...variants[i].attrs[idx],
+      stock: e
+    }
+    variants[i].attrs[idx] = attrs
+    setVariants([...variants])
+  }
+  const handleSKUAtrr = (e, idx, i) => {
+    const attrs = {
+      ...attributes[idx],
+      ...variants[i].attrs[idx],
+      sku: e
+    }
+    variants[i].attrs[idx] = attrs
+    setVariants([...variants])
+  }
 
   return (
     <>
@@ -428,7 +460,7 @@ export default function AddProductPage() {
                           <SelectAdd
                             options={productVariants}
                             onChange={(e) => {
-                              setProductVariant1(e.value);
+                              setProductVariant1(e.label);
                               if (e.value === "color") {
                                 setProductValues1(productVariantValues.COLOR);
                               } else if (e.value === "size") {
@@ -440,20 +472,33 @@ export default function AddProductPage() {
                             placeholder="Nhập tên nhóm phân loại 1"
                           />
                         </Form.Group>
+
                         <div className="mt-1">
                           <Label className="col-form-label pt-0">Loại hàng</Label>
-                          <SelectAdd
-                            options={productValues1}
-                            onChange={(e) => {
-                              setVariantAtrributes1(e.value);
-                            }}
-                            placeholder="Nhập loại hàng"
-                          />
+                          {variants.map((x, i) => {
+                            return (
+                              <>
+                                <SelectAdd
+                                  key={i}
+                                  options={productValues1}
+                                  onChange={(e) => handleSetVariant(e, i)}
+                                  value={x}
+                                  placeholder="Nhập loại hàng"
+                                />
+                                <Button className="mt-1 mb-1"
+                                  color="danger"
+                                  onClick={() =>deletVariant(i)}
+                                >
+                                  Xoá
+                                </Button>
+                                <br />
+                              </>
+                            );
+                          })}
                           <br />
-                          {formAttributes}
                         </div>
                         <div className="d-flex justify-content-center">
-                          <div className="mt-4 btn-primary p-2" onClick={onAddBtnClick1}>
+                          <div className="mt-1 btn-primary p-2" onClick={onAddBtnClick1}>
                             Thêm phân loại hàng
                           </div>
                         </div>
@@ -473,7 +518,7 @@ export default function AddProductPage() {
                               } else if (e.value === "size") {
                                 setProductValues2(productVariantValues.SIZE);
                               } else {
-                                setProductVariant1([]);
+                                setProductValues2([]);
                               }
                             }}
                             placeholder="Nhập tên nhóm phân loại 2"
@@ -481,18 +526,29 @@ export default function AddProductPage() {
                         </Form.Group>
                         <div className="mt-1">
                           <Label className="col-form-label pt-0">Loại hàng</Label>
-                          <SelectAdd
-                            options={productValues2}
-                            onChange={(e) => {
-                              setProductVariant1(variantAtrributes1);
-                            }}
-                            placeholder="Nhập loại hàng"
-                          />
-                          <br />
-                          {formAttributes2}
+                          {attributes.map((x, i) => {
+                            return (
+                              <>
+                                <SelectAdd
+                                  key={i}
+                                  options={productValues2}
+                                  onChange={(e) => handleSetAtribute(e, i)}
+                                  placeholder="Nhập loại hàng"
+                                  value={x}
+                                />
+                                 <Button className="mt-1 mb-1"
+                                  color="danger"
+                                  onClick={() =>deleteAtrr(i)}
+                                >
+                                  Xoá
+                                </Button>
+                                <br />
+                              </>
+                            );
+                          })}
                         </div>
                         <div className="d-flex justify-content-center">
-                          <div className="mt-4 btn-primary p-2" onClick={onAddBtnClick2}>
+                          <div className="mt-1 btn-primary p-2" onClick={onAddBtnClick2}>
                             Thêm phân loại hàng
                           </div>
                         </div>
@@ -509,7 +565,42 @@ export default function AddProductPage() {
                           <th>SKU</th>
                         </tr>
                       </thead>
-                      <tbody></tbody>
+                      <tbody>
+                        {variants.map((variant, i) => {
+                          return (
+                            <>
+                              <tr>
+                                <td rowSpan={attributes.length + 1} className="align-middle text-center">{variant.label}</td>
+                              </tr>
+                              {attributes.map((attr, idx) => (
+                                <>
+                                  <tr>
+                                    <td className="align-middle text-center">{attr.label}</td>
+                                    <td className="align-middle text-center">
+                                      <input className="form-control" placeholder="Nhập giá"
+                                        onChange={(e) => handlePriceAttr(e.target.value, idx, i)}
+                                      />
+                                    </td>
+                                    <td className="align-middle text-center">
+                                      <input
+                                        className="form-control"
+                                        placeholder="Nhập số hàng tồn kho"
+                                        defaultValue="0"
+                                        onChange={(e) => { handleStockAtrr(e.target.value, idx, i) }}
+                                      />
+                                    </td>
+                                    <td className="align-middle text-center">
+                                      <input className="form-control" placeholder="Nhập SKU"
+                                        onChange={(e) => { handleSKUAtrr(e.target.value, idx, i) }}
+                                      />
+                                    </td>
+                                  </tr>
+                                </>
+                              ))}
+                            </>
+                          );
+                        })}
+                      </tbody>
                     </Table>
                   </div>
                 </CardBody>
