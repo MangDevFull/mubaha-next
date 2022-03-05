@@ -57,7 +57,7 @@ export default function AddProductPage() {
   const [selectSecondCategory, setSelectSecondCategory] = useState("");
   const [selectThirdCategory, setSelectThirdCategory] = useState("");
   const [images, setImage] = useState([]);
-
+  const [description, setDescription] = useState("");
 
   const inputName = useRef();
   const inputSKU = useRef();
@@ -177,36 +177,39 @@ export default function AddProductPage() {
     }
   };
 
+  const handleEditor = async (e) => {
+    setDescription(e);
+  };
+
   const handeSubmit = async () => {
     let uploadImages = [];
-    await images.forEach(async (value) => {
-      const url = value.uploadUrl;
-      const uri = new Url(url);
+    await Promise.all(images.map(async (value) => {
+      try {
+        const url = value.uploadUrl;
+        const uri = new Url(url);
 
-      const query = queryString.parse(uri.query);
-      const body = value.file;
-      const headers = {
-        ...query,
-      };
-      const response = await fetch(uri.href, {
-        method: "PUT",
-        headers: headers,
-        body: body,
-      });
+        const query = queryString.parse(uri.query);
+        const body = value.file;
+        const headers = {
+          ...query,
+        };
+        const response = await fetch(uri.href, {
+          method: "PUT",
+          headers: headers,
+          body: body,
+        });
 
-      if (response.ok) {
-        uploadImages.push(value.downloadUrl);
-      } else {
-        alert("Error downloading");
+        if (response.ok) {
+          uploadImages.push(value.downloadUrl);
+        } else {
+          alert("Error downloading");
+        }
+      } catch (error) {
+        console.log('error'+ error);
       }
-    });
-   const bodyVariants = variants.map((variant) => {
-        variant.attrs = variant.attrs.map((attr) => {
-          return {name:attr.label,...attr}
-        })
-        return {name:variant.label,sizes:variant.attrs}
-    })
-    const body = {
+    }))
+
+    let body = {
       name: inputName.current.value,
       price: inputPrice.current.value,
       discount: inputDiscount.current.value,
@@ -219,9 +222,35 @@ export default function AddProductPage() {
       secondLevelCat: selectSecondCategory,
       threeLevelCat: selectThirdCategory,
       images: uploadImages,
-      variants:bodyVariants,
+      description: description
     };
-    console.log('body',body)
+
+    const bodyVariants = variants.map((variant) => {
+      variant.attrs = variant.attrs.map((attr) => {
+        return { name: attr.label, ...attr }
+      })
+
+      return { name: variant.label, sizes: variant.attrs, imgae: uploadImages[0] }
+    })
+
+    body = {
+      ...body,
+      variants: bodyVariants,
+    }
+    console.log(body)
+    console.log(`${process.env.API_URL}/vendor/products`)
+    const res = fetch(`${process.env.API_URL}/vendor/products`,{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body)
+    })
+    console.log(res)
+    console.log(`${process.env.API_URL}/vendor/products`)
+    const data = await res.json();
+
+    console.log(data)
   };
   const [productVariant1, setProductVariant1] = useState("");
   const [productVariant2, setProductVariant2] = useState("");
@@ -238,20 +267,20 @@ export default function AddProductPage() {
     attributes[idx] = { label: e.value, value: e.value };
     setAttributes([...attributes]);
   };
-  const deletVariant = (idx) => { 
-    if(variants.length >1){
+  const deletVariant = (idx) => {
+    if (variants.length > 1) {
       variants.splice(idx, 1);
       setVariants([...variants]);
     }
-  
+
   }
 
   const deleteAtrr = (idx) => {
-    if(attributes.length >1){
+    if (attributes.length > 1) {
       attributes.splice(idx, 1);
       setAttributes([...attributes]);
-      variants.map(variant=> {
-        return variant.attrs.splice(idx,1)
+      variants.map(variant => {
+        return variant.attrs.splice(idx, 1)
       })
     }
   }
@@ -271,7 +300,6 @@ export default function AddProductPage() {
     }
     variants[i].attrs[idx] = attrs
     setVariants([...variants])
-    console.log(variants)
 
   }
   const handleStockAtrr = (e, idx, i) => {
@@ -440,7 +468,7 @@ export default function AddProductPage() {
                   <div className="digital-add needs-validation">
                     <FormGroup className=" mb-0">
                       <div className="description-sm">
-                        <Editor />
+                        <Editor onChangeEditor={handleEditor} />
                       </div>
                     </FormGroup>
                   </div>
@@ -488,7 +516,7 @@ export default function AddProductPage() {
                                 />
                                 <Button className="mt-1 mb-1"
                                   color="danger"
-                                  onClick={() =>deletVariant(i)}
+                                  onClick={() => deletVariant(i)}
                                 >
                                   Xoá
                                 </Button>
@@ -537,9 +565,9 @@ export default function AddProductPage() {
                                   placeholder="Nhập loại hàng"
                                   value={x}
                                 />
-                                 <Button className="mt-1 mb-1"
+                                <Button className="mt-1 mb-1"
                                   color="danger"
-                                  onClick={() =>deleteAtrr(i)}
+                                  onClick={() => deleteAtrr(i)}
                                 >
                                   Xoá
                                 </Button>
