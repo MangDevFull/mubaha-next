@@ -56,7 +56,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
 
   const changeColorVar = (imageId) => {
     const index = detailProduct.media.data.findIndex((e) => e._id === imageId);
-
     slider1.current.slickGoTo(index);
   };
 
