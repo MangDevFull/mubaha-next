@@ -3,6 +3,8 @@ import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import Menu2 from "../../../public/assets/images/mega-menu/2.jpg";
 import PostLoader from "../../common/PostLoader";
 import ProductItem2 from "../../common/product-box/ProductBox1";
+import Slider from "react-slick";
+import MasterBanner from "@/components/MasterBanner";
 
 const ProductList = ({
   colClass,
@@ -16,8 +18,15 @@ const ProductList = ({
   handlePagination,
   value,
   orderBy,
-  totalProduct
+  totalProduct,
 }) => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   const [layout, setLayout] = useState(layoutList);
   const [grid, setGrid] = useState(colClass);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,14 +34,22 @@ const ProductList = ({
   const [orderByView, setOrderByView] = useState(orderBy);
   const [isLoadingMore, setIsLoadingMore] = useState(true);
   return (
-    <Col className="collection-content">
+    <Col className="collection-content col-sm-9">
       <div className="page-main-content">
-        <Row>
+        <Row style={{ flexWrap: "nowrap" }}>
           <Col sm="12">
             <div className="top-banner-wrapper">
-              <a href={null}>
-                <Media src={Menu2.src} className="img-fluid blur-up lazyload" alt="" />
-              </a>
+              <div className="p-0">
+                <Slider className="slide-1 home-slider">
+                  <a href={null}>
+                    <Media src={Menu2.src} className="img-fluid blur-up lazyload" alt="" />
+                  </a>
+                  <a href={null}>
+                    <Media src={Menu2.src} className="img-fluid blur-up lazyload" alt="" />
+                  </a>
+                </Slider>
+              </div>
+
               <div className="top-banner-content small-section">
                 <h4>Thời trang</h4>
                 <h5>
@@ -227,7 +244,10 @@ const ProductList = ({
                 </Row>
               </div>
 
-              {listProduct.length > 0 && (
+              {console.log( listProduct.length === totalProduct)}
+              {console.log("total", totalProduct)}
+
+              {listProduct.length > 0 && listProduct.length < totalProduct && (
                 <>
                   <div className="section-t-space">
                     <div className="text-center">

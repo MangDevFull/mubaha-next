@@ -10,6 +10,7 @@ import Price from "./Price";
 import SideProductCart from "@/components/SideProductCart";
 import InputRange from "react-input-range";
 import NumberFormat from "react-number-format";
+import ProductType from "./ProductType";
 
 const FilterPage = ({ sm, sidebarView, closeSidebar, newProducts, handleCallApi, limit, orderBy }) => {
   console.log("limit", limit);
@@ -27,8 +28,9 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, newProducts, handleCallApi,
           </div>
           <Category />
           <Brand />
-          <Color />
-          <Size />
+          <ProductType />
+          {/* <Color />
+          <Size /> */}
           <div className="collection-collapse-block border-0 open">
             <h3 className="collapse-block-title">Giá</h3>
             <div className="collection-collapse-block-content">
