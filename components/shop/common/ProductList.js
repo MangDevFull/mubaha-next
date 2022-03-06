@@ -244,9 +244,6 @@ const ProductList = ({
                 </Row>
               </div>
 
-              {console.log( listProduct.length === totalProduct)}
-              {console.log("total", totalProduct)}
-
               {listProduct.length > 0 && listProduct.length < totalProduct && (
                 <>
                   <div className="section-t-space">
