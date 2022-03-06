@@ -10,6 +10,7 @@ import productVariant from "@/enums/productVariant.enum.js";
 import productVariantValue from "@/enums/productVariantValue.enum.js";
 import { Table } from "reactstrap";
 import "react-table-v6/react-table.css";
+import ImageVariant from "@/components/backend/ImageVariant.js"
 
 const Editor = dynamic(() => import("@/components/backend/Editor"), {
   ssr: false,
@@ -187,13 +188,38 @@ export default function AddProductPage() {
 
   const handleSubmit = async () => {
     let uploadImages = [];
-    await Promise.all(images.map(async (value) => {
+    // await Promise.all(images.map(async (value) => {
+    //   try {
+    //     const url = value.uploadUrl;
+    //     const uri = new Url(url);
+
+    //     const query = queryString.parse(uri.query);
+    //     const body = value.file;
+    //     const headers = {
+    //       ...query,
+    //     };
+    //     const response = await fetch(uri.href, {
+    //       method: "PUT",
+    //       headers: headers,
+    //       body: body,
+    //     });
+
+    //     if (response.ok) {
+    //       uploadImages.push(value.downloadUrl);
+    //     } else {
+    //       alert("Error downloading");
+    //     }
+    //   } catch (error) {
+    //     console.log('error' + error);
+    //   }
+    // }))
+    await Promise.all(variants.map(async (value,idx) => {
       try {
-        const url = value.uploadUrl;
+        const url = value.image.uploadImage;
         const uri = new Url(url);
 
         const query = queryString.parse(uri.query);
-        const body = value.file;
+        const body = value.image.file;
         const headers = {
           ...query,
         };
@@ -202,9 +228,9 @@ export default function AddProductPage() {
           headers: headers,
           body: body,
         });
-
         if (response.ok) {
-          uploadImages.push(value.downloadUrl);
+          variants[idx].image = value.image.downloadUrl;
+          setVariants([...variants])
         } else {
           alert("Error downloading");
         }
@@ -226,45 +252,34 @@ export default function AddProductPage() {
       secondLevelCat: selectSecondCategory,
       threeLevelCat: selectThirdCategory,
       images: uploadImages,
-      description: description
+      description: description,
+      variants:variants,
     };
 
-    const bodyVariants = variants.map((variant) => {
-      variant.attrs = variant.attrs.map((attr) => {
-        return { name: attr.label, ...attr }
-      })
+    console.log(body)
+    // const res = await fetch(`${process.env.API_URL}/vendor/products`, {
+    //   method: "POST",
+    //   mode: "cors",
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //     // 'Content-Type': 'application/x-www-form-urlencoded',
+    //   },
+    //   body: JSON.stringify(body)
+    // })
+    // // console.log('res',res)
+    // const data = await res.json();
 
-      return { name: variant.label, sizes: variant.attrs, image: uploadImages[0] }
-    })
-
-    body = {
-      ...body,
-      variants: bodyVariants,
-    }
-
-    const res = await fetch(`${process.env.API_URL}/vendor/products`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: JSON.stringify(body)
-    })
-    // console.log('res',res)
-    const data = await res.json();
-
-    if (data.status === 200) {
-      router.push('/vendors/products')
-    }
-    // console.log("data",data)
+    // if (data.status === 200) {
+    //   router.push('/vendors/products')
+    // }
+    // // console.log("data",data)
   };
   const [productVariant1, setProductVariant1] = useState("");
   const [productVariant2, setProductVariant2] = useState("");
   const [productValues1, setProductValues1] = useState([]);
   const [productValues2, setProductValues2] = useState([]);
   const [attributes, setAttributes] = useState([{ value: "", label: "" }]);
-  const [variants, setVariants] = useState([{ value: "", label: "", attrs: [] }]);
+  const [variants, setVariants] = useState([{ value: "Loại", label: "Loại", attrs: [] }]);
 
   const handleSetVariant = (e, idx) => {
     variants[idx] = { label: e.value, value: e.value, attrs: variants[idx].attrs };
@@ -327,6 +342,12 @@ export default function AddProductPage() {
     variants[i].attrs[idx] = attrs
     setVariants([...variants])
   }
+
+  const hanldeImageVariant = (idx,e)=>{
+    variants[idx].image = e
+    setVariants([...variants])
+  }
+
 
   return (
     <>
@@ -535,7 +556,7 @@ export default function AddProductPage() {
                         </div>
                         <div className="d-flex justify-content-center">
                           <div className="mt-1 btn-primary p-2" onClick={onAddBtnClick1}>
-                            Thêm phân loại hàng
+                            Thêm phân loại hàng 1
                           </div>
                         </div>
                       </div>
@@ -585,7 +606,7 @@ export default function AddProductPage() {
                         </div>
                         <div className="d-flex justify-content-center">
                           <div className="mt-1 btn-primary p-2" onClick={onAddBtnClick2}>
-                            Thêm phân loại hàng
+                            Thêm phân loại hàng 2
                           </div>
                         </div>
                       </div>
@@ -609,7 +630,6 @@ export default function AddProductPage() {
                                 <td rowSpan={attributes.length + 1} className="align-middle text-center">{variant.label}</td>
                               </tr>
                               {attributes.map((attr, idx) => (
-
                                 <tr key={idx}>
                                   <td className="align-middle text-center">{attr.label}</td>
                                   <td className="align-middle text-center">
@@ -636,6 +656,19 @@ export default function AddProductPage() {
                         })}
                       </tbody>
                     </Table>
+                  </div>
+                  <div className="mt-3">
+                    <Label className="col-form-label pt-0">
+                      <h5> Ảnh nhóm phân loại 1</h5>
+                    </Label>
+                    {
+                      variants.map((variant,key) =>{
+                        const idx = key
+                        return(
+                          <ImageVariant variant={variant} idx={idx} hanldeImageVariant={hanldeImageVariant}/>
+                        )
+                      })
+                    }
                   </div>
                 </CardBody>
               </Card>
