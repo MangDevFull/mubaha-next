@@ -84,6 +84,13 @@ export default function RegisterPage() {
                     </Alert>
                   )}
                   <div className="form-group mb-1">
+                    
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Nhập họ và tên"
+                      onChange={handleFullname}
+                    />
                     <input
                       onChange={checkPhone}
                       type="text"
@@ -91,12 +98,6 @@ export default function RegisterPage() {
                       placeholder="Nhập số điện thoại của bạn"
                       required=""
                       autoFocus
-                    />
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Nhập họ và tên"
-                      onChange={handleFullname}
                     />
                   </div>
                   <div className="d-flex justify-content-center">

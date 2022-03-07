@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useSession } from 'next-auth/react'
 import Breadcrumb from '@/components/Breadcrumb.js'
-import { Form, Modal } from 'reactstrap';
+import { Form, Modal, ModalFooter, ModalHeader } from 'reactstrap';
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
 import styles from '@/styles/authen.module.css'
@@ -110,10 +110,10 @@ export default function CreatePassWord() {
         </div>
       </section>
 
-      <Modal show={show}>
-        <Modal.Header>
-          <Modal.Title>Thông báo</Modal.Title>
-        </Modal.Header>
+      <Modal isOpen={show}>
+        <ModalHeader>
+          Thông báo
+        </ModalHeader>
 
         <div className="alert alert-success d-flex justify-content-center align-items-center" role="alert">
           <svg
@@ -127,13 +127,13 @@ export default function CreatePassWord() {
           </svg>
           <div style={{ marginLeft: "10px" }}>Tạo mật khẩu thành công</div>
         </div>
-        <Modal.Footer>
+        <ModalFooter>
           <div>
             <p style={{ marginRight: "10px", textAlign: "center" }}>
               Xin chờ một chút bạn đang được chuyển hướng đến sang trang chủ
             </p>
           </div>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
       <Footer />
     </>

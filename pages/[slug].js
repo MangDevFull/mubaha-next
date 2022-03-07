@@ -10,9 +10,16 @@ import Services from "@/components/common/product-details/services";
 import Filter from "@/components/common/product-details/filter";
 import CountdownComponent from "@/components/common/widgets/countdownComponent";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
+import Link from "next/link";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
   const [quantity, setQuantity] = useState(1);
+  const [attributes, setAttributes] = useState();
+
+  // useEffect(() => {
+  //   // console.log(detailProduct.variants[0].size);
+  // }, [])
+
   const handleIncrease = () => {
     setQuantity(quantity + 1);
   };
@@ -29,6 +36,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setSelectedVariant(variant._id);
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
+
+    // attributes
+    setAttributes(variant.size);
   };
 
   const [selectedSize, setSlectedSize] = useState();
@@ -51,7 +61,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     },
   ];
   const handleSelectedSize = (size) => {
-    setSlectedSize(size.id);
+    setSlectedSize(size._id);
   };
 
   const changeColorVar = (imageId) => {
@@ -67,6 +77,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
       nav1: slider1.current,
       nav2: slider2.current,
     });
+
+    setAttributes(detailProduct.variants[0].size);
   }, []);
   const { nav1, nav2 } = state;
 
@@ -174,7 +186,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                       <Col lg={6} className="rtl-text">
                         {/* DetailsWithPrice */}
                         <div className="product-right">
-                          <div className="product-count">Chi tiết sản phẩm</div>
+                          <div className="product-count">
+                            <Link href={`/vendors/${detailProduct.vendor.ownerRef.username}`}>
+                              <a>{detailProduct.vendor.brandName}</a>
+                            </Link>
+                          </div>
                           <h2>{detailProduct.name}</h2>
                           <div className="rating-section">
                             <div className="rating">
@@ -184,9 +200,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             </div>
                             <h6>120 đánh giá</h6>
                           </div>
-                          <div className="label-section">
-                            <span className="badge badge-grey-color">#1 Best seller</span>
-                          </div>
+                          {/* <div className="label-section">
+                            <span className="badge badge-grey-color">#1 Bán chạy</span>
+                          </div> */}
                           <h3 className="price-detail">
                             <ProductPrice
                               price={detailProduct.price}
@@ -209,7 +225,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 checked={selectedVariant === variant._id}
                                 onClick={(e) => selectedColor(e, variant)}
                               >
-                                {variant.colorName}
+                                {variant.name}
                               </li>
                             ))}
                           </ul>
@@ -220,13 +236,13 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           >
                             <h6 className="product-title size-text">
                               Lựa chọn kích thước
-                              <span>
+                              {/* <span>
                                 <a href={null} data-bs-toggle="modal" data-bs-target="#sizemodal">
                                   Bảng kích thước
                                 </a>
-                              </span>
+                              </span> */}
                             </h6>
-                            <Modal
+                            {/* <Modal
                               className="modal fade"
                               id="sizemodal"
                               tabIndex={-1}
@@ -258,22 +274,22 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                   </div>
                                 </div>
                               </div>
-                            </Modal>
+                            </Modal> */}
 
                             <div className="size-box">
                               <ul>
-                                {Sizes.map((size) => (
+                                {attributes?.map((size) => (
                                   <li
                                     style={
-                                      selectedSize === size.id
+                                      selectedSize === size._id
                                         ? { lineHeight: 2.3, border: "1px solid #ffa200" }
                                         : { lineHeight: 2.3 }
                                     }
-                                    checked={selectedSize === size.id}
-                                    key={size.id}
+                                    checked={selectedSize === size._id}
+                                    key={size._id}
                                     onClick={() => handleSelectedSize(size)}
                                   >
-                                    {size.sizeName}
+                                    {size.name}
                                   </li>
                                 ))}
                               </ul>

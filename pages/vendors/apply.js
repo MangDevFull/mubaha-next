@@ -1,7 +1,7 @@
 import API from "../../services/api.js"
 import Head from "next/head";
 import { useRef, useState, useEffect } from "react"
-import { Modal, Button, Row, Alert } from "reactstrap"
+import { Modal, Button, Row, Alert, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import Layout from "@/components/Layout";
 import Breadcrumb from '@/components/Breadcrumb.js'
 import libphone from 'google-libphonenumber';
@@ -50,6 +50,7 @@ export default function AppLyVendor({ data }) {
     },
     detail: "",
   })
+  
   useEffect(() => {
     if (session != undefined) {
       if (session.user.type == accountType.VENDOR) {
@@ -60,9 +61,10 @@ export default function AppLyVendor({ data }) {
         router.push('/')
       }
     }
-  })
+  }, [session, router])
   const handleClose = () => setShow(false)
   const handleShow = () => {
+    console.log('check')
     setShow(true)
     setMessage("")
     setShowMessage(false)
@@ -530,11 +532,11 @@ export default function AppLyVendor({ data }) {
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        show={show}>
-        <Modal.Header>
-          <Modal.Title>Cập nhật địa chỉ</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="container-fluid">
+        isOpen={show}>
+        <ModalHeader>
+          Cập nhật địa chỉ
+        </ModalHeader>
+        <ModalBody className="container-fluid">
           <div className="col-md-12 mt-3">
             {showMessage &&
               <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
@@ -542,7 +544,7 @@ export default function AppLyVendor({ data }) {
               </Alert>
             }
           </div>
-          <Row className="mt-5 ml-1 mb-5 mr-1">
+          <Row className="p-5">
             <form id="add_address">
               <div className="row">
                 <div className="col-lg-6">
@@ -554,6 +556,7 @@ export default function AppLyVendor({ data }) {
                       type="text"
                       defaultValue={address.fullName}
                       className="form-control productname"
+                      required
                     />
                   </div>
                 </div>
@@ -567,6 +570,7 @@ export default function AppLyVendor({ data }) {
                       type="text"
                       className="form-control number_phone"
                       maxLength={10}
+                      required
                     />
                   </div>
                 </div>
@@ -584,6 +588,7 @@ export default function AppLyVendor({ data }) {
                       data-trigger
                       name="choices-single-groups"
                       onChange={handleDistrict}
+                      required
                     >
                       {address.province.code ? (
                         <option value={address.province.code}>{address.province.name}</option>
@@ -614,6 +619,7 @@ export default function AppLyVendor({ data }) {
                       data-trigger
                       name="choices-single-groups"
                       onChange={handleWards}
+                      required
                     >
                       {address.district.code ? (
                         <option value={address.district.code}>{address.district.name}</option>
@@ -645,6 +651,7 @@ export default function AppLyVendor({ data }) {
                       data-trigger
                       name="choices-single-groups"
                       id="ward"
+                      required
                     >
                       {address.ward.code ? (
                         <option value={address.ward.code}>{address.ward.name}</option>
@@ -669,20 +676,21 @@ export default function AppLyVendor({ data }) {
                     className="form-control"
                     ref={inputDetailAddress}
                     defaultValue={address.detail}
+                    required
                   />
                 </div>
               </div>
             </form>
           </Row>
-        </Modal.Body>
-        <Modal.Footer>
+        </ModalBody>
+        <ModalFooter>
           <Button className="btn btn-secondary btn-lg" style={{ width: '120px', height: '50px' }} onClick={handleClose}>
             Huỷ
           </Button>
           <button className="btn-solid btn" onClick={handleAdd}>
             Cập nhật
           </button>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
       {/* start selling section end */}
     </>

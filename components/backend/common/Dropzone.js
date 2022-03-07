@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone-uploader'
 import { useState } from 'react'
 
 
-const MyUploader = ({sendImages}) => {
+const MyDropzone = ({sendImages}) => {
 
   const [images, setImages] = useState([])
 
@@ -44,4 +44,4 @@ const MyUploader = ({sendImages}) => {
   )
 }
 
-export default MyUploader
+export default MyDropzone
