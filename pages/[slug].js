@@ -15,9 +15,13 @@ import { FacebookShareButton, TwitterShareButton, TelegramShareButton, MailruSha
 
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  const shareUrl = `${window.location.href}`;
+  let shareUrl;
   const [quantity, setQuantity] = useState(1);
   const [attributes, setAttributes] = useState();
+
+  useEffect(() => {
+    shareUrl = window.location.href;
+  }, [])
 
   // useEffect(() => {
   //   // console.log(detailProduct.variants[0].size);
