@@ -13,8 +13,9 @@ import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 import Link from "next/link";
 import { FacebookShareButton, TwitterShareButton, TelegramShareButton, MailruShareButton, LinkedinShareButton } from "react-share";
 
+
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  const shareUrl = `https://dev.mubaha.com/${detailProduct.slug}`;
+  const shareUrl = `${window.location.href}`;
   const [quantity, setQuantity] = useState(1);
   const [attributes, setAttributes] = useState();
 
