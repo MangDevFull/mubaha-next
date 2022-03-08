@@ -15,12 +15,12 @@ import { FacebookShareButton, TwitterShareButton, TelegramShareButton, MailruSha
 
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  let shareUrl;
   const [quantity, setQuantity] = useState(1);
   const [attributes, setAttributes] = useState();
+  const [shareUrl, setShareUrl] = useState();
 
   useEffect(() => {
-    shareUrl = window.location.href;
+    setShareUrl(window.location.href);
   }, [])
 
   // useEffect(() => {
