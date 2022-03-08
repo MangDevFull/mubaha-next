@@ -11,8 +11,11 @@ import Filter from "@/components/common/product-details/filter";
 import CountdownComponent from "@/components/common/widgets/countdownComponent";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 import Link from "next/link";
+import { FacebookShareButton, TwitterShareButton, TelegramShareButton, MailruShareButton, LinkedinShareButton } from "react-share";
+
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  const shareUrl = `${window.location.href}`;
   const [quantity, setQuantity] = useState(1);
   const [attributes, setAttributes] = useState();
 
@@ -368,27 +371,59 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               <ul className="product-social">
                                 <li>
                                   <a>
-                                    <i className="fa fa-facebook" />
+                                    <FacebookShareButton
+                                      url={shareUrl}
+                                      hashtag={"#MUBAHA"}
+                                      quote={"Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam"}
+                                    >
+                                      <i className="fa fa-facebook" />
+                                    </FacebookShareButton>
                                   </a>
                                 </li>
                                 <li>
                                   <a>
-                                    <i className="fa fa-google-plus" />
+                                  <TelegramShareButton
+                                      url={shareUrl}
+                                      hashtag={"#MUBAHA"}
+                                      quote={"Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam"}
+                                    >
+                                      <i className="fa fa-telegram" />
+                                    </TelegramShareButton>
+                                    
                                   </a>
                                 </li>
                                 <li>
                                   <a>
-                                    <i className="fa fa-twitter" />
+                                    <TwitterShareButton
+                                      url={shareUrl}
+                                      hashtag={"#MUBAHA"}
+                                      quote={"Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam"}
+                                    >
+                                      <i className="fa fa-twitter" />
+                                    </TwitterShareButton>
                                   </a>
                                 </li>
                                 <li>
                                   <a>
-                                    <i className="fa fa-instagram" />
+                                  <MailruShareButton
+                                      url={shareUrl}
+                                      hashtag={"#MUBAHA"}
+                                      quote={"Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam"}
+                                    >
+                                      <i className="fa fa-google-plus" />
+                                    </MailruShareButton>
+                                    
                                   </a>
                                 </li>
                                 <li>
                                   <a>
-                                    <i className="fa fa-rss" />
+                                  <LinkedinShareButton
+                                      url={shareUrl}
+                                      hashtag={"#MUBAHA"}
+                                      quote={"Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam"}
+                                    >
+                                      <i className="fa fa-linkedin" />
+                                    </LinkedinShareButton>
                                   </a>
                                 </li>
                               </ul>
