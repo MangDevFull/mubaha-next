@@ -21,12 +21,12 @@ import {
 } from "react-share";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  const [shareUrl,setShareUrl] = useState();
   const [quantity, setQuantity] = useState(1);
   const [attributes, setAttributes] = useState();
+  const [shareUrl, setShareUrl] = useState();
 
   useEffect(() => {
-    setShareUrl(window.location.href)
+    setShareUrl(window.location.href);
   }, [])
 
   // useEffect(() => {
