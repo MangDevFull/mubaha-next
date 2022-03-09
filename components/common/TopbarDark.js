@@ -55,7 +55,7 @@ export default function TopBarDark({ topClass, fluid }) {
                   {session.user.type === accountTypeEnum.VENDOR ? (
                     <li>
                       
-                      <a href="https://banhang.mubaha.com">Kênh người bán</a>
+                      <a href="https://vendor.mubaha.com">Kênh người bán</a>
                     </li>
                   ) : ""}
                   <li>
