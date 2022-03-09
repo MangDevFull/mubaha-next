@@ -15,4 +15,10 @@ const developmentServer = {
 //   authUrl: "http://localhost:3001/auth",
 // }
 
+// const developmentServer = {
+//   host: "http://192.168.1.24:3001/",
+//   baseUrl: "http://192.168.1.24:3001/web",
+//   authUrl: "http://192.168.1.24:3001/auth",
+// };
+
 export default developmentServer;
