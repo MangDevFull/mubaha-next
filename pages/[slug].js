@@ -48,37 +48,13 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setSelectedVariant(variant._id);
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
-
     // attributes
     setAttributes(variant.size);
   };
 
   const [selectedSize, setSlectedSize] = useState();
-  const Sizes = [
-    {
-      id: 1,
-      sizeName: "S",
-    },
-    {
-      id: 2,
-      sizeName: "M",
-    },
-    {
-      id: 3,
-      sizeName: "L",
-    },
-    {
-      id: 4,
-      sizeName: "XL",
-    },
-  ];
   const handleSelectedSize = (size) => {
     setSlectedSize(size._id);
-  };
-
-  const changeColorVar = (imageId) => {
-    const index = detailProduct.media.data.findIndex((e) => e._id === imageId);
-    slider1.current.slickGoTo(index);
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
