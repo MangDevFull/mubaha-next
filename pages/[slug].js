@@ -11,6 +11,7 @@ import Filter from "@/components/common/product-details/filter";
 import CountdownComponent from "@/components/common/widgets/countdownComponent";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 import Link from "next/link";
+import styles from "@/styles/slug.module.css";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -244,6 +245,13 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 onClick={(e) => selectedColor(e, variant)}
                               >
                                 {variant.name}
+                                <img style={
+                                  selectedVariant === variant._id
+                                    ? {
+                                        display: "block"
+                                      }
+                                    : {}
+                                } class={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
                               </li>
                             ))}
                           </ul>

@@ -1,0 +1,7 @@
+.tickImage {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  display: none;
+  max-width: 30%;
+}
