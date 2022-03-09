@@ -11,8 +11,13 @@ import Filter from "@/components/common/product-details/filter";
 import CountdownComponent from "@/components/common/widgets/countdownComponent";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 import Link from "next/link";
-import { FacebookShareButton, TwitterShareButton, TelegramShareButton, MailruShareButton, LinkedinShareButton } from "react-share";
-
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  TelegramShareButton,
+  MailruShareButton,
+  LinkedinShareButton,
+} from "react-share";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
   const [quantity, setQuantity] = useState(1);
@@ -43,37 +48,13 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setSelectedVariant(variant._id);
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
-
     // attributes
     setAttributes(variant.size);
   };
 
   const [selectedSize, setSlectedSize] = useState();
-  const Sizes = [
-    {
-      id: 1,
-      sizeName: "S",
-    },
-    {
-      id: 2,
-      sizeName: "M",
-    },
-    {
-      id: 3,
-      sizeName: "L",
-    },
-    {
-      id: 4,
-      sizeName: "XL",
-    },
-  ];
   const handleSelectedSize = (size) => {
     setSlectedSize(size._id);
-  };
-
-  const changeColorVar = (imageId) => {
-    const index = detailProduct.media.data.findIndex((e) => e._id === imageId);
-    slider1.current.slickGoTo(index);
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
@@ -110,6 +91,36 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     <>
       <Head>
         <title>{detailProduct.name} | Mubaha</title>
+        <meta name="title" content={detailProduct.name | "Mubaha"} />
+        <meta
+          name="description"
+          content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"
+        />
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://metatags.io/" />
+        <meta property="og:title" content="Meta Tags — Preview, Edit and Generate" />
+        <meta
+          property="og:description"
+          content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"
+        />
+        <meta
+          property="og:image"
+          content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
+        />
+        {/* <!-- Twitter --> */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://metatags.io/" />
+        <meta property="twitter:title" content="Meta Tags — Preview, Edit and Generate" />
+        <meta
+          property="twitter:description"
+          content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"
+        />
+        <meta
+          property="twitter:image"
+          content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
+        />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" key="viewport" />
       </Head>
       {/* breadcrumb start */}
       <div className="breadcrumb-section">
@@ -386,14 +397,13 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 </li>
                                 <li>
                                   <a>
-                                  <TelegramShareButton
+                                    <TelegramShareButton
                                       url={shareUrl}
                                       hashtag={"#MUBAHA"}
                                       quote={"Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam"}
                                     >
                                       <i className="fa fa-telegram" />
                                     </TelegramShareButton>
-                                    
                                   </a>
                                 </li>
                                 <li>
@@ -409,19 +419,18 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 </li>
                                 <li>
                                   <a>
-                                  <MailruShareButton
+                                    <MailruShareButton
                                       url={shareUrl}
                                       hashtag={"#MUBAHA"}
                                       quote={"Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam"}
                                     >
                                       <i className="fa fa-google-plus" />
                                     </MailruShareButton>
-                                    
                                   </a>
                                 </li>
                                 <li>
                                   <a>
-                                  <LinkedinShareButton
+                                    <LinkedinShareButton
                                       url={shareUrl}
                                       hashtag={"#MUBAHA"}
                                       quote={"Sàn thương mại điện tử bán sỉ hàng đầu Việt Nam"}
