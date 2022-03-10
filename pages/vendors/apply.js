@@ -64,7 +64,6 @@ export default function AppLyVendor({ data }) {
   }, [session, router])
   const handleClose = () => setShow(false)
   const handleShow = () => {
-    console.log('check')
     setShow(true)
     setMessage("")
     setShowMessage(false)
