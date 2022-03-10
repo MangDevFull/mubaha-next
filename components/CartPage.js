@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Container, Row, Col, Media, Button } from "reactstrap";
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-
+import Breadcrumb from "./Breadcrumb";
 const CartPage = () => {
-  const [ProductNumber, setProductNumber] = useState(1)
+  const [ProductNumber, setProductNumber] = useState(0)
   const router = useRouter();
   const { data: session, status } = useSession({
     required: true,
@@ -15,6 +15,7 @@ const CartPage = () => {
   })
   return (
     <div>
+      <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
       {ProductNumber > 0 ? (
         <section className="cart-section section-b-space">
           <Container>
