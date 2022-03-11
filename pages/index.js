@@ -2,7 +2,7 @@ import Head from "next/head";
 import MainServiceCollections from "@/components/MainServiceCollections";
 import ProductCollection1 from "@/components/ProductCollection1";
 import Layout from "@/components/Layout";
-
+import { useEffect } from "react";
 import MainMultipleSlider from "@/components/MainMultipleSlider";
 import PartitionSlider from "@/components/PartitionSlider";
 import MasterParallaxBanner from "@/components/MasterParallaxBanner";
@@ -16,6 +16,9 @@ export default function Home({
   rightFeatureProducts,
   top5Products,
 }) {
+  // useEffect(() => {
+  //   console.log('s',session)
+  // },[])
   return (
     <>
       <Head>

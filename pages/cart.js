@@ -1,14 +1,16 @@
 import Head from "next/head";
 import LayoutCart from '@/components/LayoutCart.js'
 import CartPage from '@/components/CartPage.js'
+import API from '@/services/api.js';
+import { getSession,useSession } from 'next-auth/react';
 
-export default function Cart(){
+export default function Cart({data,totalP}){
     return(
       <>
       <Head>
       <title>Giỏ hàng</title>
       </Head>
-        <CartPage />
+        <CartPage data={data} totalP={totalP} />
       </>
     )
 }
@@ -16,3 +18,67 @@ export default function Cart(){
 Cart.getLayout = function getLayout(page) {
   return <LayoutCart>{page}</LayoutCart>;
 };
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+
+  const res = await fetch(process.env.API_CART_URL, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + session.accessToken
+    },
+  })
+
+  const data = await res.json()
+
+    const fullP = data.data.products.map(product => {
+      const d = product.products.map((p, index) => {
+        let value = {
+          quantity: p.quantity,
+          name: p.name,
+          currencySymbol: p.currencySymbol,
+          slug: p.slug,
+          cartID:p.cartID,
+          selected: false,
+        }
+        if (p.selectedVariant != null) {
+          const rs = p.variants.filter(variant => {
+            return variant._id === p.selectedVariant
+          })
+          value = {
+            ...value,
+            variant: rs[0]
+          }
+        } else if (p.selectedAttribute != null) {
+          const rs = p.variants.sizes.filter(variant => {
+            return variant._id === p.selectedAttribute
+          })
+          value = {
+            ...value,
+            attr: rs[0]
+          }
+        } else {
+          price = {
+            ...value,
+            price: p.price,
+            image: p.media.featuredImage
+          }
+        }
+        return value
+      })
+      return {
+        vendor: product._id,
+        totalDocs: product.totalDocs,
+        products: d
+      }
+    })
+    const totalP = data.data.totalProducts[0].product
+
+  // Pass data to the page via props
+  return {
+    props: {
+     data: fullP,
+     totalP: totalP
+    }
+  };
+}
