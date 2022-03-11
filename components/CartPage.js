@@ -114,6 +114,7 @@ const CartPage = ({ data, totalP }) => {
                 </div>
                 <div className={`${styles.vendorPart} p-3`}>
                   {products.map((p, i) => {
+                    
                     return (
                       <Card key={i} style={{ border: 'none' }}>
                         <CardHeader style={{ backgroundColor: 'white' }}>
