@@ -251,7 +251,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                         display: "block"
                                       }
                                     : {}
-                                } class={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
+                                } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
                               </li>
                             ))}
                           </ul>
