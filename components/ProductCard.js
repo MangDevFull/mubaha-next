@@ -15,7 +15,7 @@ export default function ProductCard({ product }) {
       <div className="product-box product-wrap">
         <div className="img-wrapper">
           <div className="front">
-            <Link href={`/${product.slug}`}>
+            <Link href={`/${product.slug}`} passHref>
               <Media
                 src={product.media.featuredImage}
                 style={{ maxHeight: "204px" }}
@@ -81,7 +81,7 @@ export default function ProductCard({ product }) {
           </Modal> */}
           </div>
           <div className="back">
-            <Link href={`/${product.slug}`}>
+            <Link href={`/${product.slug}`} passHref>
               <Media
                 src={product.media.featuredImage}
                 style={{ maxHeight: "204px" }}
