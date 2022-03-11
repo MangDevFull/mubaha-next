@@ -9,6 +9,7 @@ import styles from "@/styles/cart.module.css"
 const CartPage = () => {
   const [products, setProduct] = useState([])
   const [totalProduct, setTotalProduct] = useState(0)
+  const [invalidQuantity,setInvalidQuantity] = useState(false)
   const router = useRouter();
 
   const { data: session, status } = useSession({
@@ -37,7 +38,7 @@ const CartPage = () => {
               quantity: p.quantity,
               name: p.name,
               currencySymbol: p.currencySymbol,
-
+              slug: p.slug
             }
             if (p.selectedVariant != null) {
               const rs = p.variants.filter(variant => {
@@ -80,11 +81,29 @@ const CartPage = () => {
       fetchData()
     }
   }, [session])
-  console.log(products)
+  const handleMinusQuantity = (i,index) =>{
+  if( products[i].products[index].quantity >=2){
+    products[i].products[index].quantity =  products[i].products[index].quantity -1
+    setProduct([...products])
+  }
+  }
+  const handlePlusQuantity = (i,index) => {
+    products[i].products[index].quantity = products[i].products[index].quantity + 1
+    setProduct([...products])
+  }
+  const removeFromCart = (i, index) => {
+    if (index > -1) {
+      products[i].products.splice(index, 1); 
+    }
+    if(products[i].products.length === 0) {
+      products.splice(i, 1);
+    }
+    setProduct([...products])
+  }
   return (
     <div>
       <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
-      {totalProduct > 0 ? (
+      {products.length > 0 ? (
         <section className={`cart-section section-b-space mt-0 ${styles.backgroundFull}`}>
           <Container>
             <Row>
@@ -102,7 +121,7 @@ const CartPage = () => {
                           </div>
                         </th>
                         <th scope="col">
-                          <div className="mt-4 mb-3">
+                          <div className="mt-4 mb-3 mr-2">
                             Giá
                           </div>
                         </th>
@@ -127,67 +146,46 @@ const CartPage = () => {
                 <div className={`${styles.vendorPart} p-3`}>
                   {products.map((p, i) => {
                     return (
-
                       <Card key={i} style={{ border: 'none' }}>
                         <CardHeader style={{ backgroundColor: 'white' }}>
-                          <strong>{p.vendor.brandName}</strong>
+                        <div className="mt-3 mb-2">
+                        <img src="/assets/icon/shop-icon.png" className="mr-2" />
+                        <Link href={`/vendors/${p.vendor.owner.username}`}>
+                          <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
+                          </Link>
+                          </div>
                         </CardHeader>
                         <CardBody>
-                          <table>
+                          <table className="ml-3">
                             {p.products.map((item, index) => {
                               return (
                                 <tbody key={index}>
                                   <tr>
                                     <td>
-                                      <Link href={`/left-sidebar/product/`}>
+                                      <Link href={`/${item.slug}`}>
                                         <a>
                                           <Media
                                             src={item.variant.image}
-                                            alt=""
+                                            alt="mubaha.com"
                                           />
                                         </a>
                                       </Link>
                                     </td>
                                     <td>
-                                      <Link href={`/left-sidebar/product/`}>
-                                        <a>{item.name}</a>
+                                      <Link href={`/${item.slug}`}>
+                                        <strong className={styles.cursorVendor}>{item.name}</strong>
                                       </Link>
-                                      <div className="mobile-cart-content row">
-                                        <div className="col-xs-3">
-                                          <div className="qty-box">
-                                            <div className="input-group">
-                                              <input
-                                                type="number"
-                                                name="quantity"
-                                                className="form-control input-number"
-                                                defaultValue={item.qty}
-
-                                              />
-                                            </div>
-                                          </div>
-                                          {item.qty >= item.stock ? "out of Stock" : ""}
-                                        </div>
-                                        <div className="col-xs-3">
-                                          <h2 className="td-color">
-                                            a
-                                          </h2>
-                                        </div>
-                                        <div className="col-xs-3">
-                                          <h2 className="td-color">
-                                            <a href="#" className="icon">
-                                              <i
-                                                className="fa fa-times"
-                                                onClick={() => removeFromCart(item)}
-                                              ></i>
-                                            </a>
-                                          </h2>
-                                        </div>
+                                      <div role='button' className="mt-1">
+                                      Phân loại hàng: {item.variant.name} 
+                                      {
+                                        item.attr ? `- ${item.attr}` : ''
+                                      }
                                       </div>
                                     </td>
                                     <td>
                                       <h2>
                                         <NumberFormat
-                                          value={item.variant.price}
+                                          value={item.variant.price || item.price}
                                           thousandSeparator={true}
                                           displayType="text"
                                           suffix={item.currencySymbol}
@@ -197,20 +195,35 @@ const CartPage = () => {
                                       </h2>
                                     </td>
                                     <td>
-                                      <div className="qty-box">
-                                        <div className="input-group">
-                                          <input
-                                            type="number"
-                                            name="quantity"
-                                            onChange={(e) =>
-                                              handleQtyUpdate(item, e.target.value)
-                                            }
-                                            className="form-control input-number"
-                                            defaultValue={item.quantity}
-
-                                          />
-                                        </div>
-                                      </div>
+                                    <div className="qty-box">
+                              <div className="input-group">
+                                <span className="input-group-prepend">
+                                  <button
+                                    type="button"
+                                    className="btn quantity-left-minus"
+                                    onClick={()=>handleMinusQuantity(i,index)}
+                                  >
+                                    <i className="fa fa-angle-left"></i>
+                                  </button>
+                                </span>
+                                <input
+                                  type="text"
+                                  name="quantity"
+                                  value={item.quantity}
+                                  min={1}
+                                  className="form-control input-number"
+                                />
+                                <span className="input-group-prepend">
+                                  <button
+                                    type="button"
+                                    className="btn quantity-right-plus"
+                                    onClick={() =>handlePlusQuantity(i,index)}
+                                  >
+                                    <i className="fa fa-angle-right"></i>
+                                  </button>
+                                </span>
+                              </div>
+                            </div>
 
                                     </td>
                                     <td>
@@ -228,8 +241,9 @@ const CartPage = () => {
                                     <td>
                                       <div className="justify-content-end ml-5">
                                         <i
-                                          className="fa fa-times"
-                                          onClick={() => removeFromCart(item)}
+
+                                          className={`fa fa-times ${styles.cursorVendor}`}
+                                          onClick={() => removeFromCart(i,index)}
                                         ></i>
                                       </div>
                                     </td>
@@ -241,7 +255,9 @@ const CartPage = () => {
                           </table>
                         </CardBody>
                         <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
-                          <h3>Shop Khuyến Mãi</h3> Vui lòng chọn sản phẩm trước
+                        <div className="d-flex mb-2 mt-3">
+                          <strong>Shop Khuyến Mãi</strong> <span className="ml-2">Vui lòng chọn sản phẩm trước</span>
+                          </div>
                         </CardFooter>
                       </Card>
 

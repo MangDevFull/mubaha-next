@@ -17,3 +17,6 @@
 .totalPart{
   background-color:white
 }
+.cursorVendor{
+  cursor: pointer;
+}
