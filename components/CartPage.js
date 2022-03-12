@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
-import { Container, Row, Col, Media, Button, Card, CardBody, CardHeader, CardFooter, FormGroup, Input } from "reactstrap";
+import { Container, Row, Col, Media, Button, Card, CardBody, CardHeader, CardFooter, Modal, ModalFooter, ModalHeader, ModalBody } from "reactstrap";
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Breadcrumb from "./Breadcrumb";
@@ -10,6 +10,8 @@ import API from '@/services/api.js';
 const CartPage = ({ data, totalP }) => {
   const [products, setProduct] = useState([])
   const [totalProduct, setTotalProduct] = useState(0)
+  const [isSelectedAll, setIsSelectedAll] = useState(false)
+  const [isOutOfStock, setIsOfStock] = useState(false)
   const router = useRouter();
 
   const { data: session, status } = useSession({
@@ -21,16 +23,82 @@ const CartPage = ({ data, totalP }) => {
   useEffect(() => {
     setProduct(data)
     setTotalProduct(totalP)
-  })
-  const handleMinusQuantity = (i, index) => {
+  }, [])
+  const handleMinusQuantity = async (i, index, quantity, cartID) => {
     if (products[i].products[index].quantity >= 2) {
-      products[i].products[index].quantity = products[i].products[index].quantity - 1
-      setProduct([...products])
+      let body = {
+        amount: quantity - 1,
+        productID: products[i].products[index].productID
+      }
+      if (products[i].products[index].variant) {
+        body = {
+          ...body,
+          variant: products[i].products[index].variant._id
+        }
+      }
+      if (products[i].products[index].attr) {
+        body = {
+          ...body,
+          size: products[i].products[index].size._id
+        }
+
+      }
+      const response = await fetch(`${process.env.API_CART_URL}/updateCart/${cartID}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.accessToken
+        },
+        body: JSON.stringify(body)
+      })
+
+      console.log(response)
+      const data = await response.json()
+
+      if (data.status === 200) {
+        products[i].products[index].quantity = products[i].products[index].quantity - 1
+        setProduct([...products])
+      } else if (data.status === 400) {
+        alert(data.message)
+      }
     }
   }
-  const handlePlusQuantity = (i, index) => {
-    products[i].products[index].quantity = products[i].products[index].quantity + 1
-    setProduct([...products])
+  const handlePlusQuantity = async (i, index, quantity, cartID) => {
+
+    let body = {
+      amount: quantity + 1,
+      productID: products[i].products[index].productID
+    }
+    if (products[i].products[index].variant) {
+      body = {
+        ...body,
+        variant: products[i].products[index].variant._id
+      }
+    }
+    if (products[i].products[index].attr) {
+      body = {
+        ...body,
+        size: products[i].products[index].size._id
+      }
+
+    }
+    const response = await fetch(`${process.env.API_CART_URL}/updateCart/${cartID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.accessToken
+      },
+      body: JSON.stringify(body)
+    })
+
+    const data = await response.json()
+
+    if (data.status === 200) {
+      products[i].products[index].quantity = products[i].products[index].quantity + 1
+      setProduct([...products])
+    } else if (data.status === 400) {
+      alert(data.message)
+    }
   }
   const removeFromCart = async (i, index, cartID) => {
     const response = await fetch(`${process.env.API_CART_URL}/deleteCart/${cartID}`, {
@@ -53,18 +121,54 @@ const CartPage = ({ data, totalP }) => {
     }
 
   }
-  const handleSelectProduct = (i,index)=>{
-    products[i].products[index].selected =  !products[i].products[index].selected;
+  const handleSelectProduct = (i, index) => {
+    products[i].products[index].selected = !products[i].products[index].selected;
+    const selectAllVendor = products[i].products.filter((p) => {
+      return p.selected !== true
+    })
+    if (selectAllVendor.length <1 ) {
+      products[i].selected = true
+    }else {
+      products[i].selected = false
+    }
+
+    const selectAll = products.filter((p) => {
+     return p.selected !== true
+    })
+    if (selectAll.length < 1) {
+      setIsSelectedAll(true)
+    }else{
+      setIsSelectedAll(false)
+    }
     setProduct([...products])
   }
-  const selectAllProduct = ()=>{
-     products.forEach((product,i) => {
-      const d = product.products.forEach((p,index) => {
-        products[i].products[index].selected =  !products[i].products[index].selected;
+  const handleSelectVendor = (i) => {
+    console.log(products[i].selected)
+    products[i].selected = !products[i].selected
+    products[i].products.forEach((p) => {
+      p.selected = products[i].selected
+    })
+    const selectAll = products.filter((p) => {
+      return p.selected !== true
+     })
+     if (selectAll.length < 1) {
+       setIsSelectedAll(true)
+     }else{
+       setIsSelectedAll(false)
+     }
+    setProduct([...products])
+  }
+  const selectAllProduct = () => {
+    setIsSelectedAll(!isSelectedAll)
+    products.forEach((product, i) => {
+      product.selected = !isSelectedAll
+      product.products.forEach((p, index) => {
+        products[i].products[index].selected = !isSelectedAll;
       })
     })
     setProduct([...products])
   }
+
   if (data.length > 0) {
     return (
       <div>
@@ -79,11 +183,11 @@ const CartPage = ({ data, totalP }) => {
                       <tr className={`${styles.backgroundHead}`}>
                         <th scope="col">
                           <div className="mt-4 mb-3">
-                              <input
-                                id="checkbox2"
-                                type="checkbox"
-                                onClick={selectAllProduct}
-                              />
+                            <input
+                              type="checkbox"
+                              checked={isSelectedAll}
+                              onClick={selectAllProduct}
+                            />
                           </div>
                         </th>
                         <th scope="col" colspan="2">
@@ -114,12 +218,15 @@ const CartPage = ({ data, totalP }) => {
                 </div>
                 <div className={`${styles.vendorPart} p-3`}>
                   {products.map((p, i) => {
-                    
                     return (
                       <Card key={i} style={{ border: 'none' }}>
                         <CardHeader style={{ backgroundColor: 'white' }}>
                           <div className="mt-3 mb-2">
-                          <input type="checkbox" className="mr-4 mt-5" />
+                            <input type="checkbox"
+                              className="mr-4 mt-5"
+                              checked={p.selected}
+                              onClick={() => { handleSelectVendor(i) }}
+                            />
                             <img src="/assets/icon/shop-icon.png" className="mr-2" />
                             <Link href={`/vendors/${p.vendor.owner.username}`}>
                               <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
@@ -133,11 +240,11 @@ const CartPage = ({ data, totalP }) => {
                                 <tbody key={index}>
                                   <tr>
                                     <td className="d-flex">
-                                    <input type="checkbox" 
-                                    className="mr-4 mt-5" 
-                                    checked={item.selected}
-                                    onClick={()=>handleSelectProduct(i, index)}
-                                    />
+                                      <input type="checkbox"
+                                        className="mr-4 mt-5"
+                                        checked={item.selected}
+                                        onClick={() => handleSelectProduct(i, index)}
+                                      />
                                       <Link href={`/${item.slug}`}>
                                         <a>
                                           <Media
@@ -177,7 +284,7 @@ const CartPage = ({ data, totalP }) => {
                                             <button
                                               type="button"
                                               className="btn quantity-left-minus"
-                                              onClick={() => handleMinusQuantity(i, index)}
+                                              onClick={() => handleMinusQuantity(i, index, item.quantity, item.cartID)}
                                             >
                                               <i className="fa fa-minus"></i>
                                             </button>
@@ -193,14 +300,13 @@ const CartPage = ({ data, totalP }) => {
                                             <button
                                               type="button"
                                               className="btn quantity-right-plus"
-                                              onClick={() => handlePlusQuantity(i, index)}
+                                              onClick={() => handlePlusQuantity(i, index, item.quantity, item.cartID)}
                                             >
                                               <i className="fa fa-solid fa-plus"></i>
                                             </button>
                                           </span>
                                         </div>
                                       </div>
-
                                     </td>
                                     <td>
                                       <h2 className="td-color">

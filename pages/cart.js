@@ -40,6 +40,7 @@ export async function getServerSideProps(ctx) {
           slug: p.slug,
           cartID:p.cartID,
           selected: false,
+          productID: p._id
         }
         if (p.selectedVariant != null) {
           const rs = p.variants.filter(variant => {
@@ -68,6 +69,7 @@ export async function getServerSideProps(ctx) {
       })
       return {
         vendor: product._id,
+        selected: false,
         totalDocs: product.totalDocs,
         products: d
       }
