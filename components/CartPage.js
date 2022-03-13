@@ -11,7 +11,7 @@ const CartPage = ({ data, totalP }) => {
   const [products, setProduct] = useState([])
   const [totalProduct, setTotalProduct] = useState(0)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
-  const [isOutOfStock, setIsOfStock] = useState(false)
+  const [totalPrice, setTotalPrice] = useState(0)
   const router = useRouter();
 
   const { data: session, status } = useSession({
@@ -126,18 +126,18 @@ const CartPage = ({ data, totalP }) => {
     const selectAllVendor = products[i].products.filter((p) => {
       return p.selected !== true
     })
-    if (selectAllVendor.length <1 ) {
+    if (selectAllVendor.length < 1) {
       products[i].selected = true
-    }else {
+    } else {
       products[i].selected = false
     }
 
     const selectAll = products.filter((p) => {
-     return p.selected !== true
+      return p.selected !== true
     })
     if (selectAll.length < 1) {
       setIsSelectedAll(true)
-    }else{
+    } else {
       setIsSelectedAll(false)
     }
     setProduct([...products])
@@ -150,12 +150,12 @@ const CartPage = ({ data, totalP }) => {
     })
     const selectAll = products.filter((p) => {
       return p.selected !== true
-     })
-     if (selectAll.length < 1) {
-       setIsSelectedAll(true)
-     }else{
-       setIsSelectedAll(false)
-     }
+    })
+    if (selectAll.length < 1) {
+      setIsSelectedAll(true)
+    } else {
+      setIsSelectedAll(false)
+    }
     setProduct([...products])
   }
   const selectAllProduct = () => {
@@ -168,6 +168,26 @@ const CartPage = ({ data, totalP }) => {
     })
     setProduct([...products])
   }
+
+  useEffect(() => {
+    let total = 0
+    products.forEach((product) =>{
+      let t = 0
+      product.products.forEach((p) =>{
+        if(p.selected == true){
+          if(p.variant != null && p.attr == null){
+            t+= parseInt(p.variant.price) * p.quantity
+        }else if(p.attr != null && p.variant != null){
+          t+= parseInt(p.size.price) * p.quantity
+        }else{
+          t+= parseInt(p.price) *  p.quantity
+        }
+        }
+      })  
+      total += t
+    })
+    setTotalPrice(total)
+  },[products])
 
   if (data.length > 0) {
     return (
@@ -350,9 +370,16 @@ const CartPage = ({ data, totalP }) => {
                   <table className="table cart-table table-responsive-md">
                     <tfoot>
                       <tr>
-                        <td>total price :</td>
+                        <td>Tổng thanh toán :</td>
                         <td>
                           <h2>
+                            <NumberFormat
+                              value={totalPrice}
+                              thousandSeparator={true}
+                              displayType="text"
+                              suffix={'₫'}
+                              decimalScale={0}
+                            />
 
                           </h2>
                         </td>
