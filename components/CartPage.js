@@ -263,7 +263,7 @@ const CartPage = ({ data, totalP }) => {
                             />
                           </div>
                         </th>
-                        <th scope="col" colspan="2">
+                        <th scope="col" colSpan="2">
                           <div className="mt-4 mb-3 ml-5">Sản phẩm</div>
                         </th>
                         <th scope="col">
@@ -444,8 +444,8 @@ const CartPage = ({ data, totalP }) => {
                     <tfoot>
                       <tr>
                         <td className="d-flex justify-content-between">
-                          <div class="d-flex flex-row bd-highlight ml-5">
-                            <div class="bd-highlight">
+                          <div className="d-flex flex-row bd-highlight ml-5">
+                            <div className="bd-highlight">
                               <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
                               disabled={true}
                                 onClick={handleModalDeleteMany}
