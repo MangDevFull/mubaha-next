@@ -25,7 +25,6 @@ export default function VerifyOtp({ phone, type,fullName }) {
           fullName: fullName,
           redirect: false,
         });
-        console.log('res',res)
         if (res.error == null) {
           router.push('/auth/create-password')
         } else {

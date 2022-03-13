@@ -60,6 +60,7 @@ export default function LoginWithOtp() {
       headers: { "Content-Type": "application/json" },
     });
     const data = await response.json()
+    console.log(data);
     if (data.status == 200) {
       setIsVerifyPhone(true);
       setMessage("");
