@@ -1,3 +1,4 @@
+
 NODE_ENV=development
 NEXTAUTH_SECRET=123j1241098&*132rASFUIOoui1r@@jkaw
 NEXTAUTH_URL=http://localhost:3013

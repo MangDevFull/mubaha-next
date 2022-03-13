@@ -22,11 +22,37 @@ import {
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
   const [quantity, setQuantity] = useState(1);
+  const [variantColor, setVariantColor] = useState()
   const [attributes, setAttributes] = useState();
   const [shareUrl, setShareUrl] = useState();
 
+  const [cartItems, setCartItems] = useState([]);
+  const addToCart = async () => {
+    const body = {
+      product: detailProduct,
+      quantity: quantity,
+      variants: variantColor
+    }
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '
+      },
+      body: JSON.stringify(body)
+
+    }
+    const response = await fetch(`${process.env.API_URL}/cart`, options)
+
+    const data = await response.json()
+    console.log(data)
+    // if (data.status === 200) {
+      
+    // } 
+  }
+
   useEffect(() => {
-    setShareUrl(window.location.href);
+    setShareUrl(window.location.href); 
   }, [])
 
   // useEffect(() => {
@@ -47,6 +73,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
 
   const selectedColor = (e, variant) => {
     setSelectedVariant(variant._id);
+    setVariantColor(variant.name);
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
     // attributes
@@ -242,6 +269,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 }
                                 key={variant._id}
                                 checked={selectedVariant === variant._id}
+                                value={variantColor}
                                 onClick={(e) => selectedColor(e, variant)}
                               >
                                 {variant.name}
@@ -327,7 +355,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                   <button
                                     type="button"
                                     className="btn quantity-left-minus"
-                                    // onClick={minusQty}
                                     onClick={handleCrease}
                                     data-type="minus"
                                     data-field=""
@@ -370,6 +397,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 style={{ margin: "0px" }}
                                 id="cartEffect"
                                 className="btn btn-solid btn-animation"
+                                onClick={() => addToCart(detailProduct, quantity, variantColor)}
                               >
                                 <i className="fa fa-shopping-cart mx-2" aria-hidden="true" />
                                 Thêm giỏ hàng

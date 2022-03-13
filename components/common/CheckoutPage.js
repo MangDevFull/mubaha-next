@@ -1,5 +1,17 @@
 import React, { useContext, useState } from "react";
-import { Media, Container, Form, Row, Input, Col, Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
+import {
+  Media,
+  Container,
+  Form,
+  Row,
+  Input,
+  Col,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+} from "reactstrap";
 import { PayPalButton } from "react-paypal-button";
 import paypal from "../../public/assets/images/paypal.png";
 import { useForm } from "react-hook-form";
@@ -8,19 +20,19 @@ import styles from "./CheckoutPage.module.css";
 
 const CheckoutPage = () => {
   const [obj, setObj] = useState({});
-  const [show, setShow] = useState(false)
-  const [message, setMessage] = useState("")
-  const [showMessage, setShowMessage] = useState(false)
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
   const [payment, setPayment] = useState("stripe");
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
   const router = useRouter();
-  const handleClose = () => setShow(false)
+  const handleClose = () => setShow(false);
   const handleShow = () => {
-    console.log('check')
-    setShow(true)
-    setMessage("")
-    setShowMessage(false)
-  }
+    console.log("check");
+    setShow(true);
+    setMessage("");
+    setShowMessage(false);
+  };
 
   const checkhandle = (value) => {
     setPayment(value);
@@ -73,7 +85,7 @@ const CheckoutPage = () => {
         <Container>
           <div className="checkout-page">
             <div className="checkout-form">
-              <div class={`${styles.table_address}`}>
+              <div className={`${styles.table_address}`}>
                 <div class={`${styles.border_top}`}></div>
                 <div class={`${styles.padding_box}`}>
                   <div class={`${styles.title_address}`}>
@@ -105,16 +117,33 @@ const CheckoutPage = () => {
                       <div class={`${styles._2LiNia}`}>Mặc định</div>
                     </div>
                     <div>
-                      <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleShow}>Thay đổi địa chỉ</button>
+                      <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleShow}>
+                        Thay đổi địa chỉ
+                      </button>
+                    </div>
+                    <div>
+                      <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleShow}>
+                        Thiết lập địa chỉ
+                      </button>
                     </div>
                   </div>
                   <div></div>
                 </div>
+                <div class={`${styles.border_top}`}></div>
+              </div>
+              <div className={`${styles.list_cart}`}>
+                <div className={`${styles.title_section}`}>
+                  <div className={`${styles.title}`}>
+                    <div className={`${styles.title_products}`}>Sản phẩm</div>
+                    <div className={`${styles.classify_products}`}></div>
+                    <div className={`${styles.title_name}`}>Đơn giá</div>
+                    <div className={`${styles.title_name}`}>Số lượng</div>
+                    <div className={`${styles.title_price}`}>Thành tiền</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div >
-
-            </div>
+            <div></div>
           </div>
         </Container>
       </section>
@@ -162,15 +191,8 @@ const CheckoutPage = () => {
                     >
                       Tỉnh/Thành phố
                     </label>
-                    <select
-                      className="form-control"
-                      name="choices-single-groups"
-                      required
-                    >
-                      
-                        <option value="">Chọn một tỉnh/thành phố</option>
-                      
-                      
+                    <select className="form-control" name="choices-single-groups" required>
+                      <option value="">Chọn một tỉnh/thành phố</option>
                     </select>
                   </div>
                 </div>
@@ -182,19 +204,11 @@ const CheckoutPage = () => {
                     >
                       Quận/Huyện
                     </label>
-                    <select
-                      className="form-control"
-                      name="choices-single-groups"
-                      required
-                    >
-                      
-                        <option value="">Chọn một quận/huyện</option>
-
-                      
+                    <select className="form-control" name="choices-single-groups" required>
+                      <option value="">Chọn một quận/huyện</option>
                     </select>
                   </div>
                 </div>
-               
               </div>
             </form>
           </Row>
@@ -207,9 +221,7 @@ const CheckoutPage = () => {
           >
             Huỷ
           </Button>
-          <button className="btn-solid btn" >
-            Cập nhật
-          </button>
+          <button className="btn-solid btn">Cập nhật</button>
         </ModalFooter>
       </Modal>
     </>

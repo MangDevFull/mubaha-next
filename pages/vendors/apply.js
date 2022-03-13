@@ -5,7 +5,7 @@ import { Modal, Button, Row, Alert, ModalHeader, ModalBody, ModalFooter } from "
 import Layout from "@/components/Layout";
 import Breadcrumb from '@/components/Breadcrumb.js'
 import libphone from 'google-libphonenumber';
-import { useSession } from 'next-auth/react'
+import { useSession,signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import accountType from "../../enums/accountType.enum.js";
 
@@ -81,10 +81,9 @@ export default function AppLyVendor({ data }) {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch(`${process.env.API_LOCATION_URL}/provinces`)
+    const res = await fetch(`${process.env.API_LOCATION_URL}/provinces`)
    const data = await res.json()
    setProvinces(data.data)
-     
     }
     fetchData()
   }, [])
@@ -186,12 +185,14 @@ export default function AppLyVendor({ data }) {
     const response = await fetch(`${process.env.API_URL}/customer/apply`, options)
 
     const data = await response.json()
-    console.log(data)
+
     if (data.status === 400) {
       setMessageError(data.errors[0].msg)
       setShowMessageError(true)
     } else if (data.status == 200) {
-      router.push('/')
+      signOut({
+        callbackUrl: `${window.location.origin}/auth/login`,
+      })
     }
 
   }

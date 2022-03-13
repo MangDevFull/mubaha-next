@@ -3,7 +3,8 @@ import { Container, Row, Col } from "reactstrap";
 import Link from "next/link";
 import accountTypeEnum from "@/enums/accountType.enum";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession,signOut } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 export default function TopBarDark({ topClass, fluid }) {
   const { data: session, status } = useSession();

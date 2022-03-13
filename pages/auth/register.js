@@ -58,11 +58,13 @@ export default function RegisterPage() {
         body: JSON.stringify(params),
         headers: { "Content-Type": "application/json" },
       });
+      console.log(`${process.env.API_AUTH_URL}/register-otp`)
       const data = await response.json()
      
       if (data.status == 200) {
         setIsVerifyPhone(true);
       } else {
+        console.log(data)
         setMessage(data.message);
         setIsRegisted(true);
       }
@@ -90,14 +92,13 @@ export default function RegisterPage() {
                       className="form-control"
                       placeholder="Nhập họ và tên"
                       onChange={handleFullname}
+                      autoFocus
                     />
                     <input
                       onChange={checkPhone}
                       type="text"
                       className="form-control"
                       placeholder="Nhập số điện thoại của bạn"
-                      required=""
-                      autoFocus
                     />
                   </div>
                   <div className="d-flex justify-content-center">
