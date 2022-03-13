@@ -74,7 +74,7 @@ export async function getServerSideProps(ctx) {
         products: d
       }
     })
-    const totalP = data.data.totalProducts[0].product
+    const totalP = data.data?.totalProducts[0]?.product || 0
 
   // Pass data to the page via props
   return {

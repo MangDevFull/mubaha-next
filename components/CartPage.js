@@ -8,10 +8,12 @@ import Breadcrumb from "./Breadcrumb";
 import styles from "@/styles/cart.module.css"
 import API from '@/services/api.js';
 const CartPage = ({ data, totalP }) => {
-  const [products, setProduct] = useState([])
-  const [totalProduct, setTotalProduct] = useState(0)
+  const [products, setProduct] = useState(data)
+  const [totalProduct, setTotalProduct] = useState(totalP)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)
+  const [totalProductSelect, setTotalProductSelect] = useState(0)
+  const [isOpenModalDeleteProduct,setIsOpenModalDeleteProduct] = useState(false)
   const router = useRouter();
 
   const { data: session, status } = useSession({
@@ -20,10 +22,6 @@ const CartPage = ({ data, totalP }) => {
       router.push('/auth/login')
     }
   })
-  useEffect(() => {
-    setProduct(data)
-    setTotalProduct(totalP)
-  }, [])
   const handleMinusQuantity = async (i, index, quantity, cartID) => {
     if (products[i].products[index].quantity >= 2) {
       let body = {
@@ -170,26 +168,81 @@ const CartPage = ({ data, totalP }) => {
   }
 
   useEffect(() => {
+    let amount = 0
     let total = 0
-    products.forEach((product) =>{
+    products.forEach((product) => {
       let t = 0
-      product.products.forEach((p) =>{
-        if(p.selected == true){
-          if(p.variant != null && p.attr == null){
-            t+= parseInt(p.variant.price) * p.quantity
-        }else if(p.attr != null && p.variant != null){
-          t+= parseInt(p.size.price) * p.quantity
-        }else{
-          t+= parseInt(p.price) *  p.quantity
+      let a = 0
+      product.products.forEach((p) => {
+        if (p.selected == true) {
+          if (p.variant != null && p.attr == null) {
+            a += 1
+            t += p.variant.price * p.quantity
+          } else if (p.attr != null && p.variant != null) {
+            t += p.size.price * p.quantity
+            a += 1
+          } else {
+            t += p.price * p.quantity
+            a += 1
+          }
         }
-        }
-      })  
+      })
       total += t
+      amount += a
     })
+    setTotalProductSelect(amount)
     setTotalPrice(total)
-  },[products])
+  }, [products])
+  const deleteManyCartItem = async () => {
+    let cartItems = []
+    products.forEach((product) => {
+      product.products.forEach((p) => {
+        if(p.selected === true){
+          cartItems = [...cartItems, p.cartID]
+        }
+      })
+    })
+    const response = await fetch(`${process.env.API_CART_URL}/deleteMany`,{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.accessToken
+      },
+      body: JSON.stringify({cartItems: cartItems})
+    })
+    const data = await response.json()
 
-  if (data.length > 0) {
+   if(data.status === 200){
+    products.forEach((product,i) =>{
+      const pr = product.products.filter((p) => {
+        return !cartItems.includes(p.cartID)
+      })
+      if(pr.length < 1){
+        products.splice(i, 1);
+      }else{
+        console.log('pr',pr)
+        products[i] ={
+          vendor: product.vendor,
+          selected: false,
+          totalDocs: product.totalDocs,
+          products: pr
+        }
+      }
+    })
+    setProduct([...products])
+    setIsOpenModalDeleteProduct(false)
+   }else{
+     alert(data.message)
+   }
+  }
+  const handleModalDeleteMany = () => {
+    if(totalProductSelect <1){
+      alert(' Vui lòng chọn sản phẩm')
+    }else{
+      setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct)
+    }
+  }
+  if (products.length > 0) {
     return (
       <div>
         <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
@@ -366,11 +419,46 @@ const CartPage = ({ data, totalP }) => {
                     )
                   })}
                 </div>
+                <Modal
+                className="mt-5"
+                isOpen={isOpenModalDeleteProduct}
+                  toggle={handleModalDeleteMany}
+                >
+                  <ModalHeader toggle={handleModalDeleteMany}>
+                  Bạn có muốn bỏ {totalProductSelect} sản phẩm?
+                  </ModalHeader>
+                  <ModalFooter>
+                    <Button
+                      color="danger"
+                      onClick={deleteManyCartItem}
+                    >
+                      Đồng ý
+                    </Button>
+                    <Button onClick={handleModalDeleteMany}>
+                      Huỷ
+                    </Button>
+                  </ModalFooter>
+                </Modal>
                 <div className={`${styles.totalPart} mt-3 pb-4`}>
                   <table className="table cart-table table-responsive-md">
                     <tfoot>
                       <tr>
-                        <td>Tổng thanh toán :</td>
+                        <td className="d-flex justify-content-between">
+                          <div class="d-flex flex-row bd-highlight ml-5">
+                            <div class="bd-highlight">
+                              <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
+                              disabled={true}
+                                onClick={handleModalDeleteMany}
+                              >
+                                Xoá
+                              </span>
+                              ({totalProductSelect} sản phẩm đã chọn)
+                            </div>
+                          </div>
+                          <div className="ml-5">
+                            Tổng thanh toán ({totalProductSelect} sản phẩm) :
+                          </div>
+                        </td>
                         <td>
                           <h2>
                             <NumberFormat
@@ -409,7 +497,7 @@ const CartPage = ({ data, totalP }) => {
     );
   } else {
     return (
-      <section className="cart-section section-b-space">
+      <section className={`cart-section section-b-space ${styles.backgroundFull}`}>
         <Container>
           <Row>
             <Col sm="12">

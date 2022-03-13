@@ -20,3 +20,6 @@
 .cursorVendor{
   cursor: pointer;
 }
+.textDelete{
+  color: red;
+}

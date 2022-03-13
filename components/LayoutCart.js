@@ -8,7 +8,7 @@ export default function HeaderTwo({ children }) {
   <HeaderThree />
       
       { children }
-      <div>
+      <div className="mt-5">
       <Footer />
     </div>
 
