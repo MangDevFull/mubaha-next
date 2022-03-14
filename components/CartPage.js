@@ -23,12 +23,6 @@ const CartPage = ({ data, totalP }) => {
   const [selectSize, setSelectSize] = useState();
   const router = useRouter();
 
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/auth/login')
-    }
-  })
   const handleMinusQuantity = async (i, index, quantity, cartID) => {
     if (products[i].products[index].quantity >= 2) {
       let body = {
@@ -268,7 +262,7 @@ const CartPage = ({ data, totalP }) => {
     return (
       <div>
         <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
-        <section className={`cart-section section-b-space mt-0 ${styles.backgroundFull}`}>
+        <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`}>
           <div>
           </div>
           <Container>
@@ -333,7 +327,7 @@ const CartPage = ({ data, totalP }) => {
                         <CardBody>
                           <table className="ml-3">
                             {p.products.map((item, index) => {
-                              console.log('i', item);
+                              console.log(item);
                               return (
                                 <tbody key={index}>
                                   <tr>
@@ -489,7 +483,7 @@ const CartPage = ({ data, totalP }) => {
                                           </UncontrolledPopover>
                                           Phân loại hàng: {item.variant.name}
                                           {
-                                            item.attr ? `- ${item.attr}` : ''
+                                            item.attr ? `- ${item.attr.name}` : ''
                                           }
                                           <i className="fa fa-solid fa-caret-down ml-1"></i>
                                         </div>

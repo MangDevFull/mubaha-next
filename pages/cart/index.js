@@ -42,7 +42,7 @@ export async function getServerSideProps(ctx) {
           selected: false,
           productID: p._id
         }
-        if (p.selectedVariant != null) {
+        if (p.selectedVariant != null && p.selectedAttribute == null) {
           const rs = p.variants.filter(variant => {
             return variant._id === p.selectedVariant
           })
@@ -51,15 +51,20 @@ export async function getServerSideProps(ctx) {
             variant: rs[0],
             variants: p.variants,
             variantLable: p.variantLabel,
-            attributeLabel: p.attributeLabel
           }
-        } else if (p.selectedAttribute != null) {
-          const rs = p.variants.sizes.filter(variant => {
-            return variant._id === p.selectedAttribute
+        } else if (p.selectedAttribute != null && p.selectedVariant != null) {
+          const rs = p.variants.filter(variant => {
+            return variant._id === p.selectedVariant
           })
           value = {
             ...value,
-            attr: rs[0]
+            variant: rs[0],
+            attr: rs[0].sizes.filter(s => {
+              return s._id === p.selectedAttribute
+            })[0],
+            variants: p.variants,
+            variantLable: p.variantLabel,
+            attributeLabel: p.attributeLabel
           }
         } else {
           price = {

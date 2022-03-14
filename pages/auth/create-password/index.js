@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { useSession } from 'next-auth/react'
 import Breadcrumb from '@/components/Breadcrumb.js'
 import { Form, Modal, ModalFooter, ModalHeader } from 'reactstrap';
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
@@ -16,12 +15,6 @@ export default function CreatePassWord() {
   const inputPassword = useRef();
   const router = useRouter();
 
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/')
-    }
-  })
   useEffect(() => {
     if (session != undefined) {
       const checkisCreatePass = session.user.authentication.isCreatedPassword
