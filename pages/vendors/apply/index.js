@@ -5,7 +5,7 @@ import { Modal, Button, Row, Alert, ModalHeader, ModalBody, ModalFooter } from "
 import Layout from "@/components/Layout";
 import Breadcrumb from '@/components/Breadcrumb.js'
 import libphone from 'google-libphonenumber';
-import { useSession,signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import accountType from "../../enums/accountType.enum.js";
 
@@ -15,12 +15,6 @@ const phoneUtil = PhoneNumberUtil.getInstance()
 export default function AppLyVendor({ data }) {
 
   const router = useRouter();
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/auth/login')
-    }
-  })
 
   const [showAddress, setShowAddress] = useState(false)
   const [show, setShow] = useState(false)

@@ -8,7 +8,7 @@ export default function CartContainer({icon}) {
     <>
       <li className="onhover-div mobile-cart">
         <div className="cart-qty-cls">0</div>
-        <Link href={`/page/account/cart`} passHref>
+        <Link href={`/cart`} passHref>
           <div>
             <Media src="/assets/images/icon/cart.png" className="img-fluid" alt="" />
             <i className="fa fa-shopping-cart"></i>

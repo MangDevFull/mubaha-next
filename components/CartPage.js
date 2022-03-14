@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
 import { Container, Row, Col, Media, Button, Card, CardBody, CardHeader, CardFooter, Modal, ModalFooter, ModalHeader, ModalBody } from "reactstrap";
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
+
 import Breadcrumb from "./Breadcrumb";
 import styles from "@/styles/cart.module.css"
 import API from '@/services/api.js';
@@ -14,14 +13,7 @@ const CartPage = ({ data, totalP }) => {
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalProductSelect, setTotalProductSelect] = useState(0)
   const [isOpenModalDeleteProduct,setIsOpenModalDeleteProduct] = useState(false)
-  const router = useRouter();
 
-  const { data: session, status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      router.push('/auth/login')
-    }
-  })
   const handleMinusQuantity = async (i, index, quantity, cartID) => {
     if (products[i].products[index].quantity >= 2) {
       let body = {
