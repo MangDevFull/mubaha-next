@@ -3,14 +3,14 @@ import NumberFormat from "react-number-format";
 import Link from "next/link";
 import {
   Container, Row, Col, Media, Button, Card, CardBody, CardHeader,
-  CardFooter, Modal, ModalFooter, ModalHeader, PopoverHeader, UncontrolledPopover,
-  PopoverBody
+  CardFooter, Modal, ModalFooter, ModalHeader
 } from "reactstrap";
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 import Breadcrumb from "./Breadcrumb";
 import styles from "@/styles/cart.module.css"
-import API from '@/services/api.js';
+import dynamic from 'next/dynamic'
+import { useSession } from 'next-auth/react'
+
+const Variant = dynamic(() => import('@/components/Variant.js'))
 const CartPage = ({ data, totalP }) => {
   const [products, setProduct] = useState(data)
   const [totalProduct, setTotalProduct] = useState(totalP)
@@ -18,10 +18,8 @@ const CartPage = ({ data, totalP }) => {
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalProductSelect, setTotalProductSelect] = useState(0)
   const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] = useState(false)
-  const [selectedVariant, setSelectedVariant] = useState();
-  const [sizes, setSizes] = useState([]);
-  const [selectSize, setSelectSize] = useState();
-  const router = useRouter();
+
+  const { data: session, status } = useSession()
 
   const handleMinusQuantity = async (i, index, quantity, cartID) => {
     if (products[i].products[index].quantity >= 2) {
@@ -42,7 +40,7 @@ const CartPage = ({ data, totalP }) => {
         }
 
       }
-      const response = await fetch(`${process.env.API_CART_URL}/updateCart/${cartID}`, {
+      const response = await fetch(`${process.env.API_CART_URL}/${cartID}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -51,7 +49,6 @@ const CartPage = ({ data, totalP }) => {
         body: JSON.stringify(body)
       })
 
-      console.log(response)
       const data = await response.json()
 
       if (data.status === 200) {
@@ -81,7 +78,7 @@ const CartPage = ({ data, totalP }) => {
       }
 
     }
-    const response = await fetch(`${process.env.API_CART_URL}/updateCart/${cartID}`, {
+    const response = await fetch(`${process.env.API_CART_URL}/${cartID}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -100,7 +97,7 @@ const CartPage = ({ data, totalP }) => {
     }
   }
   const removeFromCart = async (i, index, cartID) => {
-    const response = await fetch(`${process.env.API_CART_URL}/deleteCart/${cartID}`, {
+    const response = await fetch(`${process.env.API_CART_URL}/${cartID}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -180,7 +177,7 @@ const CartPage = ({ data, totalP }) => {
             a += 1
             t += p.variant.price * p.quantity
           } else if (p.attr != null && p.variant != null) {
-            t += p.size.price * p.quantity
+            t += p.attr.price * p.quantity
             a += 1
           } else {
             t += p.price * p.quantity
@@ -221,7 +218,6 @@ const CartPage = ({ data, totalP }) => {
         if (pr.length < 1) {
           products.splice(i, 1);
         } else {
-          console.log('pr', pr)
           products[i] = {
             vendor: product.vendor,
             selected: false,
@@ -243,21 +239,36 @@ const CartPage = ({ data, totalP }) => {
       setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct)
     }
   }
-  const selectedColor = (e, variant, variants) => {
-    setSelectedVariant(variant);
-    if (variants[0].sizes.length > 0) {
-      const rs = variants.filter((v) => {
-        return v._id == variant
+  const updateProduct=(body,i,index)=>{
+   if(body.variant != null && body.size != null) {
+    products[i].products.forEach((product,id)=>{
+      console.log(product)
+      const v = product.variants.filter((v)=>{
+        return v._id === body.variant
       })
-      setSizes(rs[0].sizes)
-    } else {
-      setSizes([])
-    }
-  };
-  const selectAttr = () => {
-
+      if(v.length > 0){
+        products[i].products[id].variant = v[0]
+        const s = v[0].sizes.filter((s)=>{
+          return s._id === body.size
+        })
+        if(s.length > 0){
+          products[i].products[id].attr = s[0]
+          setProduct([...products])
+      }
+      }
+    })
+   }else if(body.variant != null && body.size == null){
+    products[i].products.forEach((product,id)=>{
+      const v = product.variants.filter((v)=>{
+        return v._id === body.variant
+      })
+      if(v.length > 0){
+        products[i].products[id].variant = v[0]
+        setProduct([...products])
+      }
+    })
+   }
   }
-
   if (products.length > 0) {
     return (
       <div>
@@ -327,7 +338,6 @@ const CartPage = ({ data, totalP }) => {
                         <CardBody>
                           <table className="ml-3">
                             {p.products.map((item, index) => {
-                              console.log(item);
                               return (
                                 <tbody key={index}>
                                   <tr>
@@ -352,141 +362,9 @@ const CartPage = ({ data, totalP }) => {
                                       </Link>
                                       {
                                         item.variant &&
-                                        <div role='button' id={`PopoverClick${index}`} className="mt-1">
-                                          <UncontrolledPopover
-                                            placement="bottom"
-                                            target={`PopoverClick${index}`}
-                                            trigger="legacy"
-                                            style={{ border: 'none' }}
-                                          >
-                                            <PopoverHeader>
-                                              Lưạ chọn sản phẩm
-                                            </PopoverHeader>
-                                            <PopoverBody>
-                                              <div className="product-right">
-                                                <div className="product-count">
-                                                  <ul className="color-variant">
-                                                    <div className="mb-1">
-                                                      {item.variantLable}:
-                                                    </div>
-                                                    {item.variants.map((variant, i, arr) => {
-                                                      return (
-                                                        <>
-                                                          <li
-                                                            style={
-                                                              selectedVariant === undefined ?
-                                                                item.variant._id === variant._id ? {
-                                                                  border: "1px solid #ffa200",
-                                                                  color: "#ffa200",
-                                                                }
-                                                                  : {}
-                                                                : selectedVariant === variant._id ? {
-                                                                  border: "1px solid #ffa200",
-                                                                  color: "#ffa200",
-                                                                }
-                                                                  : {}
-                                                            }
-                                                            key={variant._id}
-                                                            checked={selectedVariant === variant._id}
-                                                            onClick={(e) => selectedColor(e, variant._id, item.variants)}
-                                                          >
-                                                            {variant.name}
-                                                            <img style={
-                                                              selectedVariant === undefined ?
-                                                                item.variant._id === variant._id  ? {
-                                                                  display: "block"
-                                                                }
-                                                                : {}
-                                                                : selectedVariant === variant._id  ? {
-                                                                  display: "block"
-                                                                }
-                                                                : {}
-                                                            } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
-                                                          </li>
-                                                        </>
-                                                      )
-                                                    })}
-
-                                                  </ul>
-                                                  {
-                                                    item.size
-                                                      ?
-                                                      <>
-                                                        <ul className="color-variant">
-                                                          <div className="mb-1">
-                                                            {item.attributeLabel}:
-                                                          </div>
-                                                          {item.variants[item.variants.indexOf(item.variant)].sizes.map((s) => (
-                                                            <li
-                                                              style={
-                                                                item.attr._id === s._id ? {
-                                                                  border: "1px solid #ffa200",
-                                                                  color: "#ffa200",
-                                                                }
-                                                                  : {}
-
-                                                              }
-                                                              key={s._id}
-                                                              checked={selectSize === s._id}
-                                                              onClick={(e) => selectAttr(e, s._id)}
-                                                            >
-                                                              {s.name}
-                                                              <img style={
-                                                                selectSize === s._id
-                                                                  ? {
-                                                                    display: "block"
-                                                                  }
-                                                                  : {}
-                                                              } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
-                                                            </li>
-                                                          ))}
-                                                        </ul>
-                                                      </>
-                                                      :
-                                                      sizes.length > 0
-                                                      &&
-                                                      <>
-                                                        <ul className="color-variant">
-                                                          <div className="mb-1">
-                                                            {item.attributeLabel}:
-                                                          </div>
-                                                          {sizes.map((s) => (
-                                                            <li
-                                                              style={
-                                                                
-                                                                   selectSize === s._id ? {
-                                                                    border: "1px solid #ffa200",
-                                                                    color: "#ffa200",
-                                                                  }
-                                                                    : {}
-                                                              }
-                                                              key={s._id}
-                                                              checked={selectSize === s._id}
-                                                              onClick={(e) => selectAttr(e, s._id)}
-                                                            >
-                                                              {s.name}
-                                                              <img style={
-                                                                selectSize === s._id
-                                                                  ? {
-                                                                    display: "block"
-                                                                  }
-                                                                  : {}
-                                                              } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
-                                                            </li>
-                                                          ))}
-                                                        </ul>
-                                                      </>
-                                                  }
-                                                </div>
-                                              </div>
-                                            </PopoverBody>
-                                          </UncontrolledPopover>
-                                          Phân loại hàng: {item.variant.name}
-                                          {
-                                            item.attr ? `- ${item.attr.name}` : ''
-                                          }
-                                          <i className="fa fa-solid fa-caret-down ml-1"></i>
-                                        </div>
+                                       <Variant item={item} index={index} updateProduct={updateProduct} 
+                                         i={i}
+                                       />
                                       }
                                     </td>
                                     <td>
@@ -546,7 +424,6 @@ const CartPage = ({ data, totalP }) => {
                                     </td>
                                     <td>
                                       <div className="justify-content-end ml-5">
-
                                         <i
                                           className={`fa fa-times ${styles.cursorVendor}`}
                                           onClick={() => removeFromCart(i, index, item.cartID)}
