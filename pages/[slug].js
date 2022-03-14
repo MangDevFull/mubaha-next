@@ -24,7 +24,6 @@ import {
 } from "react-share";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  console.log("detail", detailProduct);
   const router = useRouter();
 
   const [quantity, setQuantity] = useState(1);
@@ -51,7 +50,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     const response = await fetch(`${process.env.API_URL}/cart`, options);
 
     const data = await response.json();
-    console.log(data);
     // if (data.status === 200) {
 
     // }
