@@ -194,10 +194,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                         >
                           {detailProduct.variants
                             ? detailProduct.media.data.map((item, index) => (
-                                <div key={index}>
-                                  <Media src={`${item.path}`} className="img-fluid" />
-                                </div>
-                              ))
+                              <div key={index}>
+                                <Media src={`${item.path}`} className="img-fluid" />
+                              </div>
+                            ))
                             : ""}
                         </Slider>
                       </Col>
@@ -235,9 +235,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 style={
                                   selectedVariant === variant._id
                                     ? {
-                                        border: "1px solid #ffa200",
-                                        color: "#ffa200",
-                                      }
+                                      border: "1px solid #ffa200",
+                                      color: "#ffa200",
+                                    }
                                     : {}
                                 }
                                 key={variant._id}
@@ -248,8 +248,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 <img style={
                                   selectedVariant === variant._id
                                     ? {
-                                        display: "block"
-                                      }
+                                      display: "block"
+                                    }
                                     : {}
                                 } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
                               </li>

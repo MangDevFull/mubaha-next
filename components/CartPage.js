@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
-import { Container, Row, Col, Media, Button, Card, CardBody, CardHeader, CardFooter, Modal, ModalFooter, ModalHeader, ModalBody } from "reactstrap";
+import {
+  Container, Row, Col, Media, Button, Card, CardBody, CardHeader,
+  CardFooter, Modal, ModalFooter, ModalHeader, PopoverHeader, UncontrolledPopover,
+  PopoverBody
+} from "reactstrap";
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Breadcrumb from "./Breadcrumb";
@@ -13,7 +17,10 @@ const CartPage = ({ data, totalP }) => {
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalProductSelect, setTotalProductSelect] = useState(0)
-  const [isOpenModalDeleteProduct,setIsOpenModalDeleteProduct] = useState(false)
+  const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] = useState(false)
+  const [selectedVariant, setSelectedVariant] = useState();
+  const [sizes, setSizes] = useState([]);
+  const [selectSize, setSelectSize] = useState();
   const router = useRouter();
 
   const { data: session, status } = useSession({
@@ -197,56 +204,73 @@ const CartPage = ({ data, totalP }) => {
     let cartItems = []
     products.forEach((product) => {
       product.products.forEach((p) => {
-        if(p.selected === true){
+        if (p.selected === true) {
           cartItems = [...cartItems, p.cartID]
         }
       })
     })
-    const response = await fetch(`${process.env.API_CART_URL}/deleteMany`,{
+    const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + session.accessToken
       },
-      body: JSON.stringify({cartItems: cartItems})
+      body: JSON.stringify({ cartItems: cartItems })
     })
     const data = await response.json()
 
-   if(data.status === 200){
-    products.forEach((product,i) =>{
-      const pr = product.products.filter((p) => {
-        return !cartItems.includes(p.cartID)
-      })
-      if(pr.length < 1){
-        products.splice(i, 1);
-      }else{
-        console.log('pr',pr)
-        products[i] ={
-          vendor: product.vendor,
-          selected: false,
-          totalDocs: product.totalDocs,
-          products: pr
+    if (data.status === 200) {
+      products.forEach((product, i) => {
+        const pr = product.products.filter((p) => {
+          return !cartItems.includes(p.cartID)
+        })
+        if (pr.length < 1) {
+          products.splice(i, 1);
+        } else {
+          console.log('pr', pr)
+          products[i] = {
+            vendor: product.vendor,
+            selected: false,
+            totalDocs: product.totalDocs,
+            products: pr
+          }
         }
-      }
-    })
-    setProduct([...products])
-    setIsOpenModalDeleteProduct(false)
-   }else{
-     alert(data.message)
-   }
+      })
+      setProduct([...products])
+      setIsOpenModalDeleteProduct(false)
+    } else {
+      alert(data.message)
+    }
   }
   const handleModalDeleteMany = () => {
-    if(totalProductSelect <1){
+    if (totalProductSelect < 1) {
       alert(' Vui lòng chọn sản phẩm')
-    }else{
+    } else {
       setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct)
     }
   }
+  const selectedColor = (e, variant, variants) => {
+    setSelectedVariant(variant);
+    if (variants[0].sizes.length > 0) {
+      const rs = variants.filter((v) => {
+        return v._id == variant
+      })
+      setSizes(rs[0].sizes)
+    } else {
+      setSizes([])
+    }
+  };
+  const selectAttr = () => {
+
+  }
+
   if (products.length > 0) {
     return (
       <div>
         <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
         <section className={`cart-section section-b-space mt-0 ${styles.backgroundFull}`}>
+          <div>
+          </div>
           <Container>
             <Row>
               <Col sm="12">
@@ -309,6 +333,7 @@ const CartPage = ({ data, totalP }) => {
                         <CardBody>
                           <table className="ml-3">
                             {p.products.map((item, index) => {
+                              console.log('i', item);
                               return (
                                 <tbody key={index}>
                                   <tr>
@@ -331,12 +356,144 @@ const CartPage = ({ data, totalP }) => {
                                       <Link href={`/${item.slug}`}>
                                         <strong className={styles.cursorVendor}>{item.name}</strong>
                                       </Link>
-                                      <div role='button' className="mt-1">
-                                        Phân loại hàng: {item.variant.name}
-                                        {
-                                          item.attr ? `- ${item.attr}` : ''
-                                        }
-                                      </div>
+                                      {
+                                        item.variant &&
+                                        <div role='button' id={`PopoverClick${index}`} className="mt-1">
+                                          <UncontrolledPopover
+                                            placement="bottom"
+                                            target={`PopoverClick${index}`}
+                                            trigger="legacy"
+                                            style={{ border: 'none' }}
+                                          >
+                                            <PopoverHeader>
+                                              Lưạ chọn sản phẩm
+                                            </PopoverHeader>
+                                            <PopoverBody>
+                                              <div className="product-right">
+                                                <div className="product-count">
+                                                  <ul className="color-variant">
+                                                    <div className="mb-1">
+                                                      {item.variantLable}:
+                                                    </div>
+                                                    {item.variants.map((variant, i, arr) => {
+                                                      return (
+                                                        <>
+                                                          <li
+                                                            style={
+                                                              selectedVariant === undefined ?
+                                                                item.variant._id === variant._id ? {
+                                                                  border: "1px solid #ffa200",
+                                                                  color: "#ffa200",
+                                                                }
+                                                                  : {}
+                                                                : selectedVariant === variant._id ? {
+                                                                  border: "1px solid #ffa200",
+                                                                  color: "#ffa200",
+                                                                }
+                                                                  : {}
+                                                            }
+                                                            key={variant._id}
+                                                            checked={selectedVariant === variant._id}
+                                                            onClick={(e) => selectedColor(e, variant._id, item.variants)}
+                                                          >
+                                                            {variant.name}
+                                                            <img style={
+                                                              selectedVariant === undefined ?
+                                                                item.variant._id === variant._id  ? {
+                                                                  display: "block"
+                                                                }
+                                                                : {}
+                                                                : selectedVariant === variant._id  ? {
+                                                                  display: "block"
+                                                                }
+                                                                : {}
+                                                            } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
+                                                          </li>
+                                                        </>
+                                                      )
+                                                    })}
+
+                                                  </ul>
+                                                  {
+                                                    item.size
+                                                      ?
+                                                      <>
+                                                        <ul className="color-variant">
+                                                          <div className="mb-1">
+                                                            {item.attributeLabel}:
+                                                          </div>
+                                                          {item.variants[item.variants.indexOf(item.variant)].sizes.map((s) => (
+                                                            <li
+                                                              style={
+                                                                item.attr._id === s._id ? {
+                                                                  border: "1px solid #ffa200",
+                                                                  color: "#ffa200",
+                                                                }
+                                                                  : {}
+
+                                                              }
+                                                              key={s._id}
+                                                              checked={selectSize === s._id}
+                                                              onClick={(e) => selectAttr(e, s._id)}
+                                                            >
+                                                              {s.name}
+                                                              <img style={
+                                                                selectSize === s._id
+                                                                  ? {
+                                                                    display: "block"
+                                                                  }
+                                                                  : {}
+                                                              } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
+                                                            </li>
+                                                          ))}
+                                                        </ul>
+                                                      </>
+                                                      :
+                                                      sizes.length > 0
+                                                      &&
+                                                      <>
+                                                        <ul className="color-variant">
+                                                          <div className="mb-1">
+                                                            {item.attributeLabel}:
+                                                          </div>
+                                                          {sizes.map((s) => (
+                                                            <li
+                                                              style={
+                                                                
+                                                                   selectSize === s._id ? {
+                                                                    border: "1px solid #ffa200",
+                                                                    color: "#ffa200",
+                                                                  }
+                                                                    : {}
+                                                              }
+                                                              key={s._id}
+                                                              checked={selectSize === s._id}
+                                                              onClick={(e) => selectAttr(e, s._id)}
+                                                            >
+                                                              {s.name}
+                                                              <img style={
+                                                                selectSize === s._id
+                                                                  ? {
+                                                                    display: "block"
+                                                                  }
+                                                                  : {}
+                                                              } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
+                                                            </li>
+                                                          ))}
+                                                        </ul>
+                                                      </>
+                                                  }
+                                                </div>
+                                              </div>
+                                            </PopoverBody>
+                                          </UncontrolledPopover>
+                                          Phân loại hàng: {item.variant.name}
+                                          {
+                                            item.attr ? `- ${item.attr}` : ''
+                                          }
+                                          <i className="fa fa-solid fa-caret-down ml-1"></i>
+                                        </div>
+                                      }
                                     </td>
                                     <td>
                                       <h2>
@@ -420,12 +577,12 @@ const CartPage = ({ data, totalP }) => {
                   })}
                 </div>
                 <Modal
-                className="mt-5"
-                isOpen={isOpenModalDeleteProduct}
+                  className="mt-5"
+                  isOpen={isOpenModalDeleteProduct}
                   toggle={handleModalDeleteMany}
                 >
                   <ModalHeader toggle={handleModalDeleteMany}>
-                  Bạn có muốn bỏ {totalProductSelect} sản phẩm?
+                    Bạn có muốn bỏ {totalProductSelect} sản phẩm?
                   </ModalHeader>
                   <ModalFooter>
                     <Button
@@ -447,7 +604,7 @@ const CartPage = ({ data, totalP }) => {
                           <div className="d-flex flex-row bd-highlight ml-5">
                             <div className="bd-highlight">
                               <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
-                              disabled={true}
+                                disabled={true}
                                 onClick={handleModalDeleteMany}
                               >
                                 Xoá

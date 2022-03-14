@@ -48,7 +48,10 @@ export async function getServerSideProps(ctx) {
           })
           value = {
             ...value,
-            variant: rs[0]
+            variant: rs[0],
+            variants: p.variants,
+            variantLable: p.variantLabel,
+            attributeLabel: p.attributeLabel
           }
         } else if (p.selectedAttribute != null) {
           const rs = p.variants.sizes.filter(variant => {
