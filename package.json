@@ -2,7 +2,7 @@
   "name": "client",
   "private": true,
   "scripts": {
-    "dev": "next",
+    "dev": "next -p 3013",
     "build": "next build",
     "start": "next start -p 3025",
     "lint": "next lint"
@@ -36,6 +36,7 @@
     "react-masonry-css": "^1.0.16",
     "react-number-format": "^4.9.1",
     "react-otp-input": "^2.4.0",
+    "react-paypal-button": "^4.1.1",
     "react-router-dom": "^6.2.2",
     "react-select": "^5.2.2",
     "react-share": "^4.4.0",

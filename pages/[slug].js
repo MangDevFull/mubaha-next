@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+
+import { useSession, signOut } from "next-auth/react";
 import Slider from "react-slick";
 import Head from "next/head";
 import SideProductCart from "@/components/SideProductCart";
@@ -21,13 +24,40 @@ import {
 } from "react-share";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  const router = useRouter();
+
   const [quantity, setQuantity] = useState(1);
+  const [variantColor, setVariantColor] = useState();
   const [attributes, setAttributes] = useState();
   const [shareUrl, setShareUrl] = useState();
+  const [priceProduct, setPriceProduct] = useState(detailProduct.priceRange.min);
+
+  const [cartItems, setCartItems] = useState([]);
+  const addToCart = async () => {
+    const body = {
+      product: detailProduct,
+      quantity: quantity,
+      variants: variantColor,
+    };
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer ",
+      },
+      body: JSON.stringify(body),
+    };
+    const response = await fetch(`${process.env.API_URL}/cart`, options);
+
+    const data = await response.json();
+    // if (data.status === 200) {
+
+    // }
+  };
 
   useEffect(() => {
     setShareUrl(window.location.href);
-  }, [])
+  }, []);
 
   // useEffect(() => {
   //   // console.log(detailProduct.variants[0].size);
@@ -47,15 +77,18 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
 
   const selectedColor = (e, variant) => {
     setSelectedVariant(variant._id);
+    if(variant.sizes.length === 0) setPriceProduct(variant.price)
+    setVariantColor(variant.name);
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
     // attributes
-    setAttributes(variant.size);
+    setAttributes(variant.sizes);
   };
 
   const [selectedSize, setSlectedSize] = useState();
   const handleSelectedSize = (size) => {
     setSlectedSize(size._id);
+    setPriceProduct(size.price)
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
@@ -224,102 +257,81 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           </div> */}
                           <h3 className="price-detail">
                             <ProductPrice
-                              price={detailProduct.price}
+                              price={priceProduct}
                               discount={detailProduct.discount}
                               currencySymbol={detailProduct.currencySymbol}
                             />
                           </h3>
-                          <ul className="color-variant">
-                            {detailProduct.variants.map((variant) => (
-                              <li
-                                style={
-                                  selectedVariant === variant._id
-                                    ? {
-                                      border: "1px solid #ffa200",
-                                      color: "#ffa200",
+                          {detailProduct.variantLabel && (
+                            <>
+                              <h6 className="product-title size-text">
+                                {detailProduct.variantLabel}
+                              </h6>
+                              <ul className="color-variant mt-1">
+                                {detailProduct.variants.map((variant) => (
+                                  <li
+                                    style={
+                                      selectedVariant === variant._id
+                                        ? {
+                                            border: "1px solid #ffa200",
+                                            color: "#ffa200",
+                                          }
+                                        : {}
                                     }
-                                    : {}
-                                }
-                                key={variant._id}
-                                checked={selectedVariant === variant._id}
-                                onClick={(e) => selectedColor(e, variant)}
-                              >
-                                {variant.name}
-                                <img style={
-                                  selectedVariant === variant._id
-                                    ? {
-                                      display: "block"
-                                    }
-                                    : {}
-                                } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
-                              </li>
-                            ))}
-                          </ul>
+                                    key={variant._id}
+                                    checked={selectedVariant === variant._id}
+                                    value={variantColor}
+                                    onClick={(e) => selectedColor(e, variant)}
+                                  >
+                                    {variant.name}
+                                    <img
+                                      style={
+                                        selectedVariant === variant._id
+                                          ? {
+                                              display: "block",
+                                            }
+                                          : {}
+                                      }
+                                      class={`selected-indicator ${styles.tickImage}`}
+                                      src="../assets/images/selected-variant-indicator.svg"
+                                      alt="Selected"
+                                    ></img>
+                                  </li>
+                                ))}
+                              </ul>
+                            </>
+                          )}
+                          {detailProduct.variants[0].sizes.length > 0 && (
+                            <>
+                              <h6 className="product-title size-text">
+                                {variantColor === undefined ? `Vui lòng chọn ${detailProduct.variantLabel} trước` : detailProduct.attributeLabel}
+                                
+                              </h6>
 
+                              <div className="size-box">
+                                <ul>
+                                  {attributes?.map((size) => (
+                                    <li
+                                      style={
+                                        selectedSize === size._id
+                                          ? { lineHeight: 2.3, border: "1px solid #ffa200" }
+                                          : { lineHeight: 2.3 }
+                                      }
+                                      checked={selectedSize === size._id}
+                                      key={size._id}
+                                      onClick={() => handleSelectedSize(size)}
+                                    >
+                                      {size.name}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </>
+                          )}
                           <div
                             id="selectSize"
                             className="addeffect-section product-description border-product"
                           >
-                            <h6 className="product-title size-text">
-                              Lựa chọn kích thước
-                              {/* <span>
-                                <a href={null} data-bs-toggle="modal" data-bs-target="#sizemodal">
-                                  Bảng kích thước
-                                </a>
-                              </span> */}
-                            </h6>
-                            {/* <Modal
-                              className="modal fade"
-                              id="sizemodal"
-                              tabIndex={-1}
-                              role="dialog"
-                              aria-labelledby="exampleModalLabel"
-                              aria-hidden="true"
-                            >
-                              <div className="modal-dialog modal-dialog-centered" role="document">
-                                <div className="modal-content">
-                                  <div className="modal-header">
-                                    <h5 className="modal-title" id="exampleModalLabel">
-                                      Sheer Straight Kurta
-                                    </h5>
-                                    <button
-                                      type="button"
-                                      className="btn-close"
-                                      data-bs-dismiss="modal"
-                                      aria-label="Close"
-                                    >
-                                      <span aria-hidden="true">×</span>
-                                    </button>
-                                  </div>
-                                  <div className="modal-body">
-                                    <img
-                                      src="../assets/images/size-chart.jpg"
-                                      alt=""
-                                      className="img-fluid blur-up lazyload"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </Modal> */}
-
-                            <div className="size-box">
-                              <ul>
-                                {attributes?.map((size) => (
-                                  <li
-                                    style={
-                                      selectedSize === size._id
-                                        ? { lineHeight: 2.3, border: "1px solid #ffa200" }
-                                        : { lineHeight: 2.3 }
-                                    }
-                                    checked={selectedSize === size._id}
-                                    key={size._id}
-                                    onClick={() => handleSelectedSize(size)}
-                                  >
-                                    {size.name}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
                             <h6 className="product-title">Số lượng</h6>
                             <div className="qty-box">
                               <div className="input-group">
@@ -327,7 +339,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                   <button
                                     type="button"
                                     className="btn quantity-left-minus"
-                                    // onClick={minusQty}
                                     onClick={handleCrease}
                                     data-type="minus"
                                     data-field=""
@@ -370,6 +381,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 style={{ margin: "0px" }}
                                 id="cartEffect"
                                 className="btn btn-solid btn-animation"
+                                onClick={() => addToCart(detailProduct, quantity, variantColor)}
                               >
                                 <i className="fa fa-shopping-cart mx-2" aria-hidden="true" />
                                 Thêm giỏ hàng
