@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Slider from "react-slick";
 import Head from "next/head";
 import SideProductCart from "@/components/SideProductCart";
-import { Row, Col, Media, Container, Modal, Input } from "reactstrap";
+import { Row, Col, Media, Container, Input} from "reactstrap";
 import RelatedProducts from "@/components/RelatedProducts";
 import Layout from "@/components/Layout";
 import ProductTab from "@/components/common/product-details/product-tab";
@@ -14,6 +14,7 @@ import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import styles from "@/styles/slug.module.css";
+import Modal from 'react-awesome-modal';
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -21,81 +22,85 @@ import {
   MailruShareButton,
   LinkedinShareButton,
 } from "react-share";
-
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  const {data: session, status} = useSession();
+  const { data: session } = useSession();
 
   const router = useRouter();
-
+  const [visible, setVisible] = useState(false)
   const [quantity, setQuantity] = useState(1);
   const [variantColor, setVariantColor] = useState();
   const [attributes, setAttributes] = useState();
   const [shareUrl, setShareUrl] = useState();
   const [priceProduct, setPriceProduct] = useState(detailProduct.priceRange.min);
+  const [discount, setDiscount] = useState(0)
   const [selectedSize, setSlectedSize] = useState();
+  const [unSelect, setUnSelect] = useState(false);
+  function openModal() {
+    setVisible(true)
+}
+
+function closeModal() {
+  setVisible(false)
+}
   const addToCart = async () => {
-    if(session ===null){
-      localStorage.setItem('addToCart',`/${detailProduct.slug}`)
-        router.push('/auth/login')
-    }else{
+    if (session === null) {
+      localStorage.setItem('addToCart', `/${detailProduct.slug}`)
+      router.push('/auth/login')
+    } else {
       let isDone = false;
-      if(detailProduct.variants[0]?.sizes.length > 0) {
-        if(variantColor == undefined && selectedSize == undefined){
-          alert("Xin hãy chọn")
-        }else if(variantColor != undefined && selectedSize == undefined){
-          alert("Xin hãy chọn")
-        }else{
+      if (detailProduct.variants[0]?.sizes.length > 0) {
+        if (variantColor == undefined && selectedSize == undefined) {
+          setUnSelect(true)
+        } else if (variantColor != undefined && selectedSize == undefined) {
+          setUnSelect(true)
+        } else {
           isDone = true
         }
-      }else if(detailProduct.variants[0]?.sizes?.length == 0){
-        if(variantColor == undefined && selectedSize == undefined){
-          alert("Xin hãy chọn")
-        }else{
+      } else if (detailProduct.variants[0]?.sizes?.length == 0) {
+        if (variantColor == undefined && selectedSize == undefined) {
+          setUnSelect(true)
+        } else {
           isDone = true
         }
       }
-        if(isDone){
-          let body = {
-            productId: detailProduct._id,
-            amount: quantity,
-          };
-          if(variantColor != undefined && selectedSize == undefined){
-            body = {
-              ...body,
-              variant: variantColor
-            }
-          }else if(variantColor != undefined && selectedSize !=undefined){
-            body = {
-              ...body,
-              variant: variantColor,
-              size: selectedSize
-            }
+      if (isDone) {
+        let body = {
+          productId: detailProduct._id,
+          amount: quantity,
+        };
+        if (variantColor != undefined && selectedSize == undefined) {
+          body = {
+            ...body,
+            variant: variantColor
           }
-          const response = await fetch(process.env.API_CART_URL, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              'Authorization': 'Bearer ' + session.accessToken
-            },
-            body: JSON.stringify(body),
-          });
-          const data = await response.json()
-          if(data.status === 200){
-            alert(data.message)
-          }else{
-            alert(data.message)
+        } else if (variantColor != undefined && selectedSize != undefined) {
+          body = {
+            ...body,
+            variant: variantColor,
+            size: selectedSize
           }
         }
+        const response = await fetch(process.env.API_CART_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + session.accessToken
+          },
+          body: JSON.stringify(body),
+        });
+        const data = await response.json()
+        if (data.status === 200) {
+          alert("Thêm giỏ hàng thành công")
+        } else {
+          alert(data.message)
+        }
+      }
     }
   };
 
   useEffect(() => {
     setShareUrl(window.location.href);
   }, []);
-
-  // useEffect(() => {
-  //   // console.log(detailProduct.variants[0].size);
-  // }, [])
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -111,8 +116,12 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
 
   const selectedColor = (e, variant) => {
     setSelectedVariant(variant._id);
-    if(variant.sizes.length === 0) setPriceProduct(variant.price)
+    if (variant.sizes.length === 0){
+      setPriceProduct(variant.price)
+      setDiscount(variant.discount)
+    } 
     setVariantColor(variant._id);
+    setUnSelect(false)
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
     setAttributes(variant.sizes);
@@ -120,7 +129,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
 
   const handleSelectedSize = (size) => {
     setSlectedSize(size._id);
+    setUnSelect(false)
     setPriceProduct(size.price)
+    setDiscount(size.discount)
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
@@ -153,6 +164,64 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   const filterClick = () => {
     document.getElementById("filter").style.left = "-15px";
   };
+  const handleCheckout = async () => {
+    if (session === null) {
+      localStorage.setItem('addToCart', `/${detailProduct.slug}`)
+      router.push('/auth/login')
+    } else {
+      let isDone = false;
+      if (detailProduct.variants[0]?.sizes.length > 0) {
+        if (variantColor == undefined && selectedSize == undefined) {
+          setUnSelect(true)
+        } else if (variantColor != undefined && selectedSize == undefined) {
+          setUnSelect(true)
+        } else {
+          isDone = true
+        }
+      } else if (detailProduct.variants[0]?.sizes?.length == 0) {
+        if (variantColor == undefined && selectedSize == undefined) {
+          setUnSelect(true)
+        } else {
+          isDone = true
+        }
+      }
+      if (isDone) {
+        let body = {
+          productId: detailProduct._id,
+          amount: quantity,
+        };
+        if (variantColor != undefined && selectedSize == undefined) {
+          body = {
+            ...body,
+            variant: variantColor
+          }
+        } else if (variantColor != undefined && selectedSize != undefined) {
+          body = {
+            ...body,
+            variant: variantColor,
+            size: selectedSize
+          }
+        }
+        const response = await fetch(process.env.API_CART_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + session.accessToken
+          },
+          body: JSON.stringify(body),
+        });
+        const data = await response.json()
+        if (data.status === 200) {
+          setVisible(true)
+          setTimeout(()=> setVisible(false), 1000)
+          // localStorage.setItem('cartID', data.data._id)
+          // router.push('/cart')
+        } else {
+          alert(data.data)
+        }
+      }
+    }
+  }
   return (
     <>
       <Head>
@@ -188,7 +257,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" key="viewport" />
       </Head>
-      {/* breadcrumb start */}
       <div className="breadcrumb-section">
         <div className="container">
           <div className="row">
@@ -212,8 +280,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
           </div>
         </div>
       </div>
-      {/* breadcrumb start end */}
-      {/* section start */}
       <section>
         <div className="collection-wrapper">
           <Container>
@@ -290,76 +356,87 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           <h3 className="price-detail">
                             <ProductPrice
                               price={priceProduct}
-                              discount={detailProduct.discount}
+                              discount={discount}
                               currencySymbol={detailProduct.currencySymbol}
                             />
                           </h3>
-                          {detailProduct.variantLabel && (
-                            <>
-                              <h6 className="product-title size-text">
-                                {detailProduct.variantLabel}
-                              </h6>
-                              <ul className="color-variant mt-1">
-                                {detailProduct.variants.map((variant) => (
-                                  <li
-                                    style={
-                                      selectedVariant === variant._id
-                                        ? {
-                                            border: "1px solid #ffa200",
-                                            color: "#ffa200",
-                                          }
-                                        : {}
-                                    }
-                                    key={variant._id}
-                                    checked={selectedVariant === variant._id}
-                                    value={variantColor}
-                                    onClick={(e) => selectedColor(e, variant)}
-                                  >
-                                    {variant.name}
-                                    <img
+                          <div className="p-2" style={{ backgroundColor: unSelect && '#fff2e0' }}>
+                            {detailProduct.variantLabel && (
+                              <>
+                                <h6 className="product-title size-text">
+                                  {detailProduct.variantLabel}
+                                </h6>
+                                <ul className="color-variant mt-1">
+                                  {detailProduct.variants.map((variant) => (
+                                    <li
                                       style={
                                         selectedVariant === variant._id
                                           ? {
-                                              display: "block",
-                                            }
+                                            border: "1px solid #ffa200",
+                                            color: "#ffa200",
+                                          }
                                           : {}
                                       }
-                                      class={`selected-indicator ${styles.tickImage}`}
-                                      src="../assets/images/selected-variant-indicator.svg"
-                                      alt="Selected"
-                                    ></img>
-                                  </li>
-                                ))}
-                              </ul>
-                            </>
-                          )}
-                          {detailProduct.variants[0].sizes.length > 0 && (
-                            <>
-                              <h6 className="product-title size-text">
-                                {variantColor === undefined ? `Vui lòng chọn ${detailProduct.variantLabel} trước` : detailProduct.attributeLabel}
-                                
-                              </h6>
-
-                              <div className="size-box">
-                                <ul>
-                                  {attributes?.map((size) => (
-                                    <li
-                                      style={
-                                        selectedSize === size._id
-                                          ? { lineHeight: 2.3, border: "1px solid #ffa200" }
-                                          : { lineHeight: 2.3 }
-                                      }
-                                      checked={selectedSize === size._id}
-                                      key={size._id}
-                                      onClick={() => handleSelectedSize(size)}
+                                      key={variant._id}
+                                      checked={selectedVariant === variant._id}
+                                      value={variantColor}
+                                      onClick={(e) => selectedColor(e, variant)}
                                     >
-                                      {size.name}
+                                      {variant.name}
+                                      <img
+                                        style={
+                                          selectedVariant === variant._id
+                                            ? {
+                                              display: "block",
+                                            }
+                                            : {}
+                                        }
+                                        class={`selected-indicator ${styles.tickImage}`}
+                                        src="../assets/images/selected-variant-indicator.svg"
+                                        alt="Selected"
+                                      ></img>
                                     </li>
                                   ))}
                                 </ul>
-                              </div>
-                            </>
-                          )}
+                              </>
+                            )}
+                            {detailProduct.variants[0].sizes.length > 0 && (
+                              <>
+                                <h6 className="product-title size-text">
+                                  {variantColor === undefined ? `Vui lòng chọn ${detailProduct.variantLabel} trước` : detailProduct.attributeLabel}
+
+                                </h6>
+
+                                <div className="size-box">
+                                  <ul>
+                                    {attributes?.map((size) => (
+                                      <li
+                                        style={
+                                          selectedSize === size._id
+                                            ? { lineHeight: 2.3, border: "1px solid #ffa200" }
+                                            : { lineHeight: 2.3 }
+                                        }
+                                        checked={selectedSize === size._id}
+                                        key={size._id}
+                                        onClick={() => handleSelectedSize(size)}
+                                      >
+                                        {size.name}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </>
+                            )}
+                            {unSelect && <div className="d-flex">
+                              <span style={{ color: 'red' }}><i className="fa fa-solid fa-exclamation mr-2"></i>  Vui lòng chọn sản phẩm</span>
+                            </div>}
+                          </div>
+          
+                <input type="button" value="Open" onClick={() => openModal()} />
+                <Modal visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
+               
+                </Modal>
+         
                           <div
                             id="selectSize"
                             className="addeffect-section product-description border-product"
@@ -426,7 +503,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 padding: "1px 6px 1px 0px",
                               }}
                             >
-                              <a className="btn btn-solid">
+                              <a className="btn btn-solid"
+                                onClick={handleCheckout}
+                              >
                                 <i className="fa fa-bookmark fz-16 mx-2" aria-hidden="true" />
                                 Mua ngay
                               </a>
@@ -533,8 +612,6 @@ ProductDetail.getLayout = function getLayout(page) {
 
 export async function getServerSideProps(context) {
   const { slug } = context.query;
-  // const response = await API.instance.get(`/products/${slug}`)
-  // const data = response.data.data
 
   const response = await fetch(`${process.env.API_URL}/products/${slug}`);
   const { data, status, message } = await response.json();

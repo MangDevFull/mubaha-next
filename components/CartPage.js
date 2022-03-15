@@ -13,13 +13,27 @@ import { useSession } from 'next-auth/react'
 const Variant = dynamic(() => import('@/components/Variant.js'))
 const CartPage = ({ data, totalP }) => {
   const [products, setProduct] = useState(data)
-  const [totalProduct, setTotalProduct] = useState(totalP)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalProductSelect, setTotalProductSelect] = useState(0)
   const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] = useState(false)
 
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
+  
+  useEffect(() => {
+   const cartID = localStorage.getItem('cartID')
+   if(cartID !=null) {
+    products.forEach((product,index) => {
+       product.products.forEach((p,i)=>{
+        if(p.cartID == cartID) {
+            products[index].products[i].selected = true
+            setProduct([...products])
+            localStorage.removeItem('cartID')
+        }
+      })
+    })
+   }
+  },[])
 
   const handleMinusQuantity = async (i, index, quantity, cartID) => {
     if (products[i].products[index].quantity >= 2) {
@@ -139,7 +153,6 @@ const CartPage = ({ data, totalP }) => {
     setProduct([...products])
   }
   const handleSelectVendor = (i) => {
-    console.log(products[i].selected)
     products[i].selected = !products[i].selected
     products[i].products.forEach((p) => {
       p.selected = products[i].selected
@@ -200,37 +213,37 @@ const CartPage = ({ data, totalP }) => {
         }
       })
     })
-    const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
-      },
-      body: JSON.stringify({ cartItems: cartItems })
-    })
-    const data = await response.json()
+   const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + session.accessToken
+    },
+    body: JSON.stringify({ cartItems: cartItems })
+  })
+  const data = await response.json()
 
-    if (data.status === 200) {
-      products.forEach((product, i) => {
-        const pr = product.products.filter((p) => {
-          return !cartItems.includes(p.cartID)
-        })
-        if (pr.length < 1) {
-          products.splice(i, 1);
-        } else {
-          products[i] = {
-            vendor: product.vendor,
-            selected: false,
-            totalDocs: product.totalDocs,
-            products: pr
-          }
-        }
+  if (data.status === 200) {
+    products.forEach((product, i) => {
+      const pr = product.products.filter((p) => {
+        return !cartItems.includes(p.cartID)
       })
-      setProduct([...products])
-      setIsOpenModalDeleteProduct(false)
-    } else {
-      alert(data.message)
-    }
+      if (pr.length < 1) {
+        products.splice(i, 1);
+      } else {
+        products[i] = {
+          vendor: product.vendor,
+          selected: false,
+          totalDocs: product.totalDocs,
+          products: pr
+        }
+      }
+    })
+    setProduct([...products])
+    setIsOpenModalDeleteProduct(false)
+  } else {
+    alert(data.message)
+  }
   }
   const handleModalDeleteMany = () => {
     if (totalProductSelect < 1) {
@@ -301,7 +314,7 @@ const CartPage = ({ data, totalP }) => {
                           </div>
                         </th>
                         <th scope="col">
-                          <div className="mt-4 mb-3 ml-2">
+                          <div className="mt-4 mb-3 ml-1">
                             Số lượng
                           </div>
                         </th>
@@ -432,7 +445,7 @@ const CartPage = ({ data, totalP }) => {
                                       </div>
                                     </td>
                                     <td>
-                                      <h2 className="td-color">
+                                      <h2 className="td-color ml-5">
                                         <NumberFormat
                                           value={item.quantity * item?.attr?.price || item.variant.price || item.price}
                                           thousandSeparator={true}
@@ -440,7 +453,6 @@ const CartPage = ({ data, totalP }) => {
                                           suffix={item.currencySymbol}
                                           decimalScale={0}
                                         />
-
                                       </h2>
                                     </td>
                                     <td>
@@ -553,9 +565,10 @@ const CartPage = ({ data, totalP }) => {
               <div className="mt-5">
                 <div className="col-sm-12 empty-cart-cls text-center">
                   <Media
-                    src="/assets/icon/icon-empty-cart.png"
-                    className="img-fluid mb-4 mx-auto"
+                    src="/assets/icon/cart-is-empty-800x800.png"
+                    className="img-fluid mx-auto"
                     alt="mubaha.com"
+                    style={{width: "200px", maxWidth: "200px" }}
                   />
                   <h3>
                     <strong>Giỏ hàng bạn đang chưa có sản phẩm</strong>
