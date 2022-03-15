@@ -24,6 +24,7 @@ import {
 } from "react-share";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  console.log("detaill", detailProduct);
   const router = useRouter();
 
   const [quantity, setQuantity] = useState(1);
@@ -77,7 +78,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
 
   const selectedColor = (e, variant) => {
     setSelectedVariant(variant._id);
-    if(variant.sizes.length === 0) setPriceProduct(variant.price)
+    if (variant.sizes.length === 0) setPriceProduct(variant.price);
     setVariantColor(variant.name);
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
@@ -88,7 +89,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   const [selectedSize, setSlectedSize] = useState();
   const handleSelectedSize = (size) => {
     setSlectedSize(size._id);
-    setPriceProduct(size.price)
+    setPriceProduct(size.price);
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
@@ -227,10 +228,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                         >
                           {detailProduct.variants
                             ? detailProduct.media.data.map((item, index) => (
-                              <div key={index}>
-                                <Media src={`${item.path}`} className="img-fluid" />
-                              </div>
-                            ))
+                                <div key={index}>
+                                  <Media src={`${item.path}`} className="img-fluid" />
+                                </div>
+                              ))
                             : ""}
                         </Slider>
                       </Col>
@@ -304,8 +305,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           {detailProduct.variants[0].sizes.length > 0 && (
                             <>
                               <h6 className="product-title size-text">
-                                {variantColor === undefined ? `Vui lòng chọn ${detailProduct.variantLabel} trước` : detailProduct.attributeLabel}
-                                
+                                {variantColor === undefined
+                                  ? `Vui lòng chọn ${detailProduct.variantLabel} trước`
+                                  : detailProduct.attributeLabel}
                               </h6>
 
                               <div className="size-box">
@@ -472,6 +474,42 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                     </Row>
                   )}
                 </div>
+
+                {/* Vendor */}
+                <section className="tab-product m-0">
+                  <Container>
+                    <div class={`${styles.vendorBox}`}>
+                      <div class={`${styles.leftVendor}`}>
+                        <a className=""></a>
+                        <div class="_27NV-r">
+                          <div class="_1wVLAc">
+                            <a>{detailProduct.vendor.brandName}</a>
+                          </div>
+                          <div class="_1NgpoA">
+                            <a class="btn btn-light btn--s btn--inline btn-light--link _1bsnOp">
+                              <Link href={`/vendors/${detailProduct.vendor.ownerRef.username}`}>
+                                xem shop
+                              </Link>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div class={`${styles.rightVendor}`}>
+                        <div class="_1utN4D">
+                          <div class="_14x4GD gy4qkp">
+                            <label class="_3ApBiN">tham gia</label>
+                            <span class="_33OqNH">3 năm trước</span>
+                          </div>
+                          <div class="_14x4GD gy4qkp">
+                            <label class="_3ApBiN">Đánh giá</label>
+                            <span class="_33OqNH">134,4k</span>
+                          </div>
+                        </div>
+                      </div> */}
+                    </div>
+                  </Container>
+                </section>
+                {/* Vendor end */}
                 <ProductTab detailProduct={detailProduct} />
               </Col>
               <Col sm={3} className="collection-filter">

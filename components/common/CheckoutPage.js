@@ -12,8 +12,6 @@ import {
   ModalFooter,
   Button,
 } from "reactstrap";
-import { PayPalButton } from "react-paypal-button";
-import paypal from "../../public/assets/images/paypal.png";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import styles from "./CheckoutPage.module.css";
@@ -85,53 +83,57 @@ const CheckoutPage = () => {
         <Container>
           <div className="checkout-page">
             <div className="checkout-form">
-              <div className={`${styles.table_address}`}>
-                <div class={`${styles.border_top}`}></div>
-                <div class={`${styles.padding_box}`}>
-                  <div class={`${styles.title_address}`}>
-                    <div class={`${styles._20Qrq_}`}>
-                      <div class={`${styles._2t2xOY}`}>
-                        <svg
-                          height="16"
-                          viewBox="0 0 12 16"
-                          width="12"
-                          fill="#f89922"
-                          class="shopee-svg-icon icon-location-marker"
-                        >
-                          <path
-                            d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
-                            fill-rule="evenodd"
-                          ></path>
-                        </svg>
+              <div className={`${styles.address}`}>
+                <h4>1. Chọn địa chỉ giao hàng</h4>
+                <div className={`${styles.table_address}`}>
+                  <div class={`${styles.border_top}`}></div>
+                  <div class={`${styles.padding_box}`}>
+                    <div class={`${styles.title_address}`}>
+                      <div class={`${styles._20Qrq_}`}>
+                        <div class={`${styles._2t2xOY}`}>
+                          <svg
+                            height="16"
+                            viewBox="0 0 12 16"
+                            width="12"
+                            fill="#f89922"
+                            class="shopee-svg-icon icon-location-marker"
+                          >
+                            <path
+                              d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
+                              fill-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div>Địa chỉ giao hàng</div>
                       </div>
-                      <div>Địa chỉ giao hàng</div>
                     </div>
-                  </div>
-                  <div class="detail_infor">
-                    <div class="_2Pe7Hh">
-                      <div class={`${styles.fullName}`}>Nguyễn Minh Quang (+84) 373922863</div>
-                      <div class="_2F7jaW">
-                        Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng Hậu, Quận Cầu
-                        Giấy, Hà Nội
+                    <div class="detail_infor">
+                      <div class="_2Pe7Hh">
+                        <div class={`${styles.fullName}`}>Nguyễn Minh Quang (+84) 373922863</div>
+                        <div class="_2F7jaW">
+                          Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng Hậu, Quận
+                          Cầu Giấy, Hà Nội
+                        </div>
+                        <div class={`${styles._2LiNia}`}>Mặc định</div>
                       </div>
-                      <div class={`${styles._2LiNia}`}>Mặc định</div>
+                      <div>
+                        <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleShow}>
+                          Thay đổi địa chỉ
+                        </button>
+                      </div>
+                      <div>
+                        <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleShow}>
+                          Thiết lập địa chỉ
+                        </button>
+                      </div>
                     </div>
-                    <div>
-                      <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleShow}>
-                        Thay đổi địa chỉ
-                      </button>
-                    </div>
-                    <div>
-                      <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleShow}>
-                        Thiết lập địa chỉ
-                      </button>
-                    </div>
+                    <div></div>
                   </div>
-                  <div></div>
+                  <div class={`${styles.border_top}`}></div>
                 </div>
-                <div class={`${styles.border_top}`}></div>
               </div>
               <div className={`${styles.list_cart}`}>
+                <h4>2. Chọn hình thức giao hàng</h4>
                 <div className={`${styles.title_section}`}>
                   <div className={`${styles.title}`}>
                     <div className={`${styles.title_products}`}>Sản phẩm</div>
@@ -140,6 +142,97 @@ const CheckoutPage = () => {
                     <div className={`${styles.title_name}`}>Số lượng</div>
                     <div className={`${styles.title_price}`}>Thành tiền</div>
                   </div>
+                </div>
+              </div>
+              <div className={`${styles.voucher}`}>
+                <h4>3. Chọn Voucher</h4>
+                <div className={`${styles._1ru0hU}`}>
+                  <div className={`${styles._4zBNu}`}>
+                    <div className={`${styles.FgeP4U}`}>
+                      <div className={`${styles.t57Ey0}`}>
+                        {/* icon voucher */}
+                        <span className={`${styles.y4xiL1}`}>Mubaha voucher</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`${styles.selectVoucher}`}>
+                    <button className={`${styles.btn_change} btn p-0 m-0`}>Chọn Voucher</button>
+                  </div>
+                </div>
+              </div>
+              <div className={`${styles.payments}`}>
+                <h4>4. Chọn hình thức thanh toán</h4>
+                <div className={`${styles.payment_methods}`}>
+                  <ul>
+                    <li>
+                      <label className={`${styles.methods}`}>
+                        <input
+                          type="radio"
+                          name="payment_methods"
+                          data-view-index="cod"
+                          readonly
+                          value="cod"
+                        />
+                        <span className={`${styles.radio_fake}`}></span>
+                        <span>
+                          <div>
+                            <span>Thanh toán tiền mặt khi nhận hàng</span>
+                          </div>
+                        </span>
+                      </label>
+                    </li>
+                    <li>
+                      <label className={`${styles.methods}`}>
+                        <input
+                          type="radio"
+                          name="payment_methods"
+                          data-view-index="atm"
+                          readonly
+                          value="atm"
+                        />
+                        <span className={`${styles.radio_fake}`}></span>
+                        <span>
+                          <div>
+                            <span>Thẻ ATM nội địa/Internet Banking (Hỗ trợ Internet Banking)</span>
+                          </div>
+                        </span>
+                      </label>
+                    </li>
+                    <li>
+                      <label className={`${styles.methods}`}>
+                        <input
+                          type="radio"
+                          name="payment_methods"
+                          data-view-index="paypal"
+                          readonly
+                          value="paypal"
+                        />
+                        <span className={`${styles.radio_fake}`}></span>
+                        <span>
+                          <div>
+                            <span>Thanh toán bằng Paypal</span>
+                          </div>
+                        </span>
+                      </label>
+                    </li>
+                    <li>
+                      <label className={`${styles.methods}`}>
+                        <input
+                          type="radio"
+                          name="payment_methods"
+                          data-view-index="vnpay"
+                          readonly
+                          value="vnpay"
+                        />
+                        <span className={`${styles.radio_fake}`}></span>
+                        <span>
+                          <div>
+                            <span>Thanh toán bằng VNPAY</span>
+                          </div>
+                        </span>
+                      </label>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>

@@ -5,3 +5,17 @@
   display: none;
   max-width: 30%;
 }
+.vendorBox {
+  display: flex;
+}
+.leftVendor {
+  box-sizing: border-box;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+}
+.rightVendor {
+  padding-left: 3.4375rem;
+  color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+}

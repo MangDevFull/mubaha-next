@@ -1,3 +1,8 @@
+.address h4 {
+  margin-bottom: 20px;
+  color: #5f5f5f;
+  font-weight: 700;
+}
 .table_address {
   box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
   background: #f8f8f8;
@@ -54,6 +59,11 @@
   border-radius: 3px;
   margin-top: 40px;
 }
+.list_cart h4 {
+  margin-bottom: 20px;
+  color: #5f5f5f;
+  font-weight: 700;
+}
 .title,
 .title_section {
   display: flex;
@@ -94,3 +104,88 @@
   justify-content: flex-end;
   text-align: right;
 }
+.voucher {
+  margin-top: 36px;
+}
+.voucher h4 {
+  margin-bottom: 20px;
+  color: #5f5f5f;
+  font-weight: 700;
+}
+._1ru0hU {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 28px 30px;
+  background: rgb(255, 255, 255);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+._4zBNu,
+.FgeP4U {
+  display: flex;
+}
+._4zBNu {
+  flex-direction: column;
+}
+._4zBNu,
+.YJJdyJ {
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+.t57Ey0 {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+.y4xiL1 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0px 8px;
+}
+.selectVoucher {
+  padding-left: 50px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-left: 15px;
+}
+.payments {
+  margin-top: 36px;
+}
+.payments h4 {
+  margin-bottom: 20px;
+  color: #5f5f5f;
+  font-weight: 700;
+}
+.payment_methods {
+  background: rgb(255, 255, 255);
+  color: rgb(51, 51, 51);
+  padding: 15px 25px 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid rgb(221, 221, 221);
+}
+.payment_methods ul {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+.payment_methods ul li {
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+}
+.methods {
+  display: block;
+  margin-right: 15px;
+}
+/* .methods input[type="radio"] {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  visibility: hidden;
+  clip: rect(0px, 0px, 0px, 0px);
+  opacity: 0;
+} */
+
+
