@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-
-import { useSession, signOut } from "next-auth/react";
 import Slider from "react-slick";
 import Head from "next/head";
 import SideProductCart from "@/components/SideProductCart";
@@ -14,6 +12,7 @@ import Filter from "@/components/common/product-details/filter";
 import CountdownComponent from "@/components/common/widgets/countdownComponent";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import styles from "@/styles/slug.module.css";
 import {
   FacebookShareButton,
@@ -24,6 +23,8 @@ import {
 } from "react-share";
 
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  const {data: session, status} = useSession();
+
   const router = useRouter();
 
   const [quantity, setQuantity] = useState(1);
@@ -31,28 +32,55 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   const [attributes, setAttributes] = useState();
   const [shareUrl, setShareUrl] = useState();
   const [priceProduct, setPriceProduct] = useState(detailProduct.priceRange.min);
-
-  const [cartItems, setCartItems] = useState([]);
+  const [selectedSize, setSlectedSize] = useState();
   const addToCart = async () => {
-    const body = {
-      product: detailProduct,
-      quantity: quantity,
-      variants: variantColor,
-    };
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer ",
-      },
-      body: JSON.stringify(body),
-    };
-    const response = await fetch(`${process.env.API_URL}/cart`, options);
-
-    const data = await response.json();
-    // if (data.status === 200) {
-
-    // }
+    console.log('sss',session)
+    if(session ===null){
+        router.push('/auth/login')
+    }else{
+      let isDone = false;
+      if(detailProduct.variants[0]?.sizes.length > 0) {
+        if(variantColor == undefined && selectedSize == undefined){
+          alert("Xin hãy chọn")
+        }else if(variantColor != undefined && selectedSize == undefined){
+          alert("Xin hãy chọn")
+        }else{
+          isDone = true
+        }
+      }else if(detailProduct.variants[0]?.sizes?.length == 0){
+        if(variantColor == undefined && selectedSize == undefined){
+          alert("Xin hãy chọn")
+        }else{
+          isDone = true
+        }
+      }
+        if(isDone){
+          let body = {
+            productId: detailProduct._id,
+            quantity: quantity,
+          };
+          if(variantColor != undefined && selectedSize == undefined){
+            body = {
+              ...body,
+              variant: variantColor
+            }
+          }else if(variantColor != undefined && selectedSize !=undefined){
+            body = {
+              ...body,
+              variant: variantColor,
+              size: selectedSize
+            }
+          }
+          // const response = await fetch(`${process.env.API_URL}/cart`, {
+          //   method: "POST",
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //     Authorization: "Bearer ",
+          //   },
+          //   body: JSON.stringify(body),
+          // });
+        }
+    }
   };
 
   useEffect(() => {
@@ -78,14 +106,12 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   const selectedColor = (e, variant) => {
     setSelectedVariant(variant._id);
     if(variant.sizes.length === 0) setPriceProduct(variant.price)
-    setVariantColor(variant.name);
+    setVariantColor(variant._id);
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
-    // attributes
     setAttributes(variant.sizes);
   };
 
-  const [selectedSize, setSlectedSize] = useState();
   const handleSelectedSize = (size) => {
     setSlectedSize(size._id);
     setPriceProduct(size.price)
