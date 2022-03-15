@@ -318,7 +318,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                             }
                                           : {}
                                       }
-                                      class={`selected-indicator ${styles.tickImage}`}
+                                      className={`selected-indicator ${styles.tickImage}`}
                                       src="../assets/images/selected-variant-indicator.svg"
                                       alt="Selected"
                                     ></img>
