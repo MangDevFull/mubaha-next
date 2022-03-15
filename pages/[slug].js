@@ -34,8 +34,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   const [priceProduct, setPriceProduct] = useState(detailProduct.priceRange.min);
   const [selectedSize, setSlectedSize] = useState();
   const addToCart = async () => {
-    console.log('sss',session)
     if(session ===null){
+      localStorage.setItem('addToCart',`/${detailProduct.slug}`)
         router.push('/auth/login')
     }else{
       let isDone = false;
@@ -57,7 +57,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         if(isDone){
           let body = {
             productId: detailProduct._id,
-            quantity: quantity,
+            amount: quantity,
           };
           if(variantColor != undefined && selectedSize == undefined){
             body = {
@@ -71,14 +71,20 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
               size: selectedSize
             }
           }
-          // const response = await fetch(`${process.env.API_URL}/cart`, {
-          //   method: "POST",
-          //   headers: {
-          //     "Content-Type": "application/json",
-          //     Authorization: "Bearer ",
-          //   },
-          //   body: JSON.stringify(body),
-          // });
+          const response = await fetch(process.env.API_CART_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              'Authorization': 'Bearer ' + session.accessToken
+            },
+            body: JSON.stringify(body),
+          });
+          const data = await response.json()
+          if(data.status === 200){
+            alert(data.message)
+          }else{
+            alert(data.message)
+          }
         }
     }
   };

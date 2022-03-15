@@ -58,8 +58,13 @@ export default function CreatePassWord() {
     const data = await response.json()
 
     if (data.status == 200) {
-      setShow(true)
-      router.push("/")
+      const getProduct = localStorage.getItem('addToCart')
+      if(getProduct != null){
+        localStorage.removeItem("addToCart");
+        router.push(getProduct)
+      }else{
+        router.push('/')
+      }
     }
   }
   return (

@@ -76,7 +76,13 @@ export default function LoginPage() {
         redirect: false,
       });
       if (res.error == null) {
-        router.push("/");
+        const getProduct = localStorage.getItem('addToCart')
+        if(getProduct != null){
+          localStorage.removeItem("addToCart");
+          router.push(getProduct)
+        }else{
+          router.push('/')
+        }
       } else {
         const data = JSON.parse(res.error);
         if (data.errors == null) {

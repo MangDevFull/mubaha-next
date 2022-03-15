@@ -528,7 +528,7 @@ const CartPage = ({ data, totalP }) => {
             </Row>
             <Row className="cart-buttons">
               <Col xs="6">
-                <Link href={`/shop/left_sidebar`}>
+                <Link href={`/`}>
                   <a className="btn btn-solid">Tiếp tục mua hàng</a>
                 </Link>
               </Col>
