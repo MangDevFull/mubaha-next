@@ -175,12 +175,12 @@ const CartPage = ({ data, totalP }) => {
         if (p.selected == true) {
           if (p.variant != null && p.attr == null) {
             a += 1
-            t += p.variant.price * p.quantity
+            t += p.variant.price * p.quantity * (1 - p.variant.discount)
           } else if (p.attr != null && p.variant != null) {
-            t += p.attr.price * p.quantity
+            t += p.attr.price * p.quantity * (1 - p.attr.discount)
             a += 1
           } else {
-            t += p.price * p.quantity
+            t += p.price * p.quantity * (1 - p.discount)
             a += 1
           }
         }
@@ -239,35 +239,35 @@ const CartPage = ({ data, totalP }) => {
       setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct)
     }
   }
-  const updateProduct=(body,i,index)=>{
-   if(body.variant != null && body.size != null) {
-    products[i].products.forEach((product,id)=>{
-      console.log(product)
-      const v = product.variants.filter((v)=>{
-        return v._id === body.variant
-      })
-      if(v.length > 0){
-        products[i].products[id].variant = v[0]
-        const s = v[0].sizes.filter((s)=>{
-          return s._id === body.size
+  const updateProduct = (body, i, index) => {
+    if (body.variant != null && body.size != null) {
+      products[i].products.forEach((product, id) => {
+        console.log(product)
+        const v = product.variants.filter((v) => {
+          return v._id === body.variant
         })
-        if(s.length > 0){
-          products[i].products[id].attr = s[0]
-          setProduct([...products])
-      }
-      }
-    })
-   }else if(body.variant != null && body.size == null){
-    products[i].products.forEach((product,id)=>{
-      const v = product.variants.filter((v)=>{
-        return v._id === body.variant
+        if (v.length > 0) {
+          products[i].products[id].variant = v[0]
+          const s = v[0].sizes.filter((s) => {
+            return s._id === body.size
+          })
+          if (s.length > 0) {
+            products[i].products[id].attr = s[0]
+            setProduct([...products])
+          }
+        }
       })
-      if(v.length > 0){
-        products[i].products[id].variant = v[0]
-        setProduct([...products])
-      }
-    })
-   }
+    } else if (body.variant != null && body.size == null) {
+      products[i].products.forEach((product, id) => {
+        const v = product.variants.filter((v) => {
+          return v._id === body.variant
+        })
+        if (v.length > 0) {
+          products[i].products[id].variant = v[0]
+          setProduct([...products])
+        }
+      })
+    }
   }
   if (products.length > 0) {
     return (
@@ -338,6 +338,10 @@ const CartPage = ({ data, totalP }) => {
                         <CardBody>
                           <table className="ml-3">
                             {p.products.map((item, index) => {
+                              let discount
+                              if(item.attr) discount = item.attr.discount
+                              else if(item.variant) discount = item.variant.discount
+                              else discount = item.discount
                               return (
                                 <tbody key={index}>
                                   <tr>
@@ -362,15 +366,17 @@ const CartPage = ({ data, totalP }) => {
                                       </Link>
                                       {
                                         item.variant &&
-                                       <Variant item={item} index={index} updateProduct={updateProduct} 
-                                         i={i}
-                                       />
+                                        <Variant item={item} index={index} updateProduct={updateProduct}
+                                          i={i}
+                                        />
                                       }
                                     </td>
                                     <td>
                                       <h2>
                                         <NumberFormat
-                                          value={item.variant.price || item.price}
+                                          value={item?.attr?.price * (1 - item.attr?.discount)
+                                            || item.variant.price * (1 - item.variant.discount)
+                                            || item.price * (1 - item.discount)}
                                           thousandSeparator={true}
                                           displayType="text"
                                           suffix={item.currencySymbol}
@@ -378,6 +384,21 @@ const CartPage = ({ data, totalP }) => {
                                         />
 
                                       </h2>
+                                      {discount > 0 &&
+                                      <del>
+                                        <span className="money ml-1">
+                                          <NumberFormat
+                                            value={item?.attr?.price
+                                              || item.variant.price
+                                              || item.price}
+                                            thousandSeparator={true}
+                                            displayType="text"
+                                            suffix={item.currencySymbol}
+                                            decimalScale={0}
+                                          />
+                                        </span>
+                                      </del>
+                                    }
                                     </td>
                                     <td>
                                       <div className="qty-box">
@@ -413,7 +434,7 @@ const CartPage = ({ data, totalP }) => {
                                     <td>
                                       <h2 className="td-color">
                                         <NumberFormat
-                                          value={item.quantity * item.variant.price}
+                                          value={item.quantity * item?.attr?.price || item.variant.price || item.price}
                                           thousandSeparator={true}
                                           displayType="text"
                                           suffix={item.currencySymbol}

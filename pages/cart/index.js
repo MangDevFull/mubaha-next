@@ -40,7 +40,8 @@ export async function getServerSideProps(ctx) {
           slug: p.slug,
           cartID:p.cartID,
           selected: false,
-          productID: p._id
+          productID: p._id,
+          discount: p.discount
         }
         if (p.selectedVariant != null && p.selectedAttribute == null) {
           const rs = p.variants.filter(variant => {
