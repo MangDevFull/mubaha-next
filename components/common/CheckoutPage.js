@@ -21,19 +21,21 @@ const CheckoutPage = () => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
-  const [payment, setPayment] = useState("stripe");
+  const [showAddress, setShowAddress] = useState("default");
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
   const router = useRouter();
   const handleClose = () => setShow(false);
   const handleShow = () => {
-    console.log("check");
     setShow(true);
     setMessage("");
     setShowMessage(false);
   };
 
-  const checkhandle = (value) => {
-    setPayment(value);
+  const handleUpdateAddress = (value) => {
+    setShowAddress(value);
+  };
+  const handleQuit = (value) => {
+    setShowAddress(value);
   };
 
   const onSuccess = (payment) => {
@@ -116,18 +118,51 @@ const CheckoutPage = () => {
                         </div>
                         <div class={`${styles._2LiNia}`}>Mặc định</div>
                       </div>
-                      <div>
-                        <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleShow}>
-                          Thay đổi địa chỉ
-                        </button>
-                      </div>
-                      <div>
-                        <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleShow}>
-                          Thiết lập địa chỉ
-                        </button>
-                      </div>
+                      {showAddress === "change" && (
+                        <>
+                          <div>
+                            <button className={`${styles.btn_change} btn p-0 m-0`}>
+                              Thiết lập địa chỉ
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              className={`${styles.btn_change} btn p-0 m-0`}
+                              onClick={handleShow}
+                            >
+                              Thêm địa chỉ mới
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              className={`${styles.btn_change} btn p-0 m-0`}
+                              onClick={handleShow}
+                            >
+                              Hoàn thành
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              className={`${styles.btn_change} btn p-0 m-0`}
+                              onClick={() => handleQuit("default")}
+                            >
+                              Trở về
+                            </button>
+                          </div>
+                        </>
+                      )}
+
+                      {showAddress === "default" && (
+                        <div>
+                          <button
+                            className={`${styles.btn_change} btn p-0 m-0`}
+                            onClick={() => handleUpdateAddress("change")}
+                          >
+                            Thay đổi địa chỉ
+                          </button>
+                        </div>
+                      )}
                     </div>
-                    <div></div>
                   </div>
                   <div class={`${styles.border_top}`}></div>
                 </div>
@@ -173,9 +208,12 @@ const CheckoutPage = () => {
                           readonly
                           value="cod"
                         />
-                        <span className={`${styles.radio_fake}`}></span>
                         <span>
-                          <div>
+                          <div className={`${styles.method_content_name}`}>
+                            <img
+                              width="32px"
+                              src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-cod.svg"
+                            />
                             <span>Thanh toán tiền mặt khi nhận hàng</span>
                           </div>
                         </span>
@@ -190,9 +228,13 @@ const CheckoutPage = () => {
                           readonly
                           value="atm"
                         />
-                        <span className={`${styles.radio_fake}`}></span>
                         <span>
-                          <div>
+                          <div className={`${styles.method_content_name}`}>
+                            <img
+                              width="32px"
+                              src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-atm.svg"
+                            />
+
                             <span>Thẻ ATM nội địa/Internet Banking (Hỗ trợ Internet Banking)</span>
                           </div>
                         </span>
@@ -207,9 +249,8 @@ const CheckoutPage = () => {
                           readonly
                           value="paypal"
                         />
-                        <span className={`${styles.radio_fake}`}></span>
                         <span>
-                          <div>
+                          <div className={`${styles.method_content_name}`}>
                             <span>Thanh toán bằng Paypal</span>
                           </div>
                         </span>
@@ -224,15 +265,41 @@ const CheckoutPage = () => {
                           readonly
                           value="vnpay"
                         />
-                        <span className={`${styles.radio_fake}`}></span>
                         <span>
-                          <div>
+                          <div className={`${styles.method_content_name}`}>
+                            <img
+                              width="32px"
+                              src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-vnpay.png"
+                            />
+
                             <span>Thanh toán bằng VNPAY</span>
                           </div>
                         </span>
                       </label>
                     </li>
                   </ul>
+                </div>
+              </div>
+              <div className={`${styles.total}`}>
+                <h4>5. Tổng đơn hàng </h4>
+                <div className={`${styles.total_price}`}>
+                  <div>Tổng tiền hàng</div>
+                  <div>₫1.147.000</div>
+                  <div>Phí vận chuyển</div>
+                  <div>₫70.700</div>
+                  <div>Tổng thanh toán:</div>
+                  <div>₫1.217.700</div>
+                  <div>
+                    <div>
+                      <div>
+                        Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo{" "}
+                        <a href="" target="_blank" rel="noopener noreferrer">
+                          Điều khoản Mubaha
+                        </a>
+                      </div>
+                    </div>
+                    <button className={`${styles.button_order}`}>Đặt hàng</button>
+                  </div>
                 </div>
               </div>
             </div>
