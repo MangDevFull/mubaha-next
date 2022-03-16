@@ -155,6 +155,107 @@
   margin-left: 5px;
   font-weight: 600;
 }
+.section_order_info {
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.09);
+  padding-bottom: 20px;
+}
+.order_info {
+  margin: 0 30px;
+  display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  color: #222;
+  min-height: 55px;
+}
+.title_info:last-child {
+  justify-content: flex-end;
+  flex: 2;
+}
+.title_info:first-child {
+  justify-content: flex-start;
+}
+.title_info {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.title_image_product {
+  flex: 4;
+}
+.title_image_product > span {
+  margin: 0 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.name_product {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.classify_info {
+  justify-content: flex-start;
+  color: #929292;
+  flex: 2;
+}
+.classify_info > span {
+  padding-left: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.section_voucher_shop {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 18px 30px;
+}
+.title_voucher_shop,
+.voucher_shop {
+  display: flex;
+}
+.title_voucher_shop {
+  flex: 6;
+  align-items: center;
+  justify-content: flex-end;
+}
+.image_voucher {
+  font-size: 14px;
+}
+.image_voucher,
+.button_voucher_shop {
+  display: flex;
+  align-items: center;
+}
+.image_voucher img {
+  margin-right: 4px;
+}
+.button_voucher_shop {
+  flex: 4;
+  justify-content: flex-end;
+}
+.button_voucher_shop button {
+  appearance: none;
+  padding: 0;
+  float: right;
+  box-shadow: 0 0 0 0 !important;
+  border: 0 !important;
+  color: #05a !important;
+  line-height: 21px;
+  font-size: 14px;
+  text-transform: none !important;
+  font-weight: 500;
+  background: transparent;
+}
+.button_voucher_shop > button > span {
+  text-transform: capitalize;
+}
 .shipping_unit {
   display: flex;
   background-color: #fafdff;

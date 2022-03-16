@@ -228,20 +228,78 @@ const CheckoutPage = () => {
                         <div className={`${styles.vendor_name}`}>
                           <span>Royal London Official Store</span>
                         </div>
-                        <div className="_1oOvbg">
-                          <div className={`${styles.title_section}`}>
-                            <div className={`${styles.title}`}>
-                              <div className={`${styles.title_name} ${styles.title_products}`}>
-                                <div className={`${styles.products}`}>Sản phẩm</div>
+                        <div className={`${styles.section_order_info}`}>
+                          <div className={`${styles.order_info}`}>
+                            <div className={`${styles.title_info} ${styles.title_image_product}`}>
+                                <img width="40px" height="40px" src="https://" />
+                                <span>
+                                  <span className={`${styles.name_product}`}>
+                                  [Mã FMCGMALL -8% đơn 250K] Serum Sáng Da, Mờ Thâm Balance Active Formula Vitamin C Brightening 30ml/ 60ml
+                                  </span>
+                                </span>
+                            </div>
+                            <div className={`${styles.title_info} ${styles.classify_info}`}>
+                              <span>Loại: Supersize 60ml</span>
+                            </div>
+                            <div className={`${styles.title_info}`}>₫295.000</div>
+                            <div className={`${styles.title_info}`}>2</div>
+                            <div className={`${styles.title_info}`}>₫590.000</div>
+                          </div>
+                        </div>
+                        <div className={`${styles.section_voucher_shop}`}>
+                          <div className={`${styles.voucher_shop}`}>
+                            <div className={`${styles.title_voucher_shop}`}>
+                              <div className={`${styles.image_voucher}`}>
+                                <img src="https" />
+                                <div>Voucher của Shop</div>
                               </div>
-                              <div
-                                className={`${styles.title_name} ${styles.classify_products}`}
-                              ></div>
-                              <div className={`${styles.title_name}`}>Số lượng</div>
-                              <div className={`${styles.title_name}`}>Giá tiền</div>
-                              <div className={`${styles.title_name} ${styles.title_price}`}>
-                                Thành tiền
+                            </div>
+                            <div className={`${styles.button_voucher_shop}`}>
+                                <button>
+                                  <span>Chọn voucher</span>
+                                </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`${styles.total_price_information}`}>
+                    <div>
+                      <div className={`${styles.detail_order_information}`}>
+                        <div className={`${styles.vendor_name}`}>
+                          <span>Royal London Official Store</span>
+                        </div>
+                        <div className={`${styles.section_order_info}`}>
+                          <div className={`${styles.order_info}`}>
+                            <div className={`${styles.title_info} ${styles.title_image_product}`}>
+                                <img width="40px" height="40px" src="https://" />
+                                <span>
+                                  <span className={`${styles.name_product}`}>
+                                  [Mã FMCGMALL -8% đơn 250K] Serum Sáng Da, Mờ Thâm Balance Active Formula Vitamin C Brightening 30ml/ 60ml
+                                  </span>
+                                </span>
+                            </div>
+                            <div className={`${styles.title_info} ${styles.classify_info}`}>
+                              <span>Loại: Supersize 60ml</span>
+                            </div>
+                            <div className={`${styles.title_info}`}>₫295.000</div>
+                            <div className={`${styles.title_info}`}>2</div>
+                            <div className={`${styles.title_info}`}>₫590.000</div>
+                          </div>
+                        </div>
+                        <div className={`${styles.section_voucher_shop}`}>
+                          <div className={`${styles.voucher_shop}`}>
+                            <div className={`${styles.title_voucher_shop}`}>
+                              <div className={`${styles.image_voucher}`}>
+                                <img src="https" />
+                                <div>Voucher của Shop</div>
                               </div>
+                            </div>
+                            <div className={`${styles.button_voucher_shop}`}>
+                                <button>
+                                  <span>Chọn voucher</span>
+                                </button>
                             </div>
                           </div>
                         </div>
