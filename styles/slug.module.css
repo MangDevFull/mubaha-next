@@ -5,3 +5,7 @@
   display: none;
   max-width: 30%;
 }
+.textSuccess {
+  color:#f89922;
+  font-size: 16px
+}

@@ -35,9 +35,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   const [discount, setDiscount] = useState(0)
   const [selectedSize, setSlectedSize] = useState();
   const [unSelect, setUnSelect] = useState(false);
-  function openModal() {
-    setVisible(true)
-}
 
 function closeModal() {
   setVisible(false)
@@ -90,7 +87,8 @@ function closeModal() {
         });
         const data = await response.json()
         if (data.status === 200) {
-          alert("Thêm giỏ hàng thành công")
+          setVisible(true)
+          setTimeout(()=> setVisible(false), 1000)
         } else {
           alert(data.message)
         }
@@ -214,8 +212,8 @@ function closeModal() {
         if (data.status === 200) {
           setVisible(true)
           setTimeout(()=> setVisible(false), 1000)
-          // localStorage.setItem('cartID', data.data._id)
-          // router.push('/cart')
+          localStorage.setItem('cartID', data.data._id)
+          router.push('/cart')
         } else {
           alert(data.data)
         }
@@ -431,10 +429,13 @@ function closeModal() {
                               <span style={{ color: 'red' }}><i className="fa fa-solid fa-exclamation mr-2"></i>  Vui lòng chọn sản phẩm</span>
                             </div>}
                           </div>
-          
-                <input type="button" value="Open" onClick={() => openModal()} />
                 <Modal visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
-               
+                       <div className=" d-flex justify-content-center mt-5">
+                       <img width="100" height="100"src="/assets/icon/success-popup.svg" />
+                       </div>
+                       <div className=" d-flex justify-content-center mt-5">
+                       <p className={styles.textSuccess}>Sản phẩm đã được thêm vào Giỏ hàng</p>
+                       </div>
                 </Modal>
          
                           <div

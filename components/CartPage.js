@@ -9,6 +9,7 @@ import Breadcrumb from "./Breadcrumb";
 import styles from "@/styles/cart.module.css"
 import dynamic from 'next/dynamic'
 import { useSession } from 'next-auth/react'
+import Modal2 from 'react-awesome-modal';
 
 const Variant = dynamic(() => import('@/components/Variant.js'))
 const CartPage = ({ data, totalP }) => {
@@ -17,6 +18,8 @@ const CartPage = ({ data, totalP }) => {
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalProductSelect, setTotalProductSelect] = useState(0)
   const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [message, setMessage] = useState('')
 
   const { data: session } = useSession()
   
@@ -107,7 +110,11 @@ const CartPage = ({ data, totalP }) => {
       products[i].products[index].quantity = products[i].products[index].quantity + 1
       setProduct([...products])
     } else if (data.status === 400) {
-      alert(data.message)
+      setMessage(data.message)
+      setVisible(true)
+      setTimeout(function() {
+        setVisible(false)
+      },1000)
     }
   }
   const removeFromCart = async (i, index, cartID) => {
@@ -247,7 +254,11 @@ const CartPage = ({ data, totalP }) => {
   }
   const handleModalDeleteMany = () => {
     if (totalProductSelect < 1) {
-      alert(' Vui lòng chọn sản phẩm')
+      setMessage("Vui lòng chọn sản phẩm")
+      setVisible(true)
+      setTimeout(function() {
+        setVisible(false)
+      },1000)
     } else {
       setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct)
     }
@@ -282,9 +293,22 @@ const CartPage = ({ data, totalP }) => {
       })
     }
   }
+
+function closeModal() {
+  setVisible(false)
+}
   if (products.length > 0) {
     return (
       <div>
+       <Modal2 visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
+       <i className="fa fa-solid fa-xmark"></i>
+                       <div className=" d-flex justify-content-center mt-5">
+                       <img width="100" height="100" src="/assets/icon/icon-danger.svg" />
+                       </div>
+                       <div className=" d-flex justify-content-center mt-5">
+                       <p style={{fontSize:"16px",color:"red"}}>{message}</p>
+                       </div>
+                </Modal2>
         <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
         <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`}>
           <div>
