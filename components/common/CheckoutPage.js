@@ -93,8 +93,8 @@ const CheckoutPage = () => {
                   <div class={`${styles.border_top}`}></div>
                   <div class={`${styles.padding_box}`}>
                     <div class={`${styles.title_address}`}>
-                      <div class={`${styles._20Qrq_}`}>
-                        <div class={`${styles._2t2xOY}`}>
+                      <div class={`${styles.icon_address}`}>
+                        <div class={`${styles.icon}`}>
                           <svg height="16" viewBox="0 0 12 16" width="12" fill="#f89922">
                             <path
                               d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
@@ -109,45 +109,45 @@ const CheckoutPage = () => {
                       <>
                         <ul>
                           <li>
-                              <input
-                                type="radio"
-                                name="address_ship"
-                                data-view-index="cod"
-                                readonly
-                                value="address"
-                              />
-                              <div className={`${styles.detail_info}`}>
-                                <div className={`${styles.info}`}>
-                                  <div className={`${styles.fullName}`}>
-                                    Nguyễn Minh Quang (+84) 373922863
-                                  </div>
-                                  <div className={`${styles.detailAddress}`}>
-                                    Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
-                                    Hậu, Quận Cầu Giấy, Hà Nội
-                                  </div>
-                                  <div class={`${styles.default}`}>Mặc định</div>
+                            <input
+                              type="radio"
+                              name="delivery_address"
+                              data-view-index="cod"
+                              readonly
+                              value="address"
+                            />
+                            <div className={`${styles.detail_info}`}>
+                              <div className={`${styles.info}`}>
+                                <div className={`${styles.fullName}`}>
+                                  Nguyễn Minh Quang (+84) 373922863
                                 </div>
+                                <div className={`${styles.detailAddress}`}>
+                                  Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
+                                  Hậu, Quận Cầu Giấy, Hà Nội
+                                </div>
+                                <div class={`${styles.default}`}>Mặc định</div>
                               </div>
+                            </div>
                           </li>
                           <li>
-                              <input
-                                type="radio"
-                                name="address_ship"
-                                data-view-index="cod"
-                                readonly
-                                value="address2"
-                              />
-                              <div className={`${styles.detail_info}`}>
-                                <div className={`${styles.info}`}>
-                                  <div className={`${styles.fullName}`}>
-                                    Nguyễn Minh Quang (+84) 373922863
-                                  </div>
-                                  <div className={`${styles.detailAddress}`}>
-                                    Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
-                                    Hậu, Quận Cầu Giấy, Hà Nội
-                                  </div>
+                            <input
+                              type="radio"
+                              name="delivery_address"
+                              data-view-index="cod"
+                              readonly
+                              value="address2"
+                            />
+                            <div className={`${styles.detail_info}`}>
+                              <div className={`${styles.info}`}>
+                                <div className={`${styles.fullName}`}>
+                                  Nguyễn Minh Quang (+84) 373922863
+                                </div>
+                                <div className={`${styles.detailAddress}`}>
+                                  Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
+                                  Hậu, Quận Cầu Giấy, Hà Nội
                                 </div>
                               </div>
+                            </div>
                           </li>
                         </ul>
                         <div>
@@ -166,11 +166,7 @@ const CheckoutPage = () => {
                           </button>
                         </div>
                         <div>
-                          <button
-                            className={`${styles.btn_change} btn p-0 m-0`}
-                          >
-                            Hoàn thành
-                          </button>
+                          <button className={`${styles.btn_change} btn p-0 m-0`}>Hoàn thành</button>
                         </div>
                         <div>
                           <button
@@ -216,11 +212,41 @@ const CheckoutPage = () => {
                 <h4>2. Chọn hình thức giao hàng</h4>
                 <div className={`${styles.title_section}`}>
                   <div className={`${styles.title}`}>
-                    <div className={`${styles.title_products}`}>Sản phẩm</div>
-                    <div className={`${styles.classify_products}`}></div>
-                    <div className={`${styles.title_name}`}>Đơn giá</div>
+                    <div className={`${styles.title_name} ${styles.title_products}`}>
+                      <div className={`${styles.products}`}>Sản phẩm</div>
+                    </div>
+                    <div className={`${styles.title_name} ${styles.classify_products}`}></div>
                     <div className={`${styles.title_name}`}>Số lượng</div>
-                    <div className={`${styles.title_price}`}>Thành tiền</div>
+                    <div className={`${styles.title_name}`}>Giá tiền</div>
+                    <div className={`${styles.title_name} ${styles.title_price}`}>Thành tiền</div>
+                  </div>
+                </div>
+                <div>
+                  <div className={`${styles.total_price_information}`}>
+                    <div>
+                      <div className={`${styles.detail_order_information}`}>
+                        <div className={`${styles.vendor_name}`}>
+                          <span>Royal London Official Store</span>
+                        </div>
+                        <div className="_1oOvbg">
+                          <div className={`${styles.title_section}`}>
+                            <div className={`${styles.title}`}>
+                              <div className={`${styles.title_name} ${styles.title_products}`}>
+                                <div className={`${styles.products}`}>Sản phẩm</div>
+                              </div>
+                              <div
+                                className={`${styles.title_name} ${styles.classify_products}`}
+                              ></div>
+                              <div className={`${styles.title_name}`}>Số lượng</div>
+                              <div className={`${styles.title_name}`}>Giá tiền</div>
+                              <div className={`${styles.title_name} ${styles.title_price}`}>
+                                Thành tiền
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -327,7 +353,7 @@ const CheckoutPage = () => {
               </div>
               <div className={`${styles.total}`}>
                 <h4>5. Tổng đơn hàng </h4>
-                <div className={`${styles.total_price}`}>
+                <div className={`${styles.total_prices}`}>
                   <div>Tổng tiền hàng</div>
                   <div>₫1.147.000</div>
                   <div>Phí vận chuyển</div>
