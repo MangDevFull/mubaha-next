@@ -12,6 +12,8 @@ import {
   ModalFooter,
   Button,
 } from "reactstrap";
+
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import styles from "./CheckoutPage.module.css";
@@ -93,13 +95,7 @@ const CheckoutPage = () => {
                     <div class={`${styles.title_address}`}>
                       <div class={`${styles._20Qrq_}`}>
                         <div class={`${styles._2t2xOY}`}>
-                          <svg
-                            height="16"
-                            viewBox="0 0 12 16"
-                            width="12"
-                            fill="#f89922"
-                            class="shopee-svg-icon icon-location-marker"
-                          >
+                          <svg height="16" viewBox="0 0 12 16" width="12" fill="#f89922">
                             <path
                               d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
                               fill-rule="evenodd"
@@ -109,50 +105,99 @@ const CheckoutPage = () => {
                         <div>Địa chỉ giao hàng</div>
                       </div>
                     </div>
-                    <div class="detail_infor">
-                      <div class="_2Pe7Hh">
-                        <div class={`${styles.fullName}`}>Nguyễn Minh Quang (+84) 373922863</div>
-                        <div class="_2F7jaW">
-                          Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng Hậu, Quận
-                          Cầu Giấy, Hà Nội
+                    {showAddress === "change" && (
+                      <>
+                        <ul>
+                          <li>
+                              <input
+                                type="radio"
+                                name="address_ship"
+                                data-view-index="cod"
+                                readonly
+                                value="address"
+                              />
+                              <div className={`${styles.detail_info}`}>
+                                <div className={`${styles.info}`}>
+                                  <div className={`${styles.fullName}`}>
+                                    Nguyễn Minh Quang (+84) 373922863
+                                  </div>
+                                  <div className={`${styles.detailAddress}`}>
+                                    Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
+                                    Hậu, Quận Cầu Giấy, Hà Nội
+                                  </div>
+                                  <div class={`${styles.default}`}>Mặc định</div>
+                                </div>
+                              </div>
+                          </li>
+                          <li>
+                              <input
+                                type="radio"
+                                name="address_ship"
+                                data-view-index="cod"
+                                readonly
+                                value="address2"
+                              />
+                              <div className={`${styles.detail_info}`}>
+                                <div className={`${styles.info}`}>
+                                  <div className={`${styles.fullName}`}>
+                                    Nguyễn Minh Quang (+84) 373922863
+                                  </div>
+                                  <div className={`${styles.detailAddress}`}>
+                                    Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
+                                    Hậu, Quận Cầu Giấy, Hà Nội
+                                  </div>
+                                </div>
+                              </div>
+                          </li>
+                        </ul>
+                        <div>
+                          <button className={`${styles.btn_change} btn p-0 m-0`}>
+                            <Link href="/account">
+                              <a>Thiết lập địa chỉ</a>
+                            </Link>
+                          </button>
                         </div>
-                        <div class={`${styles._2LiNia}`}>Mặc định</div>
-                      </div>
-                      {showAddress === "change" && (
-                        <>
-                          <div>
-                            <button className={`${styles.btn_change} btn p-0 m-0`}>
-                              Thiết lập địa chỉ
-                            </button>
-                          </div>
-                          <div>
-                            <button
-                              className={`${styles.btn_change} btn p-0 m-0`}
-                              onClick={handleShow}
-                            >
-                              Thêm địa chỉ mới
-                            </button>
-                          </div>
-                          <div>
-                            <button
-                              className={`${styles.btn_change} btn p-0 m-0`}
-                              onClick={handleShow}
-                            >
-                              Hoàn thành
-                            </button>
-                          </div>
-                          <div>
-                            <button
-                              className={`${styles.btn_change} btn p-0 m-0`}
-                              onClick={() => handleQuit("default")}
-                            >
-                              Trở về
-                            </button>
-                          </div>
-                        </>
-                      )}
+                        <div>
+                          <button
+                            className={`${styles.btn_change} btn p-0 m-0`}
+                            onClick={handleShow}
+                          >
+                            Thêm địa chỉ mới
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            className={`${styles.btn_change} btn p-0 m-0`}
+                          >
+                            Hoàn thành
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            className={`${styles.btn_change} btn p-0 m-0`}
+                            onClick={() => handleQuit("default")}
+                          >
+                            Trở về
+                          </button>
+                        </div>
+                      </>
+                    )}
 
-                      {showAddress === "default" && (
+                    {showAddress === "default" && (
+                      <>
+                        <div className="detail_infor">
+                          <div className={`${styles.info}`}>
+                            <div className={`${styles.fullName}`}>
+                              Nguyễn Minh Quang (+84) 373922863
+                            </div>
+                            <div className={`${styles.detailAddress}`}>
+                              Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng Hậu,
+                              Quận Cầu Giấy, Hà Nội
+                            </div>
+                            <div class={`${styles.default}`}>Mặc định</div>
+                          </div>
+                        </div>
+
                         <div>
                           <button
                             className={`${styles.btn_change} btn p-0 m-0`}
@@ -161,8 +206,8 @@ const CheckoutPage = () => {
                             Thay đổi địa chỉ
                           </button>
                         </div>
-                      )}
-                    </div>
+                      </>
+                    )}
                   </div>
                   <div class={`${styles.border_top}`}></div>
                 </div>

@@ -27,6 +27,15 @@
 .padding_box {
   padding: 28px 30px 24px;
 }
+.padding_box li {
+  display: flex;
+}
+.padding_box input[type=radio] {
+  margin: 0.25rem 0;
+}
+.detail_info {
+  margin-left: 10px;
+}
 .title_address {
   display: flex;
   align-items: center;
@@ -45,11 +54,21 @@
   display: flex;
   margin-right: 9px;
 }
+.info {
+  display: flex;
+  align-items: center;
+  word-break: break-word;
+  margin-bottom: 5px;
+}
 .fullName {
   font-weight: 700;
 }
-._2LiNia {
+.detailAddress {
+  margin-left: 20px;
+}
+.default {
   color: #929292;
+  margin-left: 20px;
 }
 .btn_change {
   color: #0055aa;
@@ -221,11 +240,11 @@
 .button_order {
   background-color: #f89922;
   color: #fff;
-  border: 1px solid rgba(0,0,0,.09);
+  border: 1px solid rgba(0, 0, 0, 0.09);
   text-transform: capitalize;
   width: 210px;
   height: 40px;
 }
 .button_order:hover {
-  background-color: #f89922cc
+  background-color: #f89922cc;
 }
