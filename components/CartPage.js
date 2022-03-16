@@ -10,6 +10,7 @@ import styles from "@/styles/cart.module.css"
 import dynamic from 'next/dynamic'
 import { useSession } from 'next-auth/react'
 import Modal2 from 'react-awesome-modal';
+import productStatus from "@/enums/productStatus.enum.js"
 
 const Variant = dynamic(() => import('@/components/Variant.js'))
 const CartPage = ({ data, totalP }) => {
@@ -91,7 +92,7 @@ const CartPage = ({ data, totalP }) => {
     if (products[i].products[index].attr) {
       body = {
         ...body,
-        size: products[i].products[index].size._id
+        size: products[i].products[index].attr._id
       }
 
     }
@@ -141,7 +142,7 @@ const CartPage = ({ data, totalP }) => {
   const handleSelectProduct = (i, index) => {
     products[i].products[index].selected = !products[i].products[index].selected;
     const selectAllVendor = products[i].products.filter((p) => {
-      return p.selected !== true
+      return p.selected !== true && p.status !== productStatus.DISABLE
     })
     if (selectAllVendor.length < 1) {
       products[i].selected = true
@@ -162,10 +163,12 @@ const CartPage = ({ data, totalP }) => {
   const handleSelectVendor = (i) => {
     products[i].selected = !products[i].selected
     products[i].products.forEach((p) => {
-      p.selected = products[i].selected
+      if(p.status !== productStatus.DISABLE){
+        p.selected = products[i].selected
+      }
     })
     const selectAll = products.filter((p) => {
-      return p.selected !== true
+      return p.selected !== true && p.status !== productStatus.DISABLE
     })
     if (selectAll.length < 1) {
       setIsSelectedAll(true)
@@ -179,7 +182,9 @@ const CartPage = ({ data, totalP }) => {
     products.forEach((product, i) => {
       product.selected = !isSelectedAll
       product.products.forEach((p, index) => {
-        products[i].products[index].selected = !isSelectedAll;
+        if(p.status !== productStatus.DISABLE){
+          products[i].products[index].selected = !isSelectedAll;
+        }
       })
     })
     setProduct([...products])
@@ -266,7 +271,6 @@ const CartPage = ({ data, totalP }) => {
   const updateProduct = (body, i, index) => {
     if (body.variant != null && body.size != null) {
       products[i].products.forEach((product, id) => {
-        console.log(product)
         const v = product.variants.filter((v) => {
           return v._id === body.variant
         })
@@ -382,12 +386,14 @@ function closeModal() {
                               return (
                                 <tbody key={index}>
                                   <tr>
-                                    <td className="d-flex">
-                                      <input type="checkbox"
+                                    <td className={`d-flex ${item.status == productStatus.DISABLE && styles.disabled}`}>
+                                   
+                                    <input type="checkbox"
                                         className="mr-4 mt-5"
                                         checked={item.selected}
                                         onClick={() => handleSelectProduct(i, index)}
                                       />
+                                   
                                       <Link href={`/${item.slug}`}>
                                         <a>
                                           <Media
@@ -397,7 +403,7 @@ function closeModal() {
                                         </a>
                                       </Link>
                                     </td>
-                                    <td>
+                                    <td className={item.status == productStatus.DISABLE && styles.disabled}>
                                       <Link href={`/${item.slug}`}>
                                         <strong className={styles.cursorVendor}>{item.name}</strong>
                                       </Link>
@@ -407,8 +413,11 @@ function closeModal() {
                                           i={i}
                                         />
                                       }
+                                      {item.status == productStatus.DISABLE &&
+                                        <span class="badge badge-danger" style={{width: "auto", height: "20px" }}>Không hoạt động</span>
+                                      }
                                     </td>
-                                    <td>
+                                    <td className={item.status == productStatus.DISABLE && styles.disabled}>
                                       <h2>
                                         <NumberFormat
                                           value={item?.attr?.price * (1 - item.attr?.discount)
@@ -437,7 +446,7 @@ function closeModal() {
                                       </del>
                                     }
                                     </td>
-                                    <td>
+                                    <td className={item.status == productStatus.DISABLE && styles.disabled}>
                                       <div className="qty-box">
                                         <div className="input-group">
                                           <span className="input-group-prepend">
@@ -468,7 +477,7 @@ function closeModal() {
                                         </div>
                                       </div>
                                     </td>
-                                    <td>
+                                    <td className={item.status == productStatus.DISABLE && styles.disabled}>
                                       <h2 className="td-color ml-5">
                                         <NumberFormat
                                           value={item.quantity * item?.attr?.price || item.variant.price || item.price}

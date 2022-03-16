@@ -30,3 +30,7 @@
   display: none;
   max-width: 30%;
 }
+.disabled {
+  pointer-events: none;
+    opacity: 0.4;
+}

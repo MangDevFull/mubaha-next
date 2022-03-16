@@ -1,8 +1,7 @@
 import Head from "next/head";
 import LayoutCart from '@/components/LayoutCart.js'
 import CartPage from '@/components/CartPage.js'
-import API from '@/services/api.js';
-import { getSession,useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 
 export default function Cart({data,totalP}){
     return(
@@ -30,7 +29,6 @@ export async function getServerSideProps(ctx) {
   })
 
   const data = await res.json()
-
     const fullP = data.data.products.map(product => {
       const d = product.products.map((p, index) => {
         let value = {
@@ -41,12 +39,14 @@ export async function getServerSideProps(ctx) {
           cartID:p.cartID,
           selected: false,
           productID: p._id,
-          discount: p.discount
+          discount: p.discount,
+          status: p.status
         }
         if (p.selectedVariant != null && p.selectedAttribute == null) {
           const rs = p.variants.filter(variant => {
             return variant._id === p.selectedVariant
           })
+          if(rs[0].stock.status)
           value = {
             ...value,
             variant: rs[0],
