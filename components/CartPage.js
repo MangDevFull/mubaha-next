@@ -3,7 +3,7 @@ import NumberFormat from "react-number-format";
 import Link from "next/link";
 import {
   Container, Row, Col, Media, Button, Card, CardBody, CardHeader,
-  CardFooter, Modal, ModalFooter, ModalHeader
+  CardFooter, Modal, ModalFooter, ModalHeader, Badge
 } from "reactstrap";
 import Breadcrumb from "./Breadcrumb";
 import styles from "@/styles/cart.module.css"
@@ -23,21 +23,21 @@ const CartPage = ({ data, totalP }) => {
   const [message, setMessage] = useState('')
 
   const { data: session } = useSession()
-  
+
   useEffect(() => {
-   const cartID = localStorage.getItem('cartID')
-   if(cartID !=null) {
-    products.forEach((product,index) => {
-       product.products.forEach((p,i)=>{
-        if(p.cartID == cartID) {
+    const cartID = localStorage.getItem('cartID')
+    if (cartID != null) {
+      products.forEach((product, index) => {
+        product.products.forEach((p, i) => {
+          if (p.cartID == cartID) {
             products[index].products[i].selected = true
             setProduct([...products])
             localStorage.removeItem('cartID')
-        }
+          }
+        })
       })
-    })
-   }
-  },[])
+    }
+  }, [])
 
   const handleMinusQuantity = async (i, index, quantity, cartID) => {
     if (products[i].products[index].quantity >= 2) {
@@ -113,9 +113,9 @@ const CartPage = ({ data, totalP }) => {
     } else if (data.status === 400) {
       setMessage(data.message)
       setVisible(true)
-      setTimeout(function() {
+      setTimeout(function () {
         setVisible(false)
-      },1000)
+      }, 1000)
     }
   }
   const removeFromCart = async (i, index, cartID) => {
@@ -142,7 +142,7 @@ const CartPage = ({ data, totalP }) => {
   const handleSelectProduct = (i, index) => {
     products[i].products[index].selected = !products[i].products[index].selected;
     const selectAllVendor = products[i].products.filter((p) => {
-      return p.selected !== true && p.status !== productStatus.DISABLE
+      return p.selected !== true && p.status !== productStatus.DISABLE && p.isOutOfStock !==true
     })
     if (selectAllVendor.length < 1) {
       products[i].selected = true
@@ -163,12 +163,14 @@ const CartPage = ({ data, totalP }) => {
   const handleSelectVendor = (i) => {
     products[i].selected = !products[i].selected
     products[i].products.forEach((p) => {
-      if(p.status !== productStatus.DISABLE){
-        p.selected = products[i].selected
+      if (p.status !== productStatus.DISABLE) {
+        if(p.isOutOfStock ===false){
+          p.selected = products[i].selected
+        }
       }
     })
     const selectAll = products.filter((p) => {
-      return p.selected !== true && p.status !== productStatus.DISABLE
+      return p.selected !== true 
     })
     if (selectAll.length < 1) {
       setIsSelectedAll(true)
@@ -182,8 +184,10 @@ const CartPage = ({ data, totalP }) => {
     products.forEach((product, i) => {
       product.selected = !isSelectedAll
       product.products.forEach((p, index) => {
-        if(p.status !== productStatus.DISABLE){
-          products[i].products[index].selected = !isSelectedAll;
+        if (p.status !== productStatus.DISABLE) {
+          if(p.isOutOfStock == false) {
+            products[i].products[index].selected = !isSelectedAll;
+          }
         }
       })
     })
@@ -225,45 +229,45 @@ const CartPage = ({ data, totalP }) => {
         }
       })
     })
-   const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + session.accessToken
-    },
-    body: JSON.stringify({ cartItems: cartItems })
-  })
-  const data = await response.json()
-
-  if (data.status === 200) {
-    products.forEach((product, i) => {
-      const pr = product.products.filter((p) => {
-        return !cartItems.includes(p.cartID)
-      })
-      if (pr.length < 1) {
-        products.splice(i, 1);
-      } else {
-        products[i] = {
-          vendor: product.vendor,
-          selected: false,
-          totalDocs: product.totalDocs,
-          products: pr
-        }
-      }
+    const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.accessToken
+      },
+      body: JSON.stringify({ cartItems: cartItems })
     })
-    setProduct([...products])
-    setIsOpenModalDeleteProduct(false)
-  } else {
-    alert(data.message)
-  }
+    const data = await response.json()
+
+    if (data.status === 200) {
+      products.forEach((product, i) => {
+        const pr = product.products.filter((p) => {
+          return !cartItems.includes(p.cartID)
+        })
+        if (pr.length < 1) {
+          products.splice(i, 1);
+        } else {
+          products[i] = {
+            vendor: product.vendor,
+            selected: false,
+            totalDocs: product.totalDocs,
+            products: pr
+          }
+        }
+      })
+      setProduct([...products])
+      setIsOpenModalDeleteProduct(false)
+    } else {
+      alert(data.message)
+    }
   }
   const handleModalDeleteMany = () => {
     if (totalProductSelect < 1) {
       setMessage("Vui lòng chọn sản phẩm")
       setVisible(true)
-      setTimeout(function() {
+      setTimeout(function () {
         setVisible(false)
-      },1000)
+      }, 1000)
     } else {
       setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct)
     }
@@ -275,12 +279,13 @@ const CartPage = ({ data, totalP }) => {
           return v._id === body.variant
         })
         if (v.length > 0) {
-          products[i].products[id].variant = v[0]
+          products[i].products[i].variant = v[0]
           const s = v[0].sizes.filter((s) => {
             return s._id === body.size
           })
           if (s.length > 0) {
-            products[i].products[id].attr = s[0]
+            products[i].products[index].attr = s[0]
+            products[i].products[index].isOutOfStock = false
             setProduct([...products])
           }
         }
@@ -291,28 +296,70 @@ const CartPage = ({ data, totalP }) => {
           return v._id === body.variant
         })
         if (v.length > 0) {
-          products[i].products[id].variant = v[0]
+          products[i].products[index].variant = v[0]
+          console.log(products[i].products[index].isOutOfStock,"ashjgag")
+          products[i].products[index].isOutOfStock = false
           setProduct([...products])
         }
       })
     }
   }
+  function closeModal() {
+    setVisible(false)
+  }
+  const deleteAvailableProducts = async () => {
+    let cartItems = []
+    products.forEach((product) => {
+      product.products.forEach((p) => {
+        if (p.status === productStatus.DISABLE) {
+          cartItems = [...cartItems, p.cartID]
+        }
+      })
+    })
+    const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.accessToken
+      },
+      body: JSON.stringify({ cartItems: cartItems })
+    })
+    const data = await response.json()
 
-function closeModal() {
-  setVisible(false)
-}
+    if (data.status === 200) {
+      products.forEach((product, i) => {
+        const pr = product.products.filter((p) => {
+          return !cartItems.includes(p.cartID)
+        })
+        if (pr.length < 1) {
+          products.splice(i, 1);
+        } else {
+          products[i] = {
+            vendor: product.vendor,
+            selected: false,
+            totalDocs: product.totalDocs,
+            products: pr
+          }
+        }
+      })
+      setProduct([...products])
+    } else {
+      alert(data.message)
+    }
+  }
   if (products.length > 0) {
+    console.log(products)
     return (
       <div>
-       <Modal2 visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
-       <i className="fa fa-solid fa-xmark"></i>
-                       <div className=" d-flex justify-content-center mt-5">
-                       <img width="100" height="100" src="/assets/icon/icon-danger.svg" />
-                       </div>
-                       <div className=" d-flex justify-content-center mt-5">
-                       <p style={{fontSize:"16px",color:"red"}}>{message}</p>
-                       </div>
-                </Modal2>
+        <Modal2 visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
+          <i className="fa fa-solid fa-xmark"></i>
+          <div className=" d-flex justify-content-center mt-5">
+            <img width="100" height="100" src="/assets/icon/icon-danger.svg" />
+          </div>
+          <div className=" d-flex justify-content-center mt-5">
+            <p style={{ fontSize: "16px", color: "red" }}>{message}</p>
+          </div>
+        </Modal2>
         <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
         <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`}>
           <div>
@@ -364,12 +411,14 @@ function closeModal() {
                     return (
                       <Card key={i} style={{ border: 'none' }}>
                         <CardHeader style={{ backgroundColor: 'white' }}>
-                          <div className="mt-3 mb-2">
+                          <div className=" mb-2">
+                          {!p.count == p.totalDocs ? "" :
                             <input type="checkbox"
                               className="mr-4 mt-5"
                               checked={p.selected}
                               onClick={() => { handleSelectVendor(i) }}
                             />
+                            }
                             <img src="/assets/icon/shop-icon.png" className="mr-2" />
                             <Link href={`/vendors/${p.vendor.owner.username}`}>
                               <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
@@ -380,20 +429,19 @@ function closeModal() {
                           <table className="ml-3">
                             {p.products.map((item, index) => {
                               let discount
-                              if(item.attr) discount = item.attr.discount
-                              else if(item.variant) discount = item.variant.discount
+                              if (item.attr) discount = item.attr.discount
+                              else if (item.variant) discount = item.variant.discount
                               else discount = item.discount
                               return (
                                 <tbody key={index}>
                                   <tr>
-                                    <td className={`d-flex ${item.status == productStatus.DISABLE && styles.disabled}`}>
-                                   
-                                    <input type="checkbox"
+                                    <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
+                                      <input type="checkbox"
                                         className="mr-4 mt-5"
                                         checked={item.selected}
                                         onClick={() => handleSelectProduct(i, index)}
                                       />
-                                   
+
                                       <Link href={`/${item.slug}`}>
                                         <a>
                                           <Media
@@ -403,7 +451,7 @@ function closeModal() {
                                         </a>
                                       </Link>
                                     </td>
-                                    <td className={item.status == productStatus.DISABLE && styles.disabled}>
+                                    <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled2 : ""}>
                                       <Link href={`/${item.slug}`}>
                                         <strong className={styles.cursorVendor}>{item.name}</strong>
                                       </Link>
@@ -413,11 +461,22 @@ function closeModal() {
                                           i={i}
                                         />
                                       }
-                                      {item.status == productStatus.DISABLE &&
-                                        <span class="badge badge-danger" style={{width: "auto", height: "20px" }}>Không hoạt động</span>
+                                      {item.status == productStatus.DISABLE || item.isOutOfStock
+                                        ?
+                                        item.status === productStatus.DISABLE
+                                          ?
+
+                                          <Badge>
+                                            Không hoạt động
+                                          </Badge>
+                                          :
+                                          <Badge>
+                                            Hết hàng
+                                          </Badge>
+                                        : ""
                                       }
                                     </td>
-                                    <td className={item.status == productStatus.DISABLE && styles.disabled}>
+                                    <td className={item.status == productStatus.DISABLE && item.isOutOfStock && styles.disabled}>
                                       <h2>
                                         <NumberFormat
                                           value={item?.attr?.price * (1 - item.attr?.discount)
@@ -431,22 +490,22 @@ function closeModal() {
 
                                       </h2>
                                       {discount > 0 &&
-                                      <del>
-                                        <span className="money ml-1">
-                                          <NumberFormat
-                                            value={item?.attr?.price
-                                              || item.variant.price
-                                              || item.price}
-                                            thousandSeparator={true}
-                                            displayType="text"
-                                            suffix={item.currencySymbol}
-                                            decimalScale={0}
-                                          />
-                                        </span>
-                                      </del>
-                                    }
+                                        <del>
+                                          <span className="money ml-1">
+                                            <NumberFormat
+                                              value={item?.attr?.price
+                                                || item.variant.price
+                                                || item.price}
+                                              thousandSeparator={true}
+                                              displayType="text"
+                                              suffix={item.currencySymbol}
+                                              decimalScale={0}
+                                            />
+                                          </span>
+                                        </del>
+                                      }
                                     </td>
-                                    <td className={item.status == productStatus.DISABLE && styles.disabled}>
+                                    <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
                                       <div className="qty-box">
                                         <div className="input-group">
                                           <span className="input-group-prepend">
@@ -477,7 +536,7 @@ function closeModal() {
                                         </div>
                                       </div>
                                     </td>
-                                    <td className={item.status == productStatus.DISABLE && styles.disabled}>
+                                    <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
                                       <h2 className="td-color ml-5">
                                         <NumberFormat
                                           value={item.quantity * item?.attr?.price || item.variant.price || item.price}
@@ -548,6 +607,12 @@ function closeModal() {
                               </span>
                               ({totalProductSelect} sản phẩm đã chọn)
                             </div>
+                            <div className="ml-5">
+                              <span 
+                              className={styles.deleteUnavailable}
+                              onClick={deleteAvailableProducts}
+                              >Xoá tất cả sản phẩm không hoạt động</span>
+                            </div>
                           </div>
                           <div className="ml-5">
                             Tổng thanh toán ({totalProductSelect} sản phẩm) :
@@ -562,7 +627,6 @@ function closeModal() {
                               suffix={'₫'}
                               decimalScale={0}
                             />
-
                           </h2>
                         </td>
                       </tr>
@@ -601,7 +665,7 @@ function closeModal() {
                     src="/assets/icon/cart-is-empty-800x800.png"
                     className="img-fluid mx-auto"
                     alt="mubaha.com"
-                    style={{width: "200px", maxWidth: "200px" }}
+                    style={{ width: "200px", maxWidth: "200px" }}
                   />
                   <h3>
                     <strong>Giỏ hàng bạn đang chưa có sản phẩm</strong>
