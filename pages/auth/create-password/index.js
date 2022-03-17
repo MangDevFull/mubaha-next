@@ -7,16 +7,18 @@ import { Form, Modal, ModalFooter, ModalHeader } from 'reactstrap';
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
 import styles from '@/styles/authen.module.css'
+import {useSession} from 'next-auth/react'
 export default function CreatePassWord() {
+  const {data: session} = useSession()
   const [show, setShow] = useState(false);
   const [showPass, setShowPass] = useState('block');
   const [hidePass, setHidePass] = useState('none')
   const [inputValues, setInputValues] = useState('password')
   const inputPassword = useRef();
   const router = useRouter();
-
   useEffect(() => {
     if (session != undefined) {
+      console.log(session);
       const checkisCreatePass = session.user.authentication.isCreatedPassword
       if (checkisCreatePass) {
         router.push('/')

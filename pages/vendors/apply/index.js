@@ -8,12 +8,13 @@ import libphone from 'google-libphonenumber';
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import accountType from "@/enums/accountType.enum.js";
+import {useSession} from 'next-auth/react'
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance()
 export default function AppLyVendor({ data }) {
-
+  const {data: session} = useSession()
   const router = useRouter();
 
   const [showAddress, setShowAddress] = useState(false)
