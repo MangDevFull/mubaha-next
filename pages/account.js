@@ -53,7 +53,6 @@ const Account = () => {
                       <li>
                         <a href="#">My Orders</a>
                       </li>
-                      
                     </ul>
                   </div>
                 </div>
@@ -61,43 +60,51 @@ const Account = () => {
               <Col lg="9">
                 <div className="dashboard-right">
                   <div className="dashboard">
-                    <div className="page-title">
-                      <h2>Địa chỉ của tôi</h2>
-                      <div className="box">
-                        <div className="box-title"></div>
+                    <div className={`${styles.section_header}`}>
+                      <div className={`page-title ${styles.title}`}>
+                        <h2>Địa chỉ của tôi</h2>
+                      </div>
+                      <div className={`${styles.add_address}`}>
+                        <button onClick={handleShow}>Thêm địa chỉ</button>
                       </div>
                     </div>
 
                     <div className="box-account box-info">
-                      <Row>
-                        <Col sm="6">
+                      <div className="box">
+                        <div className="box-title"></div>
+                      </div>
+                      <Row className={`${styles.box_address}`}>
+                        <Col sm="9">
                           <div className="box">
-                            <div className="box-content">
+                            <div className={`box-content ${styles.box_content}`}>
                               <h6>
-                                Họ và tên: 
-                                <span><strong>Nguyễn Minh Quang</strong></span>
+                                <div className={`${styles.box_title}`}>Họ và tên:</div>
+                                <span>
+                                  <strong>Nguyễn Minh Quang</strong>
+                                </span>
                                 <span className={`${styles.note}`}>Địa chỉ giao hàng</span>
                               </h6>
                               <h6>
-                                Số điện thoại: <span>(+84) 373922863</span>{" "}
+                                <div className={`${styles.box_title}`}>Số điện thoại:</div>
+                                <span>(+84) 373922863</span>{" "}
                               </h6>
                               <h6>
-                                Địa chỉ: <span>Thị Trấn Hồ, Huyện Thuận Thành, Bắc Ninh</span>
+                                <div className={`${styles.box_title}`}>Địa chỉ:</div>
+                                <span>Thị Trấn Hồ, Huyện Thuận Thành, Bắc Ninh</span>
                               </h6>
                             </div>
                           </div>
                         </Col>
-                        <Col sm="6">
+                        <Col sm="3">
                           <div className="box">
-                            <div className="box-content">
+                            <div className={`${styles.box_function}`}>
                               <h6>
-                                  <a href="#" onClick={handleShow}>Thêm địa chỉ</a>
+                                <a className={`${styles.update}`} href="#">
+                                  Sửa
+                                </a>
                               </h6>
                               <h6>
-                                <a href="#">Sửa địa chỉ</a>
-                              </h6>
-                              <h6>
-                                <a href="#">Xoá địa chỉ</a>
+                                <a href="#">Xoá</a>
                               </h6>
                             </div>
                           </div>

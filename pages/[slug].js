@@ -323,10 +323,10 @@ function closeModal() {
                         >
                           {detailProduct.variants
                             ? detailProduct.media.data.map((item, index) => (
-                              <div key={index}>
-                                <Media src={`${item.path}`} className="img-fluid" />
-                              </div>
-                            ))
+                                <div key={index}>
+                                  <Media src={`${item.path}`} className="img-fluid" />
+                                </div>
+                              ))
                             : ""}
                         </Slider>
                       </Col>
@@ -584,6 +584,42 @@ function closeModal() {
                     </Row>
                   )}
                 </div>
+
+                {/* Vendor */}
+                <section className="tab-product m-0">
+                  <Container>
+                    <div class={`${styles.vendorBox}`}>
+                      <div class={`${styles.leftVendor}`}>
+                        <a className=""></a>
+                        <div class="_27NV-r">
+                          <div class="_1wVLAc">
+                            <a>{detailProduct.vendor.brandName}</a>
+                          </div>
+                          <div class="_1NgpoA">
+                            <a class="btn btn-light btn--s btn--inline btn-light--link _1bsnOp">
+                              <Link href={`/vendors/${detailProduct.vendor.ownerRef.username}`}>
+                                xem shop
+                              </Link>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div class={`${styles.rightVendor}`}>
+                        <div class="_1utN4D">
+                          <div class="_14x4GD gy4qkp">
+                            <label class="_3ApBiN">tham gia</label>
+                            <span class="_33OqNH">3 năm trước</span>
+                          </div>
+                          <div class="_14x4GD gy4qkp">
+                            <label class="_3ApBiN">Đánh giá</label>
+                            <span class="_33OqNH">134,4k</span>
+                          </div>
+                        </div>
+                      </div> */}
+                    </div>
+                  </Container>
+                </section>
+                {/* Vendor end */}
                 <ProductTab detailProduct={detailProduct} />
               </Col>
               <Col sm={3} className="collection-filter">
