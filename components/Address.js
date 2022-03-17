@@ -2,9 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "@/styles/account.module.css";
 import {
-  Container,
   Row,
-  Col,
   Modal,
   ModalHeader,
   ModalBody,
@@ -12,13 +10,24 @@ import {
   Button,
   Alert,
 } from "reactstrap";
+import libphone from 'google-libphonenumber';
+const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
+const phoneUtil = PhoneNumberUtil.getInstance()
 export default function Address({ isOpen, handleCloseCreateAdd }) {
   const [message, setMessage] = useState('')
   const [showMessage, setShowMessage] = useState(false)
   const [provinces, setProvinces] = useState([])
   const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
+
+  const inputName = useRef()
+  const inputPhone = useRef()
+  const selectPrivince = useRef()
+  const selectDistrict = useRef()
+  const selectWard = useRef()
+  const inputDetailAddress = useRef()
+
   useEffect(() => {
     async function fetchData() {
     const res = await fetch(`${process.env.API_LOCATION_URL}/provinces`)
@@ -41,7 +50,52 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
     const data = await res.json()
     setWards(data.data)
   }
+  const handleAdd = () => {
+    let mess = ""
+    var reg = /^\d+$/;
+    if (!reg.test(inputPhone.current.value)) {
+      mess += "Số điện thoại không hợp lệ, "
+    } else {
+      if (inputPhone.current.value.length < 2 || inputPhone.current.value == null) {
+        mess += "Số điện thoại không hợp lệ, "
+
+      } else {
+        const number = phoneUtil.parse(inputPhone.current.value, "VN");
+        if (!phoneUtil.isValidNumber(number)) {
+          mess += "Số điện thoại không hợp lệ, "
   
+        }
+      }
+    }
+    if (inputName.current.value.length < 10) {
+      mess += "Tên không hợp lệ, "
+    }
+    if (selectPrivince.current.value == "") {
+      mess += "Tỉnh hoặc thành phố không hợp lệ, "
+    }
+    if (selectDistrict.current.value == "") {
+      mess += "Quận hoặc huyện không hợp lệ, "
+    }
+    if (selectWard.current.value == "") {
+      mess += "Xã hoặc phường không hợp lệ, "
+    }
+    if (mess == "") {
+      const body = {
+        phone: inputPhone.current.value,
+        fullName: inputName.current.value,
+        provinceCode: selectPrivince.current.value,
+        districtCode: selectDistrict.current.value,
+        wardCode: selectWard.current.value,
+        detailAddress:inputDetailAddress.current.value,
+        fullAddress: `${selectWard.current.options[selectWard.current.selectedIndex].text}, ${selectWard.current.options[selectWard.current.selectedIndex].text}, ${selectDistrict.current.options[selectDistrict.current.selectedIndex].text}, ${selectPrivince.current.options[selectPrivince.current.selectedIndex].text}`
+      }
+      console.log(body)
+    } else {
+      setMessage(mess.slice(0, -2))
+      setShowMessage(true)
+    }
+    
+  }
   return (
     <>
       <Modal
@@ -55,12 +109,12 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
         <ModalBody className="container-fluid">
           <div className="col-md-12 mt-3">
             {showMessage &&
-              <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
+              <Alert style={{ textAlign: 'center', height: 'auto' }} color={'danger'}>
                 {message}
               </Alert>
             }
           </div>
-          <Row className="p-5">
+          <Row className="pl-5 pr-5">
             <form id="add_address">
               <div className="row">
                 <div className="col-lg-6">
@@ -69,6 +123,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                     <input
                       name="productname"
                       type="text"
+                      ref={inputName}
                       className="form-control productname"
                       autoFocus
                     />
@@ -80,6 +135,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                     <input
                       name="number_phone"
                       type="text"
+                      ref={inputPhone}
                       className="form-control number_phone"
                       maxLength={10}
                     />
@@ -96,6 +152,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                     <select
                       className="form-control"
                       data-trigger
+                      ref={selectPrivince}
                       name="choices-single-groups"
                       required
                       onChange={handleDistrict}
@@ -120,7 +177,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                       Quận/Huyện
                     </label>
                     <select
-
+                      ref={selectDistrict}
                       className="form-control"
                       data-trigger
                       name="choices-single-groups"
@@ -147,6 +204,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                       Xã/Phường
                     </label>
                     <select
+                    ref={selectWard}
                       className="form-control"
                       data-trigger
                       name="choices-single-groups"
@@ -170,7 +228,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                   </label>
                   <textarea
                     className="form-control"
-
+                    ref={inputDetailAddress}
                     required
                   />
                 </div>
@@ -184,7 +242,9 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
           >
             Huỷ
           </Button>
-          <button className="btn-solid btn">
+          <button className="btn-solid btn"
+          onClick={handleAdd}
+          >
             Tạo
           </button>
         </ModalFooter>

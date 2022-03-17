@@ -534,7 +534,7 @@ export default function AppLyVendor({ data }) {
         <ModalBody className="container-fluid">
           <div className="col-md-12 mt-3">
             {showMessage &&
-              <Alert style={{ textAlign: 'center', height: 'auto' }} variant={'danger'}>
+              <Alert style={{ textAlign: 'center', height: 'auto' }} color={'danger'}>
                 {message}
               </Alert>
             }
