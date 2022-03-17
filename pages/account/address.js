@@ -11,13 +11,26 @@ import styles from "@/styles/account.module.css";
 import AddressChild from '@/components/AddressChild.js';
 import Address from "@/components/Address";
 const Account = ({data}) => {
+  const [address,setAddress] = useState(data)
   const [accountInfo, setAccountInfo] = useState(false);
   const [createAdd,setCreateAdd] = useState(false);
   const handleCreateAdd = () => {
     setCreateAdd(true)
   }
-  const handleCloseCreateAdd = () => {
+  const handleCloseCreateAdd = (add) => {
+    if(add){
+      address.unshift(add)
+      setAddress([...address])
+    }
     setCreateAdd(false)
+  }
+  const updateAddress = (i,add) => {
+    address[i] = add
+    setAddress([...address])
+  }
+  const deleteAddress = (i)=>{
+    address.splice(i, 1)
+    setAddress([...address])
   }
   return (
     <>
@@ -67,8 +80,13 @@ const Account = ({data}) => {
                       </div>
                       <Row className={`${styles.box_address}`}>
                       {data.length > 0 ?
-                      data.map((address) => {
-                          <AddressChild />
+                        address.map((address,i) => {
+                          console.log(i,"ii")
+                          return(
+                            <>
+                            <AddressChild address={address} index={i} updateAddress={updateAddress} deleteAdd={deleteAddress} />
+                            </>
+                            )
                       })
                       :
                       "Bạn chưa có địa chỉ nào"

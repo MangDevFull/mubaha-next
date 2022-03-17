@@ -14,35 +14,47 @@ import {useSession} from 'next-auth/react'
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance()
-export default function Address({ isOpen, handleCloseCreateAdd }) {
+export default function Address({ isOpen, handleNotShow,address }) {
   const {data:session} = useSession()
   const [message, setMessage] = useState('')
   const [showMessage, setShowMessage] = useState(false)
   const [provinces, setProvinces] = useState([])
   const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
-
+  const [name,setName] = useState(address.fullName)
+  const [phone,setPhone] = useState(address.phone)
+  const [province,setProvince] = useState(address.codes.province)
+  const [district,setDistrict] = useState(address.codes.district)
+  const [ward,setWard] = useState(address.codes.ward)
+  const [details,setDetails] = useState(address.details)
+  const [disableDistrict,setDisableDistrict] = useState(true)
+  const [disableWard,setDisableWard] = useState(true)
   const inputName = useRef()
   const inputPhone = useRef()
   const selectPrivince = useRef()
   const selectDistrict = useRef()
   const selectWard = useRef()
   const inputDetailAddress = useRef()
-
   useEffect(() => {
     async function fetchData() {
     const res = await fetch(`${process.env.API_LOCATION_URL}/provinces`)
    const data = await res.json()
    setProvinces(data.data)
+   
     }
     fetchData()
   }, [isOpen])
   const handleDistrict = async (e) => {
     const id = e.target.value
+    console.log(id)
     const res = await fetch(`${process.env.API_LOCATION_URL}/provinces/${id}/districts`)
     const data = await res.json()
     setDistricts(data.data)
     setWards([])
+    setDisableDistrict(false)
+    setDisableWard(false)
+    setProvince('')
+    setDistrict('')
   }
   const handleWards = async (e) => {
     const id = e.target.value
@@ -52,10 +64,6 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
   }
   const handleAdd = async () => {
     let mess = ""
-    var reg = /^\d+$/;
-    if (!reg.test(inputPhone.current.value)) {
-      mess += "Số điện thoại không hợp lệ, "
-    } else {
       if (inputPhone.current.value.length < 2 || inputPhone.current.value == null) {
         mess += "Số điện thoại không hợp lệ, "
 
@@ -63,9 +71,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
         const number = phoneUtil.parse(inputPhone.current.value, "VN");
         if (!phoneUtil.isValidNumber(number)) {
           mess += "Số điện thoại không hợp lệ, "
-  
         }
-      }
     }
     if (inputName.current.value.length < 10) {
       mess += "Tên không hợp lệ, "
@@ -89,8 +95,8 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
         detailAddress:inputDetailAddress.current.value,
         fullAddress: `${selectWard.current.options[selectWard.current.selectedIndex].text}, ${selectDistrict.current.options[selectDistrict.current.selectedIndex].text}, ${selectPrivince.current.options[selectPrivince.current.selectedIndex].text}`
       }
-      const response = await fetch(process.env.API_ADDRESS_URL, {
-        method: 'POST',
+      const response = await fetch(`${process.env.API_ADDRESS_URL}/${address._id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + session.accessToken
@@ -99,13 +105,22 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
       })
       const data = await response.json()
       if(data.status === 200){
-        handleCloseCreateAdd(data.data)
+        setMessage("")
+        setShowMessage(false)
+        setName(data.data.fullName)
+        setPhone(data.data.phone)
+        setProvince(data.data.codes.province)
+        setDistrict(data.data.codes.district)
+        setWard(data.data.codes.ward)
+        setDetails(data.data.details)
+        setDisableDistrict(true)
+        setDisableWard(true)
+        handleNotShow(data.data)
       }
     } else {
       setMessage(mess.slice(0, -2))
       setShowMessage(true)
-    }
-    
+    } 
   }
   return (
     <>
@@ -115,7 +130,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
         centered
         isOpen={isOpen}>
         <ModalHeader>
-          Tạo địa chỉ mới
+          Cập nhật địa chỉ
         </ModalHeader>
         <ModalBody className="container-fluid">
           <div className="col-md-12 mt-3">
@@ -132,8 +147,8 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                   <div className="mb-3">
                     <label htmlFor="productname">Họ và tên</label>
                     <input
-                      name="productname"
                       type="text"
+                      defaultValue={name}
                       ref={inputName}
                       className="form-control productname"
                       autoFocus
@@ -144,11 +159,10 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                   <div className="mb-3">
                     <label htmlFor="number_phone">Số điện thoại</label>
                     <input
-                      name="number_phone"
                       type="text"
+                      defaultValue={phone}
                       ref={inputPhone}
                       className="form-control number_phone"
-                      maxLength={10}
                     />
                   </div>
                 </div>
@@ -163,18 +177,25 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                     <select
                       className="form-control"
                       data-trigger
-                      ref={selectPrivince}
                       name="choices-single-groups"
                       required
                       onChange={handleDistrict}
+                      ref={selectPrivince}
                     >
-                        <option value="">Chọn một tỉnh/thành phố</option>
                       {provinces.map((p) => {
+                        if(province==p.code){
                         return (
-                          <option key={p.code} value={p.code}>
+                            <option key={p.code} value={p.code} selected>
                             {p.name}
                           </option>
                         )
+                      }else{
+                        return (
+                            <option key={p.code} value={p.code}>
+                            {p.name}
+                          </option>
+                        )
+                      }
                       })}
                     </select>
                   </div>
@@ -188,20 +209,23 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                       Quận/Huyện
                     </label>
                     <select
-                      ref={selectDistrict}
+                    disabled={disableDistrict}
                       className="form-control"
                       data-trigger
                       name="choices-single-groups"
                       onChange={handleWards}
                       required
+                      ref={selectDistrict}
                     >
-                    <option value="">Chọn một quận/huyện</option>
+                    {disableDistrict ? <option value={district}>{address.fullAddress.split(', ')[1]}</option>
+                    :<option value="">Chọn một quận/huyện</option>}
                      {districts.map((p) => {
                         return (
-                          <option key={p.code} value={p.code}>
+                            <option key={p.code} value={p.code}>
                             {p.name}
                           </option>
                         )
+                      
                       })}
                     </select>
                   </div>
@@ -220,15 +244,20 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                       data-trigger
                       name="choices-single-groups"
                       id="ward"
+                      disabled={disableWard}
                       required
                     >
-                     <option value="">Chọn một xã/phường</option>
+                     {disableWard ? <option value={ward}>{address.fullAddress.split(', ')[0]}</option>
+                     : <option value="">Chọn một xã/phường</option>
+                     }
                       {wards.map((p) => {
+                        
                         return (
-                          <option key={p.code} value={p.code}>
+                            <option key={p.code} value={p.code}>
                             {p.name}
                           </option>
                         )
+                      
                       })}
                     </select>
                   </div>
@@ -239,8 +268,9 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                   </label>
                   <textarea
                     className="form-control"
-                    ref={inputDetailAddress}
                     required
+                    ref={inputDetailAddress}
+                    detailAddress={details}
                   />
                 </div>
               </div>
@@ -249,14 +279,26 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
         </ModalBody>
         <ModalFooter>
           <Button className="btn btn-secondary btn-lg" style={{ width: '120px', height: '50px' }}
-            onClick={()=>{handleCloseCreateAdd()}}
+            onClick={()=>{
+              setMessage("")
+      setShowMessage(false)
+      setName(address.fullName)
+      setPhone(address.phone)
+      setProvince(address.codes.province)
+      setDistrict(address.codes.district)
+      setWard(address.codes.ward)
+      setDetails(address.details)
+      setDisableDistrict(true)
+      setDisableWard(true)
+              handleNotShow()
+            }}
           >
             Huỷ
           </Button>
           <button className="btn-solid btn"
           onClick={handleAdd}
           >
-            Tạo
+            Cập nhật
           </button>
         </ModalFooter>
       </Modal>
