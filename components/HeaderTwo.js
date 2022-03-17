@@ -11,7 +11,7 @@ import NavBar from "@/components/common/Navbar";
 import HeaderSettings from "./common/HeaderSettings";
 
 import styles from "./HeaderTwo.module.css";
-import CartContainer from "./common/CartContainer";
+import CartContainer from "./CartContainer";
 
 import cart from "../assets/icons/cart.png";
 import SearchOverlay from "@/components/common/SearchOverlay";

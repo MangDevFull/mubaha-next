@@ -18,7 +18,6 @@ export default function VerifyOtp({ phone, type,fullName }) {
     if (e.length == 4) {
       setNotFullOtp(false);
       if (type == otpEnums.REGISTRATION) {
-        
         const res = await signIn("mubaha-signup", {
           phone: phone,
           code: e,
@@ -31,16 +30,21 @@ export default function VerifyOtp({ phone, type,fullName }) {
           setInvalidOtp(true)
         }
       } else if (type == otpEnums.LOGIN) {
+        const getProduct = localStorage.getItem('addToCart')
         const res = await signIn("mubaha", {
           phone: phone,
           code: e,
           redirect: false,
         });
         if (res.error == null) {
-          router.push('/')
+          if(getProduct != null){
+            localStorage.removeItem("addToCart");
+            router.push(getProduct)
+          }else{
+            router.push('/')
+          }
         } else {
           setInvalidOtp(true)
-
         }
       } else if (type == otpEnums.CREATE_PASSWORD) {
         const res = await signIn("mubaha", {

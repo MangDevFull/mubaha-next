@@ -8,19 +8,20 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Alert,
 } from "reactstrap";
 import Layout from "@/components/LayoutCart";
-import CommonLayout from "../components/shop/CommonLayout";
-import styles from "../styles/account.module.css";
+import CommonLayout from "../../components/shop/CommonLayout";
+import styles from "@/styles/account.module.css";
 
 const Account = () => {
   const [accountInfo, setAccountInfo] = useState(false);
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
+  const [address,setAddress] = useState()
   const handleClose = () => setShow(false);
   const handleShow = () => {
-    console.log("check");
     setShow(true);
     setMessage("");
     setShowMessage(false);
@@ -46,12 +47,6 @@ const Account = () => {
                       <li className="active">
                         <a href="#">Địa chỉ</a>
                       </li>
-                      <li>
-                        <a href="#">Address Book</a>
-                      </li>
-                      <li>
-                        <a href="#">My Orders</a>
-                      </li>
                     </ul>
                   </div>
                 </div>
@@ -64,7 +59,7 @@ const Account = () => {
                         <h2>Địa chỉ của tôi</h2>
                       </div>
                       <div className={`${styles.add_address}`}>
-                        <button onClick={handleShow}>Thêm địa chỉ</button>
+                        <button onClick={handleShow} style={{width:"auto"}}><i className="fa fa-solid fa-plus mr-1"></i>Thêm địa chỉ</button>
                       </div>
                     </div>
 

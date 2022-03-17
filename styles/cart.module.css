@@ -30,3 +30,14 @@
   display: none;
   max-width: 30%;
 }
+.disabled {
+  pointer-events: none;
+    opacity: 0.4;
+}
+.disabled2 {
+    opacity: 0.4;
+}
+.deleteUnavailable{
+  cursor: pointer;
+  color: blue
+}

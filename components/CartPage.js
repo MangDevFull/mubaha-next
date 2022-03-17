@@ -3,23 +3,41 @@ import NumberFormat from "react-number-format";
 import Link from "next/link";
 import {
   Container, Row, Col, Media, Button, Card, CardBody, CardHeader,
-  CardFooter, Modal, ModalFooter, ModalHeader
+  CardFooter, Modal, ModalFooter, ModalHeader, Badge
 } from "reactstrap";
 import Breadcrumb from "./Breadcrumb";
 import styles from "@/styles/cart.module.css"
 import dynamic from 'next/dynamic'
 import { useSession } from 'next-auth/react'
+import Modal2 from 'react-awesome-modal';
+import productStatus from "@/enums/productStatus.enum.js"
 
 const Variant = dynamic(() => import('@/components/Variant.js'))
 const CartPage = ({ data, totalP }) => {
   const [products, setProduct] = useState(data)
-  const [totalProduct, setTotalProduct] = useState(totalP)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalProductSelect, setTotalProductSelect] = useState(0)
   const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [message, setMessage] = useState('')
 
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
+
+  useEffect(() => {
+    const cartID = localStorage.getItem('cartID')
+    if (cartID != null) {
+      products.forEach((product, index) => {
+        product.products.forEach((p, i) => {
+          if (p.cartID == cartID) {
+            products[index].products[i].selected = true
+            setProduct([...products])
+            localStorage.removeItem('cartID')
+          }
+        })
+      })
+    }
+  }, [])
 
   const handleMinusQuantity = async (i, index, quantity, cartID) => {
     if (products[i].products[index].quantity >= 2) {
@@ -74,7 +92,7 @@ const CartPage = ({ data, totalP }) => {
     if (products[i].products[index].attr) {
       body = {
         ...body,
-        size: products[i].products[index].size._id
+        size: products[i].products[index].attr._id
       }
 
     }
@@ -93,7 +111,11 @@ const CartPage = ({ data, totalP }) => {
       products[i].products[index].quantity = products[i].products[index].quantity + 1
       setProduct([...products])
     } else if (data.status === 400) {
-      alert(data.message)
+      setMessage(data.message)
+      setVisible(true)
+      setTimeout(function () {
+        setVisible(false)
+      }, 1000)
     }
   }
   const removeFromCart = async (i, index, cartID) => {
@@ -120,7 +142,7 @@ const CartPage = ({ data, totalP }) => {
   const handleSelectProduct = (i, index) => {
     products[i].products[index].selected = !products[i].products[index].selected;
     const selectAllVendor = products[i].products.filter((p) => {
-      return p.selected !== true
+      return p.selected !== true && p.status !== productStatus.DISABLE && p.isOutOfStock !==true
     })
     if (selectAllVendor.length < 1) {
       products[i].selected = true
@@ -139,13 +161,16 @@ const CartPage = ({ data, totalP }) => {
     setProduct([...products])
   }
   const handleSelectVendor = (i) => {
-    console.log(products[i].selected)
     products[i].selected = !products[i].selected
     products[i].products.forEach((p) => {
-      p.selected = products[i].selected
+      if (p.status !== productStatus.DISABLE) {
+        if(p.isOutOfStock ===false){
+          p.selected = products[i].selected
+        }
+      }
     })
     const selectAll = products.filter((p) => {
-      return p.selected !== true
+      return p.selected !== true 
     })
     if (selectAll.length < 1) {
       setIsSelectedAll(true)
@@ -159,7 +184,11 @@ const CartPage = ({ data, totalP }) => {
     products.forEach((product, i) => {
       product.selected = !isSelectedAll
       product.products.forEach((p, index) => {
-        products[i].products[index].selected = !isSelectedAll;
+        if (p.status !== productStatus.DISABLE) {
+          if(p.isOutOfStock == false) {
+            products[i].products[index].selected = !isSelectedAll;
+          }
+        }
       })
     })
     setProduct([...products])
@@ -175,12 +204,12 @@ const CartPage = ({ data, totalP }) => {
         if (p.selected == true) {
           if (p.variant != null && p.attr == null) {
             a += 1
-            t += p.variant.price * p.quantity
+            t += p.variant.price * p.quantity * (1 - p.variant.discount)
           } else if (p.attr != null && p.variant != null) {
-            t += p.attr.price * p.quantity
+            t += p.attr.price * p.quantity * (1 - p.attr.discount)
             a += 1
           } else {
-            t += p.price * p.quantity
+            t += p.price * p.quantity * (1 - p.discount)
             a += 1
           }
         }
@@ -201,7 +230,7 @@ const CartPage = ({ data, totalP }) => {
       })
     })
     const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + session.accessToken
@@ -234,44 +263,103 @@ const CartPage = ({ data, totalP }) => {
   }
   const handleModalDeleteMany = () => {
     if (totalProductSelect < 1) {
-      alert(' Vui lòng chọn sản phẩm')
+      setMessage("Vui lòng chọn sản phẩm")
+      setVisible(true)
+      setTimeout(function () {
+        setVisible(false)
+      }, 1000)
     } else {
       setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct)
     }
   }
-  const updateProduct=(body,i,index)=>{
-   if(body.variant != null && body.size != null) {
-    products[i].products.forEach((product,id)=>{
-      console.log(product)
-      const v = product.variants.filter((v)=>{
-        return v._id === body.variant
-      })
-      if(v.length > 0){
-        products[i].products[id].variant = v[0]
-        const s = v[0].sizes.filter((s)=>{
-          return s._id === body.size
+  const updateProduct = (body, i, index) => {
+    if (body.variant != null && body.size != null) {
+      products[i].products.forEach((product, id) => {
+        const v = product.variants.filter((v) => {
+          return v._id === body.variant
         })
-        if(s.length > 0){
-          products[i].products[id].attr = s[0]
-          setProduct([...products])
-      }
-      }
-    })
-   }else if(body.variant != null && body.size == null){
-    products[i].products.forEach((product,id)=>{
-      const v = product.variants.filter((v)=>{
-        return v._id === body.variant
+        if (v.length > 0) {
+          products[i].products[i].variant = v[0]
+          const s = v[0].sizes.filter((s) => {
+            return s._id === body.size
+          })
+          if (s.length > 0) {
+            products[i].products[index].attr = s[0]
+            products[i].products[index].isOutOfStock = false
+            setProduct([...products])
+          }
+        }
       })
-      if(v.length > 0){
-        products[i].products[id].variant = v[0]
-        setProduct([...products])
-      }
+    } else if (body.variant != null && body.size == null) {
+      products[i].products.forEach((product, id) => {
+        const v = product.variants.filter((v) => {
+          return v._id === body.variant
+        })
+        if (v.length > 0) {
+          products[i].products[index].variant = v[0]
+          console.log(products[i].products[index].isOutOfStock,"ashjgag")
+          products[i].products[index].isOutOfStock = false
+          setProduct([...products])
+        }
+      })
+    }
+  }
+  function closeModal() {
+    setVisible(false)
+  }
+  const deleteAvailableProducts = async () => {
+    let cartItems = []
+    products.forEach((product) => {
+      product.products.forEach((p) => {
+        if (p.status === productStatus.DISABLE) {
+          cartItems = [...cartItems, p.cartID]
+        }
+      })
     })
-   }
+    const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.accessToken
+      },
+      body: JSON.stringify({ cartItems: cartItems })
+    })
+    const data = await response.json()
+
+    if (data.status === 200) {
+      products.forEach((product, i) => {
+        const pr = product.products.filter((p) => {
+          return !cartItems.includes(p.cartID)
+        })
+        if (pr.length < 1) {
+          products.splice(i, 1);
+        } else {
+          products[i] = {
+            vendor: product.vendor,
+            selected: false,
+            totalDocs: product.totalDocs,
+            products: pr
+          }
+        }
+      })
+      setProduct([...products])
+    } else {
+      alert(data.message)
+    }
   }
   if (products.length > 0) {
+    console.log(products)
     return (
       <div>
+        <Modal2 visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
+          <i className="fa fa-solid fa-xmark"></i>
+          <div className=" d-flex justify-content-center mt-5">
+            <img width="100" height="100" src="/assets/icon/icon-danger.svg" />
+          </div>
+          <div className=" d-flex justify-content-center mt-5">
+            <p style={{ fontSize: "16px", color: "red" }}>{message}</p>
+          </div>
+        </Modal2>
         <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
         <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`}>
           <div>
@@ -301,7 +389,7 @@ const CartPage = ({ data, totalP }) => {
                           </div>
                         </th>
                         <th scope="col">
-                          <div className="mt-4 mb-3 ml-2">
+                          <div className="mt-4 mb-3 ml-1">
                             Số lượng
                           </div>
                         </th>
@@ -323,12 +411,14 @@ const CartPage = ({ data, totalP }) => {
                     return (
                       <Card key={i} style={{ border: 'none' }}>
                         <CardHeader style={{ backgroundColor: 'white' }}>
-                          <div className="mt-3 mb-2">
+                          <div className=" mb-2">
+                          {!p.count == p.totalDocs ? "" :
                             <input type="checkbox"
                               className="mr-4 mt-5"
                               checked={p.selected}
                               onClick={() => { handleSelectVendor(i) }}
                             />
+                            }
                             <img src="/assets/icon/shop-icon.png" className="mr-2" />
                             <Link href={`/vendors/${p.vendor.owner.username}`}>
                               <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
@@ -338,15 +428,20 @@ const CartPage = ({ data, totalP }) => {
                         <CardBody>
                           <table className="ml-3">
                             {p.products.map((item, index) => {
+                              let discount
+                              if (item.attr) discount = item.attr.discount
+                              else if (item.variant) discount = item.variant.discount
+                              else discount = item.discount
                               return (
                                 <tbody key={index}>
                                   <tr>
-                                    <td className="d-flex">
+                                    <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
                                       <input type="checkbox"
                                         className="mr-4 mt-5"
                                         checked={item.selected}
                                         onClick={() => handleSelectProduct(i, index)}
                                       />
+
                                       <Link href={`/${item.slug}`}>
                                         <a>
                                           <Media
@@ -356,21 +451,37 @@ const CartPage = ({ data, totalP }) => {
                                         </a>
                                       </Link>
                                     </td>
-                                    <td>
+                                    <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled2 : ""}>
                                       <Link href={`/${item.slug}`}>
                                         <strong className={styles.cursorVendor}>{item.name}</strong>
                                       </Link>
                                       {
                                         item.variant &&
-                                       <Variant item={item} index={index} updateProduct={updateProduct} 
-                                         i={i}
-                                       />
+                                        <Variant item={item} index={index} updateProduct={updateProduct}
+                                          i={i}
+                                        />
+                                      }
+                                      {item.status == productStatus.DISABLE || item.isOutOfStock
+                                        ?
+                                        item.status === productStatus.DISABLE
+                                          ?
+
+                                          <Badge>
+                                            Không hoạt động
+                                          </Badge>
+                                          :
+                                          <Badge>
+                                            Hết hàng
+                                          </Badge>
+                                        : ""
                                       }
                                     </td>
-                                    <td>
+                                    <td className={item.status == productStatus.DISABLE && item.isOutOfStock && styles.disabled}>
                                       <h2>
                                         <NumberFormat
-                                          value={item.variant.price || item.price}
+                                          value={item?.attr?.price * (1 - item.attr?.discount)
+                                            || item.variant.price * (1 - item.variant.discount)
+                                            || item.price * (1 - item.discount)}
                                           thousandSeparator={true}
                                           displayType="text"
                                           suffix={item.currencySymbol}
@@ -378,8 +489,23 @@ const CartPage = ({ data, totalP }) => {
                                         />
 
                                       </h2>
+                                      {discount > 0 &&
+                                        <del>
+                                          <span className="money ml-1">
+                                            <NumberFormat
+                                              value={item?.attr?.price
+                                                || item.variant.price
+                                                || item.price}
+                                              thousandSeparator={true}
+                                              displayType="text"
+                                              suffix={item.currencySymbol}
+                                              decimalScale={0}
+                                            />
+                                          </span>
+                                        </del>
+                                      }
                                     </td>
-                                    <td>
+                                    <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
                                       <div className="qty-box">
                                         <div className="input-group">
                                           <span className="input-group-prepend">
@@ -410,16 +536,15 @@ const CartPage = ({ data, totalP }) => {
                                         </div>
                                       </div>
                                     </td>
-                                    <td>
-                                      <h2 className="td-color">
+                                    <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
+                                      <h2 className="td-color ml-5">
                                         <NumberFormat
-                                          value={item.quantity * item.variant.price}
+                                          value={item.quantity * item?.attr?.price || item.variant.price || item.price}
                                           thousandSeparator={true}
                                           displayType="text"
                                           suffix={item.currencySymbol}
                                           decimalScale={0}
                                         />
-
                                       </h2>
                                     </td>
                                     <td>
@@ -482,6 +607,12 @@ const CartPage = ({ data, totalP }) => {
                               </span>
                               ({totalProductSelect} sản phẩm đã chọn)
                             </div>
+                            <div className="ml-5">
+                              <span 
+                              className={styles.deleteUnavailable}
+                              onClick={deleteAvailableProducts}
+                              >Xoá tất cả sản phẩm không hoạt động</span>
+                            </div>
                           </div>
                           <div className="ml-5">
                             Tổng thanh toán ({totalProductSelect} sản phẩm) :
@@ -496,7 +627,6 @@ const CartPage = ({ data, totalP }) => {
                               suffix={'₫'}
                               decimalScale={0}
                             />
-
                           </h2>
                         </td>
                       </tr>
@@ -507,7 +637,7 @@ const CartPage = ({ data, totalP }) => {
             </Row>
             <Row className="cart-buttons">
               <Col xs="6">
-                <Link href={`/shop/left_sidebar`}>
+                <Link href={`/`}>
                   <a className="btn btn-solid">Tiếp tục mua hàng</a>
                 </Link>
               </Col>
@@ -532,9 +662,10 @@ const CartPage = ({ data, totalP }) => {
               <div className="mt-5">
                 <div className="col-sm-12 empty-cart-cls text-center">
                   <Media
-                    src="/assets/icon/icon-empty-cart.png"
-                    className="img-fluid mb-4 mx-auto"
+                    src="/assets/icon/cart-is-empty-800x800.png"
+                    className="img-fluid mx-auto"
                     alt="mubaha.com"
+                    style={{ width: "200px", maxWidth: "200px" }}
                   />
                   <h3>
                     <strong>Giỏ hàng bạn đang chưa có sản phẩm</strong>

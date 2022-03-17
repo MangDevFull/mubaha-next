@@ -1,4 +1,4 @@
-import API from "../../services/api.js"
+import API from "@/services/api.js"
 import Head from "next/head";
 import { useRef, useState, useEffect } from "react"
 import { Modal, Button, Row, Alert, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
@@ -7,7 +7,7 @@ import Breadcrumb from '@/components/Breadcrumb.js'
 import libphone from 'google-libphonenumber';
 import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import accountType from "../../enums/accountType.enum.js";
+import accountType from "@/enums/accountType.enum.js";
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
