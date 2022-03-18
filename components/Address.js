@@ -9,13 +9,14 @@ import {
   Button,
   Alert,
 } from "reactstrap";
+import styles from '@/styles/account.module.css'
 import libphone from 'google-libphonenumber';
-import {useSession} from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
 const phoneUtil = PhoneNumberUtil.getInstance()
-export default function Address({ isOpen, handleCloseCreateAdd }) {
-  const {data:session} = useSession()
+export default function Address({ isOpen, handleCloseCreateAdd ,isExist}) {
+  const { data: session } = useSession()
   const [message, setMessage] = useState('')
   const [showMessage, setShowMessage] = useState(false)
   const [provinces, setProvinces] = useState([])
@@ -28,15 +29,16 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
   const selectDistrict = useRef()
   const selectWard = useRef()
   const inputDetailAddress = useRef()
+  const selectCheck = useRef()
 
   useEffect(() => {
     async function fetchData() {
-    const res = await fetch(`${process.env.API_LOCATION_URL}/provinces`)
-   const data = await res.json()
-   setProvinces(data.data)
+      const res = await fetch(`${process.env.API_LOCATION_URL}/provinces`)
+      const data = await res.json()
+      setProvinces(data.data)
     }
     fetchData()
-  }, [isOpen])
+  }, [])
   const handleDistrict = async (e) => {
     const id = e.target.value
     const res = await fetch(`${process.env.API_LOCATION_URL}/provinces/${id}/districts`)
@@ -63,7 +65,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
         const number = phoneUtil.parse(inputPhone.current.value, "VN");
         if (!phoneUtil.isValidNumber(number)) {
           mess += "Số điện thoại không hợp lệ, "
-  
+
         }
       }
     }
@@ -81,12 +83,13 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
     }
     if (mess == "") {
       const body = {
+        isDefault: selectCheck.current.checked,
         phone: inputPhone.current.value,
         fullName: inputName.current.value,
         provinceCode: selectPrivince.current.value,
         districtCode: selectDistrict.current.value,
         wardCode: selectWard.current.value,
-        detailAddress:inputDetailAddress.current.value,
+        detailAddress: inputDetailAddress.current.value,
         fullAddress: `${selectWard.current.options[selectWard.current.selectedIndex].text}, ${selectDistrict.current.options[selectDistrict.current.selectedIndex].text}, ${selectPrivince.current.options[selectPrivince.current.selectedIndex].text}`
       }
       const response = await fetch(process.env.API_ADDRESS_URL, {
@@ -98,14 +101,14 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
         body: JSON.stringify(body)
       })
       const data = await response.json()
-      if(data.status === 200){
-        handleCloseCreateAdd(data.data)
+      if (data.status === 200) {
+        handleCloseCreateAdd(data.data,selectCheck.current.checked)
       }
     } else {
       setMessage(mess.slice(0, -2))
       setShowMessage(true)
     }
-    
+
   }
   return (
     <>
@@ -168,7 +171,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                       required
                       onChange={handleDistrict}
                     >
-                        <option value="">Chọn một tỉnh/thành phố</option>
+                      <option value="">Chọn một tỉnh/thành phố</option>
                       {provinces.map((p) => {
                         return (
                           <option key={p.code} value={p.code}>
@@ -195,8 +198,8 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                       onChange={handleWards}
                       required
                     >
-                    <option value="">Chọn một quận/huyện</option>
-                     {districts.map((p) => {
+                      <option value="">Chọn một quận/huyện</option>
+                      {districts.map((p) => {
                         return (
                           <option key={p.code} value={p.code}>
                             {p.name}
@@ -215,14 +218,14 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                       Xã/Phường
                     </label>
                     <select
-                    ref={selectWard}
+                      ref={selectWard}
                       className="form-control"
                       data-trigger
                       name="choices-single-groups"
                       id="ward"
                       required
                     >
-                     <option value="">Chọn một xã/phường</option>
+                      <option value="">Chọn một xã/phường</option>
                       {wards.map((p) => {
                         return (
                           <option key={p.code} value={p.code}>
@@ -234,7 +237,7 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                   </div>
                 </div>
                 <div className="col-lg-12">
-                  <label htmlFor="message-text" className="col-form-label">
+                  <label className="col-form-label">
                     Địa chỉ chi tiết
                   </label>
                   <textarea
@@ -243,18 +246,29 @@ export default function Address({ isOpen, handleCloseCreateAdd }) {
                     required
                   />
                 </div>
+                <div className={` col-lg-12 mt-2 a ${isExist===0 ? styles.disabled : ""}`}>
+                  <div class="form-check">
+                    <input className="form-check-input" type="checkbox" id="flexCheckDefault"
+                    defaultChecked={isExist==0} ref={selectCheck}
+                     />
+                    <label className="form-check-label" for="flexCheckDefault">
+                      Đặt địa chỉ mặc định
+                    </label>
+                  </div>
+                </div>
               </div>
+
             </form>
           </Row>
         </ModalBody>
         <ModalFooter>
           <Button className="btn btn-secondary btn-lg" style={{ width: '120px', height: '50px' }}
-            onClick={()=>{handleCloseCreateAdd()}}
+            onClick={() => { handleCloseCreateAdd() }}
           >
             Huỷ
           </Button>
           <button className="btn-solid btn"
-          onClick={handleAdd}
+            onClick={handleAdd}
           >
             Tạo
           </button>

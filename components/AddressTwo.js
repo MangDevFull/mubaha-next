@@ -27,8 +27,6 @@ export default function Address({ isOpen, handleNotShow,address }) {
   const [district,setDistrict] = useState(address.codes.district)
   const [ward,setWard] = useState(address.codes.ward)
   const [details,setDetails] = useState(address.details)
-  const [disableDistrict,setDisableDistrict] = useState(true)
-  const [disableWard,setDisableWard] = useState(true)
   const inputName = useRef()
   const inputPhone = useRef()
   const selectPrivince = useRef()
@@ -37,22 +35,21 @@ export default function Address({ isOpen, handleNotShow,address }) {
   const inputDetailAddress = useRef()
   useEffect(() => {
     async function fetchData() {
-    const res = await fetch(`${process.env.API_LOCATION_URL}/provinces`)
+  const res = await fetch(`${process.env.API_LOCATION_URL}/address?p=${province}&d=${district}`)
+
    const data = await res.json()
-   setProvinces(data.data)
-   
+   setProvinces(data.data.provinces)
+   setDistricts(data.data.districts)
+   setWards(data.data.wards)
     }
     fetchData()
   }, [isOpen])
   const handleDistrict = async (e) => {
     const id = e.target.value
-    console.log(id)
     const res = await fetch(`${process.env.API_LOCATION_URL}/provinces/${id}/districts`)
     const data = await res.json()
     setDistricts(data.data)
     setWards([])
-    setDisableDistrict(false)
-    setDisableWard(false)
     setProvince('')
     setDistrict('')
   }
@@ -113,8 +110,6 @@ export default function Address({ isOpen, handleNotShow,address }) {
         setDistrict(data.data.codes.district)
         setWard(data.data.codes.ward)
         setDetails(data.data.details)
-        setDisableDistrict(true)
-        setDisableWard(true)
         handleNotShow(data.data)
       }
     } else {
@@ -209,7 +204,6 @@ export default function Address({ isOpen, handleNotShow,address }) {
                       Quận/Huyện
                     </label>
                     <select
-                    disabled={disableDistrict}
                       className="form-control"
                       data-trigger
                       name="choices-single-groups"
@@ -217,14 +211,21 @@ export default function Address({ isOpen, handleNotShow,address }) {
                       required
                       ref={selectDistrict}
                     >
-                    {disableDistrict ? <option value={district}>{address.fullAddress.split(', ')[1]}</option>
-                    :<option value="">Chọn một quận/huyện</option>}
                      {districts.map((p) => {
+                       if(p.code === district){
+                        return (
+                            <option key={p.code} value={p.code} selected>
+                            {p.name}
+                          </option>
+                        )
+                       }
+                       else{
                         return (
                             <option key={p.code} value={p.code}>
                             {p.name}
                           </option>
                         )
+                       }
                       
                       })}
                     </select>
@@ -244,20 +245,22 @@ export default function Address({ isOpen, handleNotShow,address }) {
                       data-trigger
                       name="choices-single-groups"
                       id="ward"
-                      disabled={disableWard}
                       required
                     >
-                     {disableWard ? <option value={ward}>{address.fullAddress.split(', ')[0]}</option>
-                     : <option value="">Chọn một xã/phường</option>
-                     }
                       {wards.map((p) => {
-                        
+                       if(ward===p.code){
+                        return (
+                            <option key={p.code} value={p.code} selected>
+                            {p.name}
+                          </option>
+                        )
+                       }else{
                         return (
                             <option key={p.code} value={p.code}>
                             {p.name}
                           </option>
                         )
-                      
+                       }
                       })}
                     </select>
                   </div>
@@ -288,8 +291,6 @@ export default function Address({ isOpen, handleNotShow,address }) {
       setDistrict(address.codes.district)
       setWard(address.codes.ward)
       setDetails(address.details)
-      setDisableDistrict(true)
-      setDisableWard(true)
               handleNotShow()
             }}
           >

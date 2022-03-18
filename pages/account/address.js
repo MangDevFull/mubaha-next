@@ -11,14 +11,24 @@ import styles from "@/styles/account.module.css";
 import AddressChild from '@/components/AddressChild.js';
 import Address from "@/components/Address";
 const Account = ({data}) => {
-  const [address,setAddress] = useState(data)
+  const [address,setAddress] = useState([])
   const [accountInfo, setAccountInfo] = useState(false);
   const [createAdd,setCreateAdd] = useState(false);
   const handleCreateAdd = () => {
     setCreateAdd(true)
   }
-  const handleCloseCreateAdd = (add) => {
+  useEffect(()=>{
+    setAddress(data)
+  },[])
+  const handleCloseCreateAdd = (add,isDefault) => {
     if(add){
+      if(isDefault){
+        address.forEach(add => {
+          if(add.isDefault===true){
+            add.isDefault = false
+          }
+        })
+      }
       address.unshift(add)
       setAddress([...address])
     }
@@ -30,6 +40,15 @@ const Account = ({data}) => {
   }
   const deleteAddress = (i)=>{
     address.splice(i, 1)
+    setAddress([...address])
+  }
+  const updateDefaultAddress = (i,add)=>{
+    address.forEach(add => {
+      if(add.isDefault===true){
+        add.isDefault = false
+      }
+    })
+    address[i] = add
     setAddress([...address])
   }
   return (
@@ -79,13 +98,10 @@ const Account = ({data}) => {
                         <div className="box-title"></div>
                       </div>
                       <Row className={`${styles.box_address}`}>
-                      {data.length > 0 ?
-                        address.map((address,i) => {
-                          console.log(i,"ii")
+                      {address.length > 0 ?
+                        address.map((a,i) => {
                           return(
-                            <>
-                            <AddressChild address={address} index={i} updateAddress={updateAddress} deleteAdd={deleteAddress} />
-                            </>
+                            <AddressChild key={i} address={a} index={i} updateAddress={updateAddress} deleteAdd={deleteAddress} updateDefaultAddress={updateDefaultAddress} />
                             )
                       })
                       :
@@ -99,7 +115,7 @@ const Account = ({data}) => {
             </Row>
           </Container>
         </section>
-      <Address isOpen={createAdd} handleCloseCreateAdd={handleCloseCreateAdd}  />
+      <Address isOpen={createAdd} handleCloseCreateAdd={handleCloseCreateAdd} isExist={address.length} />
       </CommonLayout>
     </>
   );
