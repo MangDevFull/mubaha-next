@@ -18,7 +18,6 @@ export default function CreatePassWord() {
   const router = useRouter();
   useEffect(() => {
     if (session != undefined) {
-      console.log(session);
       const checkisCreatePass = session.user.authentication.isCreatedPassword
       if (checkisCreatePass) {
         router.push('/')

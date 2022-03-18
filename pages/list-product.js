@@ -27,10 +27,7 @@ export default function ListProduct({results, newProducts}) {
   // handle Price
 
   const context = useContext(FilterContext)
-  // console.log("context", context);
-  // const price = context.selectedPrice;
   const router = useRouter()
-  // const setSelectedPrice = context.setSelectedPrice;
   const [url, setUrl] = useState()
   useEffect(() => {
     const pathname = window.location.pathname

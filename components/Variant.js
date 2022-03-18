@@ -11,13 +11,13 @@ export default function Variant({item,index,updateProduct,i}) {
   const [selectedVariant, setSelectedVariant] = useState(item.variant._id);
   const [selectSize, setSelectSize] = useState(item.attr?._id);
   const [isOpen, setIsOpen] = useState(false);
-  const [sizes,setSizes] = useState(item.variant.sizes)
+  const [sizes,setSizes] = useState(item.variant.attributes)
   const selectedColor = (variant) => {
     setSelectedVariant(variant);
     const rs = item.variants.filter(v =>{
       return v._id === variant
     })
-    setSizes(rs[0].sizes)
+    setSizes(rs[0].attributes)
   };
   const selectAttr = (e, s) => {
     setSelectSize(s)
@@ -82,7 +82,7 @@ export default function Variant({item,index,updateProduct,i}) {
                   {item.variants.map((variant) => {
                     return (
                       <>
-                        <li className={`${variant.stock.quantity == 0 && variant.sizes.length == 0 ? styles.disabled : ""}`}
+                        <li className={`${variant.stock.quantity == 0 && variant.attributes.length == 0 ? styles.disabled : ""}`}
                           style={
                             selectedVariant === undefined ?
                               item.variant._id === variant._id ? {

@@ -32,7 +32,6 @@ const SearchOverlay = ({toggleSearch, setToggleSearch}) => {
 
   const escFunction = useCallback((event) => {
     if (event.key === "Escape") {
-      console.log('escape')
       closeSearch();
       //Do whatever when esc is pressed
     }

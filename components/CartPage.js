@@ -38,7 +38,6 @@ const CartPage = ({ data, totalP }) => {
       })
     }
   }, [])
-
   const handleMinusQuantity = async (i, index, quantity, cartID) => {
     if (products[i].products[index].quantity >= 2) {
       let body = {
@@ -274,13 +273,12 @@ const CartPage = ({ data, totalP }) => {
   }
   const updateProduct = (body, i, index) => {
     if (body.variant != null && body.size != null) {
-      products[i].products.forEach((product, id) => {
-        const v = product.variants.filter((v) => {
-          return v._id === body.variant
-        })
+     const v = products[i].products[index].variants.filter((product, id) => {
+          return product._id === body.variant
+     })
         if (v.length > 0) {
-          products[i].products[i].variant = v[0]
-          const s = v[0].sizes.filter((s) => {
+          products[i].products[index].variant = v[0]
+          const s = v[0].attributes.filter((s) => {
             return s._id === body.size
           })
           if (s.length > 0) {
@@ -289,19 +287,15 @@ const CartPage = ({ data, totalP }) => {
             setProduct([...products])
           }
         }
-      })
     } else if (body.variant != null && body.size == null) {
-      products[i].products.forEach((product, id) => {
-        const v = product.variants.filter((v) => {
-          return v._id === body.variant
+      products[i].products[index].variants.filter((product, id) => {
+          return product._id === body.variant
         })
         if (v.length > 0) {
           products[i].products[index].variant = v[0]
-          console.log(products[i].products[index].isOutOfStock,"ashjgag")
           products[i].products[index].isOutOfStock = false
           setProduct([...products])
         }
-      })
     }
   }
   function closeModal() {
@@ -348,7 +342,6 @@ const CartPage = ({ data, totalP }) => {
     }
   }
   if (products.length > 0) {
-    console.log(products)
     return (
       <div>
         <Modal2 visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
@@ -445,7 +438,7 @@ const CartPage = ({ data, totalP }) => {
                                       <Link href={`/${item.slug}`}>
                                         <a>
                                           <Media
-                                            src={item.variant.image}
+                                            src={item.variant?.image || item.image}
                                             alt="mubaha.com"
                                           />
                                         </a>
@@ -480,7 +473,7 @@ const CartPage = ({ data, totalP }) => {
                                       <h2>
                                         <NumberFormat
                                           value={item?.attr?.price * (1 - item.attr?.discount)
-                                            || item.variant.price * (1 - item.variant.discount)
+                                            || item.variant?.price * (1 - item.variant?.discount)
                                             || item.price * (1 - item.discount)}
                                           thousandSeparator={true}
                                           displayType="text"
@@ -494,7 +487,7 @@ const CartPage = ({ data, totalP }) => {
                                           <span className="money ml-1">
                                             <NumberFormat
                                               value={item?.attr?.price
-                                                || item.variant.price
+                                                || item.variant?.price
                                                 || item.price}
                                               thousandSeparator={true}
                                               displayType="text"
@@ -539,7 +532,7 @@ const CartPage = ({ data, totalP }) => {
                                     <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
                                       <h2 className="td-color ml-5">
                                         <NumberFormat
-                                          value={item.quantity * item?.attr?.price || item.variant.price || item.price}
+                                          value={item.quantity * item?.attr?.price || item.variant?.price || item.price}
                                           thousandSeparator={true}
                                           displayType="text"
                                           suffix={item.currencySymbol}

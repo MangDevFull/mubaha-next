@@ -98,7 +98,7 @@ const Account = ({data}) => {
                         <div className="box-title"></div>
                       </div>
                       <Row className={`${styles.box_address}`}>
-                      {address.length > 0 ?
+                      {data.length > 0 ?
                         address.map((a,i) => {
                           return(
                             <AddressChild key={i} address={a} index={i} updateAddress={updateAddress} deleteAdd={deleteAddress} updateDefaultAddress={updateDefaultAddress} />

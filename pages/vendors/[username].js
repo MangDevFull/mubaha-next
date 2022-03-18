@@ -32,7 +32,6 @@ const VenderProfile = ({
       var newListProduct = listProduct.concat(products.docs);
       setListProduct(newListProduct);
     } catch (error) {
-      console.log(error);
     }
     // setVisible((prevValue) => prevValue + 8)
   };
