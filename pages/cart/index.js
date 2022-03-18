@@ -3,13 +3,14 @@ import LayoutCart from '@/components/LayoutCart.js'
 import CartPage from '@/components/CartPage.js'
 import { getSession } from 'next-auth/react';
 import productStatusEnum from "@/enums/productStatus.enum";
-export default function Cart({ data, totalP }) {
+import _ from 'lodash'
+export default function Cart({ data }) {
   return (
     <>
       <Head>
         <title>Giỏ hàng</title>
       </Head>
-      <CartPage data={data} totalP={totalP} />
+      <CartPage data={data} />
     </>
   )
 }
@@ -29,110 +30,94 @@ export async function getServerSideProps(ctx) {
   })
 
   const data = await res.json()
-  const fullP = data.data.vendors.map(product => {
-    let count = 0
-    const d = product.products.map((p, index) => {
-      if(p.status === productStatusEnum.DISABLE ){
-        count += 1
+  const products = data.data.docs
+  const results = products.map((p,i) =>{
+    let value = {
+      quantity: p.product.quantity,
+      name: p.product.name,
+      currencySymbol: p.product.currencySymbol,
+      slug: p.product.slug,
+      cartID: p.product.cartID,
+      selected: false,
+      productID: p.product._id,
+      discount: p.product.discount,
+      status: p.product.status
+    }
+    if (p.selectedVariant != null && p.selectedAttribute == null) {
+      const rs = p.variants.filter(variant => {
+        return variant._id === p.selectedVariant
+      })
+      value = {
+        ...value,
+        variant: rs[0],
+        variants: p.variants,
+        variantLable: p.variantLabel,
       }
-      let value = {
-        quantity: p.quantity,
-        name: p.name,
-        currencySymbol: p.currencySymbol,
-        slug: p.slug,
-        cartID: p.cartID,
-        selected: false,
-        productID: p._id,
-        discount: p.discount,
-        status: p.status
-      }
-      if (p.selectedVariant != null && p.selectedAttribute == null) {
-        const rs = p.variants.filter(variant => {
-          return variant._id === p.selectedVariant
-        })
+      if (rs[0].stock.quantity == 0) {
+        count+=1
         value = {
           ...value,
-          variant: rs[0],
-          variants: p.variants,
-          variantLable: p.variantLabel,
-        }
-        if (rs[0].stock.quantity == 0) {
-          count+=1
-          value = {
-            ...value,
-            isOutOfStock: true,
-          }
-        } else {
-          value = {
-            ...value,
-            isOutOfStock: false,
-          }
-        }
-      } else if (p.selectedVariant != null && p.selectedAttribute != null) {
-          const rs = p.variants.filter((v) => v._id.toString() === p.selectedVariant)
-          let att =[]
-        if(rs.length > 0) {
-           att = rs[0].attributes.filter(s => {
-            return s._id === p.selectedAttribute
-          })
-        }
-        value = {
-          ...value,
-          variant: rs[0],
-          attr: att[0],
-          variants: p.variants,
-          variantLable: p.variantLabel,
-          attributeLabel: p.attributeLabel,
-        }
-        if (att[0].stock.quantity == 0) {
-          count+=1
-          value = {
-            ...value,
-            isOutOfStock: true,
-          }
-        } else {
-          value = {
-            ...value,
-            isOutOfStock: false,
-          }
+          isOutOfStock: true,
         }
       } else {
         value = {
           ...value,
-          price: p.price,
-          image: p.media.featuredImage
-        }
-        if (p.stock.quantity == 0) {
-          count+=1
-          value = {
-            ...value,
-            isOutOfStock: true,
-          }
-        } else {
-          value = {
-            ...value,
-            isOutOfStock: false,
-          }
+          isOutOfStock: false,
         }
       }
-      return value
-    })
-    return {
-      vendor: product.vendor,
-      selected: false,
-      totalDocs: product.totalDocs,
-      products: d,
-      count: count,
+    } else if (p.selectedVariant != null && p.selectedAttribute != null) {
+        const rs = p.variants.filter((v) => v._id.toString() === p.selectedVariant)
+        let att =[]
+      if(rs.length > 0) {
+         att = rs[0].attributes.filter(s => {
+          return s._id === p.selectedAttribute
+        })
+      }
+      value = {
+        ...value,
+        variant: rs[0],
+        attr: att[0],
+        variants: p.variants,
+        variantLable: p.variantLabel,
+        attributeLabel: p.attributeLabel,
+      }
+      if (att[0].stock.quantity == 0) {
+        count+=1
+        value = {
+          ...value,
+          isOutOfStock: true,
+        }
+      } else {
+        value = {
+          ...value,
+          isOutOfStock: false,
+        }
+      }
+    } else {
+      value = {
+        ...value,
+        price: p.price,
+        image: p.media.featuredImage
+      }
+      if (p.stock.quantity == 0) {
+        count+=1
+        value = {
+          ...value,
+          isOutOfStock: true,
+        }
+      } else {
+        value = {
+          ...value,
+          isOutOfStock: false,
+        }
+      }
     }
+    return value
   })
-  const totalP = data.data?.totalProducts || 0
-
-
-  // Pass data to the page via props
+  const grouped = _.groupBy(products, p => p.vendor._id);
   return {
     props: {
-      data: fullP,
-      totalP: totalP
+      data: grouped
     }
   };
 }

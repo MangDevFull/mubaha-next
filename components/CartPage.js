@@ -13,7 +13,7 @@ import Modal2 from 'react-awesome-modal';
 import productStatus from "@/enums/productStatus.enum.js"
 
 const Variant = dynamic(() => import('@/components/Variant.js'))
-const CartPage = ({ data, totalP }) => {
+const CartPage = ({ data }) => {
   const [products, setProduct] = useState(data)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)

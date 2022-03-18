@@ -13,7 +13,6 @@ const VenderProfile = ({
   layoutList,
   username,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8);
   const [listProduct, setListProduct] = useState(products.docs);
@@ -33,7 +32,6 @@ const VenderProfile = ({
       setListProduct(newListProduct);
     } catch (error) {
     }
-    // setVisible((prevValue) => prevValue + 8)
   };
   const [sidebarView, setSidebarView] = useState(false);
   const openCloseSidebar = () => {
