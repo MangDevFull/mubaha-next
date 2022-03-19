@@ -17,7 +17,6 @@ export default function CartContainer({ icon }) {
         },
       })
       const data = await res.json()
-      console.log(data)
       if (data.status === 200) {
         const products = data.data.map(product => {
           if (product.selectedVariant != null && product.selectedAttribute == null) {
@@ -45,7 +44,6 @@ export default function CartContainer({ icon }) {
             }
           }
         })
-        console.log("p",products)
         setCartList(products)
       }
     }

@@ -23,6 +23,7 @@ import {
   LinkedinShareButton,
 } from "react-share";
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  console.log(detailProduct)
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -45,6 +46,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     } else {
       let isDone = false;
       let body = {
+        vendor:detailProduct.vendor._id,
         productId: detailProduct._id,
         amount: quantity,
       };
@@ -399,7 +401,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 </ul>
                               </>
                             )}
-                            {detailProduct.variants[0].attributes.length > 0 && (
+                            {detailProduct.variants[0]?.attributes.length > 0 && (
                               <>
                                 <h6 className="product-title size-text">
                                   {variantColor === undefined ? `Vui lòng chọn ${detailProduct.variantLabel} trước` : detailProduct.attributeLabel}

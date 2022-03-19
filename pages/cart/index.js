@@ -3,13 +3,15 @@ import LayoutCart from '@/components/LayoutCart.js'
 import CartPage from '@/components/CartPage.js'
 import { getSession } from 'next-auth/react';
 import productStatusEnum from "@/enums/productStatus.enum";
-export default function Cart({ data, totalP }) {
+import _ from 'lodash'
+export default function Cart({ data }) {
+  console.log(data)
   return (
     <>
       <Head>
         <title>Giỏ hàng</title>
       </Head>
-      <CartPage data={data} totalP={totalP} />
+      <CartPage data={data} />
     </>
   )
 }
@@ -29,34 +31,42 @@ export async function getServerSideProps(ctx) {
   })
 
   const data = await res.json()
-  const fullP = data.data.vendors.map(product => {
+  const grouped = _.groupBy( data.data.docs, p => p.vendor._id);
+  const vendors = Object.entries(grouped)
+  const results = vendors.map(v =>{
+    return {
+      vendor: v[1][0].vendor,
+      products: v.pop()
+    }
+  })
+  const fullP = results.map(product => {
     let count = 0
     const d = product.products.map((p, index) => {
-      if(p.status === productStatusEnum.DISABLE ){
+      if(p.product.status === productStatusEnum.DISABLE ){
         count += 1
       }
       let value = {
-        quantity: p.quantity,
-        name: p.name,
-        currencySymbol: p.currencySymbol,
-        slug: p.slug,
-        cartID: p.cartID,
+        quantity: p.amount,
+        name: p.product.name,
+        currencySymbol: p.product.currencySymbol,
+        slug: p.product.slug,
+        cartID: p._id,
         selected: false,
-        productID: p._id,
-        discount: p.discount,
-        status: p.status
+        productID: p.product._id,
+        discount: p.product.discount,
+        status: p.product.status
       }
       if (p.selectedVariant != null && p.selectedAttribute == null) {
-        const rs = p.variants.filter(variant => {
+        const rs = p.product.variants.filter(variant => {
           return variant._id === p.selectedVariant
         })
         value = {
           ...value,
           variant: rs[0],
-          variants: p.variants,
-          variantLable: p.variantLabel,
+          variants: p.product.variants,
+          variantLable: p.product.variantLabel,
         }
-        if (rs[0].stock.quantity == 0) {
+        if (rs[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
           count+=1
           value = {
             ...value,
@@ -69,7 +79,7 @@ export async function getServerSideProps(ctx) {
           }
         }
       } else if (p.selectedVariant != null && p.selectedAttribute != null) {
-          const rs = p.variants.filter((v) => v._id.toString() === p.selectedVariant)
+          const rs = p.product.variants.filter((v) => v._id.toString() === p.selectedVariant)
           let att =[]
         if(rs.length > 0) {
            att = rs[0].attributes.filter(s => {
@@ -80,11 +90,11 @@ export async function getServerSideProps(ctx) {
           ...value,
           variant: rs[0],
           attr: att[0],
-          variants: p.variants,
-          variantLable: p.variantLabel,
-          attributeLabel: p.attributeLabel,
+          variants: p.product.variants,
+          variantLable: p.product.variantLabel,
+          attributeLabel: p.product.attributeLabel,
         }
-        if (att[0].stock.quantity == 0) {
+        if (att[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
           count+=1
           value = {
             ...value,
@@ -99,10 +109,10 @@ export async function getServerSideProps(ctx) {
       } else {
         value = {
           ...value,
-          price: p.price,
-          image: p.media.featuredImage
+          price: p.product.price,
+          image: p.product.media.featuredImage
         }
-        if (p.stock.quantity == 0) {
+        if (p.product.stock.quantity == 0) {
           count+=1
           value = {
             ...value,
@@ -120,19 +130,15 @@ export async function getServerSideProps(ctx) {
     return {
       vendor: product.vendor,
       selected: false,
-      totalDocs: product.totalDocs,
+      totalDocs: product.products.length,
       products: d,
       count: count,
     }
   })
-  const totalP = data.data?.totalProducts || 0
 
-
-  // Pass data to the page via props
   return {
     props: {
-      data: fullP,
-      totalP: totalP
+      data:{fullP:fullP, page: data.data.page, totalPage: data.data.totalPages, totalDocs: data.data.totalDocs}
     }
   };
 }

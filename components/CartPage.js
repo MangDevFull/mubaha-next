@@ -11,20 +11,26 @@ import dynamic from 'next/dynamic'
 import { useSession } from 'next-auth/react'
 import Modal2 from 'react-awesome-modal';
 import productStatus from "@/enums/productStatus.enum.js"
+import InfiniteScroll from "react-infinite-scroll-component";
+import _ from 'lodash'
+import productStatusEnum from "@/enums/productStatus.enum";
 
 const Variant = dynamic(() => import('@/components/Variant.js'))
-const CartPage = ({ data, totalP }) => {
-  const [products, setProduct] = useState(data)
+const CartPage = ({ data }) => {
+  const { data: session } = useSession()
+  const [products, setProduct] = useState(data.fullP)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalProductSelect, setTotalProductSelect] = useState(0)
   const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] = useState(false)
   const [visible, setVisible] = useState(false)
   const [message, setMessage] = useState('')
-
-  const { data: session } = useSession()
+  const [totalPage, setTotalPage] = useState(data.totalPage)
+  const [currentPage, setCurrentPage] = useState(data.page)
+  const [totalProduct, setTotalProduct] = useState(0)
 
   useEffect(() => {
+    setTotalProduct(data.totalDocs)
     const cartID = localStorage.getItem('cartID')
     if (cartID != null) {
       products.forEach((product, index) => {
@@ -141,7 +147,7 @@ const CartPage = ({ data, totalP }) => {
   const handleSelectProduct = (i, index) => {
     products[i].products[index].selected = !products[i].products[index].selected;
     const selectAllVendor = products[i].products.filter((p) => {
-      return p.selected !== true && p.status !== productStatus.DISABLE && p.isOutOfStock !==true
+      return p.selected !== true && p.status !== productStatus.DISABLE && p.isOutOfStock !== true
     })
     if (selectAllVendor.length < 1) {
       products[i].selected = true
@@ -163,13 +169,13 @@ const CartPage = ({ data, totalP }) => {
     products[i].selected = !products[i].selected
     products[i].products.forEach((p) => {
       if (p.status !== productStatus.DISABLE) {
-        if(p.isOutOfStock ===false){
+        if (p.isOutOfStock === false) {
           p.selected = products[i].selected
         }
       }
     })
     const selectAll = products.filter((p) => {
-      return p.selected !== true 
+      return p.selected !== true
     })
     if (selectAll.length < 1) {
       setIsSelectedAll(true)
@@ -184,7 +190,7 @@ const CartPage = ({ data, totalP }) => {
       product.selected = !isSelectedAll
       product.products.forEach((p, index) => {
         if (p.status !== productStatus.DISABLE) {
-          if(p.isOutOfStock == false) {
+          if (p.isOutOfStock == false) {
             products[i].products[index].selected = !isSelectedAll;
           }
         }
@@ -273,29 +279,29 @@ const CartPage = ({ data, totalP }) => {
   }
   const updateProduct = (body, i, index) => {
     if (body.variant != null && body.size != null) {
-     const v = products[i].products[index].variants.filter((product, id) => {
-          return product._id === body.variant
-     })
-        if (v.length > 0) {
-          products[i].products[index].variant = v[0]
-          const s = v[0].attributes.filter((s) => {
-            return s._id === body.size
-          })
-          if (s.length > 0) {
-            products[i].products[index].attr = s[0]
-            products[i].products[index].isOutOfStock = false
-            setProduct([...products])
-          }
-        }
-    } else if (body.variant != null && body.size == null) {
-      products[i].products[index].variants.filter((product, id) => {
-          return product._id === body.variant
+      const v = products[i].products[index].variants.filter((product, id) => {
+        return product._id === body.variant
+      })
+      if (v.length > 0) {
+        products[i].products[index].variant = v[0]
+        const s = v[0].attributes.filter((s) => {
+          return s._id === body.size
         })
-        if (v.length > 0) {
-          products[i].products[index].variant = v[0]
+        if (s.length > 0) {
+          products[i].products[index].attr = s[0]
           products[i].products[index].isOutOfStock = false
           setProduct([...products])
         }
+      }
+    } else if (body.variant != null && body.size == null) {
+      products[i].products[index].variants.filter((product, id) => {
+        return product._id === body.variant
+      })
+      if (v.length > 0) {
+        products[i].products[index].variant = v[0]
+        products[i].products[index].isOutOfStock = false
+        setProduct([...products])
+      }
     }
   }
   function closeModal() {
@@ -341,6 +347,138 @@ const CartPage = ({ data, totalP }) => {
       alert(data.message)
     }
   }
+  const fetchMoreData = async () => {
+    const page = currentPage + 1
+    setCurrentPage(page)
+    const res = await fetch(`${process.env.API_CART_URL}?page=${page}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.accessToken
+      },
+    })
+
+    const data = await res.json()
+    setTotalProduct(totalProduct+data.data.totalDocs)
+    const grouped = _.groupBy(data.data.docs, p => p.vendor._id);
+    const vendors = Object.entries(grouped)
+    const results = vendors.map(v => {
+      return {
+        vendor: v[1][0].vendor,
+        products: v.pop()
+      }
+    })
+    const fullP = results.map(product => {
+      let count = 0
+      const d = product.products.map((p, index) => {
+        if (p.product.status === productStatusEnum.DISABLE) {
+          count += 1
+        }
+        let value = {
+          quantity: p.amount,
+          name: p.product.name,
+          currencySymbol: p.product.currencySymbol,
+          slug: p.product.slug,
+          cartID: p._id,
+          selected: false,
+          productID: p.product._id,
+          discount: p.product.discount,
+          status: p.product.status
+        }
+        if (p.selectedVariant != null && p.selectedAttribute == null) {
+          const rs = p.product.variants.filter(variant => {
+            return variant._id === p.selectedVariant
+          })
+          value = {
+            ...value,
+            variant: rs[0],
+            variants: p.product.variants,
+            variantLable: p.product.variantLabel,
+          }
+          if (rs[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
+            count += 1
+            value = {
+              ...value,
+              isOutOfStock: true,
+            }
+          } else {
+            value = {
+              ...value,
+              isOutOfStock: false,
+            }
+          }
+        } else if (p.selectedVariant != null && p.selectedAttribute != null) {
+          const rs = p.product.variants.filter((v) => v._id.toString() === p.selectedVariant)
+          let att = []
+          if (rs.length > 0) {
+            att = rs[0].attributes.filter(s => {
+              return s._id === p.selectedAttribute
+            })
+          }
+          value = {
+            ...value,
+            variant: rs[0],
+            attr: att[0],
+            variants: p.product.variants,
+            variantLable: p.product.variantLabel,
+            attributeLabel: p.product.attributeLabel,
+          }
+          if (att[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
+            count += 1
+            value = {
+              ...value,
+              isOutOfStock: true,
+            }
+          } else {
+            value = {
+              ...value,
+              isOutOfStock: false,
+            }
+          }
+        } else {
+          value = {
+            ...value,
+            price: p.product.price,
+            image: p.product.media.featuredImage
+          }
+          if (p.product.stock.quantity == 0) {
+            count += 1
+            value = {
+              ...value,
+              isOutOfStock: true,
+            }
+          } else {
+            value = {
+              ...value,
+              isOutOfStock: false,
+            }
+          }
+        }
+        return value
+      })
+      return {
+        vendor: product.vendor,
+        selected: false,
+        totalDocs: product.products.length,
+        products: d,
+        count: count,
+      }
+    })
+    products.forEach((x) => {
+      fullP.forEach((y)=>{
+        if(x.vendor._id===y.vendor._id) {
+          x.products = _.concat(x.products, y.products);
+          x.count = x.count + y.count
+          x.totalDocs = x.totalDocs + y.totalDocs
+        }
+      })
+    })
+    setTimeout(function () {
+      setProduct([...products])
+    },1500)
+  }
+  console.log('tsttsts',currentPage,totalPage,currentPage < totalPage)
+  console.log('p',products)
   if (products.length > 0) {
     return (
       <div>
@@ -400,170 +538,177 @@ const CartPage = ({ data, totalP }) => {
                   </table>
                 </div>
                 <div className={`${styles.vendorPart} p-3`}>
-                  {products.map((p, i) => {
-                    return (
-                      <Card key={i} style={{ border: 'none' }}>
-                        <CardHeader style={{ backgroundColor: 'white' }}>
-                          <div className=" mb-2">
-                          {!p.count == p.totalDocs ? "" :
-                            <input type="checkbox"
-                              className="mr-4 mt-5"
-                              checked={p.selected}
-                              onClick={() => { handleSelectVendor(i) }}
-                            />
-                            }
-                            <img src="/assets/icon/shop-icon.png" className="mr-2" />
-                            <Link href={`/vendors/${p.vendor.owner.username}`}>
-                              <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
-                            </Link>
-                          </div>
-                        </CardHeader>
-                        <CardBody>
-                          <table className="ml-3">
-                            {p.products.map((item, index) => {
-                              let discount
-                              if (item.attr) discount = item.attr.discount
-                              else if (item.variant) discount = item.variant.discount
-                              else discount = item.discount
-                              return (
-                                <tbody key={index}>
-                                  <tr>
-                                    <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
-                                      <input type="checkbox"
-                                        className="mr-4 mt-5"
-                                        checked={item.selected}
-                                        onClick={() => handleSelectProduct(i, index)}
-                                      />
-
-                                      <Link href={`/${item.slug}`}>
-                                        <a>
-                                          <Media
-                                            src={item.variant?.image || item.image}
-                                            alt="mubaha.com"
-                                          />
-                                        </a>
-                                      </Link>
-                                    </td>
-                                    <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled2 : ""}>
-                                      <Link href={`/${item.slug}`}>
-                                        <strong className={styles.cursorVendor}>{item.name}</strong>
-                                      </Link>
-                                      {
-                                        item.variant &&
-                                        <Variant item={item} index={index} updateProduct={updateProduct}
-                                          i={i}
-                                        />
-                                      }
-                                      {item.status == productStatus.DISABLE || item.isOutOfStock
-                                        ?
-                                        item.status === productStatus.DISABLE
-                                          ?
-
-                                          <Badge>
-                                            Không hoạt động
-                                          </Badge>
-                                          :
-                                          <Badge>
-                                            Hết hàng
-                                          </Badge>
-                                        : ""
-                                      }
-                                    </td>
-                                    <td className={item.status == productStatus.DISABLE && item.isOutOfStock && styles.disabled}>
-                                      <h2>
-                                        <NumberFormat
-                                          value={item?.attr?.price * (1 - item.attr?.discount)
-                                            || item.variant?.price * (1 - item.variant?.discount)
-                                            || item.price * (1 - item.discount)}
-                                          thousandSeparator={true}
-                                          displayType="text"
-                                          suffix={item.currencySymbol}
-                                          decimalScale={0}
+                  <InfiniteScroll
+                    dataLength={totalProduct}
+                    next={fetchMoreData}
+                    hasMore={currentPage < totalPage}
+                    loader={<h4>Đang tải...</h4>}
+                  >
+                    {products.map((p, i) => {
+                      return (
+                        <Card key={i} style={{ border: 'none' }}>
+                          <CardHeader style={{ backgroundColor: 'white' }}>
+                            <div className=" mb-2">
+                              {!p.count == p.totalDocs ? "" :
+                                <input type="checkbox"
+                                  className="mr-4 mt-5"
+                                  checked={p.selected}
+                                  onClick={() => { handleSelectVendor(i) }}
+                                />
+                              }
+                              <img src="/assets/icon/shop-icon.png" className="mr-2" />
+                              <Link href={`/vendors/${p.vendor.owner.username}`}>
+                                <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
+                              </Link>
+                            </div>
+                          </CardHeader>
+                          <CardBody>
+                            <table className="ml-3">
+                              {p.products.map((item, index) => {
+                                let discount
+                                if (item.attr) discount = item.attr.discount
+                                else if (item.variant) discount = item.variant.discount
+                                else discount = item.discount
+                                return (
+                                  <tbody key={index}>
+                                    <tr>
+                                      <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
+                                        <input type="checkbox"
+                                          className="mr-4 mt-5"
+                                          checked={item.selected}
+                                          onClick={() => handleSelectProduct(i, index)}
                                         />
 
-                                      </h2>
-                                      {discount > 0 &&
-                                        <del>
-                                          <span className="money ml-1">
-                                            <NumberFormat
-                                              value={item?.attr?.price
-                                                || item.variant?.price
-                                                || item.price}
-                                              thousandSeparator={true}
-                                              displayType="text"
-                                              suffix={item.currencySymbol}
-                                              decimalScale={0}
+                                        <Link href={`/${item.slug}`}>
+                                          <a>
+                                            <Media
+                                              src={item.variant?.image || item.image}
+                                              alt="mubaha.com"
                                             />
-                                          </span>
-                                        </del>
-                                      }
-                                    </td>
-                                    <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
-                                      <div className="qty-box">
-                                        <div className="input-group">
-                                          <span className="input-group-prepend">
-                                            <button
-                                              type="button"
-                                              className="btn quantity-left-minus"
-                                              onClick={() => handleMinusQuantity(i, index, item.quantity, item.cartID)}
-                                            >
-                                              <i className="fa fa-minus"></i>
-                                            </button>
-                                          </span>
-                                          <input
-                                            type="text"
-                                            name="quantity"
-                                            value={item.quantity}
-                                            min={1}
-                                            className="form-control input-number"
+                                          </a>
+                                        </Link>
+                                      </td>
+                                      <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled2 : ""}>
+                                        <Link href={`/${item.slug}`}>
+                                          <strong className={styles.cursorVendor}>{item.name}</strong>
+                                        </Link>
+                                        {
+                                          item.variant &&
+                                          <Variant item={item} index={index} updateProduct={updateProduct}
+                                            i={i}
                                           />
-                                          <span className="input-group-prepend">
-                                            <button
-                                              type="button"
-                                              className="btn quantity-right-plus"
-                                              onClick={() => handlePlusQuantity(i, index, item.quantity, item.cartID)}
-                                            >
-                                              <i className="fa fa-solid fa-plus"></i>
-                                            </button>
-                                          </span>
+                                        }
+                                        {item.status == productStatus.DISABLE || item.isOutOfStock
+                                          ?
+                                          item.status === productStatus.DISABLE
+                                            ?
+
+                                            <Badge>
+                                              Không hoạt động
+                                            </Badge>
+                                            :
+                                            <Badge>
+                                              Hết hàng
+                                            </Badge>
+                                          : ""
+                                        }
+                                      </td>
+                                      <td className={item.status == productStatus.DISABLE && item.isOutOfStock && styles.disabled}>
+                                        <h2>
+                                          <NumberFormat
+                                            value={item?.attr?.price * (1 - item.attr?.discount)
+                                              || item.variant?.price * (1 - item.variant?.discount)
+                                              || item.price * (1 - item.discount)}
+                                            thousandSeparator={true}
+                                            displayType="text"
+                                            suffix={item.currencySymbol}
+                                            decimalScale={0}
+                                          />
+
+                                        </h2>
+                                        {discount > 0 &&
+                                          <del>
+                                            <span className="money ml-1">
+                                              <NumberFormat
+                                                value={item?.attr?.price
+                                                  || item.variant?.price
+                                                  || item.price}
+                                                thousandSeparator={true}
+                                                displayType="text"
+                                                suffix={item.currencySymbol}
+                                                decimalScale={0}
+                                              />
+                                            </span>
+                                          </del>
+                                        }
+                                      </td>
+                                      <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
+                                        <div className="qty-box">
+                                          <div className="input-group">
+                                            <span className="input-group-prepend">
+                                              <button
+                                                type="button"
+                                                className="btn quantity-left-minus"
+                                                onClick={() => handleMinusQuantity(i, index, item.quantity, item.cartID)}
+                                              >
+                                                <i className="fa fa-minus"></i>
+                                              </button>
+                                            </span>
+                                            <input
+                                              type="text"
+                                              name="quantity"
+                                              value={item.quantity}
+                                              min={1}
+                                              className="form-control input-number"
+                                            />
+                                            <span className="input-group-prepend">
+                                              <button
+                                                type="button"
+                                                className="btn quantity-right-plus"
+                                                onClick={() => handlePlusQuantity(i, index, item.quantity, item.cartID)}
+                                              >
+                                                <i className="fa fa-solid fa-plus"></i>
+                                              </button>
+                                            </span>
+                                          </div>
                                         </div>
-                                      </div>
-                                    </td>
-                                    <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
-                                      <h2 className="td-color ml-5">
-                                        <NumberFormat
-                                          value={item.quantity * item?.attr?.price || item.variant?.price || item.price}
-                                          thousandSeparator={true}
-                                          displayType="text"
-                                          suffix={item.currencySymbol}
-                                          decimalScale={0}
-                                        />
-                                      </h2>
-                                    </td>
-                                    <td>
-                                      <div className="justify-content-end ml-5">
-                                        <i
-                                          className={`fa fa-times ${styles.cursorVendor}`}
-                                          onClick={() => removeFromCart(i, index, item.cartID)}
-                                        ></i>
-                                      </div>
-                                    </td>
+                                      </td>
+                                      <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
+                                        <h2 className="td-color ml-5">
+                                          <NumberFormat
+                                            value={item.quantity * item?.attr?.price || item.variant?.price || item.price}
+                                            thousandSeparator={true}
+                                            displayType="text"
+                                            suffix={item.currencySymbol}
+                                            decimalScale={0}
+                                          />
+                                        </h2>
+                                      </td>
+                                      <td>
+                                        <div className="justify-content-end ml-5">
+                                          <i
+                                            className={`fa fa-times ${styles.cursorVendor}`}
+                                            onClick={() => removeFromCart(i, index, item.cartID)}
+                                          ></i>
+                                        </div>
+                                      </td>
 
-                                  </tr>
-                                </tbody>
-                              );
-                            })}
-                          </table>
-                        </CardBody>
-                        <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
-                          <div className="d-flex mb-2 mt-3">
-                            <strong>Shop Khuyến Mãi</strong> <span className="ml-2">Vui lòng chọn sản phẩm trước</span>
-                          </div>
-                        </CardFooter>
-                      </Card>
+                                    </tr>
+                                  </tbody>
+                                );
+                              })}
+                            </table>
+                          </CardBody>
+                          <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
+                            <div className="d-flex mb-2 mt-3">
+                              <strong>Shop Khuyến Mãi</strong> <span className="ml-2">Vui lòng chọn sản phẩm trước</span>
+                            </div>
+                          </CardFooter>
+                        </Card>
 
-                    )
-                  })}
+                      )
+                    })}
+                  </InfiniteScroll>
                 </div>
                 <Modal
                   className="mt-5"
@@ -601,9 +746,9 @@ const CartPage = ({ data, totalP }) => {
                               ({totalProductSelect} sản phẩm đã chọn)
                             </div>
                             <div className="ml-5">
-                              <span 
-                              className={styles.deleteUnavailable}
-                              onClick={deleteAvailableProducts}
+                              <span
+                                className={styles.deleteUnavailable}
+                                onClick={deleteAvailableProducts}
                               >Xoá tất cả sản phẩm không hoạt động</span>
                             </div>
                           </div>
