@@ -17,6 +17,7 @@ export default function CartContainer({ icon }) {
         },
       })
       const data = await res.json()
+      console.log(data)
       if (data.status === 200) {
         const products = data.data.map(product => {
           if (product.selectedVariant != null && product.selectedAttribute == null) {
@@ -33,7 +34,7 @@ export default function CartContainer({ icon }) {
               return variant._id === product.selectedVariant
             })
             return {
-            ...v[0].sizes.filter(size => size._id === product.selectedAttribute)[0], 
+            ...v[0].attributes.filter(size => size._id === product.selectedAttribute)[0], 
               quantity: product.amount, name: product.product.name,
               symbol: product.product.currencySymbol, image: v[0].image,slug: product.product.slug,
             }
@@ -44,7 +45,7 @@ export default function CartContainer({ icon }) {
             }
           }
         })
-        console.log(products)
+        console.log("p",products)
         setCartList(products)
       }
     }

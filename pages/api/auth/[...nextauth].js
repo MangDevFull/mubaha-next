@@ -26,7 +26,6 @@ export default NextAuth({
           headers: { "Content-Type": "application/json" },
         });
         const response = await res.json();
-        console.log("res",response)
         if (response.status ===400) {
           const error = new Error(JSON.stringify(response));
           throw error

@@ -29,7 +29,7 @@ export async function getServerSideProps(ctx) {
   })
 
   const data = await res.json()
-  const fullP = data.data.products.map(product => {
+  const fullP = data.data.vendors.map(product => {
     let count = 0
     const d = product.products.map((p, index) => {
       if(p.status === productStatusEnum.DISABLE ){
@@ -68,11 +68,11 @@ export async function getServerSideProps(ctx) {
             isOutOfStock: false,
           }
         }
-      } else if (p.selectedAttribute != null && p.selectedVariant != null) {
+      } else if (p.selectedVariant != null && p.selectedAttribute != null) {
           const rs = p.variants.filter((v) => v._id.toString() === p.selectedVariant)
           let att =[]
         if(rs.length > 0) {
-           att = rs[0].sizes.filter(s => {
+           att = rs[0].attributes.filter(s => {
             return s._id === p.selectedAttribute
           })
         }
@@ -82,7 +82,7 @@ export async function getServerSideProps(ctx) {
           attr: att[0],
           variants: p.variants,
           variantLable: p.variantLabel,
-          attributeLabel: p.attributeLabel
+          attributeLabel: p.attributeLabel,
         }
         if (att[0].stock.quantity == 0) {
           count+=1
@@ -102,7 +102,7 @@ export async function getServerSideProps(ctx) {
           price: p.price,
           image: p.media.featuredImage
         }
-        if (stock.quantity == 0) {
+        if (p.stock.quantity == 0) {
           count+=1
           value = {
             ...value,
@@ -118,14 +118,15 @@ export async function getServerSideProps(ctx) {
       return value
     })
     return {
-      vendor: product._id,
+      vendor: product.vendor,
       selected: false,
       totalDocs: product.totalDocs,
       products: d,
       count: count,
     }
   })
-  const totalP = data.data?.totalProducts[0]?.product || 0
+  const totalP = data.data?.totalProducts || 0
+
 
   // Pass data to the page via props
   return {

@@ -1,31 +1,56 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect,useRef} from "react";
+import { getSession } from 'next-auth/react';
 import {
   Container,
   Row,
   Col,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Alert,
 } from "reactstrap";
 import Layout from "@/components/LayoutCart";
 import CommonLayout from "../../components/shop/CommonLayout";
 import styles from "@/styles/account.module.css";
-
-const Account = () => {
+import AddressChild from '@/components/AddressChild.js';
+import Address from "@/components/Address";
+const Account = ({data}) => {
+  const [address,setAddress] = useState([])
   const [accountInfo, setAccountInfo] = useState(false);
-  const [show, setShow] = useState(false);
-  const [message, setMessage] = useState("");
-  const [showMessage, setShowMessage] = useState(false);
-  const [address,setAddress] = useState()
-  const handleClose = () => setShow(false);
-  const handleShow = () => {
-    setShow(true);
-    setMessage("");
-    setShowMessage(false);
-  };
+  const [createAdd,setCreateAdd] = useState(false);
+  const handleCreateAdd = () => {
+    setCreateAdd(true)
+  }
+  useEffect(()=>{
+    setAddress(data)
+  },[])
+  const handleCloseCreateAdd = (add,isDefault) => {
+    if(add){
+      if(isDefault){
+        address.forEach(add => {
+          if(add.isDefault===true){
+            add.isDefault = false
+          }
+        })
+      }
+      address.unshift(add)
+      setAddress([...address])
+    }
+    setCreateAdd(false)
+  }
+  const updateAddress = (i,add) => {
+    address[i] = add
+    setAddress([...address])
+  }
+  const deleteAddress = (i)=>{
+    address.splice(i, 1)
+    setAddress([...address])
+  }
+  const updateDefaultAddress = (i,add)=>{
+    address.forEach(add => {
+      if(add.isDefault===true){
+        add.isDefault = false
+      }
+    })
+    address[i] = add
+    setAddress([...address])
+  }
   return (
     <>
       <CommonLayout parent="Trang chủ" title="Tài khoản">
@@ -59,7 +84,12 @@ const Account = () => {
                         <h2>Địa chỉ của tôi</h2>
                       </div>
                       <div className={`${styles.add_address}`}>
-                        <button onClick={handleShow} style={{width:"auto"}}><i className="fa fa-solid fa-plus mr-1"></i>Thêm địa chỉ</button>
+                        <button  style={{width:"auto"}}
+                        onClick={handleCreateAdd}
+                        >
+                        <i className="fa fa-solid fa-plus mr-1"></i>
+                        Thêm địa chỉ
+                        </button>
                       </div>
                     </div>
 
@@ -68,41 +98,15 @@ const Account = () => {
                         <div className="box-title"></div>
                       </div>
                       <Row className={`${styles.box_address}`}>
-                        <Col sm="9">
-                          <div className="box">
-                            <div className={`box-content ${styles.box_content}`}>
-                              <h6>
-                                <div className={`${styles.box_title}`}>Họ và tên:</div>
-                                <span>
-                                  <strong>Nguyễn Minh Quang</strong>
-                                </span>
-                                <span className={`${styles.note}`}>Địa chỉ giao hàng</span>
-                              </h6>
-                              <h6>
-                                <div className={`${styles.box_title}`}>Số điện thoại:</div>
-                                <span>(+84) 373922863</span>{" "}
-                              </h6>
-                              <h6>
-                                <div className={`${styles.box_title}`}>Địa chỉ:</div>
-                                <span>Thị Trấn Hồ, Huyện Thuận Thành, Bắc Ninh</span>
-                              </h6>
-                            </div>
-                          </div>
-                        </Col>
-                        <Col sm="3">
-                          <div className="box">
-                            <div className={`${styles.box_function}`}>
-                              <h6>
-                                <a className={`${styles.update}`} href="#">
-                                  Sửa
-                                </a>
-                              </h6>
-                              <h6>
-                                <a href="#">Xoá</a>
-                              </h6>
-                            </div>
-                          </div>
-                        </Col>
+                      {data.length > 0 ?
+                        address.map((a,i) => {
+                          return(
+                            <AddressChild key={i} address={a} index={i} updateAddress={updateAddress} deleteAdd={deleteAddress} updateDefaultAddress={updateDefaultAddress} />
+                            )
+                      })
+                      :
+                      "Bạn chưa có địa chỉ nào"
+                      }
                       </Row>
                     </div>
                   </div>
@@ -111,83 +115,7 @@ const Account = () => {
             </Row>
           </Container>
         </section>
-        <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={show}>
-          <ModalHeader>Cập nhật địa chỉ</ModalHeader>
-          <ModalBody className="container-fluid">
-            <div className="col-md-12 mt-3">
-              {showMessage && (
-                <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
-                  {message}
-                </Alert>
-              )}
-            </div>
-            <Row className="p-5">
-              <form id="add_address">
-                <div className="row">
-                  <div className="col-lg-6">
-                    <div className="mb-3">
-                      <label htmlFor="productname">Họ và tên</label>
-                      <input
-                        name="productname"
-                        type="text"
-                        className="form-control productname"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="mb-3">
-                      <label htmlFor="number_phone">Số điện thoại</label>
-                      <input
-                        name="number_phone"
-                        type="text"
-                        className="form-control number_phone"
-                        maxLength={10}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-lg-12 col-md-12">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="choices-single-groups"
-                        className="form-label font-size-13 text-muted"
-                      >
-                        Tỉnh/Thành phố
-                      </label>
-                      <select className="form-control" name="choices-single-groups" required>
-                        <option value="">Chọn một tỉnh/thành phố</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-lg-12 col-md-12">
-                    <div className="mb-3">
-                      <label
-                        htmlFor="choices-single-groups"
-                        className="form-label font-size-13 text-muted"
-                      >
-                        Quận/Huyện
-                      </label>
-                      <select className="form-control" name="choices-single-groups" required>
-                        <option value="">Chọn một quận/huyện</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </Row>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              className="btn btn-secondary btn-lg"
-              style={{ width: "120px", height: "50px" }}
-              onClick={handleClose}
-            >
-              Huỷ
-            </Button>
-            <button className="btn-solid btn">Cập nhật</button>
-          </ModalFooter>
-        </Modal>
+      <Address isOpen={createAdd} handleCloseCreateAdd={handleCloseCreateAdd} isExist={address.length} />
       </CommonLayout>
     </>
   );
@@ -198,3 +126,18 @@ Account.getLayout = function getLayout(page) {
 };
 
 export default Account;
+
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+
+  const res = await fetch(process.env.API_ADDRESS_URL, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + session.accessToken
+    },
+  })
+
+  const data = await res.json()
+  return { props: { data:data.data } }
+}

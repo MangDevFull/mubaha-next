@@ -60,6 +60,7 @@
   padding: 0 10px;
   text-decoration: underline;
 }
-.update {
-  margin-right: 5px;
+.disabled {
+  pointer-events: none;
+    opacity: 0.4;
 }

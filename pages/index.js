@@ -16,9 +16,6 @@ export default function Home({
   rightFeatureProducts,
   top5Products,
 }) {
-  // useEffect(() => {
-  //   console.log('s',session)
-  // },[])
   return (
     <>
       <Head>
