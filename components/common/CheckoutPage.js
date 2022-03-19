@@ -390,12 +390,36 @@ const CheckoutPage = () => {
               <div className={`${styles.total}`}>
                 <h4>5. Tổng đơn hàng </h4>
                 <div className={`${styles.total_prices}`}>
-                  <div className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_amount}`}>Tổng tiền hàng</div>
-                  <div className={`${styles.total_title_price} ${styles.total_amount} ${styles.prices}`}>₫1.147.000</div>
-                  <div className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}>Phí vận chuyển</div>
-                  <div className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}>₫70.700</div>
-                  <div className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}>Tổng thanh toán:</div>
-                  <div className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}><span>₫1.217.700</span></div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_amount}`}
+                  >
+                    Tổng tiền hàng
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.total_amount} ${styles.prices}`}
+                  >
+                    ₫1.147.000
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
+                  >
+                    Phí vận chuyển
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}
+                  >
+                    ₫70.700
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
+                  >
+                    Tổng thanh toán:
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}
+                  >
+                    <span>₫1.217.700</span>
+                  </div>
                   <div className={`${styles._3swGZ9}`}>
                     <div className={`${styles.RVLKaf}`}>
                       <div>
@@ -414,7 +438,7 @@ const CheckoutPage = () => {
           </div>
         </Container>
       </section>
-      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={show}>
+      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
         <ModalHeader>Cập nhật địa chỉ</ModalHeader>
         <ModalBody className="container-fluid">
           <div className="col-md-12 mt-3">
@@ -489,6 +513,63 @@ const CheckoutPage = () => {
             Huỷ
           </Button>
           <button className="btn-solid btn">Cập nhật</button>
+        </ModalFooter>
+      </Modal>
+      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={show}>
+        <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
+        <ModalBody>
+          <div className={`${styles._1STgB4}`}>
+            <div className={`${styles._38kqI1}`}>
+              <span>Mã voucher</span>
+              <div className={`${styles._3K7VlY}`}>
+                <div className={`${styles.input_with_validator}`}>
+                  <input type="text" placeholder="Mã Mubaha Voucher" maxLength="255" />
+                </div>
+              </div>
+              <button className={`${styles.button_apply}`}>
+                <span>Áp dụng</span>
+              </button>
+            </div>
+            <div className={`${styles._2ZPmGW}`}>
+              <div className={`${styles._1eqk4K}`}>
+                mã miễn phí vận chuyển và mã giảm giá đơn hàng
+              </div>
+              <div className={`${styles._3R4rbT}`}>
+                <div className={`${styles._3L2qYK}`}>
+                  <div className={`${styles._1DZArM}`}>
+                    <div>miễn phí vận chuyển</div>
+                  </div>
+                  <div className={`${styles.PT6ffQ}`}>
+                    <div className={`${styles._3sw7sh}`}>
+                      <div className={`${styles._1g6Th3}`}>
+                        <span>Áp dụng cho một số shop nhất định</span>
+                      </div>
+                      <div className={`${styles._2ocsGB}`}>
+                        <div className={`${styles._10zVWC}`}>
+                          <div className={`${styles._36sEF5}`}>Đơn hàng từ 0Đ</div>
+                        </div>
+                      </div>
+                      <span>HSD: 22.03.2022</span>
+                    </div>
+                    <div className={`${styles._K4Yt}`}>
+                      <button className={`${styles.button_apply}`}>
+                        <span>Áp dụng</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            className="btn btn-secondary btn-lg"
+            style={{ width: "120px", height: "50px" }}
+            onClick={handleClose}
+          >
+            Huỷ
+          </Button>
         </ModalFooter>
       </Modal>
     </>
