@@ -25,6 +25,7 @@ const CheckoutPage = () => {
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [showAddress, setShowAddress] = useState("default");
+  const [showVoucher, setShowVoucher] = useState(false);
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
   const router = useRouter();
   const handleClose = () => setShow(false);
@@ -40,6 +41,12 @@ const CheckoutPage = () => {
   const handleQuit = (value) => {
     setShowAddress(value);
   };
+  const handleVoucherShow = () => {
+    setShowVoucher(true);
+  }
+  const handleCloseVoucher = () => {
+    setShowVoucher(false);
+  }
 
   const onSuccess = (payment) => {
     router.push({
@@ -298,7 +305,7 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                   <div className={`${styles.selectVoucher}`}>
-                    <button className={`${styles.btn_change} btn p-0 m-0`}>Chọn Voucher</button>
+                    <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleVoucherShow}>Chọn Voucher</button>
                   </div>
                 </div>
               </div>
@@ -438,7 +445,8 @@ const CheckoutPage = () => {
           </div>
         </Container>
       </section>
-      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+      {/* Modal add address */}
+      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={show}>
         <ModalHeader>Cập nhật địa chỉ</ModalHeader>
         <ModalBody className="container-fluid">
           <div className="col-md-12 mt-3">
@@ -515,10 +523,11 @@ const CheckoutPage = () => {
           <button className="btn-solid btn">Cập nhật</button>
         </ModalFooter>
       </Modal>
-      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={show}>
+      {/* Modal voucher */}
+      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={showVoucher}>
         <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
         <ModalBody>
-          <div className={`${styles._1STgB4}`}>
+          <div className={`${styles.modal_voucher}`}>
             <div className={`${styles._38kqI1}`}>
               <span>Mã voucher</span>
               <div className={`${styles._3K7VlY}`}>
@@ -566,7 +575,7 @@ const CheckoutPage = () => {
           <Button
             className="btn btn-secondary btn-lg"
             style={{ width: "120px", height: "50px" }}
-            onClick={handleClose}
+            onClick={handleCloseVoucher}
           >
             Huỷ
           </Button>
@@ -577,3 +586,4 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
+
