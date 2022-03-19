@@ -60,7 +60,7 @@ export default function TopBarDark({ topClass, fluid }) {
                     </li>
                   ) : ""}
                   <li>
-                    <Link href="/account">
+                    <Link href="/account/profile">
                       <a>Thông tin tài khoản</a>
                     </Link>
                   </li>

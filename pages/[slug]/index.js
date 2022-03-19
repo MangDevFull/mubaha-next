@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Slider from "react-slick";
 import Head from "next/head";
 import SideProductCart from "@/components/SideProductCart";
-import { Row, Col, Media, Container, Input} from "reactstrap";
+import { Row, Col, Media, Container, Input } from "reactstrap";
 import RelatedProducts from "@/components/RelatedProducts";
 import Layout from "@/components/Layout";
 import ProductTab from "@/components/common/product-details/product-tab";
@@ -23,6 +23,7 @@ import {
   LinkedinShareButton,
 } from "react-share";
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  console.log(detailProduct)
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -35,48 +36,47 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   const [discount, setDiscount] = useState(0)
   const [selectedSize, setSlectedSize] = useState();
   const [unSelect, setUnSelect] = useState(false);
-
-function closeModal() {
-  setVisible(false)
-}
+  function closeModal() {
+    setVisible(false)
+  }
   const addToCart = async () => {
     if (session === null) {
       localStorage.setItem('addToCart', `/${detailProduct.slug}`)
       router.push('/auth/login')
     } else {
       let isDone = false;
-      if (detailProduct.variants[0]?.sizes.length > 0) {
-        if (variantColor == undefined && selectedSize == undefined) {
-          setUnSelect(true)
-        } else if (variantColor != undefined && selectedSize == undefined) {
-          setUnSelect(true)
-        } else {
-          isDone = true
+      let body = {
+        vendor:detailProduct.vendor._id,
+        productId: detailProduct._id,
+        amount: quantity,
+      };
+      if (detailProduct.variants.length > 0) {
+        if(detailProduct.variants[0].attributes.length > 0) {
+          if (selectedSize == undefined) {
+            setUnSelect(true)
+          } else {
+            isDone = true
+            body = {
+              ...body,
+              variant: variantColor,
+              size: selectedSize
+            }
+          }
+        }else{
+          if (variantColor == undefined) {
+            setUnSelect(true)
+          } else {
+            isDone = true
+            body = {
+              ...body,
+              variant: variantColor
+            }
+          }
         }
-      } else if (detailProduct.variants[0]?.sizes?.length == 0) {
-        if (variantColor == undefined && selectedSize == undefined) {
-          setUnSelect(true)
-        } else {
+      } else if(detailProduct.variants.length==0){
           isDone = true
-        }
       }
       if (isDone) {
-        let body = {
-          productId: detailProduct._id,
-          amount: quantity,
-        };
-        if (variantColor != undefined && selectedSize == undefined) {
-          body = {
-            ...body,
-            variant: variantColor
-          }
-        } else if (variantColor != undefined && selectedSize != undefined) {
-          body = {
-            ...body,
-            variant: variantColor,
-            size: selectedSize
-          }
-        }
         const response = await fetch(process.env.API_CART_URL, {
           method: "POST",
           headers: {
@@ -88,7 +88,7 @@ function closeModal() {
         const data = await response.json()
         if (data.status === 200) {
           setVisible(true)
-          setTimeout(()=> setVisible(false), 1000)
+          setTimeout(() => setVisible(false), 1000)
         } else {
           alert(data.message)
         }
@@ -114,15 +114,16 @@ function closeModal() {
 
   const selectedColor = (e, variant) => {
     setSelectedVariant(variant._id);
-    if (variant.sizes.length === 0){
+    if (variant.attributes.length === 0) {
       setPriceProduct(variant.price)
       setDiscount(variant.discount)
-    } 
+    }
     setVariantColor(variant._id);
     setUnSelect(false)
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
+    console.log("1", index);
     slider1.current.slickGoTo(index);
-    setAttributes(variant.sizes);
+    setAttributes(variant.attributes);
   };
 
   const handleSelectedSize = (size) => {
@@ -141,7 +142,7 @@ function closeModal() {
       nav2: slider2.current,
     });
 
-    setAttributes(detailProduct.variants[0].size);
+    setAttributes(detailProduct?.variants[0]?.size);
   }, []);
   const { nav1, nav2 } = state;
 
@@ -168,38 +169,37 @@ function closeModal() {
       router.push('/auth/login')
     } else {
       let isDone = false;
-      if (detailProduct.variants[0]?.sizes.length > 0) {
-        if (variantColor == undefined && selectedSize == undefined) {
-          setUnSelect(true)
-        } else if (variantColor != undefined && selectedSize == undefined) {
-          setUnSelect(true)
-        } else {
-          isDone = true
+      let body = {
+        productId: detailProduct._id,
+        amount: quantity,
+      };
+      if (detailProduct.variants.length > 0) {
+        if(detailProduct.variants[0].attributes.length > 0) {
+          if (selectedSize == undefined) {
+            setUnSelect(true)
+          } else {
+            isDone = true
+            body = {
+              ...body,
+              variant: variantColor,
+              size: selectedSize
+            }
+          }
+        }else{
+          if (variantColor == undefined) {
+            setUnSelect(true)
+          } else {
+            isDone = true
+            body = {
+              ...body,
+              variant: variantColor
+            }
+          }
         }
-      } else if (detailProduct.variants[0]?.sizes?.length == 0) {
-        if (variantColor == undefined && selectedSize == undefined) {
-          setUnSelect(true)
-        } else {
+      } else if(detailProduct.variants.length==0){
           isDone = true
-        }
       }
       if (isDone) {
-        let body = {
-          productId: detailProduct._id,
-          amount: quantity,
-        };
-        if (variantColor != undefined && selectedSize == undefined) {
-          body = {
-            ...body,
-            variant: variantColor
-          }
-        } else if (variantColor != undefined && selectedSize != undefined) {
-          body = {
-            ...body,
-            variant: variantColor,
-            size: selectedSize
-          }
-        }
         const response = await fetch(process.env.API_CART_URL, {
           method: "POST",
           headers: {
@@ -211,7 +211,7 @@ function closeModal() {
         const data = await response.json()
         if (data.status === 200) {
           setVisible(true)
-          setTimeout(()=> setVisible(false), 1000)
+          setTimeout(() => setVisible(false), 1000)
           localStorage.setItem('cartID', data.data._id)
           router.push('/cart')
         } else {
@@ -323,10 +323,10 @@ function closeModal() {
                         >
                           {detailProduct.variants
                             ? detailProduct.media.data.map((item, index) => (
-                                <div key={index}>
-                                  <Media src={`${item.path}`} className="img-fluid" />
-                                </div>
-                              ))
+                              <div key={index}>
+                                <Media src={`${item.path}`} className="img-fluid" />
+                              </div>
+                            ))
                             : ""}
                         </Slider>
                       </Col>
@@ -365,8 +365,10 @@ function closeModal() {
                                   {detailProduct.variantLabel}
                                 </h6>
                                 <ul className="color-variant mt-1">
-                                  {detailProduct.variants.map((variant) => (
+                                  {detailProduct.variants.map((variant) =>{ 
+                                    return (
                                     <li
+                                    className={variant.stock.quantity == 0 && styles.disabled}
                                       style={
                                         selectedVariant === variant._id
                                           ? {
@@ -393,12 +395,13 @@ function closeModal() {
                                         src="../assets/images/selected-variant-indicator.svg"
                                         alt="Selected"
                                       ></img>
-                                    </li>
-                                  ))}
+                                    </li>)
+                                  }
+                                  )}
                                 </ul>
                               </>
                             )}
-                            {detailProduct.variants[0].sizes.length > 0 && (
+                            {detailProduct.variants[0]?.attributes.length > 0 && (
                               <>
                                 <h6 className="product-title size-text">
                                   {variantColor === undefined ? `Vui lòng chọn ${detailProduct.variantLabel} trước` : detailProduct.attributeLabel}
@@ -409,6 +412,7 @@ function closeModal() {
                                   <ul>
                                     {attributes?.map((size) => (
                                       <li
+                                      className={size.stock.quantity == 0 && styles.disabled}
                                         style={
                                           selectedSize === size._id
                                             ? { lineHeight: 2.3, border: "1px solid #ffa200" }
@@ -429,15 +433,15 @@ function closeModal() {
                               <span style={{ color: 'red' }}><i className="fa fa-solid fa-exclamation mr-2"></i>  Vui lòng chọn sản phẩm</span>
                             </div>}
                           </div>
-                <Modal visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
-                       <div className=" d-flex justify-content-center mt-5">
-                       <img width="100" height="100"src="/assets/icon/success-popup.svg" />
-                       </div>
-                       <div className=" d-flex justify-content-center mt-5">
-                       <p className={styles.textSuccess}>Sản phẩm đã được thêm vào Giỏ hàng</p>
-                       </div>
-                </Modal>
-         
+                          <Modal visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
+                            <div className=" d-flex justify-content-center mt-5">
+                              <img width="100" height="100" src="/assets/icon/success-popup.svg" />
+                            </div>
+                            <div className=" d-flex justify-content-center mt-5">
+                              <p className={styles.textSuccess}>Sản phẩm đã được thêm vào Giỏ hàng</p>
+                            </div>
+                          </Modal>
+
                           <div
                             id="selectSize"
                             className="addeffect-section product-description border-product"
