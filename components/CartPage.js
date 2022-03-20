@@ -14,6 +14,7 @@ import productStatus from "@/enums/productStatus.enum.js"
 import InfiniteScroll from "react-infinite-scroll-component";
 import _ from 'lodash'
 import productStatusEnum from "@/enums/productStatus.enum";
+import LazyLoad from 'react-lazyload';
 
 const Variant = dynamic(() => import('@/components/Variant.js'))
 const CartPage = ({ data }) => {
@@ -27,10 +28,9 @@ const CartPage = ({ data }) => {
   const [message, setMessage] = useState('')
   const [totalPage, setTotalPage] = useState(data.totalPage)
   const [currentPage, setCurrentPage] = useState(data.page)
-  const [totalProduct, setTotalProduct] = useState(0)
+  const [totalProduct, setTotalProduct] = useState(data.totalDocs)
 
   useEffect(() => {
-    setTotalProduct(data.totalDocs)
     const cartID = localStorage.getItem('cartID')
     if (cartID != null) {
       products.forEach((product, index) => {
@@ -59,7 +59,7 @@ const CartPage = ({ data }) => {
       if (products[i].products[index].attr) {
         body = {
           ...body,
-          size: products[i].products[index].size._id
+          size: products[i].products[index].attr._id
         }
 
       }
@@ -349,7 +349,6 @@ const CartPage = ({ data }) => {
   }
   const fetchMoreData = async () => {
     const page = currentPage + 1
-    setCurrentPage(page)
     const res = await fetch(`${process.env.API_CART_URL}?page=${page}`, {
       method: 'GET',
       headers: {
@@ -359,7 +358,7 @@ const CartPage = ({ data }) => {
     })
 
     const data = await res.json()
-    setTotalProduct(totalProduct+data.data.totalDocs)
+    setTotalProduct(totalProduct + data.data.totalDocs)
     const grouped = _.groupBy(data.data.docs, p => p.vendor._id);
     const vendors = Object.entries(grouped)
     const results = vendors.map(v => {
@@ -465,8 +464,8 @@ const CartPage = ({ data }) => {
       }
     })
     products.forEach((x) => {
-      fullP.forEach((y)=>{
-        if(x.vendor._id===y.vendor._id) {
+      fullP.forEach((y) => {
+        if (x.vendor._id === y.vendor._id) {
           x.products = _.concat(x.products, y.products);
           x.count = x.count + y.count
           x.totalDocs = x.totalDocs + y.totalDocs
@@ -474,11 +473,10 @@ const CartPage = ({ data }) => {
       })
     })
     setTimeout(function () {
+      setCurrentPage(page)
       setProduct([...products])
-    },1500)
+    }, 1000)
   }
-  console.log('tsttsts',currentPage,totalPage,currentPage < totalPage)
-  console.log('p',products)
   if (products.length > 0) {
     return (
       <div>
@@ -539,10 +537,17 @@ const CartPage = ({ data }) => {
                 </div>
                 <div className={`${styles.vendorPart} p-3`}>
                   <InfiniteScroll
-                    dataLength={totalProduct}
+                    dataLength={currentPage}
                     next={fetchMoreData}
                     hasMore={currentPage < totalPage}
                     loader={<h4>Đang tải...</h4>}
+                    scrollThreshold="75%"
+                    endMessage={
+                      <p style={{ textAlign: 'center' }}>
+                        <b>Yay! Bạn đã thấy tất cả</b>
+                      </p>
+                    }
+                    scrollableTarget="scrollableDiv"
                   >
                     {products.map((p, i) => {
                       return (
@@ -564,139 +569,141 @@ const CartPage = ({ data }) => {
                           </CardHeader>
                           <CardBody>
                             <table className="ml-3">
-                              {p.products.map((item, index) => {
-                                let discount
-                                if (item.attr) discount = item.attr.discount
-                                else if (item.variant) discount = item.variant.discount
-                                else discount = item.discount
-                                return (
-                                  <tbody key={index}>
-                                    <tr>
-                                      <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
-                                        <input type="checkbox"
-                                          className="mr-4 mt-5"
-                                          checked={item.selected}
-                                          onClick={() => handleSelectProduct(i, index)}
-                                        />
-
-                                        <Link href={`/${item.slug}`}>
-                                          <a>
-                                            <Media
-                                              src={item.variant?.image || item.image}
-                                              alt="mubaha.com"
-                                            />
-                                          </a>
-                                        </Link>
-                                      </td>
-                                      <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled2 : ""}>
-                                        <Link href={`/${item.slug}`}>
-                                          <strong className={styles.cursorVendor}>{item.name}</strong>
-                                        </Link>
-                                        {
-                                          item.variant &&
-                                          <Variant item={item} index={index} updateProduct={updateProduct}
-                                            i={i}
-                                          />
-                                        }
-                                        {item.status == productStatus.DISABLE || item.isOutOfStock
-                                          ?
-                                          item.status === productStatus.DISABLE
-                                            ?
-
-                                            <Badge>
-                                              Không hoạt động
-                                            </Badge>
-                                            :
-                                            <Badge>
-                                              Hết hàng
-                                            </Badge>
-                                          : ""
-                                        }
-                                      </td>
-                                      <td className={item.status == productStatus.DISABLE && item.isOutOfStock && styles.disabled}>
-                                        <h2>
-                                          <NumberFormat
-                                            value={item?.attr?.price * (1 - item.attr?.discount)
-                                              || item.variant?.price * (1 - item.variant?.discount)
-                                              || item.price * (1 - item.discount)}
-                                            thousandSeparator={true}
-                                            displayType="text"
-                                            suffix={item.currencySymbol}
-                                            decimalScale={0}
+                              <LazyLoad>
+                                {p.products.map((item, index) => {
+                                  let discount
+                                  if (item.attr) discount = item.attr.discount
+                                  else if (item.variant) discount = item.variant.discount
+                                  else discount = item.discount
+                                  return (
+                                    <tbody key={index}>
+                                      <tr>
+                                        <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
+                                          <input type="checkbox"
+                                            className="mr-4 mt-5"
+                                            checked={item.selected}
+                                            onClick={() => handleSelectProduct(i, index)}
                                           />
 
-                                        </h2>
-                                        {discount > 0 &&
-                                          <del>
-                                            <span className="money ml-1">
-                                              <NumberFormat
-                                                value={item?.attr?.price
-                                                  || item.variant?.price
-                                                  || item.price}
-                                                thousandSeparator={true}
-                                                displayType="text"
-                                                suffix={item.currencySymbol}
-                                                decimalScale={0}
+                                          <Link href={`/${item.slug}`}>
+                                            <a>
+                                              <Media
+                                                src={item.variant?.image || item.image}
+                                                alt="mubaha.com"
                                               />
-                                            </span>
-                                          </del>
-                                        }
-                                      </td>
-                                      <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
-                                        <div className="qty-box">
-                                          <div className="input-group">
-                                            <span className="input-group-prepend">
-                                              <button
-                                                type="button"
-                                                className="btn quantity-left-minus"
-                                                onClick={() => handleMinusQuantity(i, index, item.quantity, item.cartID)}
-                                              >
-                                                <i className="fa fa-minus"></i>
-                                              </button>
-                                            </span>
-                                            <input
-                                              type="text"
-                                              name="quantity"
-                                              value={item.quantity}
-                                              min={1}
-                                              className="form-control input-number"
+                                            </a>
+                                          </Link>
+                                        </td>
+                                        <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled2 : ""}>
+                                          <Link href={`/${item.slug}`}>
+                                            <strong className={styles.cursorVendor}>{item.name}</strong>
+                                          </Link>
+                                          {
+                                            item.variant &&
+                                            <Variant item={item} index={index} updateProduct={updateProduct}
+                                              i={i}
                                             />
-                                            <span className="input-group-prepend">
-                                              <button
-                                                type="button"
-                                                className="btn quantity-right-plus"
-                                                onClick={() => handlePlusQuantity(i, index, item.quantity, item.cartID)}
-                                              >
-                                                <i className="fa fa-solid fa-plus"></i>
-                                              </button>
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </td>
-                                      <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
-                                        <h2 className="td-color ml-5">
-                                          <NumberFormat
-                                            value={item.quantity * item?.attr?.price || item.variant?.price || item.price}
-                                            thousandSeparator={true}
-                                            displayType="text"
-                                            suffix={item.currencySymbol}
-                                            decimalScale={0}
-                                          />
-                                        </h2>
-                                      </td>
-                                      <td>
-                                        <div className="justify-content-end ml-5">
-                                          <i
-                                            className={`fa fa-times ${styles.cursorVendor}`}
-                                            onClick={() => removeFromCart(i, index, item.cartID)}
-                                          ></i>
-                                        </div>
-                                      </td>
+                                          }
+                                          {item.status == productStatus.DISABLE || item.isOutOfStock
+                                            ?
+                                            item.status === productStatus.DISABLE
+                                              ?
 
-                                    </tr>
-                                  </tbody>
-                                );
-                              })}
+                                              <Badge>
+                                                Không hoạt động
+                                              </Badge>
+                                              :
+                                              <Badge>
+                                                Hết hàng
+                                              </Badge>
+                                            : ""
+                                          }
+                                        </td>
+                                        <td className={item.status == productStatus.DISABLE && item.isOutOfStock && styles.disabled}>
+                                          <h2>
+                                            <NumberFormat
+                                              value={item?.attr?.price * (1 - item.attr?.discount)
+                                                || item.variant?.price * (1 - item.variant?.discount)
+                                                || item.price * (1 - item.discount)}
+                                              thousandSeparator={true}
+                                              displayType="text"
+                                              suffix={item.currencySymbol}
+                                              decimalScale={0}
+                                            />
+
+                                          </h2>
+                                          {discount > 0 &&
+                                            <del>
+                                              <span className="money ml-1">
+                                                <NumberFormat
+                                                  value={item?.attr?.price
+                                                    || item.variant?.price
+                                                    || item.price}
+                                                  thousandSeparator={true}
+                                                  displayType="text"
+                                                  suffix={item.currencySymbol}
+                                                  decimalScale={0}
+                                                />
+                                              </span>
+                                            </del>
+                                          }
+                                        </td>
+                                        <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
+                                          <div className="qty-box">
+                                            <div className="input-group">
+                                              <span className="input-group-prepend">
+                                                <button
+                                                  type="button"
+                                                  className="btn quantity-left-minus"
+                                                  onClick={() => handleMinusQuantity(i, index, item.quantity, item.cartID)}
+                                                >
+                                                  <i className="fa fa-minus"></i>
+                                                </button>
+                                              </span>
+                                              <input
+                                                type="text"
+                                                name="quantity"
+                                                value={item.quantity}
+                                                min={1}
+                                                className="form-control input-number"
+                                              />
+                                              <span className="input-group-prepend">
+                                                <button
+                                                  type="button"
+                                                  className="btn quantity-right-plus"
+                                                  onClick={() => handlePlusQuantity(i, index, item.quantity, item.cartID)}
+                                                >
+                                                  <i className="fa fa-solid fa-plus"></i>
+                                                </button>
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </td>
+                                        <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
+                                          <h2 className="td-color ml-5">
+                                            <NumberFormat
+                                              value={item.quantity * item?.attr?.price || item.variant?.price || item.price}
+                                              thousandSeparator={true}
+                                              displayType="text"
+                                              suffix={item.currencySymbol}
+                                              decimalScale={0}
+                                            />
+                                          </h2>
+                                        </td>
+                                        <td>
+                                          <div className="justify-content-end ml-5">
+                                            <i
+                                              className={`fa fa-times ${styles.cursorVendor}`}
+                                              onClick={() => removeFromCart(i, index, item.cartID)}
+                                            ></i>
+                                          </div>
+                                        </td>
+
+                                      </tr>
+                                    </tbody>
+                                  );
+                                })}
+                              </LazyLoad>
                             </table>
                           </CardBody>
                           <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
