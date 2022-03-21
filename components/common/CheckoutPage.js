@@ -25,6 +25,7 @@ const CheckoutPage = () => {
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [showAddress, setShowAddress] = useState("default");
+  const [showVoucher, setShowVoucher] = useState(false);
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
   const router = useRouter();
   const handleClose = () => setShow(false);
@@ -40,6 +41,12 @@ const CheckoutPage = () => {
   const handleQuit = (value) => {
     setShowAddress(value);
   };
+  const handleVoucherShow = () => {
+    setShowVoucher(true);
+  }
+  const handleCloseVoucher = () => {
+    setShowVoucher(false);
+  }
 
   const onSuccess = (payment) => {
     router.push({
@@ -91,11 +98,11 @@ const CheckoutPage = () => {
               <div className={`${styles.address}`}>
                 <h4>1. Chọn địa chỉ giao hàng</h4>
                 <div className={`${styles.table_address}`}>
-                  <div class={`${styles.border_top}`}></div>
-                  <div class={`${styles.padding_box}`}>
-                    <div class={`${styles.title_address}`}>
-                      <div class={`${styles.icon_address}`}>
-                        <div class={`${styles.icon}`}>
+                  <div className={`${styles.border_top}`}></div>
+                  <div className={`${styles.padding_box}`}>
+                    <div className={`${styles.title_address}`}>
+                      <div className={`${styles.icon_address}`}>
+                        <div className={`${styles.icon}`}>
                           <svg height="16" viewBox="0 0 12 16" width="12" fill="#f89922">
                             <path
                               d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
@@ -105,73 +112,91 @@ const CheckoutPage = () => {
                         </div>
                         <div>Địa chỉ giao hàng</div>
                       </div>
+                      {showAddress === "change" && (
+                        <>
+                          <div className={`${styles.button_select_address}`}>
+                            <button
+                              className={`${styles.button_add_address} ${styles.method_content}`}
+                              onClick={handleShow}
+                            >
+                              <svg
+                                enable-background="new 0 0 10 10"
+                                viewBox="0 0 10 10"
+                                role="img"
+                                className="stardust-icon stardust-icon-plus-sign _3PTu7X"
+                              >
+                                <path
+                                  stroke="none"
+                                  d="m10 4.5h-4.5v-4.5h-1v4.5h-4.5v1h4.5v4.5h1v-4.5h4.5z"
+                                ></path>
+                              </svg>
+                              Thêm địa chỉ mới
+                            </button>
+                            <Link href="/account">
+                              <button className={`${styles.button_add_address}`}>
+                                Thiết lập địa chỉ
+                              </button>
+                            </Link>
+                          </div>
+                        </>
+                      )}
                     </div>
+
                     {showAddress === "change" && (
                       <>
-                        <ul>
-                          <li>
-                            <input
-                              type="radio"
-                              name="delivery_address"
-                              data-view-index="cod"
-                              readonly
-                              value="address"
-                            />
-                            <div className={`${styles.detail_info}`}>
-                              <div className={`${styles.info}`}>
-                                <div className={`${styles.fullName}`}>
-                                  Nguyễn Minh Quang (+84) 373922863
-                                </div>
-                                <div className={`${styles.detailAddress}`}>
-                                  Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
-                                  Hậu, Quận Cầu Giấy, Hà Nội
-                                </div>
-                                <div class={`${styles.default}`}>Mặc định</div>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <input
-                              type="radio"
-                              name="delivery_address"
-                              data-view-index="cod"
-                              readonly
-                              value="address2"
-                            />
-                            <div className={`${styles.detail_info}`}>
-                              <div className={`${styles.info}`}>
-                                <div className={`${styles.fullName}`}>
-                                  Nguyễn Minh Quang (+84) 373922863
-                                </div>
-                                <div className={`${styles.detailAddress}`}>
-                                  Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
-                                  Hậu, Quận Cầu Giấy, Hà Nội
+                        <div className={`${styles.list_address}`}>
+                          <ul>
+                            <li>
+                              <input
+                                type="radio"
+                                name="delivery_address"
+                                data-view-index="cod"
+                                readonly
+                                value="address"
+                              />
+                              <div className={`${styles.detail_info}`}>
+                                <div className={`${styles.info}`}>
+                                  <div className={`${styles.fullName}`}>
+                                    Nguyễn Minh Quang (+84) 373922863
+                                  </div>
+                                  <div className={`${styles.detailAddress}`}>
+                                    Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
+                                    Hậu, Quận Cầu Giấy, Hà Nội
+                                  </div>
+                                  <div className={`${styles.default}`}>Mặc định</div>
                                 </div>
                               </div>
-                            </div>
-                          </li>
-                        </ul>
-                        <div>
-                          <button className={`${styles.btn_change} btn p-0 m-0`}>
-                            <Link href="/account">
-                              <a>Thiết lập địa chỉ</a>
-                            </Link>
-                          </button>
+                            </li>
+                            <li>
+                              <input
+                                type="radio"
+                                name="delivery_address"
+                                data-view-index="cod"
+                                readonly
+                                value="address2"
+                              />
+                              <div className={`${styles.detail_info}`}>
+                                <div className={`${styles.info}`}>
+                                  <div className={`${styles.fullName}`}>
+                                    Nguyễn Minh Quang (+84) 373922863
+                                  </div>
+                                  <div className={`${styles.detailAddress}`}>
+                                    Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
+                                    Hậu, Quận Cầu Giấy, Hà Nội
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
                         </div>
-                        <div>
+                        <div className={`${styles.button_change}`}>
                           <button
-                            className={`${styles.btn_change} btn p-0 m-0`}
-                            onClick={handleShow}
+                            className={`${styles.button_add_address} ${styles.button_success} `}
                           >
-                            Thêm địa chỉ mới
+                            Hoàn Thành
                           </button>
-                        </div>
-                        <div>
-                          <button className={`${styles.btn_change} btn p-0 m-0`}>Hoàn thành</button>
-                        </div>
-                        <div>
                           <button
-                            className={`${styles.btn_change} btn p-0 m-0`}
+                            className={`${styles.button_add_address} ${styles.button_back}`}
                             onClick={() => handleQuit("default")}
                           >
                             Trở về
@@ -191,7 +216,7 @@ const CheckoutPage = () => {
                               Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng Hậu,
                               Quận Cầu Giấy, Hà Nội
                             </div>
-                            <div class={`${styles.default}`}>Mặc định</div>
+                            <div className={`${styles.default}`}>Mặc định</div>
                           </div>
                         </div>
 
@@ -206,7 +231,7 @@ const CheckoutPage = () => {
                       </>
                     )}
                   </div>
-                  <div class={`${styles.border_top}`}></div>
+                  <div className={`${styles.border_top}`}></div>
                 </div>
               </div>
               <div className={`${styles.list_cart}`}>
@@ -217,8 +242,8 @@ const CheckoutPage = () => {
                       <div className={`${styles.products}`}>Sản phẩm</div>
                     </div>
                     <div className={`${styles.title_name} ${styles.classify_products}`}></div>
-                    <div className={`${styles.title_name}`}>Số lượng</div>
                     <div className={`${styles.title_name}`}>Giá tiền</div>
+                    <div className={`${styles.title_name}`}>Số lượng</div>
                     <div className={`${styles.title_name} ${styles.title_price}`}>Thành tiền</div>
                   </div>
                 </div>
@@ -232,12 +257,13 @@ const CheckoutPage = () => {
                         <div className={`${styles.section_order_info}`}>
                           <div className={`${styles.order_info}`}>
                             <div className={`${styles.title_info} ${styles.title_image_product}`}>
-                                <img width="40px" height="40px" src="https://" />
-                                <span>
-                                  <span className={`${styles.name_product}`}>
-                                  [Mã FMCGMALL -8% đơn 250K] Serum Sáng Da, Mờ Thâm Balance Active Formula Vitamin C Brightening 30ml/ 60ml
-                                  </span>
+                              <img width="40px" height="40px" src="https://" />
+                              <span>
+                                <span className={`${styles.name_product}`}>
+                                  [Mã FMCGMALL -8% đơn 250K] Serum Sáng Da, Mờ Thâm Balance Active
+                                  Formula Vitamin C Brightening 30ml/ 60ml
                                 </span>
+                              </span>
                             </div>
                             <div className={`${styles.title_info} ${styles.classify_info}`}>
                               <span>Loại: Supersize 60ml</span>
@@ -256,51 +282,9 @@ const CheckoutPage = () => {
                               </div>
                             </div>
                             <div className={`${styles.button_voucher_shop}`}>
-                                <button>
-                                  <span>Chọn voucher</span>
-                                </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`${styles.total_price_information}`}>
-                    <div>
-                      <div className={`${styles.detail_order_information}`}>
-                        <div className={`${styles.vendor_name}`}>
-                          <span>Royal London Official Store</span>
-                        </div>
-                        <div className={`${styles.section_order_info}`}>
-                          <div className={`${styles.order_info}`}>
-                            <div className={`${styles.title_info} ${styles.title_image_product}`}>
-                                <img width="40px" height="40px" src="https://" />
-                                <span>
-                                  <span className={`${styles.name_product}`}>
-                                  [Mã FMCGMALL -8% đơn 250K] Serum Sáng Da, Mờ Thâm Balance Active Formula Vitamin C Brightening 30ml/ 60ml
-                                  </span>
-                                </span>
-                            </div>
-                            <div className={`${styles.title_info} ${styles.classify_info}`}>
-                              <span>Loại: Supersize 60ml</span>
-                            </div>
-                            <div className={`${styles.title_info}`}>₫295.000</div>
-                            <div className={`${styles.title_info}`}>2</div>
-                            <div className={`${styles.title_info}`}>₫590.000</div>
-                          </div>
-                        </div>
-                        <div className={`${styles.section_voucher_shop}`}>
-                          <div className={`${styles.voucher_shop}`}>
-                            <div className={`${styles.title_voucher_shop}`}>
-                              <div className={`${styles.image_voucher}`}>
-                                <img src="https" />
-                                <div>Voucher của Shop</div>
-                              </div>
-                            </div>
-                            <div className={`${styles.button_voucher_shop}`}>
-                                <button>
-                                  <span>Chọn voucher</span>
-                                </button>
+                              <button>
+                                <span>Chọn voucher</span>
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -321,7 +305,7 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                   <div className={`${styles.selectVoucher}`}>
-                    <button className={`${styles.btn_change} btn p-0 m-0`}>Chọn Voucher</button>
+                    <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleVoucherShow}>Chọn Voucher</button>
                   </div>
                 </div>
               </div>
@@ -413,14 +397,38 @@ const CheckoutPage = () => {
               <div className={`${styles.total}`}>
                 <h4>5. Tổng đơn hàng </h4>
                 <div className={`${styles.total_prices}`}>
-                  <div>Tổng tiền hàng</div>
-                  <div>₫1.147.000</div>
-                  <div>Phí vận chuyển</div>
-                  <div>₫70.700</div>
-                  <div>Tổng thanh toán:</div>
-                  <div>₫1.217.700</div>
-                  <div>
-                    <div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_amount}`}
+                  >
+                    Tổng tiền hàng
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.total_amount} ${styles.prices}`}
+                  >
+                    ₫1.147.000
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
+                  >
+                    Phí vận chuyển
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}
+                  >
+                    ₫70.700
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
+                  >
+                    Tổng thanh toán:
+                  </div>
+                  <div
+                    className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}
+                  >
+                    <span>₫1.217.700</span>
+                  </div>
+                  <div className={`${styles._3swGZ9}`}>
+                    <div className={`${styles.RVLKaf}`}>
                       <div>
                         Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo{" "}
                         <a href="" target="_blank" rel="noopener noreferrer">
@@ -437,6 +445,7 @@ const CheckoutPage = () => {
           </div>
         </Container>
       </section>
+      {/* Modal add address */}
       <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={show}>
         <ModalHeader>Cập nhật địa chỉ</ModalHeader>
         <ModalBody className="container-fluid">
@@ -514,10 +523,67 @@ const CheckoutPage = () => {
           <button className="btn-solid btn">Cập nhật</button>
         </ModalFooter>
       </Modal>
+      {/* Modal voucher */}
+      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={showVoucher}>
+        <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
+        <ModalBody>
+          <div className={`${styles.modal_voucher}`}>
+            <div className={`${styles._38kqI1}`}>
+              <span>Mã voucher</span>
+              <div className={`${styles._3K7VlY}`}>
+                <div className={`${styles.input_with_validator}`}>
+                  <input type="text" placeholder="Mã Mubaha Voucher" maxLength="255" />
+                </div>
+              </div>
+              <button className={`${styles.button_apply}`}>
+                <span>Áp dụng</span>
+              </button>
+            </div>
+            <div className={`${styles._2ZPmGW}`}>
+              <div className={`${styles._1eqk4K}`}>
+                mã miễn phí vận chuyển và mã giảm giá đơn hàng
+              </div>
+              <div className={`${styles._3R4rbT}`}>
+                <div className={`${styles._3L2qYK}`}>
+                  <div className={`${styles._1DZArM}`}>
+                    <div>miễn phí vận chuyển</div>
+                  </div>
+                  <div className={`${styles.PT6ffQ}`}>
+                    <div className={`${styles._3sw7sh}`}>
+                      <div className={`${styles._1g6Th3}`}>
+                        <span>Áp dụng cho một số shop nhất định</span>
+                      </div>
+                      <div className={`${styles._2ocsGB}`}>
+                        <div className={`${styles._10zVWC}`}>
+                          <div className={`${styles._36sEF5}`}>Đơn hàng từ 0Đ</div>
+                        </div>
+                      </div>
+                      <span>HSD: 22.03.2022</span>
+                    </div>
+                    <div className={`${styles._K4Yt}`}>
+                      <button className={`${styles.button_apply}`}>
+                        <span>Áp dụng</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            className="btn btn-secondary btn-lg"
+            style={{ width: "120px", height: "50px" }}
+            onClick={handleCloseVoucher}
+          >
+            Huỷ
+          </Button>
+        </ModalFooter>
+      </Modal>
     </>
   );
 };
 
 export default CheckoutPage;
-
 
