@@ -106,7 +106,7 @@ const CheckoutPage = () => {
                           <svg height="16" viewBox="0 0 12 16" width="12" fill="#f89922">
                             <path
                               d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
-                              fill-rule="evenodd"
+                              fillRule="evenodd"
                             ></path>
                           </svg>
                         </div>
@@ -120,7 +120,7 @@ const CheckoutPage = () => {
                               onClick={handleShow}
                             >
                               <svg
-                                enable-background="new 0 0 10 10"
+                                enableBackground="new 0 0 10 10"
                                 viewBox="0 0 10 10"
                                 role="img"
                                 className="stardust-icon stardust-icon-plus-sign _3PTu7X"
@@ -151,7 +151,7 @@ const CheckoutPage = () => {
                                 type="radio"
                                 name="delivery_address"
                                 data-view-index="cod"
-                                readonly
+                                readOnly
                                 value="address"
                               />
                               <div className={`${styles.detail_info}`}>
@@ -172,7 +172,7 @@ const CheckoutPage = () => {
                                 type="radio"
                                 name="delivery_address"
                                 data-view-index="cod"
-                                readonly
+                                readOnly
                                 value="address2"
                               />
                               <div className={`${styles.detail_info}`}>
@@ -281,7 +281,7 @@ const CheckoutPage = () => {
                                 <div>Voucher của Shop</div>
                               </div>
 
-                              
+
                             </div>
                             <div className={`${styles.button_voucher_shop}`}>
                               <button>
@@ -321,7 +321,7 @@ const CheckoutPage = () => {
                           type="radio"
                           name="payment_methods"
                           data-view-index="cod"
-                          readonly
+                          readOnly
                           value="cod"
                         />
                         <span>
@@ -341,7 +341,7 @@ const CheckoutPage = () => {
                           type="radio"
                           name="payment_methods"
                           data-view-index="atm"
-                          readonly
+                          readOnly
                           value="atm"
                         />
                         <span>
@@ -362,7 +362,7 @@ const CheckoutPage = () => {
                           type="radio"
                           name="payment_methods"
                           data-view-index="paypal"
-                          readonly
+                          readOnly
                           value="paypal"
                         />
                         <span>
@@ -378,7 +378,7 @@ const CheckoutPage = () => {
                           type="radio"
                           name="payment_methods"
                           data-view-index="vnpay"
-                          readonly
+                          readOnly
                           value="vnpay"
                         />
                         <span>
@@ -432,7 +432,7 @@ const CheckoutPage = () => {
                   <div className={`${styles._3swGZ9}`}>
                     <div className={`${styles.RVLKaf}`}>
                       <div>
-                        Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo{" "}
+                        Nhấn &quot;Đặt hàng&quot; đồng nghĩa với việc bạn đồng ý tuân theo{" "}
                         <a href="" target="_blank" rel="noopener noreferrer">
                           Điều khoản Mubaha
                         </a>

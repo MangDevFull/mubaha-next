@@ -6,7 +6,7 @@ export async function middleware(req) {
       req,
       secret: process.env.JWT_SECRET,
     });
-    if (token) return NextResponse.redirect("/");
+    if (!token) return NextResponse.redirect("/");
     return NextResponse.next();
   }
 }
