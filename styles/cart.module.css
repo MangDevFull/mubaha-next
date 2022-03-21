@@ -10,12 +10,14 @@
 }
 .vendorPart{
   background-color: white;
+  padding-top: 0px;
 }
 .backgroundCart{
   background-color: white;
 }
 .totalPart{
-  background-color:white
+  background-color:rgb(253, 252, 247);
+  box-shadow: 10px 10px 10px 10px rgb(253, 253, 253);
 }
 .cursorVendor{
   cursor: pointer;
@@ -44,4 +46,10 @@
 .paginateText {
   color: red;
   margin-left: 15px;
+}
+@supports (position: sticky) {
+  .isSticky {
+    position: sticky;
+    bottom: 0; 
+  }
 }

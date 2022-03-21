@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
 import {
@@ -16,9 +16,11 @@ import _ from 'lodash'
 import productStatusEnum from "@/enums/productStatus.enum";
 import LazyLoad from 'react-lazyload';
 import { StickyContainer, Sticky } from 'react-sticky';
+import {useRouter} from 'next/router';
 const Variant = dynamic(() => import('@/components/Variant.js'))
 const CartPage = ({ data }) => {
   const { data: session } = useSession()
+  const router = useRouter()
   const [products, setProduct] = useState(data.fullP)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)
@@ -349,7 +351,7 @@ const CartPage = ({ data }) => {
   }
   const fetchMoreData = async () => {
     const page = currentPage + 1
-    const res = await fetch(`${process.env.API_CART_URL}?page=${page}`, {
+    const res = await fetch(`${process.env.API_CART_URL}/paginate?page=${page}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -477,9 +479,32 @@ const CartPage = ({ data }) => {
       setProduct([...products])
     }, 2000)
   }
+  const handleSubmit = () => {
+    const cartItems = []
+    products.forEach(v => {
+      v.products.forEach(p => {
+        if(p.selected===true){
+            cartItems.push(p.cartID)
+        }
+      })
+    })
+    console.log(cartItems)
+    if(cartItems.length<=0){
+      setMessage("Vui lòng chọn sản phẩm")
+      setVisible(true)
+      setTimeout(function () {
+        setVisible(false)
+      }, 1000)
+    }else{
+      router.push({
+        pathname: '/checkout',
+        query: cartItems,
+      }, '/checkout')
+      console.log("aaaaa")
+    }
+  }
   if (products.length > 0) {
     return (
-
       <div>
         <Modal2 visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
           <i className="fa fa-solid fa-xmark"></i>
@@ -491,17 +516,17 @@ const CartPage = ({ data }) => {
           </div>
         </Modal2>
         <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
-        <div>
-          <div style={{ overflowY: "auto" }}>
+        <div onScroll={(e) => console.log("scrolling!", e.target.scrollTop)}>
+          <div style={{ overflowY: "auto" }} >
             <StickyContainer>
-              <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`}>
+              <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`} onScroll={(e) =>console.log(e)}>
                 <div>
                 </div>
                 <Container>
                   <Row>
                     <Col sm="12">
-                      <div className="mb-3">
-                        <table className="table cart-table table-responsive-xs">
+                      <div className="mt-3">
+                        <table className="table cart-table table-responsive-xs mt-2 mb-3">
                           <thead style={{ border: 'none' }}>
                             <tr className={`${styles.backgroundHead}`}>
                               <th scope="col">
@@ -539,7 +564,8 @@ const CartPage = ({ data }) => {
                           </thead>
                         </table>
                       </div>
-                      <div className={`${styles.vendorPart} p-3`}>
+                      <div className={`${styles.vendorPart} p-3`} 
+                       >
                         <InfiniteScroll
                           dataLength={currentPage}
                           next={fetchMoreData}
@@ -559,7 +585,7 @@ const CartPage = ({ data }) => {
                         >
                           {products.map((p, i) => {
                             return (
-                              <Card key={i} style={{ border: 'none' }}>
+                              <Card key={i} style={{ border: 'none' }} className="mt-0">
                                 <CardHeader style={{ backgroundColor: 'white' }}>
                                   <div className=" mb-2">
                                     {!p.count == p.totalDocs ? "" :
@@ -724,6 +750,7 @@ const CartPage = ({ data }) => {
                             )
                           })}
                         </InfiniteScroll>
+                        <div></div>
                       </div>
                       <Modal
                         className="mt-5"
@@ -748,9 +775,10 @@ const CartPage = ({ data }) => {
                     </Col>
                   </Row>
                 </Container>
+               
                 )
               </section>
-              <Sticky bottomOffset={80}>
+              <Sticky topOffset={20}>
                 {({ }) => (
                   <div style={{
                     textAlign: "center",
@@ -760,13 +788,15 @@ const CartPage = ({ data }) => {
                     bottom: "0",
                     height: "100px",
                     width: "100%",
-                    zIndex: 1000
-                  }}>
-                    <div className={`${styles.totalPart} pb-4`}>
-                      <table className="table cart-table table-responsive-md">
+                    zIndex: 1000,
+                    fontFamily: "Montserrat, sans-serif"
+                  }}
+                  >
+                    <div className={`${styles.totalPart} pb-4 mt-0`}>
+                      <table className="table cart-table table-responsive-md mt-0">
                         <tfoot>
                           <tr>
-                            <td className="d-flex justify-content-between pt-4">
+                            <td className="d-flex justify-content-between pt-4 border-0 mt-0">
                               <div className="d-flex flex-row bd-highlight ml-5">
                                 <div className="bd-highlight">
                                   <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
@@ -788,7 +818,7 @@ const CartPage = ({ data }) => {
                                 Tổng thanh toán ({totalProductSelect} sản phẩm) :
                               </div>
                             </td>
-                            <td>
+                            <td className="border-0">
                               <div className="d-flex">
                                 <h2>
                                   <NumberFormat
@@ -799,7 +829,7 @@ const CartPage = ({ data }) => {
                                     decimalScale={0}
                                   />
                                 </h2>
-                                <a className="btn btn-solid ml-2">Thanh toán</a>
+                                <a onClick={handleSubmit} className="btn btn-solid ml-2">Thanh toán</a>
                               </div>
                             </td>
                           </tr>
@@ -815,9 +845,8 @@ const CartPage = ({ data }) => {
             </StickyContainer>
           </div>
         </div>
-
-
       </div>
+
     );
   } else {
     return (
