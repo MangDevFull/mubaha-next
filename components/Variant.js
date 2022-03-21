@@ -9,15 +9,15 @@ import { useSession } from 'next-auth/react'
 export default function Variant({item,index,updateProduct,i}) {
   const { data: session, status } = useSession()
   const [selectedVariant, setSelectedVariant] = useState(item.variant._id);
-  const [selectSize, setSelectSize] = useState(item.size?._id);
+  const [selectSize, setSelectSize] = useState(item.attr?._id);
   const [isOpen, setIsOpen] = useState(false);
-  const [sizes,setSizes] = useState(item.variant.sizes)
+  const [sizes,setSizes] = useState(item.variant.attributes)
   const selectedColor = (variant) => {
     setSelectedVariant(variant);
     const rs = item.variants.filter(v =>{
       return v._id === variant
     })
-    setSizes(rs[0].sizes)
+    setSizes(rs[0].attributes)
   };
   const selectAttr = (e, s) => {
     setSelectSize(s)
@@ -82,12 +82,11 @@ export default function Variant({item,index,updateProduct,i}) {
                   {item.variants.map((variant) => {
                     return (
                       <>
-                        <li
+                        <li className={`${variant.stock.quantity == 0 && variant.attributes.length == 0 ? styles.disabled : ""}`}
                           style={
                             selectedVariant === undefined ?
                               item.variant._id === variant._id ? {
                                 border: "1px solid #ffa200",
-                                color: "#ffa200",
                               }
                                 : {}
                               : selectedVariant === variant._id ? {
@@ -129,6 +128,7 @@ export default function Variant({item,index,updateProduct,i}) {
                       <div className="d-flex">
                         {sizes.map((s) => (
                           <li
+                          className={`${s.stock.quantity ==0 ? styles.disabled : ""}`}
                             style={
                               selectSize === '' ?
                                 item.attr._id === s._id ? {
