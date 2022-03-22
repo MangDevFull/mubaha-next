@@ -18,15 +18,16 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import styles from "./CheckoutPage.module.css";
-import Address from "@/components/Address"
+import Address from "@/components/Address";
+import Voucher from "@/components/Voucher";
+import NumberFormat from "react-number-format";
 
-const CheckoutPage = () => {
+const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher, vouchers, handleApplyVoucher, handleSelectPaymentMethod}) => {
   const [obj, setObj] = useState({});
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [showAddress, setShowAddress] = useState("default");
-  const [showVoucher, setShowVoucher] = useState(false);
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
   const router = useRouter();
   const handleCloseCreateAdd = () => setShow(false);
@@ -42,13 +43,6 @@ const CheckoutPage = () => {
   const handleQuit = (value) => {
     setShowAddress(value);
   };
-  const handleVoucherShow = () => {
-    setShowVoucher(true);
-  }
-  const handleCloseVoucher = () => {
-    setShowVoucher(false);
-  }
-
   const onSuccess = (payment) => {
     router.push({
       pathname: "/page/order-success",
@@ -107,7 +101,7 @@ const CheckoutPage = () => {
                           <svg height="16" viewBox="0 0 12 16" width="12" fill="#f89922">
                             <path
                               d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
-                              fill-rule="evenodd"
+                              fillRule="evenodd"
                             ></path>
                           </svg>
                         </div>
@@ -121,7 +115,7 @@ const CheckoutPage = () => {
                               onClick={handleShow}
                             >
                               <svg
-                                enable-background="new 0 0 10 10"
+                                enableBackground="new 0 0 10 10"
                                 viewBox="0 0 10 10"
                                 role="img"
                                 className="stardust-icon stardust-icon-plus-sign _3PTu7X"
@@ -133,6 +127,13 @@ const CheckoutPage = () => {
                               </svg>
                               Thêm địa chỉ mới
                             </button>
+                            <button
+                              className={`${styles.button_add_address} ${styles.method_content}`}
+                              onClick={handleShow}
+                            >
+                              Sửa địa chỉ
+                            </button>
+
                             <Link href="/account">
                               <button className={`${styles.button_add_address}`}>
                                 Thiết lập địa chỉ
@@ -152,7 +153,7 @@ const CheckoutPage = () => {
                                 type="radio"
                                 name="delivery_address"
                                 data-view-index="cod"
-                                readonly
+                                readOnly
                                 value="address"
                               />
                               <div className={`${styles.detail_info}`}>
@@ -173,7 +174,7 @@ const CheckoutPage = () => {
                                 type="radio"
                                 name="delivery_address"
                                 data-view-index="cod"
-                                readonly
+                                readOnly
                                 value="address2"
                               />
                               <div className={`${styles.detail_info}`}>
@@ -249,51 +250,79 @@ const CheckoutPage = () => {
                   </div>
                 </div>
                 <div>
-                  <div className={`${styles.total_price_information}`}>
-                    <div>
-                      <div className={`${styles.detail_order_information}`}>
-                        <div className={`${styles.vendor_name}`}>
-                          <span>Royal London Official Store</span>
-                        </div>
-                        <div className={`${styles.section_order_info}`}>
-                          <div className={`${styles.order_info}`}>
-                            <div className={`${styles.title_info} ${styles.title_image_product}`}>
-                              <img width="40px" height="40px" src="https://" />
-                              <span>
-                                <span className={`${styles.name_product}`}>
-                                  [Mã FMCGMALL -8% đơn 250K] Serum Sáng Da, Mờ Thâm Balance Active
-                                  Formula Vitamin C Brightening 30ml/ 60ml
-                                </span>
-                              </span>
+                  {data.data.docs.map((product, index) => {
+                    return (
+                      <div key={index}>
+                      <div className={`${styles.total_price_information}`}>
+                        <div>
+                          <div className={`${styles.detail_order_information}`}>
+                            <div className={`${styles.vendor_name}`}>
+                              <span>{product.vendor.brandName}</span>
                             </div>
-                            <div className={`${styles.title_info} ${styles.classify_info}`}>
-                              <span>Loại: Supersize 60ml</span>
-                            </div>
-                            <div className={`${styles.title_info}`}>₫295.000</div>
-                            <div className={`${styles.title_info}`}>2</div>
-                            <div className={`${styles.title_info}`}>₫590.000</div>
-                          </div>
-                        </div>
-                        <div className={`${styles.section_voucher_shop}`}>
-                          <div className={`${styles.voucher_shop}`}>
-                            <div className={`${styles.title_voucher_shop}`}>
-                              <div className={`${styles.image_voucher}`}>
-                                <img src="https" />
-                                <div>Voucher của Shop</div>
-                              </div>
+                            <div className={`${styles.section_order_info}`}>
+                              <div className={`${styles.order_info}`}>
+                                <div
+                                  className={`${styles.title_info} ${styles.title_image_product}`}
+                                >
+                                  <img width="40px" src={product.product.media.featuredImage} />
+                                  <span>
+                                    <span className={`${styles.name_product}`}>
+                                      {product.product.name}
+                                    </span>
+                                  </span>
+                                </div>
+                                
+                                <div className={`${styles.title_info} ${styles.classify_info}`}>
+                                  {
+                                    product.product.variants.length > 0 ?
+                                    <span>Loại: {product.product.variants}</span> : <span>
 
-                              
+                                    </span>
+                                  }
+                                  
+                                </div>
+                                <div className={`${styles.title_info}`}>
+                                  <NumberFormat
+                                    value={product.product.price}
+                                    thousandSeparator={true}
+                                    displayType="text"
+                                    suffix={product.product.currencySymbol}
+                                    decimalScale={0}
+                                  />
+                                </div>
+                                <div className={`${styles.title_info}`}>{product.amount}</div>
+                                <div className={`${styles.title_info}`}>
+                                <NumberFormat
+                                    value={product.product.price * product.amount}
+                                    thousandSeparator={true}
+                                    displayType="text"
+                                    suffix={product.product.currencySymbol}
+                                    decimalScale={0}
+                                  />
+                                  </div>
+                              </div>
                             </div>
-                            <div className={`${styles.button_voucher_shop}`}>
-                              <button>
-                                <span>Chọn voucher</span>
-                              </button>
+                            <div className={`${styles.section_voucher_shop}`}>
+                              <div className={`${styles.voucher_shop}`}>
+                                <div className={`${styles.title_voucher_shop}`}>
+                                  <div className={`${styles.image_voucher}`}>
+                                    <img src="https" />
+                                    <div>Voucher của Shop</div>
+                                  </div>
+                                </div>
+                                <div className={`${styles.button_voucher_shop}`}>
+                                  <button>
+                                    <span>Chọn voucher</span>
+                                  </button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <div className={`${styles.voucher}`}>
@@ -308,7 +337,12 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                   <div className={`${styles.selectVoucher}`}>
-                    <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleVoucherShow}>Chọn Voucher</button>
+                    <button
+                      className={`${styles.btn_change} btn p-0 m-0`}
+                      onClick={handleVoucherShow}
+                    >
+                      Chọn Voucher
+                    </button>
                   </div>
                 </div>
               </div>
@@ -322,8 +356,9 @@ const CheckoutPage = () => {
                           type="radio"
                           name="payment_methods"
                           data-view-index="cod"
-                          readonly
+                          readOnly
                           value="cod"
+                          onChange={handleSelectPaymentMethod}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -342,8 +377,9 @@ const CheckoutPage = () => {
                           type="radio"
                           name="payment_methods"
                           data-view-index="atm"
-                          readonly
+                          readOnly
                           value="atm"
+                          onChange={handleSelectPaymentMethod}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -363,8 +399,9 @@ const CheckoutPage = () => {
                           type="radio"
                           name="payment_methods"
                           data-view-index="paypal"
-                          readonly
+                          readOnly
                           value="paypal"
+                          onChange={handleSelectPaymentMethod}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -379,8 +416,9 @@ const CheckoutPage = () => {
                           type="radio"
                           name="payment_methods"
                           data-view-index="vnpay"
-                          readonly
+                          readOnly
                           value="vnpay"
+                          onChange={handleSelectPaymentMethod}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -420,6 +458,7 @@ const CheckoutPage = () => {
                   >
                     ₫70.700
                   </div>
+                  
                   <div
                     className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
                   >
@@ -433,7 +472,7 @@ const CheckoutPage = () => {
                   <div className={`${styles._3swGZ9}`}>
                     <div className={`${styles.RVLKaf}`}>
                       <div>
-                        Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo{" "}
+                        Nhấn &quot;Đặt hàng&quot; đồng nghĩa với việc bạn đồng ý tuân theo{" "}
                         <a href="" target="_blank" rel="noopener noreferrer">
                           Điều khoản Mubaha
                         </a>
@@ -451,66 +490,9 @@ const CheckoutPage = () => {
       {/* Modal add address */}
       <Address isOpen={show} handleCloseCreateAdd={handleCloseCreateAdd} />
       {/* Modal voucher */}
-      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={showVoucher}>
-        <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
-        <ModalBody>
-          <div className={`${styles.modal_voucher}`}>
-            <div className={`${styles._38kqI1}`}>
-              <span>Mã voucher</span>
-              <div className={`${styles._3K7VlY}`}>
-                <div className={`${styles.input_with_validator}`}>
-                  <input type="text" placeholder="Mã Mubaha Voucher" maxLength="255" />
-                </div>
-              </div>
-              <button className={`${styles.button_apply}`}>
-                <span>Áp dụng</span>
-              </button>
-            </div>
-            <div className={`${styles._2ZPmGW}`}>
-              <div className={`${styles._1eqk4K}`}>
-                mã miễn phí vận chuyển và mã giảm giá đơn hàng
-              </div>
-              <div className={`${styles._3R4rbT}`}>
-                <div className={`${styles._3L2qYK}`}>
-                  <div className={`${styles._1DZArM}`}>
-                    <div>miễn phí vận chuyển</div>
-                  </div>
-                  <div className={`${styles.PT6ffQ}`}>
-                    <div className={`${styles._3sw7sh}`}>
-                      <div className={`${styles._1g6Th3}`}>
-                        <span>Áp dụng cho một số shop nhất định</span>
-                      </div>
-                      <div className={`${styles._2ocsGB}`}>
-                        <div className={`${styles._10zVWC}`}>
-                          <div className={`${styles._36sEF5}`}>Đơn hàng từ 0Đ</div>
-                        </div>
-                      </div>
-                      <span>HSD: 22.03.2022</span>
-                    </div>
-                    <div className={`${styles._K4Yt}`}>
-                      <button className={`${styles.button_apply}`}>
-                        <span>Áp dụng</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            className="btn btn-secondary btn-lg"
-            style={{ width: "120px", height: "50px" }}
-            onClick={handleCloseVoucher}
-          >
-            Huỷ
-          </Button>
-        </ModalFooter>
-      </Modal>
+      <Voucher isOpen={showVoucher} handleCloseVoucher={handleCloseVoucher} vouchers={vouchers} handleApplyVoucher={handleApplyVoucher} />
     </>
   );
 };
 
 export default CheckoutPage;
-

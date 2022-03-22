@@ -23,7 +23,6 @@ import {
   LinkedinShareButton,
 } from "react-share";
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  console.log(detailProduct)
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -391,7 +390,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                             }
                                             : {}
                                         }
-                                        class={`selected-indicator ${styles.tickImage}`}
+                                        className={`selected-indicator ${styles.tickImage}`}
                                         src="../assets/images/selected-variant-indicator.svg"
                                         alt="Selected"
                                       ></img>
@@ -592,15 +591,15 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                 {/* Vendor */}
                 <section className="tab-product m-0">
                   <Container>
-                    <div class={`${styles.vendorBox}`}>
-                      <div class={`${styles.leftVendor}`}>
+                    <div className={`${styles.vendorBox}`}>
+                      <div className={`${styles.leftVendor}`}>
                         <a className=""></a>
-                        <div class="_27NV-r">
-                          <div class="_1wVLAc">
+                        <div className="_27NV-r">
+                          <div className="_1wVLAc">
                             <a>{detailProduct.vendor.brandName}</a>
                           </div>
-                          <div class="_1NgpoA">
-                            <a class="btn btn-light btn--s btn--inline btn-light--link _1bsnOp">
+                          <div className="_1NgpoA">
+                            <a className="btn btn-light btn--s btn--inline btn-light--link _1bsnOp">
                               <Link href={`/vendors/${detailProduct.vendor.ownerRef.username}`}>
                                 xem shop
                               </Link>
@@ -608,15 +607,15 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                           </div>
                         </div>
                       </div>
-                      {/* <div class={`${styles.rightVendor}`}>
-                        <div class="_1utN4D">
-                          <div class="_14x4GD gy4qkp">
-                            <label class="_3ApBiN">tham gia</label>
-                            <span class="_33OqNH">3 năm trước</span>
+                      {/* <div className={`${styles.rightVendor}`}>
+                        <div className="_1utN4D">
+                          <div className="_14x4GD gy4qkp">
+                            <label className="_3ApBiN">tham gia</label>
+                            <span className="_33OqNH">3 năm trước</span>
                           </div>
-                          <div class="_14x4GD gy4qkp">
-                            <label class="_3ApBiN">Đánh giá</label>
-                            <span class="_33OqNH">134,4k</span>
+                          <div className="_14x4GD gy4qkp">
+                            <label className="_3ApBiN">Đánh giá</label>
+                            <span className="_33OqNH">134,4k</span>
                           </div>
                         </div>
                       </div> */}

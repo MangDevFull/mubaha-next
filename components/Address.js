@@ -247,11 +247,11 @@ export default function Address({ isOpen, handleCloseCreateAdd ,isExist}) {
                   />
                 </div>
                 <div className={` col-lg-12 mt-2 a ${isExist===0 ? styles.disabled : ""}`}>
-                  <div class="form-check">
+                  <div className="form-check">
                     <input className="form-check-input" type="checkbox" id="flexCheckDefault"
                     defaultChecked={isExist==0} ref={selectCheck}
                      />
-                    <label className="form-check-label" for="flexCheckDefault">
+                    <label className="form-check-label" htmlFor="flexCheckDefault">
                       Đặt địa chỉ mặc định
                     </label>
                   </div>
