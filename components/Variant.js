@@ -30,7 +30,9 @@ export default function Variant({item,index,updateProduct,i}) {
     }
   }
   const updateVariants = async (e,cartID,v,s) => {
-    let body = {}
+    let body = {
+      productID: item.productID
+    }
     if(v !== undefined) {
       body = {
         ...body,
@@ -52,7 +54,7 @@ export default function Variant({item,index,updateProduct,i}) {
       body: JSON.stringify(body)
     })
     const data = await response.json()
-
+    console.log(data)
     if(data.status === 200){
       updateProduct(body,i,index)
       handleOpen()

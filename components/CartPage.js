@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
 import {
@@ -14,10 +14,13 @@ import productStatus from "@/enums/productStatus.enum.js"
 import InfiniteScroll from "react-infinite-scroll-component";
 import _ from 'lodash'
 import productStatusEnum from "@/enums/productStatus.enum";
-
+import LazyLoad from 'react-lazyload';
+import { StickyContainer, Sticky } from 'react-sticky';
+import { useRouter } from 'next/router';
 const Variant = dynamic(() => import('@/components/Variant.js'))
 const CartPage = ({ data }) => {
   const { data: session } = useSession()
+  const router = useRouter()
   const [products, setProduct] = useState(data.fullP)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)
@@ -27,10 +30,9 @@ const CartPage = ({ data }) => {
   const [message, setMessage] = useState('')
   const [totalPage, setTotalPage] = useState(data.totalPage)
   const [currentPage, setCurrentPage] = useState(data.page)
-  const [totalProduct, setTotalProduct] = useState(0)
+  const [totalProduct, setTotalProduct] = useState(data.totalDocs)
 
   useEffect(() => {
-    setTotalProduct(data.totalDocs)
     const cartID = localStorage.getItem('cartID')
     if (cartID != null) {
       products.forEach((product, index) => {
@@ -59,7 +61,7 @@ const CartPage = ({ data }) => {
       if (products[i].products[index].attr) {
         body = {
           ...body,
-          size: products[i].products[index].size._id
+          size: products[i].products[index].attr._id
         }
 
       }
@@ -349,8 +351,7 @@ const CartPage = ({ data }) => {
   }
   const fetchMoreData = async () => {
     const page = currentPage + 1
-    setCurrentPage(page)
-    const res = await fetch(`${process.env.API_CART_URL}?page=${page}`, {
+    const res = await fetch(`${process.env.API_CART_URL}/paginate?page=${page}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -359,7 +360,7 @@ const CartPage = ({ data }) => {
     })
 
     const data = await res.json()
-    setTotalProduct(totalProduct+data.data.totalDocs)
+    setTotalProduct(totalProduct + data.data.totalDocs)
     const grouped = _.groupBy(data.data.docs, p => p.vendor._id);
     const vendors = Object.entries(grouped)
     const results = vendors.map(v => {
@@ -465,8 +466,8 @@ const CartPage = ({ data }) => {
       }
     })
     products.forEach((x) => {
-      fullP.forEach((y)=>{
-        if(x.vendor._id===y.vendor._id) {
+      fullP.forEach((y) => {
+        if (x.vendor._id === y.vendor._id) {
           x.products = _.concat(x.products, y.products);
           x.count = x.count + y.count
           x.totalDocs = x.totalDocs + y.totalDocs
@@ -474,11 +475,34 @@ const CartPage = ({ data }) => {
       })
     })
     setTimeout(function () {
+      setCurrentPage(page)
       setProduct([...products])
-    },1500)
+    }, 2000)
   }
-  console.log('tsttsts',currentPage,totalPage,currentPage < totalPage)
-  console.log('p',products)
+  const handleSubmit = () => {
+    const cartItems = []
+    products.forEach(v => {
+      v.products.forEach(p => {
+        if (p.selected === true) {
+          cartItems.push(p.cartID)
+        }
+      })
+    })
+    console.log(cartItems)
+    if (cartItems.length <= 0) {
+      setMessage("Vui lòng chọn sản phẩm")
+      setVisible(true)
+      setTimeout(function () {
+        setVisible(false)
+      }, 1000)
+    } else {
+      router.push({
+        pathname: '/checkout',
+        query: cartItems,
+      }, '/checkout')
+      console.log("aaaaa")
+    }
+  }
   if (products.length > 0) {
     return (
       <div>
@@ -492,304 +516,339 @@ const CartPage = ({ data }) => {
           </div>
         </Modal2>
         <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
-        <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`}>
-          <div>
-          </div>
-          <Container>
-            <Row>
-              <Col sm="12">
-                <div className="mb-3">
-                  <table className="table cart-table table-responsive-xs">
-                    <thead style={{ border: 'none' }}>
-                      <tr className={`${styles.backgroundHead}`}>
-                        <th scope="col">
-                          <div className="mt-4 mb-3">
-                            <input
-                              type="checkbox"
-                              checked={isSelectedAll}
-                              onClick={selectAllProduct}
-                            />
-                          </div>
-                        </th>
-                        <th scope="col" colSpan="2">
-                          <div className="mt-4 mb-3 ml-5">Sản phẩm</div>
-                        </th>
-                        <th scope="col">
-                          <div className="mt-4 mb-3 ml-5">
-                            Giá
-                          </div>
-                        </th>
-                        <th scope="col">
-                          <div className="mt-4 mb-3 ml-1">
-                            Số lượng
-                          </div>
-                        </th>
-                        <th scope="col">
-                          <div className="mt-4 mb-3 ml-2">
-                            Số Tiền
-                          </div>
-                        </th>
-                        <th scope="col">
-                          <div className="mt-4 mb-3">
-                            Thao Tác
-                          </div></th>
-                      </tr>
-                    </thead>
-                  </table>
+        <div onScroll={(e) => console.log("scrolling!", e.target.scrollTop)}>
+          <div style={{ overflowY: "auto" }} >
+            <StickyContainer>
+              <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`} onScroll={(e) => console.log(e)}>
+                <div>
                 </div>
-                <div className={`${styles.vendorPart} p-3`}>
-                  <InfiniteScroll
-                    dataLength={totalProduct}
-                    next={fetchMoreData}
-                    hasMore={currentPage < totalPage}
-                    loader={<h4>Đang tải...</h4>}
-                  >
-                    {products.map((p, i) => {
-                      return (
-                        <Card key={i} style={{ border: 'none' }}>
-                          <CardHeader style={{ backgroundColor: 'white' }}>
-                            <div className=" mb-2">
-                              {!p.count == p.totalDocs ? "" :
-                                <input type="checkbox"
-                                  className="mr-4 mt-5"
-                                  checked={p.selected}
-                                  onClick={() => { handleSelectVendor(i) }}
-                                />
-                              }
-                              <img src="/assets/icon/shop-icon.png" className="mr-2" />
-                              <Link href={`/vendors/${p.vendor.owner.username}`}>
-                                <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
-                              </Link>
+                <Container>
+                  <Row>
+                    <Col sm="12">
+                      <div className="mt-3">
+                        <table className="table cart-table table-responsive-xs mt-2 mb-3">
+                          <thead style={{ border: 'none' }}>
+                            <tr className={`${styles.backgroundHead}`}>
+                              <th scope="col">
+                                <div className="mt-4 mb-3">
+                                  <input
+                                    type="checkbox"
+                                    checked={isSelectedAll}
+                                    onClick={selectAllProduct}
+                                  />
+                                </div>
+                              </th>
+                              <th scope="col" colSpan="2">
+                                <div className="mt-4 mb-3 ml-5">Sản phẩm</div>
+                              </th>
+                              <th scope="col">
+                                <div className="mt-4 mb-3 ml-5">
+                                  Giá
+                                </div>
+                              </th>
+                              <th scope="col">
+                                <div className="mt-4 mb-3 ml-1">
+                                  Số lượng
+                                </div>
+                              </th>
+                              <th scope="col">
+                                <div className="mt-4 mb-3 ml-2">
+                                  Số Tiền
+                                </div>
+                              </th>
+                              <th scope="col">
+                                <div className="mt-4 mb-3">
+                                  Thao Tác
+                                </div></th>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                      <div className={`${styles.vendorPart} p-3`}
+                      >
+                        <InfiniteScroll
+                          dataLength={currentPage}
+                          next={fetchMoreData}
+                          hasMore={currentPage < totalPage}
+                          loader={<div className="d-flex justify-content-center">
+                            <div class="spinner-border text-danger" role="status">
+                              <span class="sr-only">Loading...</span>
                             </div>
-                          </CardHeader>
-                          <CardBody>
-                            <table className="ml-3">
-                              {p.products.map((item, index) => {
-                                let discount
-                                if (item.attr) discount = item.attr.discount
-                                else if (item.variant) discount = item.variant.discount
-                                else discount = item.discount
-                                return (
-                                  <tbody key={index}>
-                                    <tr>
-                                      <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
-                                        <input type="checkbox"
-                                          className="mr-4 mt-5"
-                                          checked={item.selected}
-                                          onClick={() => handleSelectProduct(i, index)}
-                                        />
+                            <h4 className={styles.paginateText}>Đang tải...</h4>
+                          </div>}
+                          endMessage={
+                            <p style={{ textAlign: 'center' }}>
+                              <b>Yay! Bạn đã thấy tất cả</b>
+                            </p>
+                          }
+                          scrollableTarget="scrollableDiv"
+                        >
+                          {products.map((p, i) => {
+                            return (
+                              <Card key={i} style={{ border: 'none' }} className="mt-0">
+                                <CardHeader style={{ backgroundColor: 'white' }}>
+                                  <div className=" mb-2">
+                                    {!p.count == p.totalDocs ? "" :
+                                      <input type="checkbox"
+                                        className="mr-4 mt-5"
+                                        checked={p.selected}
+                                        onClick={() => { handleSelectVendor(i) }}
+                                      />
+                                    }
+                                    <img src="/assets/icon/shop-icon.png" className="mr-2" />
+                                    <Link href={`/vendors/${p.vendor.owner.username}`}>
+                                      <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
+                                    </Link>
+                                  </div>
+                                </CardHeader>
+                                <CardBody>
+                                  <table className="ml-3">
+                                    <LazyLoad>
+                                      {p.products.map((item, index) => {
+                                        let discount
+                                        if (item.attr) discount = item.attr.discount
+                                        else if (item.variant) discount = item.variant.discount
+                                        else discount = item.discount
+                                        return (
+                                          <tbody key={index}>
+                                            <tr>
+                                              <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
+                                                <input type="checkbox"
+                                                  className="mr-4 mt-5"
+                                                  checked={item.selected}
+                                                  onClick={() => handleSelectProduct(i, index)}
+                                                />
 
-                                        <Link href={`/${item.slug}`}>
-                                          <a>
-                                            <Media
-                                              src={item.variant?.image || item.image}
-                                              alt="mubaha.com"
-                                            />
-                                          </a>
-                                        </Link>
-                                      </td>
-                                      <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled2 : ""}>
-                                        <Link href={`/${item.slug}`}>
-                                          <strong className={styles.cursorVendor}>{item.name}</strong>
-                                        </Link>
-                                        {
-                                          item.variant &&
-                                          <Variant item={item} index={index} updateProduct={updateProduct}
-                                            i={i}
-                                          />
-                                        }
-                                        {item.status == productStatus.DISABLE || item.isOutOfStock
-                                          ?
-                                          item.status === productStatus.DISABLE
-                                            ?
+                                                <Link href={`/${item.slug}`}>
+                                                  <a>
+                                                    <Media
+                                                      src={item.variant?.image || item.image}
+                                                      alt="mubaha.com"
+                                                    />
+                                                  </a>
+                                                </Link>
+                                              </td>
+                                              <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled2 : ""}>
+                                                <Link href={`/${item.slug}`}>
+                                                  <strong className={styles.cursorVendor}>{item.name}</strong>
+                                                </Link>
+                                                {
+                                                  item.variant &&
+                                                  <Variant item={item} index={index} updateProduct={updateProduct}
+                                                    i={i}
+                                                  />
+                                                }
+                                                {item.status == productStatus.DISABLE || item.isOutOfStock
+                                                  ?
+                                                  item.status === productStatus.DISABLE
+                                                    ?
 
-                                            <Badge>
-                                              Không hoạt động
-                                            </Badge>
-                                            :
-                                            <Badge>
-                                              Hết hàng
-                                            </Badge>
-                                          : ""
-                                        }
-                                      </td>
-                                      <td className={item.status == productStatus.DISABLE && item.isOutOfStock && styles.disabled}>
-                                        <h2>
-                                          <NumberFormat
-                                            value={item?.attr?.price * (1 - item.attr?.discount)
-                                              || item.variant?.price * (1 - item.variant?.discount)
-                                              || item.price * (1 - item.discount)}
-                                            thousandSeparator={true}
-                                            displayType="text"
-                                            suffix={item.currencySymbol}
-                                            decimalScale={0}
-                                          />
+                                                    <Badge>
+                                                      Không hoạt động
+                                                    </Badge>
+                                                    :
+                                                    <Badge>
+                                                      Hết hàng
+                                                    </Badge>
+                                                  : ""
+                                                }
+                                              </td>
+                                              <td className={item.status == productStatus.DISABLE && item.isOutOfStock && styles.disabled}>
+                                                <h2>
+                                                  <NumberFormat
+                                                    value={item?.attr?.price * (1 - item.attr?.discount)
+                                                      || item.variant?.price * (1 - item.variant?.discount)
+                                                      || item.price * (1 - item.discount)}
+                                                    thousandSeparator={true}
+                                                    displayType="text"
+                                                    suffix={item.currencySymbol}
+                                                    decimalScale={0}
+                                                  />
 
-                                        </h2>
-                                        {discount > 0 &&
-                                          <del>
-                                            <span className="money ml-1">
-                                              <NumberFormat
-                                                value={item?.attr?.price
-                                                  || item.variant?.price
-                                                  || item.price}
-                                                thousandSeparator={true}
-                                                displayType="text"
-                                                suffix={item.currencySymbol}
-                                                decimalScale={0}
-                                              />
-                                            </span>
-                                          </del>
-                                        }
-                                      </td>
-                                      <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
-                                        <div className="qty-box">
-                                          <div className="input-group">
-                                            <span className="input-group-prepend">
-                                              <button
-                                                type="button"
-                                                className="btn quantity-left-minus"
-                                                onClick={() => handleMinusQuantity(i, index, item.quantity, item.cartID)}
-                                              >
-                                                <i className="fa fa-minus"></i>
-                                              </button>
-                                            </span>
-                                            <input
-                                              type="text"
-                                              name="quantity"
-                                              value={item.quantity}
-                                              min={1}
-                                              className="form-control input-number"
-                                            />
-                                            <span className="input-group-prepend">
-                                              <button
-                                                type="button"
-                                                className="btn quantity-right-plus"
-                                                onClick={() => handlePlusQuantity(i, index, item.quantity, item.cartID)}
-                                              >
-                                                <i className="fa fa-solid fa-plus"></i>
-                                              </button>
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </td>
-                                      <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
-                                        <h2 className="td-color ml-5">
-                                          <NumberFormat
-                                            value={item.quantity * item?.attr?.price || item.variant?.price || item.price}
-                                            thousandSeparator={true}
-                                            displayType="text"
-                                            suffix={item.currencySymbol}
-                                            decimalScale={0}
-                                          />
-                                        </h2>
-                                      </td>
-                                      <td>
-                                        <div className="justify-content-end ml-5">
-                                          <i
-                                            className={`fa fa-times ${styles.cursorVendor}`}
-                                            onClick={() => removeFromCart(i, index, item.cartID)}
-                                          ></i>
-                                        </div>
-                                      </td>
+                                                </h2>
+                                                {discount > 0 &&
+                                                  <del>
+                                                    <span className="money ml-1">
+                                                      <NumberFormat
+                                                        value={item?.attr?.price
+                                                          || item.variant?.price
+                                                          || item.price}
+                                                        thousandSeparator={true}
+                                                        displayType="text"
+                                                        suffix={item.currencySymbol}
+                                                        decimalScale={0}
+                                                      />
+                                                    </span>
+                                                  </del>
+                                                }
+                                              </td>
+                                              <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
+                                                <div className="qty-box">
+                                                  <div className="input-group">
+                                                    <span className="input-group-prepend">
+                                                      <button
+                                                        type="button"
+                                                        className="btn quantity-left-minus"
+                                                        onClick={() => handleMinusQuantity(i, index, item.quantity, item.cartID)}
+                                                      >
+                                                        <i className="fa fa-minus"></i>
+                                                      </button>
+                                                    </span>
+                                                    <input
+                                                      type="text"
+                                                      name="quantity"
+                                                      value={item.quantity}
+                                                      min={1}
+                                                      className="form-control input-number"
+                                                    />
+                                                    <span className="input-group-prepend">
+                                                      <button
+                                                        type="button"
+                                                        className="btn quantity-right-plus"
+                                                        onClick={() => handlePlusQuantity(i, index, item.quantity, item.cartID)}
+                                                      >
+                                                        <i className="fa fa-solid fa-plus"></i>
+                                                      </button>
+                                                    </span>
+                                                  </div>
+                                                </div>
+                                              </td>
+                                              <td className={item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}>
+                                                <h2 className="td-color ml-5">
+                                                  <NumberFormat
+                                                    value={item.quantity * item?.attr?.price * (1 - discount) || item.variant?.price * (1 - discount) || item.price * (1 - discount)}
+                                                    thousandSeparator={true}
+                                                    displayType="text"
+                                                    suffix={item.currencySymbol}
+                                                    decimalScale={0}
+                                                  />
+                                                </h2>
+                                              </td>
+                                              <td>
+                                                <div className="justify-content-end ml-5">
+                                                  <i
+                                                    className={`fa fa-times ${styles.cursorVendor}`}
+                                                    onClick={() => removeFromCart(i, index, item.cartID)}
+                                                  ></i>
+                                                </div>
+                                              </td>
 
-                                    </tr>
-                                  </tbody>
-                                );
-                              })}
-                            </table>
-                          </CardBody>
-                          <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
-                            <div className="d-flex mb-2 mt-3">
-                              <strong>Shop Khuyến Mãi</strong> <span className="ml-2">Vui lòng chọn sản phẩm trước</span>
-                            </div>
-                          </CardFooter>
-                        </Card>
+                                            </tr>
+                                          </tbody>
+                                        );
+                                      })}
+                                    </LazyLoad>
+                                  </table>
+                                </CardBody>
+                                <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
+                                  <div className="d-flex mb-2 mt-3">
+                                    <strong>Shop Khuyến Mãi</strong> <span className="ml-2">Vui lòng chọn sản phẩm trước</span>
+                                  </div>
+                                </CardFooter>
+                              </Card>
 
-                      )
-                    })}
-                  </InfiniteScroll>
-                </div>
-                <Modal
-                  className="mt-5"
-                  isOpen={isOpenModalDeleteProduct}
-                  toggle={handleModalDeleteMany}
-                >
-                  <ModalHeader toggle={handleModalDeleteMany}>
-                    Bạn có muốn bỏ {totalProductSelect} sản phẩm?
-                  </ModalHeader>
-                  <ModalFooter>
-                    <Button
-                      color="danger"
-                      onClick={deleteManyCartItem}
+                            )
+                          })}
+                        </InfiniteScroll>
+                        <div></div>
+                      </div>
+                      <Modal
+                        className="mt-5"
+                        isOpen={isOpenModalDeleteProduct}
+                        toggle={handleModalDeleteMany}
+                      >
+                        <ModalHeader toggle={handleModalDeleteMany}>
+                          Bạn có muốn bỏ {totalProductSelect} sản phẩm?
+                        </ModalHeader>
+                        <ModalFooter>
+                          <Button
+                            color="danger"
+                            onClick={deleteManyCartItem}
+                          >
+                            Đồng ý
+                          </Button>
+                          <Button onClick={handleModalDeleteMany}>
+                            Huỷ
+                          </Button>
+                        </ModalFooter>
+                      </Modal>
+                    </Col>
+                  </Row>
+                </Container>
+
+                )
+              </section>
+              <Sticky topOffset={20}>
+                {({ }) => (
+                  <div className="parent">
+                    <div style={{
+                      textAlign: "center",
+                      padding: "20px",
+                      position: "fixed",
+                      left: "0",
+                      bottom: "0",
+                      height: "100px",
+                      width: "100%",
+                      zIndex: 1000,
+                      fontFamily: "Montserrat, sans-serif"
+                    }}
+                    className={styles.isSticky}
                     >
-                      Đồng ý
-                    </Button>
-                    <Button onClick={handleModalDeleteMany}>
-                      Huỷ
-                    </Button>
-                  </ModalFooter>
-                </Modal>
-                <div className={`${styles.totalPart} mt-3 pb-4`}>
-                  <table className="table cart-table table-responsive-md">
-                    <tfoot>
-                      <tr>
-                        <td className="d-flex justify-content-between">
-                          <div className="d-flex flex-row bd-highlight ml-5">
-                            <div className="bd-highlight">
-                              <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
-                                disabled={true}
-                                onClick={handleModalDeleteMany}
-                              >
-                                Xoá
-                              </span>
-                              ({totalProductSelect} sản phẩm đã chọn)
-                            </div>
-                            <div className="ml-5">
-                              <span
-                                className={styles.deleteUnavailable}
-                                onClick={deleteAvailableProducts}
-                              >Xoá tất cả sản phẩm không hoạt động</span>
-                            </div>
-                          </div>
-                          <div className="ml-5">
-                            Tổng thanh toán ({totalProductSelect} sản phẩm) :
-                          </div>
-                        </td>
-                        <td>
-                          <h2>
-                            <NumberFormat
-                              value={totalPrice}
-                              thousandSeparator={true}
-                              displayType="text"
-                              suffix={'₫'}
-                              decimalScale={0}
-                            />
-                          </h2>
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </Col>
-            </Row>
-            <Row className="cart-buttons">
-              <Col xs="6">
-                <Link href={`/`}>
-                  <a className="btn btn-solid">Tiếp tục mua hàng</a>
-                </Link>
-              </Col>
-              <Col xs="6">
-                <Link href={`/page/account/checkout`}>
-                  <a className="btn btn-solid">Thanh toán</a>
-                </Link>
-              </Col>
-            </Row>
-          </Container>
-          )
-        </section>
+                      <div className={`${styles.totalPart} pb-4 mt-0`}>
+                        <table className="table cart-table table-responsive-md mt-0">
+                          <tfoot>
+                            <tr>
+                              <td className="d-flex justify-content-between pt-4 border-0 mt-0">
+                                <div className="d-flex flex-row bd-highlight ml-5">
+                                  <div className="bd-highlight">
+                                    <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
+                                      disabled={true}
+                                      onClick={handleModalDeleteMany}
+                                    >
+                                      Xoá
+                                    </span>
+                                    ({totalProductSelect} sản phẩm đã chọn)
+                                  </div>
+                                  <div className="ml-5">
+                                    <span
+                                      className={styles.deleteUnavailable}
+                                      onClick={deleteAvailableProducts}
+                                    >Xoá tất cả sản phẩm không hoạt động</span>
+                                  </div>
+                                </div>
+                                <div className="ml-5">
+                                  Tổng thanh toán ({totalProductSelect} sản phẩm) :
+                                </div>
+                              </td>
+                              <td className="border-0">
+                                <div className="d-flex">
+                                  <h2>
+                                    <NumberFormat
+                                      value={totalPrice}
+                                      thousandSeparator={true}
+                                      displayType="text"
+                                      suffix={'₫'}
+                                      decimalScale={0}
+                                    />
+                                  </h2>
+                                  <a onClick={handleSubmit} className="btn btn-solid ml-2">Thanh toán</a>
+                                </div>
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
 
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+              </Sticky>
+            </StickyContainer>
+          </div>
+        </div>
       </div>
+
     );
   } else {
     return (
