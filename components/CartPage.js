@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
 import {
@@ -16,7 +16,7 @@ import _ from 'lodash'
 import productStatusEnum from "@/enums/productStatus.enum";
 import LazyLoad from 'react-lazyload';
 import { StickyContainer, Sticky } from 'react-sticky';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 const Variant = dynamic(() => import('@/components/Variant.js'))
 const CartPage = ({ data }) => {
   const { data: session } = useSession()
@@ -483,19 +483,19 @@ const CartPage = ({ data }) => {
     const cartItems = []
     products.forEach(v => {
       v.products.forEach(p => {
-        if(p.selected===true){
-            cartItems.push(p.cartID)
+        if (p.selected === true) {
+          cartItems.push(p.cartID)
         }
       })
     })
     console.log(cartItems)
-    if(cartItems.length<=0){
+    if (cartItems.length <= 0) {
       setMessage("Vui lòng chọn sản phẩm")
       setVisible(true)
       setTimeout(function () {
         setVisible(false)
       }, 1000)
-    }else{
+    } else {
       router.push({
         pathname: '/checkout',
         query: cartItems,
@@ -519,7 +519,7 @@ const CartPage = ({ data }) => {
         <div onScroll={(e) => console.log("scrolling!", e.target.scrollTop)}>
           <div style={{ overflowY: "auto" }} >
             <StickyContainer>
-              <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`} onScroll={(e) =>console.log(e)}>
+              <section className={`cart-section section-b-space pt-0 ${styles.backgroundFull}`} onScroll={(e) => console.log(e)}>
                 <div>
                 </div>
                 <Container>
@@ -564,8 +564,8 @@ const CartPage = ({ data }) => {
                           </thead>
                         </table>
                       </div>
-                      <div className={`${styles.vendorPart} p-3`} 
-                       >
+                      <div className={`${styles.vendorPart} p-3`}
+                      >
                         <InfiniteScroll
                           dataLength={currentPage}
                           next={fetchMoreData}
@@ -775,71 +775,73 @@ const CartPage = ({ data }) => {
                     </Col>
                   </Row>
                 </Container>
-               
+
                 )
               </section>
               <Sticky topOffset={20}>
                 {({ }) => (
-                  <div style={{
-                    textAlign: "center",
-                    padding: "20px",
-                    position: "fixed",
-                    left: "0",
-                    bottom: "0",
-                    height: "100px",
-                    width: "100%",
-                    zIndex: 1000,
-                    fontFamily: "Montserrat, sans-serif"
-                  }}
-                  >
-                    <div className={`${styles.totalPart} pb-4 mt-0`}>
-                      <table className="table cart-table table-responsive-md mt-0">
-                        <tfoot>
-                          <tr>
-                            <td className="d-flex justify-content-between pt-4 border-0 mt-0">
-                              <div className="d-flex flex-row bd-highlight ml-5">
-                                <div className="bd-highlight">
-                                  <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
-                                    disabled={true}
-                                    onClick={handleModalDeleteMany}
-                                  >
-                                    Xoá
-                                  </span>
-                                  ({totalProductSelect} sản phẩm đã chọn)
+                  <div className="parent">
+                    <div style={{
+                      textAlign: "center",
+                      padding: "20px",
+                      position: "fixed",
+                      left: "0",
+                      bottom: "0",
+                      height: "100px",
+                      width: "100%",
+                      zIndex: 1000,
+                      fontFamily: "Montserrat, sans-serif"
+                    }}
+                    className={styles.isSticky}
+                    >
+                      <div className={`${styles.totalPart} pb-4 mt-0`}>
+                        <table className="table cart-table table-responsive-md mt-0">
+                          <tfoot>
+                            <tr>
+                              <td className="d-flex justify-content-between pt-4 border-0 mt-0">
+                                <div className="d-flex flex-row bd-highlight ml-5">
+                                  <div className="bd-highlight">
+                                    <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
+                                      disabled={true}
+                                      onClick={handleModalDeleteMany}
+                                    >
+                                      Xoá
+                                    </span>
+                                    ({totalProductSelect} sản phẩm đã chọn)
+                                  </div>
+                                  <div className="ml-5">
+                                    <span
+                                      className={styles.deleteUnavailable}
+                                      onClick={deleteAvailableProducts}
+                                    >Xoá tất cả sản phẩm không hoạt động</span>
+                                  </div>
                                 </div>
                                 <div className="ml-5">
-                                  <span
-                                    className={styles.deleteUnavailable}
-                                    onClick={deleteAvailableProducts}
-                                  >Xoá tất cả sản phẩm không hoạt động</span>
+                                  Tổng thanh toán ({totalProductSelect} sản phẩm) :
                                 </div>
-                              </div>
-                              <div className="ml-5">
-                                Tổng thanh toán ({totalProductSelect} sản phẩm) :
-                              </div>
-                            </td>
-                            <td className="border-0">
-                              <div className="d-flex">
-                                <h2>
-                                  <NumberFormat
-                                    value={totalPrice}
-                                    thousandSeparator={true}
-                                    displayType="text"
-                                    suffix={'₫'}
-                                    decimalScale={0}
-                                  />
-                                </h2>
-                                <a onClick={handleSubmit} className="btn btn-solid ml-2">Thanh toán</a>
-                              </div>
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
+                              </td>
+                              <td className="border-0">
+                                <div className="d-flex">
+                                  <h2>
+                                    <NumberFormat
+                                      value={totalPrice}
+                                      thousandSeparator={true}
+                                      displayType="text"
+                                      suffix={'₫'}
+                                      decimalScale={0}
+                                    />
+                                  </h2>
+                                  <a onClick={handleSubmit} className="btn btn-solid ml-2">Thanh toán</a>
+                                </div>
+                              </td>
+                            </tr>
+                          </tfoot>
+                        </table>
+
+                      </div>
 
                     </div>
-
                   </div>
-
                 )}
               </Sticky>
             </StickyContainer>
