@@ -18,6 +18,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import styles from "./CheckoutPage.module.css";
+import Address from "@/components/Address"
 
 const CheckoutPage = () => {
   const [obj, setObj] = useState({});
@@ -28,7 +29,7 @@ const CheckoutPage = () => {
   const [showVoucher, setShowVoucher] = useState(false);
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
   const router = useRouter();
-  const handleClose = () => setShow(false);
+  const handleCloseCreateAdd = () => setShow(false);
   const handleShow = () => {
     setShow(true);
     setMessage("");
@@ -448,134 +449,7 @@ const CheckoutPage = () => {
         </Container>
       </section>
       {/* Modal add address */}
-      <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={show}>
-        <ModalHeader>Cập nhật địa chỉ</ModalHeader>
-        <ModalBody className="container-fluid">
-          <div className="col-md-12 mt-3">
-            {showMessage &&
-              <Alert style={{ textAlign: 'center', height: 'auto' }} color={'danger'}>
-                {message}
-              </Alert>
-            }
-          </div>
-          <Row className="pl-5 pr-5 pb-3 pt-3">
-            <form id="add_address">
-              <div className="row">
-                <div className="col-lg-6">
-                  <div className="mb-3">
-                    <label htmlFor="productname">Họ và tên</label>
-                    <input
-                      name="productname"
-                      type="text"
-                      className="form-control productname"
-                      autoFocus
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6">
-                  <div className="mb-3">
-                    <label htmlFor="number_phone">Số điện thoại</label>
-                    <input
-                      name="number_phone"
-                      type="text"
-                      className="form-control number_phone"
-                      maxLength={10}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-12 col-md-12">
-                  <div className="mb-3">
-                    <label
-                      htmlFor="choices-single-groups"
-                      className="form-label font-size-13 text-muted"
-                    >
-                      Tỉnh/Thành phố
-                    </label>
-                    <select
-                      className="form-control"
-                      data-trigger
-                      name="choices-single-groups"
-                      required
-                    >
-                      <option value="">Chọn một tỉnh/thành phố</option>
-                      
-                    </select>
-                  </div>
-                </div>
-                <div className="col-lg-12 col-md-12">
-                  <div className="mb-3">
-                    <label
-                      htmlFor="choices-single-groups"
-                      className="form-label font-size-13 text-muted"
-                    >
-                      Quận/Huyện
-                    </label>
-                    <select
-                      className="form-control"
-                      data-trigger
-                      name="choices-single-groups"
-                      required
-                    >
-                      <option value="">Chọn một quận/huyện</option>
-                      
-                    </select>
-                  </div>
-                </div>
-                <div className="col-lg-12 col-md-12">
-                  <div className="mb-3">
-                    <label
-                      htmlFor="choices-single-groups"
-                      className="form-label font-size-13 text-muted"
-                    >
-                      Xã/Phường
-                    </label>
-                    <select
-                      className="form-control"
-                      data-trigger
-                      name="choices-single-groups"
-                      id="ward"
-                      required
-                    >
-                      <option value="">Chọn một xã/phường</option>
-                      
-                    </select>
-                  </div>
-                </div>
-                <div className="col-lg-12">
-                  <label className="col-form-label">
-                    Địa chỉ chi tiết
-                  </label>
-                  <textarea
-                    className="form-control"
-                    required
-                  />
-                </div>
-                <div className={` col-lg-12 mt-2 a`}>
-                  <div class="form-check">
-                    <input className="form-check-input" type="checkbox" id="flexCheckDefault"
-                     />
-                    <label className="form-check-label" for="flexCheckDefault">
-                      Đặt địa chỉ mặc định
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-            </form>
-          </Row>
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            className="btn btn-secondary btn-lg"
-            style={{ width: "120px", height: "50px" }}
-            onClick={handleClose}
-          >
-            Huỷ
-          </Button>
-          <button className="btn-solid btn">Cập nhật</button>
-        </ModalFooter>
-      </Modal>
-     
+      <Address isOpen={show} handleCloseCreateAdd={handleCloseCreateAdd} />
       {/* Modal voucher */}
       <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={showVoucher}>
         <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
