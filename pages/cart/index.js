@@ -6,14 +6,13 @@ import productStatusEnum from "@/enums/productStatus.enum";
 import ProductCollection1 from "@/components/ProductCollection1";
 import _ from 'lodash'
 export default function Cart({ data }) {
-  console.log(data)
   return (
     <>
       <Head>
         <title>Giỏ hàng</title>
       </Head>
       <CartPage data={data} />
-      <ProductCollection1 title="gợi ý hôm nay" data={data.relatedProducts} />
+      {/* <ProductCollection1 title="gợi ý hôm nay" data={data.relatedProducts} /> */}
     </>
   )
 }
