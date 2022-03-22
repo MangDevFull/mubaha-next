@@ -19,15 +19,21 @@ const Checkout = () => {
 export default Checkout;
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
   const session = await getSession(context);
-  const response = await fetch(`${process.env.API_ORDER_URL}/checkout?carts=${id}`, {
+  
+  const response = await fetch(`${process.env.API_ORDER_URL}/checkout?carts=6238483f9112a91018d68295`, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer" + session.accessToken,
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer' + session.accessToken,
     },
   });
+  const data = await response.json();
+  console.log(data);
+   
+
+  // const data = await response.json();
+  // console.log(data);
   return {
     props: {},
   };

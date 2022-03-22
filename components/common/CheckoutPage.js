@@ -452,13 +452,13 @@ const CheckoutPage = () => {
         <ModalHeader>Cập nhật địa chỉ</ModalHeader>
         <ModalBody className="container-fluid">
           <div className="col-md-12 mt-3">
-            {showMessage && (
-              <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
+            {showMessage &&
+              <Alert style={{ textAlign: 'center', height: 'auto' }} color={'danger'}>
                 {message}
               </Alert>
-            )}
+            }
           </div>
-          <Row className="p-5">
+          <Row className="pl-5 pr-5 pb-3 pt-3">
             <form id="add_address">
               <div className="row">
                 <div className="col-lg-6">
@@ -468,7 +468,7 @@ const CheckoutPage = () => {
                       name="productname"
                       type="text"
                       className="form-control productname"
-                      required
+                      autoFocus
                     />
                   </div>
                 </div>
@@ -480,7 +480,6 @@ const CheckoutPage = () => {
                       type="text"
                       className="form-control number_phone"
                       maxLength={10}
-                      required
                     />
                   </div>
                 </div>
@@ -492,8 +491,14 @@ const CheckoutPage = () => {
                     >
                       Tỉnh/Thành phố
                     </label>
-                    <select className="form-control" name="choices-single-groups" required>
+                    <select
+                      className="form-control"
+                      data-trigger
+                      name="choices-single-groups"
+                      required
+                    >
                       <option value="">Chọn một tỉnh/thành phố</option>
+                      
                     </select>
                   </div>
                 </div>
@@ -505,12 +510,57 @@ const CheckoutPage = () => {
                     >
                       Quận/Huyện
                     </label>
-                    <select className="form-control" name="choices-single-groups" required>
+                    <select
+                      className="form-control"
+                      data-trigger
+                      name="choices-single-groups"
+                      required
+                    >
                       <option value="">Chọn một quận/huyện</option>
+                      
                     </select>
                   </div>
                 </div>
+                <div className="col-lg-12 col-md-12">
+                  <div className="mb-3">
+                    <label
+                      htmlFor="choices-single-groups"
+                      className="form-label font-size-13 text-muted"
+                    >
+                      Xã/Phường
+                    </label>
+                    <select
+                      className="form-control"
+                      data-trigger
+                      name="choices-single-groups"
+                      id="ward"
+                      required
+                    >
+                      <option value="">Chọn một xã/phường</option>
+                      
+                    </select>
+                  </div>
+                </div>
+                <div className="col-lg-12">
+                  <label className="col-form-label">
+                    Địa chỉ chi tiết
+                  </label>
+                  <textarea
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <div className={` col-lg-12 mt-2 a`}>
+                  <div class="form-check">
+                    <input className="form-check-input" type="checkbox" id="flexCheckDefault"
+                     />
+                    <label className="form-check-label" for="flexCheckDefault">
+                      Đặt địa chỉ mặc định
+                    </label>
+                  </div>
+                </div>
               </div>
+
             </form>
           </Row>
         </ModalBody>
@@ -525,6 +575,7 @@ const CheckoutPage = () => {
           <button className="btn-solid btn">Cập nhật</button>
         </ModalFooter>
       </Modal>
+     
       {/* Modal voucher */}
       <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={showVoucher}>
         <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
