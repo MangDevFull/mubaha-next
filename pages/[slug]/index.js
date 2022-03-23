@@ -23,7 +23,6 @@ import {
   LinkedinShareButton,
 } from "react-share";
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  console.log(detailProduct)
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -87,6 +86,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         });
         const data = await response.json()
         if (data.status === 200) {
+
           setVisible(true)
           setTimeout(() => setVisible(false), 1000)
         } else {
