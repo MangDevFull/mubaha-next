@@ -1,6 +1,6 @@
 import Head from "next/head";
 import LayoutCart from '@/components/LayoutCart.js'
-import CartPage from '@/components/CartPage.js'
+import CartPage from '@/components/cart/CartPage.js'
 import { getSession } from 'next-auth/react';
 import productStatusEnum from "@/enums/productStatus.enum";
 import ProductCollection1 from "@/components/ProductCollection1";
