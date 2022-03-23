@@ -34,6 +34,7 @@ const CartPage = ({ data }) => {
   const [totalPage, setTotalPage] = useState(data.totalPage)
   const [currentPage, setCurrentPage] = useState(data.page)
   const [totalProduct, setTotalProduct] = useState(data.totalDocs)
+  const [unActive,setUnActive] = useState(data.unActive)
   const { elementRef: comboBtnRef, isSticky } = Stciky2({ defaultSticky: true, isTop: false });
   useEffect(() => {
     const cartID = localStorage.getItem('cartID')
@@ -372,11 +373,13 @@ const CartPage = ({ data }) => {
         products: v.pop()
       }
     })
+    const fecthUnActive = 0
     const fullP = results.map(product => {
       let count = 0
       const d = product.products.map((p, index) => {
         if (p.product.status === productStatusEnum.DISABLE) {
           count += 1
+          fecthUnActive+=1
         }
         let value = {
           quantity: p.amount,
@@ -477,7 +480,7 @@ const CartPage = ({ data }) => {
         }
       })
     })
-    console.log("fetch")
+    setUnActive(fecthUnActive+unActive)
       setCurrentPage(page)
       setProduct([...products])
 
@@ -533,7 +536,7 @@ const CartPage = ({ data }) => {
                               <div className="mt-4 mb-3">
                                 <input
                                   type="checkbox"
-                                  defaultChecked={isSelectedAll}
+                                  checked={isSelectedAll}
                                   onClick={selectAllProduct}
                                 />
                               </div>
@@ -590,7 +593,7 @@ const CartPage = ({ data }) => {
                                   {!p.count == p.totalDocs ? "" :
                                     <input type="checkbox"
                                       className="mr-4 mt-5"
-                                      defaultChecked={p.selected}
+                                      checked={p.selected}
                                       onClick={() => { handleSelectVendor(i) }}
                                     />
                                   }
@@ -613,7 +616,7 @@ const CartPage = ({ data }) => {
                                             <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
                                               <input type="checkbox"
                                                 className="mr-4 mt-5"
-                                                defaultChecked={item.selected}
+                                                checked={item.selected}
                                                 onClick={() => handleSelectProduct(i, index)}
                                               />
 
@@ -802,12 +805,14 @@ const CartPage = ({ data }) => {
                         </span>
                         ({totalProductSelect} sản phẩm đã chọn)
                       </div>
+                      {unActive ?
                       <div className="ml-5">
                         <span
                           className={styles.deleteUnavailable}
                           onClick={deleteAvailableProducts}
                         >Xoá tất cả sản phẩm không hoạt động</span>
                       </div>
+                    :""}
                     </div>
                     <div className="ml-5">
                       Tổng thanh toán ({totalProductSelect} sản phẩm) :
