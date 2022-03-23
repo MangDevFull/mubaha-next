@@ -5,7 +5,6 @@ import NumberFormat from "react-number-format";
 import format from 'date-fns/format'
 
 const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher }) => {
-
   return (
     <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={isOpen}>
       <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
@@ -27,8 +26,8 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher }) =
               mã miễn phí vận chuyển và mã giảm giá đơn hàng
             </div>
 
-            {vouchers &&
-              vouchers.length > 0 &&
+            {vouchers.docs &&
+              vouchers.docs.length > 0 &&
               vouchers.docs.map((voucher, index) => {
               
                 return (

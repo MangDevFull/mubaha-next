@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Container } from "reactstrap";
 
 import Link from "next/link";
@@ -11,32 +11,59 @@ import NumberFormat from "react-number-format";
 
 const CheckoutPage = ({
   data,
+  listAddress,
+  selectedAddress,
   handleVoucherShow,
   handleCloseVoucher,
   showVoucher,
   vouchers,
   handleApplyVoucher,
   handleSelectPaymentMethod,
+  handleUpdateAddAddress,
+  handleChangeAddress,
+  handleOrder
 }) => {
-  console.log(data);
   const [obj, setObj] = useState({});
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
-  const [showAddress, setShowAddress] = useState("default");
+  const [showAddress, setShowAddress] = useState(false);
+  const [chooseAddress,setChooseAddress] = useState();
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
   const router = useRouter();
-  const handleCloseCreateAdd = () => setShow(false);
+  
+  const handleCloseCreateAdd = (data,setChecked) => {
+    setShow(false)
+    handleUpdateAddAddress(data);
+  };
   const handleShow = () => {
     setShow(true);
     setMessage("");
     setShowMessage(false);
   };
 
-  const handleUpdateAddress = (value) => {
-    setShowAddress(value);
+
+  useEffect(() => {
+    setChooseAddress(selectedAddress)  
+  },[selectedAddress]) 
+
+  useEffect(() => {
+    if(listAddress.length === 0){
+      setShowAddress(true);
+    }else{
+      setShowAddress(false);
+    }
+    
+  },[listAddress])
+
+
+
+  const handleUpdateShowAddress = () => {
+    
+    setShowAddress(!showAddress);
+  
   };
-  const handleQuit = (value) => {
+  const handleQuit = () => {
     setShowAddress(value);
   };
   const onSuccess = (payment) => {
@@ -51,18 +78,8 @@ const CheckoutPage = ({
     });
   };
 
-  const onSubmit = (data) => {
-    if (data !== "") {
-      alert("You submitted the form and stuff!");
-      router.push({
-        pathname: "/page/order-success",
-        state: { items: cartItems, orderTotal: cartTotal, symbol: symbol },
-      });
-    } else {
-      errors.showMessages();
-    }
-  };
 
+  
   return (
     <>
       <section className="section-b-space">
@@ -86,7 +103,7 @@ const CheckoutPage = ({
                         </div>
                         <div>Địa chỉ giao hàng</div>
                       </div>
-                      {showAddress === "change" && (
+                      {showAddress && (
                         <>
                           <div className={`${styles.button_select_address}`}>
                             <button
@@ -123,88 +140,86 @@ const CheckoutPage = ({
                       )}
                     </div>
 
-                    {showAddress === "change" && (
+                    {showAddress && listAddress.length > 0 && chooseAddress && (
                       <>
                         <div className={`${styles.list_address}`}>
                           <ul>
-                            <li>
-                              <input
-                                type="radio"
-                                name="delivery_address"
-                                data-view-index="cod"
-                                readOnly
-                                value="address"
-                              />
-                              <div className={`${styles.detail_info}`}>
-                                <div className={`${styles.info}`}>
-                                  <div className={`${styles.fullName}`}>
-                                    Nguyễn Minh Quang (+84) 373922863
-                                  </div>
-                                  <div className={`${styles.detailAddress}`}>
-                                    Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
-                                    Hậu, Quận Cầu Giấy, Hà Nội
-                                  </div>
-                                  <div className={`${styles.default}`}>Mặc định</div>
-                                </div>
-                              </div>
-                            </li>
-                            <li>
-                              <input
-                                type="radio"
-                                name="delivery_address"
-                                data-view-index="cod"
-                                readOnly
-                                value="address2"
-                              />
-                              <div className={`${styles.detail_info}`}>
-                                <div className={`${styles.info}`}>
-                                  <div className={`${styles.fullName}`}>
-                                    Nguyễn Minh Quang (+84) 373922863
-                                  </div>
-                                  <div className={`${styles.detailAddress}`}>
-                                    Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng
-                                    Hậu, Quận Cầu Giấy, Hà Nội
+                            {listAddress.map((item,index) =>{
+                              return (
+                                <li key={index}>
+                                <input
+                                  type="radio"
+                                  name="delivery_address"
+                                  data-view-index="cod"
+                                  readOnly
+                                  onClick={() => setChooseAddress(item)}
+                                  value="address2"
+                                  checked={item._id === chooseAddress._id}
+                                />
+                                <div className={`${styles.detail_info}`}>
+                                  <div className={`${styles.info}`}>
+                                    <div className={`${styles.fullName}`}>
+                                      {item.fullName} {item.phone}
+                                    </div>
+                                    <div className={`${styles.detailAddress}`}>
+                                      {item.fullAddress}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </li>
+                              </li>
+                              )
+                            })}
                           </ul>
                         </div>
-                        <div className={`${styles.button_change}`}>
+                        {listAddress.length > 0 && <div className={`${styles.button_change}`}>
                           <button
                             className={`${styles.button_add_address} ${styles.button_success} `}
+                            onClick={() => {
+                              handleChangeAddress(chooseAddress)
+                              setShowAddress(!showAddress);
+
+                            }}
                           >
                             Hoàn Thành
                           </button>
                           <button
                             className={`${styles.button_add_address} ${styles.button_back}`}
-                            onClick={() => handleQuit("default")}
+                            onClick={() => {
+                              setChooseAddress(selectedAddress)
+                              setShowAddress(!showAddress);
+                            }
+                            }
                           >
                             Trở về
-                          </button>
-                        </div>
+                          </button> 
+                        </div>}
                       </>
                     )}
 
-                    {showAddress === "default" && (
+                    {!showAddress && (
                       <>
-                        <div className="detail_infor">
-                          <div className={`${styles.info}`}>
-                            <div className={`${styles.fullName}`}>
-                              Nguyễn Minh Quang (+84) 373922863
-                            </div>
-                            <div className={`${styles.detailAddress}`}>
-                              Tầng 2, Detech tower II,107 Nguyễn Phong Sắc, Phường Dịch Vọng Hậu,
-                              Quận Cầu Giấy, Hà Nội
-                            </div>
-                            <div className={`${styles.default}`}>Mặc định</div>
-                          </div>
-                        </div>
+                    
+                           {selectedAddress &&    <div className="detail_infor">
+                              <div className={`${styles.info}`}>
+                                <div className={`${styles.fullName}`}>
+                                  {selectedAddress.fullName} {selectedAddress.phone}
+                                </div>
+                                <div className={`${styles.detailAddress}`}>
+                                 {selectedAddress.fullAddress}
+                                </div>
+                              <div className={`${styles.default}`}>Mặc định</div> 
+                              </div>
+                            </div>}
+                            
+                       
 
                         <div>
                           <button
                             className={`${styles.btn_change} btn p-0 m-0`}
-                            onClick={() => handleUpdateAddress("change")}
+                            onClick={() => {
+                              setShowAddress(!showAddress);
+
+                            }}
                           >
                             Thay đổi địa chỉ
                           </button>
@@ -229,7 +244,7 @@ const CheckoutPage = ({
                   </div>
                 </div>
                 <div>
-                  {data.docs && data.data.docs.length > 0 && data.data.docs.map((product, index) => {
+                  {data.docs && data.docs.length > 0 && data.docs.map((product, index) => {
                     return (
                       <div key={index}>
                         <div className={`${styles.total_price_information}`}>
@@ -455,7 +470,7 @@ const CheckoutPage = ({
                         </a>
                       </div>
                     </div>
-                    <button className={`${styles.button_order}`}>Đặt hàng</button>
+                    <button className={`${styles.button_order}`} onClick={handleOrder}>Đặt hàng</button>
                   </div>
                 </div>
               </div>
@@ -478,3 +493,4 @@ const CheckoutPage = ({
 };
 
 export default CheckoutPage;
+
