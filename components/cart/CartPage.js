@@ -628,5 +628,3 @@ const CartPage = ({ data }) => {
 
 
 export default CartPage;
-
-
