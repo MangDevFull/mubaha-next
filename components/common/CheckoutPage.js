@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { Container } from "reactstrap";
+import React, { useState, useEffect } from "react";
+import { Container, Alert, Modal, Button, ModalBody, ModalFooter, Row } from "reactstrap";
 
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,6 @@ import Voucher from "@/components/Voucher";
 import NumberFormat from "react-number-format";
 
 const CheckoutPage = ({
-  data,
   listAddress,
   selectedAddress,
   handleVoucherShow,
@@ -21,19 +20,22 @@ const CheckoutPage = ({
   handleSelectPaymentMethod,
   handleUpdateAddAddress,
   handleChangeAddress,
-  handleOrder
+  handleOrder,
+  cartItems,
 }) => {
+  console.log("cart", cartItems);
   const [obj, setObj] = useState({});
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
-  const [chooseAddress,setChooseAddress] = useState();
+  const [chooseAddress, setChooseAddress] = useState();
+  const [showError, setShowError] = useState(true);
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
   const router = useRouter();
-  
-  const handleCloseCreateAdd = (data,setChecked) => {
-    setShow(false)
+
+  const handleCloseCreateAdd = (data, setChecked) => {
+    setShow(false);
     handleUpdateAddAddress(data);
   };
   const handleShow = () => {
@@ -42,26 +44,20 @@ const CheckoutPage = ({
     setShowMessage(false);
   };
 
+  useEffect(() => {
+    setChooseAddress(selectedAddress);
+  }, [selectedAddress]);
 
   useEffect(() => {
-    setChooseAddress(selectedAddress)  
-  },[selectedAddress]) 
-
-  useEffect(() => {
-    if(listAddress.length === 0){
+    if (listAddress.length === 0) {
       setShowAddress(true);
-    }else{
+    } else {
       setShowAddress(false);
     }
-    
-  },[listAddress])
-
-
+  }, [listAddress]);
 
   const handleUpdateShowAddress = () => {
-    
     setShowAddress(!showAddress);
-  
   };
   const handleQuit = () => {
     setShowAddress(value);
@@ -78,12 +74,36 @@ const CheckoutPage = ({
     });
   };
 
-
-  
   return (
     <>
-      <section className="section-b-space">
+      <section className={`section-b-space ${styles.section_checkout_page}`}>
         <Container>
+          {cartItems && cartItems.length === 0 && (
+            <>
+              <Alert
+                style={{ textAlign: "center", height: "auto", marginBottom: "2rem" }}
+                color="danger"
+              >
+                Chưa có đơn hàng được lựa chọn. Vui lòng quay lại giỏ hàng
+              </Alert>
+              <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={showError}>
+                <ModalBody className="container-fluid">
+                  <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
+                    <h3>Giỏ hàng trống</h3>
+                  </Row>
+                </ModalBody>
+                <ModalFooter style={{ border: "none" }}>
+                  <Button
+                    className="btn btn-secondary btn-lg"
+                    style={{ width: "100%", maxWidth: "100%", borderRadius: "5px" }}
+                    onClick={() => setShowError(!showError)}
+                  >
+                    OK
+                  </Button>
+                </ModalFooter>
+              </Modal>
+            </>
+          )}
           <div className="checkout-page">
             <div className="checkout-form">
               <div className={`${styles.address}`}>
@@ -144,81 +164,79 @@ const CheckoutPage = ({
                       <>
                         <div className={`${styles.list_address}`}>
                           <ul>
-                            {listAddress.map((item,index) =>{
+                            {listAddress.map((item, index) => {
                               return (
                                 <li key={index}>
-                                <input
-                                  type="radio"
-                                  name="delivery_address"
-                                  data-view-index="cod"
-                                  readOnly
-                                  onClick={() => setChooseAddress(item)}
-                                  value="address2"
-                                  checked={item._id === chooseAddress._id}
-                                />
-                                <div className={`${styles.detail_info}`}>
-                                  <div className={`${styles.info}`}>
-                                    <div className={`${styles.fullName}`}>
-                                      {item.fullName} {item.phone}
-                                    </div>
-                                    <div className={`${styles.detailAddress}`}>
-                                      {item.fullAddress}
+                                  <input
+                                    type="radio"
+                                    name="delivery_address"
+                                    data-view-index="cod"
+                                    readOnly
+                                    onClick={() => setChooseAddress(item)}
+                                    value="address2"
+                                    checked={item._id === chooseAddress._id}
+                                  />
+                                  <div className={`${styles.detail_info}`}>
+                                    <div className={`${styles.info}`}>
+                                      <div className={`${styles.fullName}`}>
+                                        {item.fullName} {item.phone}
+                                      </div>
+                                      <div className={`${styles.detailAddress}`}>
+                                        {item.fullAddress}
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </li>
-                              )
+                                </li>
+                              );
                             })}
                           </ul>
                         </div>
-                        {listAddress.length > 0 && <div className={`${styles.button_change}`}>
-                          <button
-                            className={`${styles.button_add_address} ${styles.button_success} `}
-                            onClick={() => {
-                              handleChangeAddress(chooseAddress)
-                              setShowAddress(!showAddress);
-
-                            }}
-                          >
-                            Hoàn Thành
-                          </button>
-                          <button
-                            className={`${styles.button_add_address} ${styles.button_back}`}
-                            onClick={() => {
-                              setChooseAddress(selectedAddress)
-                              setShowAddress(!showAddress);
-                            }
-                            }
-                          >
-                            Trở về
-                          </button> 
-                        </div>}
+                        {listAddress.length > 0 && (
+                          <div className={`${styles.button_change}`}>
+                            <button
+                              className={`${styles.button_add_address} ${styles.button_success} `}
+                              onClick={() => {
+                                handleChangeAddress(chooseAddress);
+                                setShowAddress(!showAddress);
+                              }}
+                            >
+                              Hoàn Thành
+                            </button>
+                            <button
+                              className={`${styles.button_add_address} ${styles.button_back}`}
+                              onClick={() => {
+                                setChooseAddress(selectedAddress);
+                                setShowAddress(!showAddress);
+                              }}
+                            >
+                              Trở về
+                            </button>
+                          </div>
+                        )}
                       </>
                     )}
 
                     {!showAddress && (
                       <>
-                    
-                           {selectedAddress &&    <div className="detail_infor">
-                              <div className={`${styles.info}`}>
-                                <div className={`${styles.fullName}`}>
-                                  {selectedAddress.fullName} {selectedAddress.phone}
-                                </div>
-                                <div className={`${styles.detailAddress}`}>
-                                 {selectedAddress.fullAddress}
-                                </div>
-                              <div className={`${styles.default}`}>Mặc định</div> 
+                        {selectedAddress && (
+                          <div className="detail_infor">
+                            <div className={`${styles.info}`}>
+                              <div className={`${styles.fullName}`}>
+                                {selectedAddress.fullName} {selectedAddress.phone}
                               </div>
-                            </div>}
-                            
-                       
+                              <div className={`${styles.detailAddress}`}>
+                                {selectedAddress.fullAddress}
+                              </div>
+                              <div className={`${styles.default}`}>Mặc định</div>
+                            </div>
+                          </div>
+                        )}
 
                         <div>
                           <button
                             className={`${styles.btn_change} btn p-0 m-0`}
                             onClick={() => {
                               setShowAddress(!showAddress);
-
                             }}
                           >
                             Thay đổi địa chỉ
@@ -244,77 +262,79 @@ const CheckoutPage = ({
                   </div>
                 </div>
                 <div>
-                  {data.docs && data.docs.length > 0 && data.docs.map((product, index) => {
-                    return (
-                      <div key={index}>
-                        <div className={`${styles.total_price_information}`}>
-                          <div>
-                            <div className={`${styles.detail_order_information}`}>
-                              <div className={`${styles.vendor_name}`}>
-                                <span>{product.vendor.brandName}</span>
-                              </div>
-                              <div className={`${styles.section_order_info}`}>
-                                <div className={`${styles.order_info}`}>
-                                  <div
-                                    className={`${styles.title_info} ${styles.title_image_product}`}
-                                  >
-                                    <img width="40px" src={product.product.media.featuredImage} />
-                                    <span>
-                                      <span className={`${styles.name_product}`}>
-                                        {product.product.name}
-                                      </span>
-                                    </span>
-                                  </div>
-
-                                  <div className={`${styles.title_info} ${styles.classify_info}`}>
-                                    {product.product.variants.length > 0 ? (
-                                      <span>Loại: {product.product.variants}</span>
-                                    ) : (
-                                      <span></span>
-                                    )}
-                                  </div>
-                                  <div className={`${styles.title_info}`}>
-                                    <NumberFormat
-                                      value={product.product.price}
-                                      thousandSeparator={true}
-                                      displayType="text"
-                                      suffix={product.product.currencySymbol}
-                                      decimalScale={0}
-                                    />
-                                  </div>
-                                  <div className={`${styles.title_info}`}>{product.amount}</div>
-                                  <div className={`${styles.title_info}`}>
-                                    <NumberFormat
-                                      value={product.product.price * product.amount}
-                                      thousandSeparator={true}
-                                      displayType="text"
-                                      suffix={product.product.currencySymbol}
-                                      decimalScale={0}
-                                    />
-                                  </div>
+                  {cartItems &&
+                    cartItems.length > 0 &&
+                    cartItems.map((product, index) => {
+                      return (
+                        <div key={index}>
+                          <div className={`${styles.total_price_information}`}>
+                            <div>
+                              <div className={`${styles.detail_order_information}`}>
+                                <div className={`${styles.vendor_name}`}>
+                                  {/* <span>{product.vendor.brandName}</span> */}
                                 </div>
-                              </div>
-                              <div className={`${styles.section_voucher_shop}`}>
-                                <div className={`${styles.voucher_shop}`}>
-                                  <div className={`${styles.title_voucher_shop}`}>
-                                    <div className={`${styles.image_voucher}`}>
-                                      <img src="https" />
-                                      <div>Voucher của Shop</div>
+                                <div className={`${styles.section_order_info}`}>
+                                  <div className={`${styles.order_info}`}>
+                                    <div
+                                      className={`${styles.title_info} ${styles.title_image_product}`}
+                                    >
+                                      <img width="40px" src={product.product.media.featuredImage} />
+                                      <span>
+                                        <span className={`${styles.name_product}`}>
+                                          {product.product.name}
+                                        </span>
+                                      </span>
+                                    </div>
+
+                                    <div className={`${styles.title_info} ${styles.classify_info}`}>
+                                      {product.product.variants.length > 0 ? (
+                                        <span>Loại: {product.product.variants}</span>
+                                      ) : (
+                                        <span></span>
+                                      )}
+                                    </div>
+                                    <div className={`${styles.title_info}`}>
+                                      <NumberFormat
+                                        value={product.product.price}
+                                        thousandSeparator={true}
+                                        displayType="text"
+                                        suffix={product.product.currencySymbol}
+                                        decimalScale={0}
+                                      />
+                                    </div>
+                                    <div className={`${styles.title_info}`}>{product.amount}</div>
+                                    <div className={`${styles.title_info}`}>
+                                      <NumberFormat
+                                        value={product.product.price * product.amount}
+                                        thousandSeparator={true}
+                                        displayType="text"
+                                        suffix={product.product.currencySymbol}
+                                        decimalScale={0}
+                                      />
                                     </div>
                                   </div>
-                                  <div className={`${styles.button_voucher_shop}`}>
-                                    <button>
-                                      <span>Chọn voucher</span>
-                                    </button>
+                                </div>
+                                <div className={`${styles.section_voucher_shop}`}>
+                                  <div className={`${styles.voucher_shop}`}>
+                                    <div className={`${styles.title_voucher_shop}`}>
+                                      <div className={`${styles.image_voucher}`}>
+                                        <img src="https" />
+                                        <div>Voucher của Shop</div>
+                                      </div>
+                                    </div>
+                                    <div className={`${styles.button_voucher_shop}`}>
+                                      <button>
+                                        <span>Chọn voucher</span>
+                                      </button>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
               </div>
               <div className={`${styles.voucher}`}>
@@ -332,6 +352,7 @@ const CheckoutPage = ({
                     <button
                       className={`${styles.btn_change} btn p-0 m-0`}
                       onClick={handleVoucherShow}
+                      disabled={cartItems.length === 0}
                     >
                       Chọn Voucher
                     </button>
@@ -351,6 +372,7 @@ const CheckoutPage = ({
                           readOnly
                           value="cod"
                           onChange={handleSelectPaymentMethod}
+                          disabled={cartItems.length === 0}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -372,15 +394,16 @@ const CheckoutPage = ({
                           readOnly
                           value="atm"
                           onChange={handleSelectPaymentMethod}
+                          disabled={cartItems.length === 0}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
                             <img
                               width="32px"
-                              src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-atm.svg"
+                              src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-credit.svg"
                             />
 
-                            <span>Thẻ ATM nội địa/Internet Banking (Hỗ trợ Internet Banking)</span>
+                            <span>Thanh toán bằng thẻ quốc tế Visa, Master, JCB</span>
                           </div>
                         </span>
                       </label>
@@ -394,9 +417,14 @@ const CheckoutPage = ({
                           readOnly
                           value="paypal"
                           onChange={handleSelectPaymentMethod}
+                          disabled={cartItems.length === 0}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
+                            <img
+                              width="32px"
+                              src="https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_fc_hl.svg"
+                            />
                             <span>Thanh toán bằng Paypal</span>
                           </div>
                         </span>
@@ -411,6 +439,7 @@ const CheckoutPage = ({
                           readOnly
                           value="vnpay"
                           onChange={handleSelectPaymentMethod}
+                          disabled={cartItems.length === 0}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -429,38 +458,44 @@ const CheckoutPage = ({
               </div>
               <div className={`${styles.total}`}>
                 <h4>5. Tổng đơn hàng </h4>
-                <div className={`${styles.total_prices}`}>
-                  <div
-                    className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_amount}`}
-                  >
-                    Tổng tiền hàng
-                  </div>
-                  <div
-                    className={`${styles.total_title_price} ${styles.total_amount} ${styles.prices}`}
-                  >
-                    ₫1.147.000
-                  </div>
-                  <div
-                    className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
-                  >
-                    Phí vận chuyển
-                  </div>
-                  <div
-                    className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}
-                  >
-                    ₫70.700
-                  </div>
 
-                  <div
-                    className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
-                  >
-                    Tổng thanh toán:
-                  </div>
-                  <div
-                    className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}
-                  >
-                    <span>₫1.217.700</span>
-                  </div>
+                <div className={`${styles.total_prices}`}>
+                  {cartItems && cartItems.length > 0 && (
+                    <>
+                      <div
+                        className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_amount}`}
+                      >
+                        Tổng tiền hàng
+                      </div>
+                      <div
+                        className={`${styles.total_title_price} ${styles.total_amount} ${styles.prices}`}
+                      >
+                        ₫1.147.000
+                      </div>
+                      <div
+                        className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
+                      >
+                        Phí vận chuyển
+                      </div>
+                      <div
+                        className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}
+                      >
+                        ₫70.700
+                      </div>
+
+                      <div
+                        className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
+                      >
+                        Tổng thanh toán:
+                      </div>
+                      <div
+                        className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}
+                      >
+                        <span>₫1.217.700</span>
+                      </div>
+                    </>
+                  )}
+
                   <div className={`${styles.section_button_order}`}>
                     <div className={`${styles.section_rules}`}>
                       <div>
@@ -470,7 +505,17 @@ const CheckoutPage = ({
                         </a>
                       </div>
                     </div>
-                    <button className={`${styles.button_order}`} onClick={handleOrder}>Đặt hàng</button>
+                    <button
+                      className={
+                        cartItems.length === 0
+                          ? `${styles.button_order_disabled}`
+                          : `${styles.button_order}`
+                      }
+                      onClick={handleOrder}
+                      disabled={cartItems.length === 0}
+                    >
+                      Đặt hàng
+                    </button>
                   </div>
                 </div>
               </div>
@@ -493,4 +538,3 @@ const CheckoutPage = ({
 };
 
 export default CheckoutPage;
-

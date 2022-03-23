@@ -1,3 +1,6 @@
+.section_checkout_page {
+  padding-top: 40px
+}
 .address h4 {
   margin-bottom: 20px;
   color: #5f5f5f;
@@ -501,6 +504,14 @@
 .button_order:hover {
   background-color: #f89922cc;
 }
+.button_order_disabled {
+  background-color: #f8992296;
+  color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  text-transform: capitalize;
+  width: 210px;
+  height: 40px;
+}
 .button_change {
   padding: 10px 65px 20px 0;
   display: flex;
@@ -568,13 +579,16 @@
   padding: 40px 25px 32px 0;
   flex: 1;
 }
+.modal_content {
+  margin-top: 2rem;
+}
 .modal_voucher {
   display: flex;
   flex-direction: column;
   height: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding-bottom: 5.25rem;
+  padding-bottom: 2.5rem;
 }
 .section_search_voucher {
   display: flex;
@@ -633,7 +647,7 @@
   padding-right: 1.25rem;
   margin-top: 1.25rem;
   width: 100%;
-  height: 100%;
+  height: 25rem;
 }
 .title_name_list {
   font-size: 1rem;
@@ -708,10 +722,11 @@
 }
 .voucher_information_basic_2, .apply_information{
   overflow: hidden;
-    text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
+
 .voucher_information_basic_2 {
-  
+    margin-right: 0.5em;
     border-radius: 0.125rem;
     white-space: nowrap;
     box-sizing: border-box;

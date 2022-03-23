@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
 import styles from "@/components/common/CheckoutPage.module.css";
 import NumberFormat from "react-number-format";
-import format from 'date-fns/format'
+import format from "date-fns/format";
 
 const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher }) => {
   return (
-    <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={isOpen}>
+    <Modal
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      className={`${styles.modal_content}`}
+      centered
+      isOpen={isOpen}
+    >
       <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
       <ModalBody>
         <div className={`${styles.modal_voucher}`}>
@@ -29,7 +35,6 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher }) =
             {vouchers.docs &&
               vouchers.docs.length > 0 &&
               vouchers.docs.map((voucher, index) => {
-              
                 return (
                   <div key={index}>
                     <div className={`${styles.voucher}`}>
@@ -44,15 +49,44 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher }) =
                             </div>
                             <div className={`${styles.voucher_information_basic_1}`}>
                               <div className={`${styles.voucher_information_basic_2}`}>
-                                <div className={`${styles.apply_information}`}>Đơn hàng từ 0Đ</div>
+                                <div className={`${styles.apply_information}`}>
+                                  Đơn hàng tối thiếu{" "}
+                                  <NumberFormat
+                                    style={{ color: "red" }}
+                                    value={voucher.minBasketPrice}
+                                    thousandSeparator={true}
+                                    displayType="text"
+                                    suffix={voucher.currencySymbol}
+                                    decimalScale={0}
+                                  />
+                                </div>
+                              </div>
+                              <div className={`${styles.voucher_information_basic_2}`}>
+                                <div className={`${styles.apply_information}`}>
+                                  Mã giảm giá{" "}
+                                  {voucher.discount.type === "percent" ? (
+                                    `${voucher.discount.amount}%`
+                                  ) : (
+                                    <NumberFormat
+                                      style={{ color: "red" }}
+                                      value={voucher.discount.amount}
+                                      thousandSeparator={true}
+                                      displayType="text"
+                                      suffix={voucher.currencySymbol}
+                                      decimalScale={0}
+                                    />
+                                  )}{" "}
+                                </div>
                               </div>
                             </div>
-                            <span>
-                              HSD: {format(new Date(voucher.endDate), "MM/dd/yyyy")}
-                            </span>
+
+                            <span>HSD: {format(new Date(voucher.endDate), "MM/dd/yyyy")}</span>
                           </div>
                           <div className={`${styles.button_apply_voucher}`}>
-                            <button className={`${styles.button_apply}`} onClick={() => handleApplyVoucher(voucher)}>
+                            <button
+                              className={`${styles.button_apply}`}
+                              onClick={() => handleApplyVoucher(voucher)}
+                            >
                               <span>Áp dụng</span>
                             </button>
                           </div>
