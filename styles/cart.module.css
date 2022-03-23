@@ -10,12 +10,13 @@
 }
 .vendorPart{
   background-color: white;
+  padding-top: 0px;
 }
 .backgroundCart{
   background-color: white;
 }
 .totalPart{
-  background-color:white
+  background-color:rgb(245, 245, 250);
 }
 .cursorVendor{
   cursor: pointer;
@@ -40,4 +41,8 @@
 .deleteUnavailable{
   cursor: pointer;
   color: blue
+}
+.paginateText {
+  color: red;
+  margin-left: 15px;
 }

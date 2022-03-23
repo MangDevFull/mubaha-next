@@ -30,7 +30,9 @@ export default function Variant({item,index,updateProduct,i}) {
     }
   }
   const updateVariants = async (e,cartID,v,s) => {
-    let body = {}
+    let body = {
+      productID: item.productID
+    }
     if(v !== undefined) {
       body = {
         ...body,
@@ -52,7 +54,7 @@ export default function Variant({item,index,updateProduct,i}) {
       body: JSON.stringify(body)
     })
     const data = await response.json()
-
+    console.log(data)
     if(data.status === 200){
       updateProduct(body,i,index)
       handleOpen()
@@ -79,7 +81,7 @@ export default function Variant({item,index,updateProduct,i}) {
                   <div className="mb-1">
                     {item.variantLable}:
                   </div>
-                  {item.variants.map((variant) => {
+                  {item.variants.map((variant,vi) => {
                     return (
                       <>
                         <li className={`${variant.stock.quantity == 0 && variant.attributes.length == 0 ? styles.disabled : ""}`}
@@ -95,7 +97,7 @@ export default function Variant({item,index,updateProduct,i}) {
                               }
                                 : {}
                           }
-                          key={variant._id}
+                          key={vi}
                           checked={selectedVariant === variant._id}
                           onClick={() => selectedColor(variant._id)}
                         >
@@ -126,7 +128,7 @@ export default function Variant({item,index,updateProduct,i}) {
                         {item.attributeLabel}:
                       </div>
                       <div className="d-flex">
-                        {sizes.map((s) => (
+                        {sizes.map((s,si) => (
                           <li
                           className={`${s.stock.quantity ==0 ? styles.disabled : ""}`}
                             style={
@@ -142,7 +144,7 @@ export default function Variant({item,index,updateProduct,i}) {
                                 }
                                   : {}
                             }
-                            key={s._id}
+                            key={si}
                             checked={selectSize === s._id}
                             onClick={(e) => selectAttr(e, s._id)}
                           >

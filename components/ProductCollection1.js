@@ -12,7 +12,7 @@ import Slider from 'react-slick';
 
 export default function ProductCollection1({ title, data }) {
   return (
-    <section className="section-b-space ratio_square">
+    <section className="section-b-space  ratio_square">
       <Container>
         <Row>
           <Col>
@@ -38,10 +38,7 @@ export default function ProductCollection1({ title, data }) {
               <Slider {...Product5} className="product-4 product-m no-arrow">
                 {data && data.map((product, index) =>
                   <div key={index}>
-                    
                     <ProductItem product={product} />
-                    
-                    
                   </div>
                 )}
 
