@@ -385,7 +385,7 @@
   color: #5f5f5f;
   font-weight: 700;
 }
-._1ru0hU {
+.section_voucher {
   position: relative;
   display: flex;
   align-items: center;
@@ -393,25 +393,25 @@
   background: #92929214;
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
-._4zBNu,
-.FgeP4U {
+.title_voucher,
+.title_voucher1 {
   display: flex;
 }
-._4zBNu {
+.title_voucher {
   flex-direction: column;
 }
-._4zBNu,
+.title_voucher,
 .YJJdyJ {
   flex-shrink: 0;
   flex-grow: 1;
 }
-.t57Ey0 {
+.title_voucher2 {
   display: flex;
   align-items: center;
   flex-shrink: 0;
   flex-grow: 1;
 }
-.y4xiL1 {
+.title_name_voucher {
   font-size: 18px;
   font-weight: 400;
   margin: 0px 8px;
@@ -460,12 +460,6 @@
   display: inline-block;
   vertical-align: middle;
   max-width: 80%;
-}
-.gkKrcB {
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  height: 56px;
 }
 .method_content {
   margin-right: 12px;
@@ -557,7 +551,7 @@
   color: #f89922;
   font-size: 25px;
 }
-._3swGZ9 {
+.section_button_order {
   grid-column-start: 1;
   grid-column-end: 4;
   grid-row-start: 15;
@@ -570,7 +564,7 @@
   align-items: center;
   border-top: 1px dashed rgba(0, 0, 0, 0.09);
 }
-.RVLKaf {
+.section_rules {
   padding: 40px 25px 32px 0;
   flex: 1;
 }
@@ -582,18 +576,18 @@
   margin: 0;
   padding-bottom: 5.25rem;
 }
-._38kqI1 {
+.section_search_voucher {
   display: flex;
   padding: 0.9375rem;
   align-items: center;
   background: rgb(248, 248, 248);
 }
-._38kqI1 span {
+.section_search_voucher span {
   flex-shrink: 0;
   text-transform: capitalize;
   margin-right: 0.6875rem;
 }
-._3K7VlY {
+.input_voucher {
   flex: 1 1 0%;
 }
 .input_with_validator {
@@ -632,7 +626,7 @@
 
   text-transform: uppercase;
 }
-._2ZPmGW {
+.section_list_voucher {
   padding-left: 20px;
   overflow: auto;
   position: relative;
@@ -641,19 +635,19 @@
   width: 100%;
   height: 100%;
 }
-._1eqk4K {
+.title_name_list {
   margin-bottom: 0.625rem;
   font-size: 1rem;
   color: rgba(0, 0, 0, 0.65);
   display: flex;
   text-transform: capitalize;
 }
-._3R4rbT {
+.voucher {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
 }
-._3L2qYK {
+.voucher_1 {
   box-shadow: 0.125rem 0.125rem 0.3125rem rgb(0 0 0 / 7%);
   padding: 0;
   display: flex;
@@ -664,7 +658,7 @@
   height: 7.375rem;
   box-sizing: border-box;
 }
-._1DZArM {
+.voucher_title {
   background: linear-gradient(90deg, transparent 0, transparent 0.1875rem, #bbb 0);
   width: 7.375rem;
   position: relative;
@@ -672,7 +666,7 @@
   justify-content: center;
   align-items: center;
 }
-._1DZArM div {
+.voucher_title div {
   font-size: 0.7rem;
   color: #fff;
   overflow: hidden;
@@ -685,7 +679,7 @@
   text-transform: uppercase;
   text-align: center;
 }
-.PT6ffQ {
+.voucher_information {
   background-color: #fff;
   flex: 1;
   position: relative;
@@ -695,7 +689,7 @@
   border-radius: 0 0.125rem 0.125rem 0;
   border-left: 0 solid transparent;
 }
-._3sw7sh {
+.voucher_information_basic {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -704,7 +698,7 @@
   padding: 0 0.75rem;
   min-width: 0;
 }
-._2ocsGB {
+.voucher_information_basic_1 {
   display: flex;
   min-width: 0;
   max-width: 100%;
@@ -713,11 +707,11 @@
   white-space: nowrap;
   margin-top: 0.3125rem;
 }
-._10zVWC, ._36sEF5{
+.voucher_information_basic_2, .apply_information{
   overflow: hidden;
     text-overflow: ellipsis;
 }
-._10zVWC {
+.voucher_information_basic_2 {
   
     border-radius: 0.125rem;
     white-space: nowrap;
@@ -726,12 +720,12 @@
     border: 1px solid #ee4d2d;
     padding: 0.0625rem 0.25rem;
 }
-._36sEF5 {
+.apply_information {
   font-size: .75rem;
     line-height: .875rem;
     align-items: center;
 }
-._3sw7sh span {
+.voucher_information_basic span {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -740,11 +734,11 @@
   font-size: .75rem;
     line-height: .875rem;
 }
-._K4Yt {
+.button_apply_voucher {
   display: flex;
   align-items: center;
 
 }
-._K4Yt button {
+.button_apply_voucher button {
   margin-right: 1rem;
 }

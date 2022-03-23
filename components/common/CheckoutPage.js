@@ -1,18 +1,5 @@
-import React, { useContext, useState } from "react";
-import {
-  Media,
-  Container,
-  Form,
-  Row,
-  Input,
-  Col,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Alert,
-} from "reactstrap";
+import React, { useState } from "react";
+import { Container } from "reactstrap";
 
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -22,7 +9,16 @@ import Address from "@/components/Address";
 import Voucher from "@/components/Voucher";
 import NumberFormat from "react-number-format";
 
-const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher, vouchers, handleApplyVoucher, handleSelectPaymentMethod}) => {
+const CheckoutPage = ({
+  data,
+  handleVoucherShow,
+  handleCloseVoucher,
+  showVoucher,
+  vouchers,
+  handleApplyVoucher,
+  handleSelectPaymentMethod,
+}) => {
+  console.log(data);
   const [obj, setObj] = useState({});
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
@@ -65,23 +61,6 @@ const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher,
     } else {
       errors.showMessages();
     }
-  };
-
-  const setStateFromInput = (event) => {
-    obj[event.target.name] = event.target.value;
-    setObj(obj);
-  };
-
-  const onCancel = (data) => {
-    console.log("The payment was cancelled!", data);
-  };
-
-  const onError = (err) => {
-    console.log("Error!", err);
-  };
-
-  const paypalOptions = {
-    clientId: "AZ4S98zFa01vym7NVeo_qthZyOnBhtNvQDsjhaZSMH-2_Y9IAJFbSD3HPueErYqN8Sa8WYRbjP7wWtd_",
   };
 
   return (
@@ -250,76 +229,74 @@ const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher,
                   </div>
                 </div>
                 <div>
-                  {data.data.docs.map((product, index) => {
+                  {data.docs && data.data.docs.length > 0 && data.data.docs.map((product, index) => {
                     return (
                       <div key={index}>
-                      <div className={`${styles.total_price_information}`}>
-                        <div>
-                          <div className={`${styles.detail_order_information}`}>
-                            <div className={`${styles.vendor_name}`}>
-                              <span>{product.vendor.brandName}</span>
-                            </div>
-                            <div className={`${styles.section_order_info}`}>
-                              <div className={`${styles.order_info}`}>
-                                <div
-                                  className={`${styles.title_info} ${styles.title_image_product}`}
-                                >
-                                  <img width="40px" src={product.product.media.featuredImage} />
-                                  <span>
-                                    <span className={`${styles.name_product}`}>
-                                      {product.product.name}
-                                    </span>
-                                  </span>
-                                </div>
-                                
-                                <div className={`${styles.title_info} ${styles.classify_info}`}>
-                                  {
-                                    product.product.variants.length > 0 ?
-                                    <span>Loại: {product.product.variants}</span> : <span>
-
-                                    </span>
-                                  }
-                                  
-                                </div>
-                                <div className={`${styles.title_info}`}>
-                                  <NumberFormat
-                                    value={product.product.price}
-                                    thousandSeparator={true}
-                                    displayType="text"
-                                    suffix={product.product.currencySymbol}
-                                    decimalScale={0}
-                                  />
-                                </div>
-                                <div className={`${styles.title_info}`}>{product.amount}</div>
-                                <div className={`${styles.title_info}`}>
-                                <NumberFormat
-                                    value={product.product.price * product.amount}
-                                    thousandSeparator={true}
-                                    displayType="text"
-                                    suffix={product.product.currencySymbol}
-                                    decimalScale={0}
-                                  />
-                                  </div>
+                        <div className={`${styles.total_price_information}`}>
+                          <div>
+                            <div className={`${styles.detail_order_information}`}>
+                              <div className={`${styles.vendor_name}`}>
+                                <span>{product.vendor.brandName}</span>
                               </div>
-                            </div>
-                            <div className={`${styles.section_voucher_shop}`}>
-                              <div className={`${styles.voucher_shop}`}>
-                                <div className={`${styles.title_voucher_shop}`}>
-                                  <div className={`${styles.image_voucher}`}>
-                                    <img src="https" />
-                                    <div>Voucher của Shop</div>
+                              <div className={`${styles.section_order_info}`}>
+                                <div className={`${styles.order_info}`}>
+                                  <div
+                                    className={`${styles.title_info} ${styles.title_image_product}`}
+                                  >
+                                    <img width="40px" src={product.product.media.featuredImage} />
+                                    <span>
+                                      <span className={`${styles.name_product}`}>
+                                        {product.product.name}
+                                      </span>
+                                    </span>
+                                  </div>
+
+                                  <div className={`${styles.title_info} ${styles.classify_info}`}>
+                                    {product.product.variants.length > 0 ? (
+                                      <span>Loại: {product.product.variants}</span>
+                                    ) : (
+                                      <span></span>
+                                    )}
+                                  </div>
+                                  <div className={`${styles.title_info}`}>
+                                    <NumberFormat
+                                      value={product.product.price}
+                                      thousandSeparator={true}
+                                      displayType="text"
+                                      suffix={product.product.currencySymbol}
+                                      decimalScale={0}
+                                    />
+                                  </div>
+                                  <div className={`${styles.title_info}`}>{product.amount}</div>
+                                  <div className={`${styles.title_info}`}>
+                                    <NumberFormat
+                                      value={product.product.price * product.amount}
+                                      thousandSeparator={true}
+                                      displayType="text"
+                                      suffix={product.product.currencySymbol}
+                                      decimalScale={0}
+                                    />
                                   </div>
                                 </div>
-                                <div className={`${styles.button_voucher_shop}`}>
-                                  <button>
-                                    <span>Chọn voucher</span>
-                                  </button>
+                              </div>
+                              <div className={`${styles.section_voucher_shop}`}>
+                                <div className={`${styles.voucher_shop}`}>
+                                  <div className={`${styles.title_voucher_shop}`}>
+                                    <div className={`${styles.image_voucher}`}>
+                                      <img src="https" />
+                                      <div>Voucher của Shop</div>
+                                    </div>
+                                  </div>
+                                  <div className={`${styles.button_voucher_shop}`}>
+                                    <button>
+                                      <span>Chọn voucher</span>
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
                       </div>
                     );
                   })}
@@ -327,12 +304,12 @@ const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher,
               </div>
               <div className={`${styles.voucher}`}>
                 <h4>3. Chọn Voucher</h4>
-                <div className={`${styles._1ru0hU}`}>
-                  <div className={`${styles._4zBNu}`}>
-                    <div className={`${styles.FgeP4U}`}>
-                      <div className={`${styles.t57Ey0}`}>
+                <div className={`${styles.section_voucher}`}>
+                  <div className={`${styles.title_voucher}`}>
+                    <div className={`${styles.title_voucher1}`}>
+                      <div className={`${styles.title_voucher2}`}>
                         {/* icon voucher */}
-                        <span className={`${styles.y4xiL1}`}>Mubaha voucher</span>
+                        <span className={`${styles.title_name_voucher}`}>Mubaha voucher</span>
                       </div>
                     </div>
                   </div>
@@ -458,7 +435,7 @@ const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher,
                   >
                     ₫70.700
                   </div>
-                  
+
                   <div
                     className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
                   >
@@ -469,8 +446,8 @@ const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher,
                   >
                     <span>₫1.217.700</span>
                   </div>
-                  <div className={`${styles._3swGZ9}`}>
-                    <div className={`${styles.RVLKaf}`}>
+                  <div className={`${styles.section_button_order}`}>
+                    <div className={`${styles.section_rules}`}>
                       <div>
                         Nhấn &quot;Đặt hàng&quot; đồng nghĩa với việc bạn đồng ý tuân theo{" "}
                         <a href="" target="_blank" rel="noopener noreferrer">
@@ -490,7 +467,12 @@ const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher,
       {/* Modal add address */}
       <Address isOpen={show} handleCloseCreateAdd={handleCloseCreateAdd} />
       {/* Modal voucher */}
-      <Voucher isOpen={showVoucher} handleCloseVoucher={handleCloseVoucher} vouchers={vouchers} handleApplyVoucher={handleApplyVoucher} />
+      <Voucher
+        isOpen={showVoucher}
+        handleCloseVoucher={handleCloseVoucher}
+        vouchers={vouchers}
+        handleApplyVoucher={handleApplyVoucher}
+      />
     </>
   );
 };

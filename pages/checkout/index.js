@@ -32,9 +32,12 @@ const Checkout = (data) => {
   };
   const handleApplyVoucher = (voucher) => {
     handleCloseVoucher();
+    console.log(voucher)
   }
   const handleSelectPaymentMethod = (e) => {
     setPaymentMethod(e.target.value)
+    console.log(e)
+    
   }
   return (
     <>

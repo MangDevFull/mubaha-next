@@ -11,9 +11,9 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher }) =
       <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
       <ModalBody>
         <div className={`${styles.modal_voucher}`}>
-          <div className={`${styles._38kqI1}`}>
+          <div className={`${styles.section_search_voucher}`}>
             <span>Mã voucher</span>
-            <div className={`${styles._3K7VlY}`}>
+            <div className={`${styles.input_voucher}`}>
               <div className={`${styles.input_with_validator}`}>
                 <input type="text" placeholder="Mã Mubaha Voucher" maxLength="255" />
               </div>
@@ -22,37 +22,37 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher }) =
               <span>Áp dụng</span>
             </button>
           </div>
-          <div className={`${styles._2ZPmGW}`}>
-            <div className={`${styles._1eqk4K}`}>
+          <div className={`${styles.section_list_voucher}`}>
+            <div className={`${styles.title_name_list}`}>
               mã miễn phí vận chuyển và mã giảm giá đơn hàng
             </div>
 
-            {vouchers.docs &&
-              vouchers.docs.length > 0 &&
+            {vouchers &&
+              vouchers.length > 0 &&
               vouchers.docs.map((voucher, index) => {
               
                 return (
                   <div key={index}>
-                    <div className={`${styles._3R4rbT}`}>
-                      <div className={`${styles._3L2qYK}`}>
-                        <div className={`${styles._1DZArM}`}>
+                    <div className={`${styles.voucher}`}>
+                      <div className={`${styles.voucher_1}`}>
+                        <div className={`${styles.voucher_title}`}>
                           <div>{voucher.title}</div>
                         </div>
-                        <div className={`${styles.PT6ffQ}`}>
-                          <div className={`${styles._3sw7sh}`}>
-                            <div className={`${styles._1g6Th3}`}>
+                        <div className={`${styles.voucher_information}`}>
+                          <div className={`${styles.voucher_information_basic}`}>
+                            <div>
                               <span>Áp dụng cho một số shop nhất định</span>
                             </div>
-                            <div className={`${styles._2ocsGB}`}>
-                              <div className={`${styles._10zVWC}`}>
-                                <div className={`${styles._36sEF5}`}>Đơn hàng từ 0Đ</div>
+                            <div className={`${styles.voucher_information_basic_1}`}>
+                              <div className={`${styles.voucher_information_basic_2}`}>
+                                <div className={`${styles.apply_information}`}>Đơn hàng từ 0Đ</div>
                               </div>
                             </div>
                             <span>
                               HSD: {format(new Date(voucher.endDate), "MM/dd/yyyy")}
                             </span>
                           </div>
-                          <div className={`${styles._K4Yt}`}>
+                          <div className={`${styles.button_apply_voucher}`}>
                             <button className={`${styles.button_apply}`} onClick={() => handleApplyVoucher(voucher)}>
                               <span>Áp dụng</span>
                             </button>
