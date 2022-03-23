@@ -43,10 +43,14 @@ export async function getServerSideProps(ctx) {
   const unActive = 0
   const fullP = results.map(product => {
     let count = 0
+    let countSelect = 0 
     const d = product.products.map((p, index) => {
       if(p.product.status === productStatusEnum.DISABLE ){
         count += 1
         unActive+=1
+      }
+      if(p.selected==true){
+        countSelect+=1
       }
       let value = {
         quantity: p.amount,
@@ -54,7 +58,7 @@ export async function getServerSideProps(ctx) {
         currencySymbol: p.product.currencySymbol,
         slug: p.product.slug,
         cartID: p._id,
-        selected: false,
+        selected: p.selected,
         productID: p.product._id,
         discount: p.product.discount,
         status: p.product.status
@@ -132,7 +136,7 @@ export async function getServerSideProps(ctx) {
     })
     return {
       vendor: product.vendor,
-      selected: false,
+      selected: product.products.length === countSelect,
       totalDocs: product.products.length,
       products: d,
       count: count,
@@ -140,7 +144,7 @@ export async function getServerSideProps(ctx) {
   })
   return {
     props: {
-      data:{fullP:fullP, page: data.data.cartItems.page, 
+      data:{fullP:fullP, page: data.data.cartItems.page,
         totalPage: data.data.cartItems.totalPages, totalDocs: data.data.cartItems.totalDocs,
         relatedProducts: data.data.relatedProducts,unActive:unActive}
     }

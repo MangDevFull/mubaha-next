@@ -11,17 +11,17 @@ import { useSession } from 'next-auth/react'
 import Modal2 from 'react-awesome-modal';
 import productStatus from "@/enums/productStatus.enum.js"
 import InfiniteScroll from "react-infinite-scroll-component";
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import _ from 'lodash'
 import productStatusEnum from "@/enums/productStatus.enum";
 import Stciky2 from '@/components/cart/Sticky.js';
 import { useRouter } from 'next/router';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 const Vendor = dynamic(() => import('@/components/cart/Vendor.js'))
 const CartPage = ({ data }) => {
   const { data: session } = useSession()
   const router = useRouter()
-  const [isLoading,setIsLoading] = useState(false)
+  const [isLoading,setIsLoading] = useState(true)
   const [products, setProduct] = useState(data.fullP)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)
@@ -35,18 +35,11 @@ const CartPage = ({ data }) => {
   const [unActive,setUnActive] = useState(data.unActive)
   const { elementRef: comboBtnRef, isSticky } = Stciky2({ defaultSticky: true, isTop: false });
   useEffect(() => {
-    const cartID = localStorage.getItem('cartID')
-    if (cartID != null) {
-      products.forEach((product, index) => {
-        product.products.forEach((p, i) => {
-          if (p.cartID == cartID) {
-            products[index].products[i].selected = true
-            setProduct([...products])
-            localStorage.removeItem('cartID')
-          }
-        })
-      })
-    }
+    const isSelectAll = data.fullP.some(v=>v.selected === false);
+      if(!isSelectAll) setIsSelectedAll(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    },1000)
   }, [])
   const updateQuantity = (vendorId,ProductId,quantity) => {
     products[vendorId].products[ProductId].quantity = quantity
@@ -185,7 +178,7 @@ const CartPage = ({ data }) => {
   }
   const handleModalDeleteMany = () => {
     if (totalProductSelect < 1) {
-      setMessage("Vui lòng chọn sản phẩm")
+      setMessage("Vui lòng chọn sản phẩm") 
       setVisible(true)
       setTimeout(function () {
         setVisible(false)
@@ -447,11 +440,15 @@ const CartPage = ({ data }) => {
                           <tr className={`${styles.backgroundHead}`}>
                             <th scope="col">
                               <div className="mt-4 mb-3">
+                              {isLoading ? <Skeleton
+                              width={20} height={20} square
+                               /> :
                                 <input
                                   type="checkbox"
                                   checked={isSelectedAll}
                                   onClick={selectAllProduct}
                                 />
+                                }
                               </div>
                             </th>
                             <th scope="col" colSpan="2">
@@ -500,7 +497,7 @@ const CartPage = ({ data }) => {
                       >
                         {products.map((p, i) => {
                           return (
-                         <Vendor p={p} vendorKey={i} updateProduct={updateProduct} 
+                         <Vendor p={p} vendorKey={i} updateProduct={updateProduct} isLoading={isLoading}
                          updateQuantity={updateQuantity} updateSelectProduct={updateSelectProduct}
                          updateDeleteOneCart={updateDeleteOneCart} updateSelectVendor={updateSelectVendor}
                          />
@@ -538,6 +535,7 @@ const CartPage = ({ data }) => {
           </div>
         </div>
         <div ref={comboBtnRef}></div>
+        {!isLoading && 
         <div style={{
           textAlign: "center",
           position: isSticky ? "fixed" : "sticky",
@@ -593,7 +591,7 @@ const CartPage = ({ data }) => {
             </table>
           </Container>
         </div>
-
+      }
       </>
 
     );

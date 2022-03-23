@@ -1,12 +1,13 @@
 import styles from "@/styles/cart.module.css"
 import Link from "next/link";
 import dynamic from 'next/dynamic'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import {
    Card, CardBody, CardHeader, CardFooter
 } from "reactstrap";
 const Products = dynamic(() => import('@/components/cart/Products.js'));
 export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity ,
-  updateDeleteOneCart,updateSelectProduct,updateSelectVendor}) {
+  updateDeleteOneCart,updateSelectProduct,updateSelectVendor,isLoading}) {
   const handleSelectVendor = ()=>{
     updateSelectVendor(vendorKey)
   }
@@ -14,6 +15,12 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
     <>
       <Card style={{ border: 'none' }} className="mt-0">
         <CardHeader style={{ backgroundColor: 'white' }}>
+        {isLoading ? 
+        <Skeleton
+        width={200}
+        height={50}
+        rectangle
+         />:
           <div className=" mb-2">
             {!p.count == p.totalDocs ? "" :
               <input type="checkbox"
@@ -27,6 +34,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
               <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
             </Link>
           </div>
+        }
         </CardHeader>
         <CardBody>
           <table className="ml-3">
@@ -40,7 +48,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
                 updateDeleteOneCart={updateDeleteOneCart}
                 vendor={p} updateSelectProduct={updateSelectProduct}
                   updateProduct={updateProduct} productKey={index} vendorKey={vendorKey}
-                  updateQuantity={updateQuantity} />
+                  updateQuantity={updateQuantity} isLoading={isLoading} />
               );
             })}
           </table>
