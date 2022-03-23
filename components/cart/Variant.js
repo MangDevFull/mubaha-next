@@ -6,7 +6,7 @@ import {
 import styles from "@/styles/cart.module.css"
 import React, { useState } from "react";
 import { useSession } from 'next-auth/react'
-export default function Variant({item,index,updateProduct,i}) {
+export default function Variant({item,vendorKey,updateProduct,productKey}) {
   const { data: session, status } = useSession()
   const [selectedVariant, setSelectedVariant] = useState(item.variant._id);
   const [selectSize, setSelectSize] = useState(item.attr?._id);
@@ -31,18 +31,18 @@ export default function Variant({item,index,updateProduct,i}) {
   }
   const updateVariants = async (e,cartID,v,s) => {
     let body = {
-      productID: item.productID
+      productId: item.productID
     }
     if(v !== undefined) {
       body = {
         ...body,
-        variant : selectedVariant || v
+        selectedVariant : selectedVariant || v
       }
     }
     if(s !== undefined) {
       body = {
         ...body,
-        size : selectSize || s
+        selectedAttribute : selectSize || s
       }
     }
     const response = await fetch(`${process.env.API_CART_URL}/${cartID}`, {
@@ -54,19 +54,19 @@ export default function Variant({item,index,updateProduct,i}) {
       body: JSON.stringify(body)
     })
     const data = await response.json()
-    console.log(data)
     if(data.status === 200){
-      updateProduct(body,i,index)
+      console.log(body)
+      updateProduct(body,vendorKey,productKey)
       handleOpen()
     }
   }
   return (
     <>
-      <div role='button' id={`PopoverClick${index}`}
+      <div role='button' id={`PopoverClick${productKey}`}
         className="mt-1">
         <UncontrolledPopover
           placement="bottom"
-          target={`PopoverClick${index}`}
+          target={`PopoverClick${productKey}`}
           trigger="legacy"
           isOpen={isOpen}
           toggle={handleOpen}

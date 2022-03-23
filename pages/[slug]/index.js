@@ -23,6 +23,7 @@ import {
   LinkedinShareButton,
 } from "react-share";
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  console.log(detailProduct)
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -57,8 +58,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
             isDone = true
             body = {
               ...body,
-              variant: variantColor,
-              size: selectedSize
+              selectedVariant: variantColor,
+              selectedAttribute: selectedSize
             }
           }
         }else{
@@ -68,7 +69,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
             isDone = true
             body = {
               ...body,
-              variant: variantColor
+              selectedVariant: variantColor
             }
           }
         }
@@ -181,8 +182,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
             isDone = true
             body = {
               ...body,
-              variant: variantColor,
-              size: selectedSize
+              selectedVariant: variantColor,
+              siselectedAttributeze: selectedSize
             }
           }
         }else{
@@ -192,7 +193,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
             isDone = true
             body = {
               ...body,
-              variant: variantColor
+              selectedVariant: variantColor
             }
           }
         }
