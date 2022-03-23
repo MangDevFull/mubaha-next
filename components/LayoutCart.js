@@ -4,13 +4,10 @@ import Footer from '@/components/Footer.js'
 export default function HeaderTwo({ children }) {
 
   return (
-    <div>
+    <div style={{backgroundColor:"rgb(245, 245, 250)"}}>
   <HeaderThree />
-      
       { children }
-      <div className="mt-5">
       <Footer />
-    </div>
 
     </div>
   )

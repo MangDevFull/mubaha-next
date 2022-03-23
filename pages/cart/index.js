@@ -3,15 +3,16 @@ import LayoutCart from '@/components/LayoutCart.js'
 import CartPage from '@/components/CartPage.js'
 import { getSession } from 'next-auth/react';
 import productStatusEnum from "@/enums/productStatus.enum";
+import ProductCollection1 from "@/components/ProductCollection1";
 import _ from 'lodash'
 export default function Cart({ data }) {
-  console.log(data)
   return (
     <>
       <Head>
         <title>Giỏ hàng</title>
       </Head>
       <CartPage data={data} />
+      {/* <ProductCollection1 title="gợi ý hôm nay" data={data.relatedProducts} /> */}
     </>
   )
 }
@@ -31,7 +32,7 @@ export async function getServerSideProps(ctx) {
   })
 
   const data = await res.json()
-  const grouped = _.groupBy( data.data.docs, p => p.vendor._id);
+  const grouped = _.groupBy( data.data.cartItems.docs, p => p.vendor._id);
   const vendors = Object.entries(grouped)
   const results = vendors.map(v =>{
     return {
@@ -135,10 +136,11 @@ export async function getServerSideProps(ctx) {
       count: count,
     }
   })
-
   return {
     props: {
-      data:{fullP:fullP, page: data.data.page, totalPage: data.data.totalPages, totalDocs: data.data.totalDocs}
+      data:{fullP:fullP, page: data.data.cartItems.page, 
+        totalPage: data.data.cartItems.totalPages, totalDocs: data.data.cartItems.totalDocs,
+        relatedProducts: data.data.relatedProducts,}
     }
   };
 }
