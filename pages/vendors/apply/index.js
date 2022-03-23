@@ -698,14 +698,6 @@ AppLyVendor.getLayout = function getLayout(page) {
     </Layout>
   )
 }
-export async function getServerSideProps() {
-  // Fetch data from external API
-  const res = await API.instance.get("/accounts/me")
 
-  const data = res.data
-
-  // Pass data to the page via props
-  return { props: { data } }
-}
 
 

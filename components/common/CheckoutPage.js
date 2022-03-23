@@ -277,6 +277,7 @@ const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher,
                                     product.product.variants.length > 0 ?
                                     <span>Loại: {product.product.variants}</span> : <span>
 
+
                                     </span>
                                   }
                                   
@@ -301,6 +302,7 @@ const CheckoutPage = ({data, handleVoucherShow, handleCloseVoucher, showVoucher,
                                   />
                                   </div>
                               </div>
+
                             </div>
                             <div className={`${styles.section_voucher_shop}`}>
                               <div className={`${styles.voucher_shop}`}>
