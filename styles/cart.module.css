@@ -16,8 +16,7 @@
   background-color: white;
 }
 .totalPart{
-  background-color:rgb(253, 252, 247);
-  box-shadow: 10px 10px 10px 10px rgb(253, 253, 253);
+  background-color:rgb(245, 245, 250);
 }
 .cursorVendor{
   cursor: pointer;
@@ -46,10 +45,4 @@
 .paginateText {
   color: red;
   margin-left: 15px;
-}
-@supports (position: sticky) {
-  .isSticky {
-    position: sticky;
-    bottom: 0; 
-  }
 }

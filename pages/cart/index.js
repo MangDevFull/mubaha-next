@@ -6,7 +6,6 @@ import productStatusEnum from "@/enums/productStatus.enum";
 import ProductCollection1 from "@/components/ProductCollection1";
 import _ from 'lodash'
 export default function Cart({ data }) {
-  console.log(data)
   return (
     <>
       <Head>
@@ -41,11 +40,13 @@ export async function getServerSideProps(ctx) {
       products: v.pop()
     }
   })
+  const unActive = 0
   const fullP = results.map(product => {
     let count = 0
     const d = product.products.map((p, index) => {
       if(p.product.status === productStatusEnum.DISABLE ){
         count += 1
+        unActive+=1
       }
       let value = {
         quantity: p.amount,
@@ -141,7 +142,7 @@ export async function getServerSideProps(ctx) {
     props: {
       data:{fullP:fullP, page: data.data.cartItems.page, 
         totalPage: data.data.cartItems.totalPages, totalDocs: data.data.cartItems.totalDocs,
-        relatedProducts: data.data.relatedProducts,}
+        relatedProducts: data.data.relatedProducts,unActive:unActive}
     }
   };
 }

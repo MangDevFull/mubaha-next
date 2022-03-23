@@ -12,7 +12,7 @@ import Slider from 'react-slick';
 
 export default function ProductCollection1({ title, data }) {
   return (
-    <section className="section-b-space ratio_square">
+    <section className="section-b-space  ratio_square">
       <Container>
         <Row>
           <Col>

@@ -1,4 +1,6 @@
+
 import React, { useContext, useState, useEffect } from "react";
+
 import CommonLayout from "../../components/shop/CommonLayout";
 import CheckoutPage from "../../components/common/CheckoutPage";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
@@ -39,6 +41,7 @@ const Checkout = (data) => {
     console.log(e)
     
   }
+
   return (
     <>
       <HeaderAuthen />
@@ -52,6 +55,7 @@ const Checkout = (data) => {
           handleApplyVoucher={handleApplyVoucher}
           handleSelectPaymentMethod={handleSelectPaymentMethod}
         />
+
       </CommonLayout>
       <Footer />
     </>
@@ -77,5 +81,6 @@ export async function getServerSideProps(context) {
     props: {
       data,
     },
+
   };
 }

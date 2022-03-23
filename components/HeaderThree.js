@@ -33,7 +33,6 @@ export default function HeaderThree(){
  return(
   <>
   <header id="sticky" className={`sticky marketplace dark`}>
-      <div className="mobile-fix-option"></div>
 
       <TopBarDark topClass="top-header top-header-dark2" />
       <Container>

@@ -86,6 +86,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         });
         const data = await response.json()
         if (data.status === 200) {
+
           setVisible(true)
           setTimeout(() => setVisible(false), 1000)
         } else {
