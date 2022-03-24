@@ -9,6 +9,7 @@ import { Row, Form, Alert } from "reactstrap";
 import styles from "@/styles/authen.module.css";
 import BottomFornLogin from "@/components/authen/BottomFornLogin.js";
 import dynamic from 'next/dynamic'
+import { useRouter } from "next/router";
 
 const DynamicOtpComponent = dynamic(() => import('@/components/Otp.js'));
 const DynamicBreadcrumbComponent = dynamic(() => import('@/components/Breadcrumb.js'));
@@ -24,8 +25,13 @@ export default function LoginWithOtp() {
   const [isVerifyPhone, setIsVerifyPhone] = useState(false);
   const [message, setMessage] = useState("");
   const [isNotRegistered, setIsNotRegistered] = useState(false);
+  const [slug,setSlug] = useState()
+  const router = useRouter();
   const inputPhone = useRef();
-
+  useEffect(() => {
+    const slug = router.query.slug
+    setSlug(slug);
+  },[])
   const checkPhone = (e) => {
     phone = e.target.value;
     var reg = /^\d+$/;
@@ -97,9 +103,15 @@ export default function LoginWithOtp() {
               </div>
               <div className="d-flex justify-content-end mb-5">
                 <div>
+                {slug == undefined ?
                   <Link href="/auth/login">
                     <a className={`${styles.textLink} text-primary`}>Đăng nhập mật khẩu</a>
                   </Link>
+                  :
+                  <Link href={`/auth/login?slug=${slug}`}>
+                    <a className={`${styles.textLink} text-primary`}>Đăng nhập mật khẩu</a>
+                  </Link>
+                }
                 </div>
               </div>
               <div className="d-flex justify-content-center">
@@ -113,7 +125,7 @@ export default function LoginWithOtp() {
               </div>
             </Form>
           }
-          bottom={<BottomFornLogin />}
+          bottom={<BottomFornLogin slug={slug} />}
         />
       )}
 

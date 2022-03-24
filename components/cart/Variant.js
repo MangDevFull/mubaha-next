@@ -3,6 +3,7 @@ import {
   PopoverHeader, UncontrolledPopover,
   PopoverBody
 } from "reactstrap";
+import productStatus from "@/enums/productStatus.enum.js"
 import styles from "@/styles/cart.module.css"
 import React, { useState } from "react";
 import { useSession } from 'next-auth/react'
@@ -55,18 +56,24 @@ export default function Variant({item,vendorKey,updateProduct,productKey}) {
     })
     const data = await response.json()
     if(data.status === 200){
-      console.log(body)
-      updateProduct(body,vendorKey,productKey)
+      console.log("check",data.data)
+      updateProduct(data.data,vendorKey,productKey)
       handleOpen()
     }
   }
   return (
     <>
-      <div role='button' id={`PopoverClick${productKey}`}
-        className="mt-1">
+      <div role='button' id={`PopoverClick${item.cartID}`}
+        className={`mt-1
+        ${item.isOutOfStock 
+          ? 
+          styles.disabled 
+          : 
+          item.isChanged || item.status == productStatus.DISABLE ? styles.pointer : ""
+        }`}>
         <UncontrolledPopover
           placement="bottom"
-          target={`PopoverClick${productKey}`}
+          target={`PopoverClick${item.cartID}`}
           trigger="legacy"
           isOpen={isOpen}
           toggle={handleOpen}

@@ -25,21 +25,28 @@ export default function VerifyOtp({ phone, type,fullName }) {
           redirect: false,
         });
         if (res.error == null) {
-          router.push('/auth/create-password')
+          const slug = router.query.slug
+          if(slug != undefined){
+            router.push({
+              pathname: '/auth/create-password',
+              query: {slug: slug},
+            })
+          }else{
+            router.push('/auth/create-password')
+          }
         } else {
           setInvalidOtp(true)
         }
       } else if (type == otpEnums.LOGIN) {
-        const getProduct = localStorage.getItem('addToCart')
         const res = await signIn("mubaha", {
           phone: phone,
           code: e,
           redirect: false,
         });
         if (res.error == null) {
-          if(getProduct != null){
-            localStorage.removeItem("addToCart");
-            router.push(getProduct)
+          const slug = router.query.slug
+          if(slug != undefined){
+            router.push(`/${slug}`)
           }else{
             router.push('/')
           }

@@ -41,8 +41,13 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   }
   const addToCart = async () => {
     if (session === null) {
-      localStorage.setItem('addToCart', `/${detailProduct.slug}`)
-      router.push('/auth/login')
+      const payload = {
+        slug: detailProduct.slug
+      }
+      router.push({
+        pathname: '/auth/login',
+        query: payload,
+      })
     } else {
       let isDone = false;
       let body = {
@@ -166,13 +171,20 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   };
   const handleCheckout = async () => {
     if (session === null) {
-      localStorage.setItem('addToCart', `/${detailProduct.slug}`)
-      router.push('/auth/login')
+      const payload = {
+        slug: detailProduct.slug
+      }
+      router.push({
+        pathname: '/auth/login',
+        query: payload,
+      })
     } else {
       let isDone = false;
       let body = {
         productId: detailProduct._id,
         amount: quantity,
+        selectValue: true,
+        vendor:detailProduct.vendor._id,
       };
       if (detailProduct.variants.length > 0) {
         if(detailProduct.variants[0].attributes.length > 0) {
@@ -213,10 +225,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         if (data.status === 200) {
           setVisible(true)
           setTimeout(() => setVisible(false), 1000)
-          localStorage.setItem('cartID', data.data._id)
           router.push('/cart')
         } else {
-          alert(data.data)
+          alert(data.message)
         }
       }
     }
@@ -349,9 +360,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             </div>
                             <h6>120 đánh giá</h6>
                           </div>
-                          {/* <div className="label-section">
-                            <span className="badge badge-grey-color">#1 Bán chạy</span>
-                          </div> */}
                           <h3 className="price-detail">
                             <ProductPrice
                               price={priceProduct}
@@ -366,6 +374,44 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                   {detailProduct.variantLabel}
                                 </h6>
                                 <ul className="color-variant mt-1">
+                                  {detailProduct.variants[0].attributes.length >0 
+                                  ?
+                                  <>
+                                  {detailProduct.variants.map((variant) =>{ 
+                                    return (
+                                    <li
+                                      style={
+                                        selectedVariant === variant._id
+                                          ? {
+                                            border: "1px solid #ffa200",
+                                            color: "#ffa200",
+                                          }
+                                          : {}
+                                      }
+                                      key={variant._id}
+                                      checked={selectedVariant === variant._id}
+                                      value={variantColor}
+                                      onClick={(e) => selectedColor(e, variant)}
+                                    >
+                                      {variant.name}
+                                      <img
+                                        style={
+                                          selectedVariant === variant._id
+                                            ? {
+                                              display: "block",
+                                            }
+                                            : {}
+                                        }
+                                        className={`selected-indicator ${styles.tickImage}`}
+                                        src="../assets/images/selected-variant-indicator.svg"
+                                        alt="Selected"
+                                      ></img>
+                                    </li>)
+                                  }
+                                  )}
+                                  </>
+                                  :
+                                  <>
                                   {detailProduct.variants.map((variant) =>{ 
                                     return (
                                     <li
@@ -399,6 +445,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                     </li>)
                                   }
                                   )}
+                                  </>
+                                  }
                                 </ul>
                               </>
                             )}

@@ -9,10 +9,11 @@ import productStatus from "@/enums/productStatus.enum.js"
 import Modal2 from 'react-awesome-modal';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 const Variant = dynamic(() => import('@/components/cart/Variant.js'))
-export default function ProductsCart({ item, discount, productKey,
+export default function ProductsCart({ item, productKey,
   updateSelectProduct, isLoading,
   vendorKey, updateProduct, updateQuantity,
   updateDeleteOneCart }) {
+    console.log('item',item)
   const { data: session } = useSession()
   const [quantity, setQuantity] = useState(item.quantity)
   const [visible, setVisible] = useState(false)
@@ -117,21 +118,7 @@ export default function ProductsCart({ item, discount, productKey,
 
   }
   const handleSelectProduct = async () => {
-    const res = await fetch(`${process.env.API_CART_URL}/${item.cartID}`,{
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
-      },
-      body: JSON.stringify({selectValue:true})
-    })
-    const data = await res.json()
-    console.log(data)
-    if(data.status === 200){
       updateSelectProduct(vendorKey, productKey)
-    }else{
-      console.log(data.message)
-    }
   }
   const handleQuantity = async () => {
     setDisableQuantity(true)
@@ -198,7 +185,12 @@ export default function ProductsCart({ item, discount, productKey,
       <tbody>
         <tr>
 
-          <td className={`d-flex ${item.status == productStatus.DISABLE || item.isOutOfStock ? styles.disabled : ""}`}>
+          <td className={`d-flex ${item.isOutOfStock 
+          ? 
+          styles.disabled 
+          : 
+          item.isChanged || item.status == productStatus.DISABLE ? styles.pointer : ""
+          }`}>
             {isLoading ?
               <Skeleton
                 width={100}
@@ -206,11 +198,14 @@ export default function ProductsCart({ item, discount, productKey,
                 height={100} />
               :
               <>
+              {!item.isOutOfStock &&
                 <input type="checkbox"
+                role="button"
                   className="mr-4 mt-5"
                   checked={item.selected}
                   onClick={handleSelectProduct}
                 />
+                 }
                 <Link href={`/${item.slug}`}>
                   <a>
                     <Media
@@ -271,9 +266,7 @@ export default function ProductsCart({ item, discount, productKey,
               <>
               <h2>
                 <NumberFormat
-                  value={item?.attr?.price * (1 - item.attr?.discount)
-                    || item.variant?.price * (1 - item.variant?.discount)
-                    || item.price * (1 - item.discount)}
+                  value={item.price * (1 - item.discount)}
                   thousandSeparator={true}
                   displayType="text"
                   suffix={item.currencySymbol}
@@ -282,13 +275,11 @@ export default function ProductsCart({ item, discount, productKey,
 
               </h2>
             
-            {discount > 0 &&
+            {item.discount > 0 &&
               <del>
                 <span className="money ml-1">
                   <NumberFormat
-                    value={item?.attr?.price
-                      || item.variant?.price
-                      || item.price}
+                    value={item.price}
                     thousandSeparator={true}
                     displayType="text"
                     suffix={item.currencySymbol}
@@ -352,7 +343,7 @@ export default function ProductsCart({ item, discount, productKey,
               <>
             <h2 className="td-color ml-5">
               <NumberFormat
-                value={item.quantity * item?.attr?.price * (1 - discount) || item.variant?.price * (1 - discount) || item.price * (1 - discount)}
+                value={item.quantity * item.price * (1 - item.discount)}
                 thousandSeparator={true}
                 displayType="text"
                 suffix={item.currencySymbol}
