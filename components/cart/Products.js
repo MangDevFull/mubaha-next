@@ -13,7 +13,6 @@ export default function ProductsCart({ item, productKey,
   updateSelectProduct, isLoading,
   vendorKey, updateProduct, updateQuantity,
   updateDeleteOneCart }) {
-    console.log('item',item)
   const { data: session } = useSession()
   const [quantity, setQuantity] = useState(item.quantity)
   const [visible, setVisible] = useState(false)
@@ -153,8 +152,8 @@ export default function ProductsCart({ item, productKey,
     setTimeout(function () {
       setDisableQuantity(false)
       if (data.status === 200) {
-        setQuantity(finalAmount)
-        updateQuantity(vendorKey, productKey, finalAmount)
+        setQuantity(finalQuantity)
+        updateQuantity(vendorKey, productKey, finalQuantity)
       } else if (data.status === 400) {
         setMessage(data.message)
         setVisible(true)
@@ -166,10 +165,16 @@ export default function ProductsCart({ item, productKey,
     }, 1500)
   }
   const handleChangeQuantity = (e) => {
-    setQuantity(e.target.value)
+    var reg = new RegExp('^[0-9]*$');
+    if(reg.test(e.target.value)){
+      setQuantity(e.target.value)
+    }
   }
   const hanldeLastValue = (e) => {
-    setLastQuantity(e.target.value)
+    var reg = new RegExp('^[0-9]*$');
+    if(reg.test(e.target.value)){
+      setLastQuantity(e.target.value)
+    }
   }
   return (
     <>

@@ -56,7 +56,6 @@ export default function Variant({item,vendorKey,updateProduct,productKey}) {
     })
     const data = await response.json()
     if(data.status === 200){
-      console.log("check",data.data)
       updateProduct(data.data,vendorKey,productKey)
       handleOpen()
     }
@@ -67,9 +66,9 @@ export default function Variant({item,vendorKey,updateProduct,productKey}) {
         className={`mt-1
         ${item.isOutOfStock 
           ? 
-          styles.disabled 
+          styles.pointer 
           : 
-          item.isChanged || item.status == productStatus.DISABLE ? styles.pointer : ""
+          item.isChanged || item.status == productStatus.DISABLE ? styles.disabled : ""
         }`}>
         <UncontrolledPopover
           placement="bottom"

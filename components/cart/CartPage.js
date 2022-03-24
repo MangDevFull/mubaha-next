@@ -19,7 +19,6 @@ import { useRouter } from 'next/router';
 import 'react-loading-skeleton/dist/skeleton.css'
 const Vendor = dynamic(() => import('@/components/cart/Vendor.js'))
 const CartPage = ({ data }) => {
-  console.log("fullP",data.fullP)
   const { data: session } = useSession()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
@@ -190,6 +189,7 @@ const CartPage = ({ data }) => {
   }
   const updateProduct = (body, i, index) => {
     if (body.selectedVariant != null && body.selectedAttribute != null) {
+      products[i].products[index].variant = body.selectedVariant
           products[i].products[index].attr = body.selectedAttribute
           products[i].products[index].price = body.price
           products[i].products[index].discount = body.discount
@@ -226,6 +226,7 @@ const CartPage = ({ data }) => {
     const data = await response.json()
 
     if (data.status === 200) {
+      setUnActive(unActive-cartItems.length)
       products.forEach((product, i) => {
         const pr = product.products.filter((p) => {
           return !cartItems.includes(p.cartID)
@@ -383,7 +384,7 @@ const CartPage = ({ data }) => {
     const cartItems = []
     products.forEach(v => {
       v.products.forEach(p => {
-        if (p.selected === true) {
+        if (p.selected === true && p.status !== productStatus.DISABLE && !p.isChanged) {
           cartItems.push(p.cartID)
         }
       })
@@ -395,10 +396,7 @@ const CartPage = ({ data }) => {
         setVisible(false)
       }, 1000)
     } else {
-      router.push({
-        pathname: '/checkout',
-        query: cartItems,
-      }, '/checkout')
+      console.log("submit",cartItems)
     }
   }
   if (products.length > 0) {

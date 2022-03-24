@@ -53,7 +53,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
       let body = {
         vendor:detailProduct.vendor._id,
         productId: detailProduct._id,
-        amount: quantity,
+        amount: quantity || 1,
       };
       if (detailProduct.variants.length > 0) {
         if(detailProduct.variants[0].attributes.length > 0) {
@@ -110,7 +110,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setQuantity(quantity + 1);
   };
   const changeQty = (e) => {
-    setQuantity(parseInt(e.target.value));
+    var reg = new RegExp('^[0-9]*$');
+    if(reg.test(e.target.value)){
+      setQuantity(e.target.value);
+    }
   };
   const handleCrease = () => {
     if (quantity < 2) return;
@@ -511,6 +514,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 </span>
                                 <Input
                                   type="text"
+                                  pattern="[0-9]+"
                                   name="quantity"
                                   value={quantity}
                                   min={1}
