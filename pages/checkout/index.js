@@ -6,12 +6,13 @@ import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
 import { getSession, useSession } from "next-auth/react";
 
-const Checkout = ({ data }) => {
+const Checkout = ({ cartItems }) => {
   const { data: session } = useSession();
   const [showVoucher, setShowVoucher] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState();
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
-  const [cartItems, setCartItems] = useState(data.cartItems.docs);
+  const [selectedVoucher, setSelectedVoucher] = useState();
+  const [Items, setItems] = useState(cartItems.docs);
   const [listAddress, setListAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
 
@@ -69,10 +70,12 @@ const Checkout = ({ data }) => {
     setShowVoucher(false);
   };
   const handleApplyVoucher = (voucher) => {
+    setSelectedVoucher(voucher);
     handleCloseVoucher();
   };
   const handleSelectPaymentMethod = (e) => {
     setPaymentMethod(e.target.value);
+    console.log(e.target.value);
   };
 
   const handleUpdateAddAddress = (data) => {
@@ -118,7 +121,7 @@ const Checkout = ({ data }) => {
       <CommonLayout parent="home" title="Checkout">
         <CheckoutPage
           listAddress={listAddress}
-          cartItems = {cartItems}
+          cartItems={Items}
           selectedAddress={selectedAddress}
           handleVoucherShow={handleVoucherShow}
           handleCloseVoucher={handleCloseVoucher}
@@ -129,6 +132,8 @@ const Checkout = ({ data }) => {
           handleUpdateAddAddress={handleUpdateAddAddress}
           handleChangeAddress={handleChangeAddress}
           handleOrder={handleOrder}
+          selectedVoucher={selectedVoucher}
+          paymentMethod={paymentMethod}
         />
       </CommonLayout>
       <Footer />
@@ -148,9 +153,10 @@ export async function getServerSideProps(context) {
     },
   });
   const { data } = await response.json();
+  console.log(data);
   return {
     props: {
-      data,
+      cartItems: data.cartItems,
     },
   };
 }

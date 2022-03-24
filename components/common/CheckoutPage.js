@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Alert, Modal, Button, ModalBody, ModalFooter, Row } from "reactstrap";
-
+import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
@@ -8,6 +8,7 @@ import styles from "./CheckoutPage.module.css";
 import Address from "@/components/Address";
 import Voucher from "@/components/Voucher";
 import NumberFormat from "react-number-format";
+import voucher from "../../assets/images/checkout/icon-voucher.svg";
 
 const CheckoutPage = ({
   listAddress,
@@ -22,15 +23,17 @@ const CheckoutPage = ({
   handleChangeAddress,
   handleOrder,
   cartItems,
+  selectedVoucher,
+  paymentMethod,
 }) => {
-  console.log("cart", cartItems);
-  const [obj, setObj] = useState({});
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const [showMessage, setShowMessage] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
   const [chooseAddress, setChooseAddress] = useState();
   const [showError, setShowError] = useState(true);
+  const [totalPriceProduct, setTotalPriceProduct] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
   const router = useRouter();
 
@@ -271,7 +274,7 @@ const CheckoutPage = ({
                             <div>
                               <div className={`${styles.detail_order_information}`}>
                                 <div className={`${styles.vendor_name}`}>
-                                  {/* <span>{product.vendor.brandName}</span> */}
+                                  <span>{product.vendor.brandName}</span>
                                 </div>
                                 <div className={`${styles.section_order_info}`}>
                                   <div className={`${styles.order_info}`}>
@@ -287,11 +290,15 @@ const CheckoutPage = ({
                                     </div>
 
                                     <div className={`${styles.title_info} ${styles.classify_info}`}>
-                                      {product.product.variants.length > 0 ? (
-                                        <span>Loại: {product.product.variants}</span>
+                                      {/* {product.product.variants && product.product.variants.length > 0 && product.product.variants.filter((variant) => {
+                                                return variant._id = product.selectedVariant
+                                      })} */}
+                                      <span>Loại: {product.selectedVariant}</span>
+                                      {/* {product.selectedVariant && product.selectedVariant === product.product.variants._id ? (
+                                        
                                       ) : (
                                         <span></span>
-                                      )}
+                                      )} */}
                                     </div>
                                     <div className={`${styles.title_info}`}>
                                       <NumberFormat
@@ -318,7 +325,7 @@ const CheckoutPage = ({
                                   <div className={`${styles.voucher_shop}`}>
                                     <div className={`${styles.title_voucher_shop}`}>
                                       <div className={`${styles.image_voucher}`}>
-                                        <img src="https" />
+                                        <Image src={voucher} alt="Voucher Mubaha" />
                                         <div>Voucher của Shop</div>
                                       </div>
                                     </div>
@@ -344,18 +351,48 @@ const CheckoutPage = ({
                     <div className={`${styles.title_voucher1}`}>
                       <div className={`${styles.title_voucher2}`}>
                         {/* icon voucher */}
+                        <Image src={voucher} width={30} height={30} alt="Voucher Mubaha" />
                         <span className={`${styles.title_name_voucher}`}>Mubaha voucher</span>
                       </div>
                     </div>
                   </div>
                   <div className={`${styles.selectVoucher}`}>
-                    <button
+                    {selectedVoucher ? 
+                      <>
+                        <div className={`${styles.apply_show_voucher}`}>
+                          <div className={`${styles._1oOP8B}`}></div>
+                          <div className={`${styles.show_voucher}`}>
+                            <span>
+                              {" "}
+                              <NumberFormat
+                                value={selectedVoucher.discount.amount}
+                                thousandSeparator={true}
+                                displayType="text"
+                                prefix={"-"}
+                                suffix={selectedVoucher.currencySymbol}
+                                decimalScale={0}
+                              />
+                            </span>
+                            {console.log("11111", selectedVoucher)}
+                          </div>
+                        </div>
+                        <button
+                          className={`${styles.btn_change} btn p-0 m-0`}
+                          onClick={handleVoucherShow}
+                          disabled={cartItems.length === 0}
+                        >
+                          Chọn Voucher Khác
+                        </button>
+                      </> 
+                      :
+                      <button
                       className={`${styles.btn_change} btn p-0 m-0`}
                       onClick={handleVoucherShow}
                       disabled={cartItems.length === 0}
                     >
                       Chọn Voucher
                     </button>
+                    }
                   </div>
                 </div>
               </div>
@@ -373,6 +410,7 @@ const CheckoutPage = ({
                           value="cod"
                           onChange={handleSelectPaymentMethod}
                           disabled={cartItems.length === 0}
+                          checked={paymentMethod === "cod"}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -395,6 +433,7 @@ const CheckoutPage = ({
                           value="atm"
                           onChange={handleSelectPaymentMethod}
                           disabled={cartItems.length === 0}
+                          checked={paymentMethod === "atm"}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -418,6 +457,7 @@ const CheckoutPage = ({
                           value="paypal"
                           onChange={handleSelectPaymentMethod}
                           disabled={cartItems.length === 0}
+                          checked={paymentMethod === "paypal"}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -440,6 +480,7 @@ const CheckoutPage = ({
                           value="vnpay"
                           onChange={handleSelectPaymentMethod}
                           disabled={cartItems.length === 0}
+                          checked={paymentMethod === "vnpay"}
                         />
                         <span>
                           <div className={`${styles.method_content_name}`}>
@@ -458,7 +499,6 @@ const CheckoutPage = ({
               </div>
               <div className={`${styles.total}`}>
                 <h4>5. Tổng đơn hàng </h4>
-
                 <div className={`${styles.total_prices}`}>
                   {cartItems && cartItems.length > 0 && (
                     <>
@@ -470,7 +510,7 @@ const CheckoutPage = ({
                       <div
                         className={`${styles.total_title_price} ${styles.total_amount} ${styles.prices}`}
                       >
-                        ₫1.147.000
+                        ₫{totalPriceProduct}
                       </div>
                       <div
                         className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
@@ -479,9 +519,7 @@ const CheckoutPage = ({
                       </div>
                       <div
                         className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}
-                      >
-                        ₫70.700
-                      </div>
+                      ></div>
 
                       <div
                         className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
@@ -491,11 +529,10 @@ const CheckoutPage = ({
                       <div
                         className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}
                       >
-                        <span>₫1.217.700</span>
+                        <span>₫{totalPrice}</span>
                       </div>
                     </>
                   )}
-
                   <div className={`${styles.section_button_order}`}>
                     <div className={`${styles.section_rules}`}>
                       <div>
@@ -532,7 +569,27 @@ const CheckoutPage = ({
         handleCloseVoucher={handleCloseVoucher}
         vouchers={vouchers}
         handleApplyVoucher={handleApplyVoucher}
+        selectedVoucher ={selectedVoucher}
       />
+      {/* <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={true}>
+        <div className={`${styles.credit_card}`}>
+          <h2>Credit card</h2>
+          <form className={`${styles.form}`}>
+            <input type="text" placeholder="NAME" />
+            <div class="line">
+              <input type="text" placeholder="CARD" /> <input type="text" placeholder="NUMBER" />{" "}
+              <input type="text" /> <input type="text" />
+            </div>
+            <div class="line">
+              <input class="litle" type="text" placeholder="EXPIRY" />
+              <input class="tall" type="text" placeholder="CCV" />
+            </div>
+            <button type="submit" class="valid-button">
+              PROCEED TO CHECKOUT
+            </button>
+          </form>
+        </div>
+      </Modal> */}
     </>
   );
 };

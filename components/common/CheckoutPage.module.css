@@ -1,5 +1,5 @@
 .section_checkout_page {
-  padding-top: 40px
+  padding-top: 40px;
 }
 .address h4 {
   margin-bottom: 20px;
@@ -264,8 +264,8 @@
   display: flex;
   align-items: center;
 }
-.image_voucher img {
-  margin-right: 4px;
+.image_voucher > div {
+  margin-left: 5px;
 }
 .button_voucher_shop {
   flex: 4;
@@ -424,6 +424,34 @@
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 15px;
+  display: flex;
+  align-items: center;
+}
+.apply_show_voucher {
+  margin-right: 15px;
+}
+._1oOP8B {
+  flex: 1;
+}
+.show_voucher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-style: solid;
+  color: #ee4d2d;
+  border-color: #ee4d2d;
+  /* margin-left: 0.5rem; */
+  padding: 0 0.4rem;
+  font-size: 0.9rem;
+  height: 1.7rem;
+  box-sizing: border-box;
+  cursor: default;
+}
+.show_voucher > span {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .payments h4 {
@@ -720,39 +748,51 @@
   white-space: nowrap;
   margin-top: 0.3125rem;
 }
-.voucher_information_basic_2, .apply_information{
+.voucher_information_basic_2,
+.apply_information {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .voucher_information_basic_2 {
-    margin-right: 0.5em;
-    border-radius: 0.125rem;
-    white-space: nowrap;
-    box-sizing: border-box;
-    color: #ee4d2d;
-    border: 1px solid #ee4d2d;
-    padding: 0.0625rem 0.25rem;
+  margin-right: 0.5em;
+  border-radius: 0.125rem;
+  white-space: nowrap;
+  box-sizing: border-box;
+  color: #ee4d2d;
+  border: 1px solid #ee4d2d;
+  padding: 0.0625rem 0.25rem;
 }
 .apply_information {
-  font-size: .75rem;
-    line-height: .875rem;
-    align-items: center;
+  font-size: 0.75rem;
+  line-height: 0.875rem;
+  align-items: center;
 }
 .voucher_information_basic span {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  color: rgba(0,0,0,.54);
+  color: rgba(0, 0, 0, 0.54);
   margin-top: 0.5rem;
-  font-size: .75rem;
-    line-height: .875rem;
+  font-size: 0.75rem;
+  line-height: 0.875rem;
 }
 .button_apply_voucher {
   display: flex;
   align-items: center;
-
 }
 .button_apply_voucher button {
   margin-right: 1rem;
+}
+.credit_card {
+  margin: 5rem auto;
+  padding: 1rem;
+  text-align: center;
+}
+.credit_card h2 {
+  color: rgba(4, 99, 128, 1);
+}
+.form {
+  display: flex;
+  flex-direction: column;
 }

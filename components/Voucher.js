@@ -4,7 +4,8 @@ import styles from "@/components/common/CheckoutPage.module.css";
 import NumberFormat from "react-number-format";
 import format from "date-fns/format";
 
-const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher }) => {
+const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher, selectedVoucher }) => {
+  console.log(selectedVoucher);
   return (
     <Modal
       size="lg"
@@ -83,12 +84,18 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher }) =
                             <span>HSD: {format(new Date(voucher.endDate), "MM/dd/yyyy")}</span>
                           </div>
                           <div className={`${styles.button_apply_voucher}`}>
-                            <button
-                              className={`${styles.button_apply}`}
-                              onClick={() => handleApplyVoucher(voucher)}
-                            >
-                              <span>Áp dụng</span>
-                            </button>
+                            {selectedVoucher && selectedVoucher._id === voucher._id ? (
+                              <button className={`${styles.button_apply}`} disabled>
+                                <span>Đã áp dụng</span>
+                              </button>
+                            ) : (
+                              <button
+                                className={`${styles.button_apply}`}
+                                onClick={() => handleApplyVoucher(voucher)}
+                              >
+                                <span>Áp dụng</span>
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>
