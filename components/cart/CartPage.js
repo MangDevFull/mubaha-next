@@ -628,7 +628,7 @@ const CartPage = ({ data }) => {
                       >
                         {products.map((p, i) => {
                           return (
-                            <Vendor p={p} vendorKey={i} updateProduct={updateProduct} isLoading={isLoading}
+                            <Vendor key={i} p={p} vendorKey={i} updateProduct={updateProduct} isLoading={isLoading}
                               updateQuantity={updateQuantity} updateSelectProduct={updateSelectProduct}
                               updateDeleteOneCart={updateDeleteOneCart} updateSelectVendor={updateSelectVendor}
                             />
@@ -661,11 +661,9 @@ const CartPage = ({ data }) => {
                 </Row>
 
               </Container>
-
             </section>
           </div>
         </div>
-        <div ref={comboBtnRef}></div>
         {!isLoading &&
           <div style={{
             textAlign: "center",
@@ -673,12 +671,15 @@ const CartPage = ({ data }) => {
             bottom: "0",
             width: "100%",
             zIndex: 2,
+
           }}
+          ref={comboBtnRef}
           >
             <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
+            <div>
               <table className="table cart-table table-responsive-md mt-0">
                 <tfoot >
-                  <tr style={{ backgroundColor: 'white' }}>
+                  <tr className={styles.shadow}>
                     <td className="d-flex justify-content-between pt-4 border-0 mt-0">
                       <div className="d-flex flex-row bd-highlight ml-5">
                         <div className="bd-highlight">
@@ -720,6 +721,7 @@ const CartPage = ({ data }) => {
                   </tr>
                 </tfoot>
               </table>
+              </div>
             </Container>
           </div>
         }

@@ -106,7 +106,7 @@ export default function Variant({ item, vendorKey, updateProduct, productKey }) 
                   </div>
                   {item.variants.map((variant, vi) => {
                     return (
-                      <>
+                      <div key={vi}>
                         <li className={`${variant.stock.quantity == 0 && variant.attributes.length == 0 ? styles.disabled : ""}`}
                           style={
                             selectedVariant === undefined ?
@@ -137,7 +137,7 @@ export default function Variant({ item, vendorKey, updateProduct, productKey }) 
                                 : {}
                           } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
                         </li>
-                      </>
+                      </div>
                     )
                   })}
 
@@ -153,6 +153,7 @@ export default function Variant({ item, vendorKey, updateProduct, productKey }) 
                       <div className={`d-flex`} >
                         {sizes.map((s, si) => (
                           <li
+                          key={si}
                             className={`${s.stock.quantity == 0 ? styles.disabled : ""}`}
                             style={
                               selectSize === '' ?
@@ -167,7 +168,6 @@ export default function Variant({ item, vendorKey, updateProduct, productKey }) 
                                 }
                                   : {}
                             }
-                            key={si}
                             checked={selectSize === s._id}
                             onClick={(e) => selectAttr(e, s._id)}
                           >

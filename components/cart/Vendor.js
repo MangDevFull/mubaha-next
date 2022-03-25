@@ -39,10 +39,11 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
         }
         </CardHeader>
         <CardBody>
+        <div>
           <table className="ml-3">
             {p.products.map((item, index) => {
               return (
-                <Products item={item} 
+                <Products item={item} key={index}
                 updateDeleteOneCart={updateDeleteOneCart}
                 vendor={p} updateSelectProduct={updateSelectProduct}
                   updateProduct={updateProduct} productKey={index} vendorKey={vendorKey}
@@ -50,6 +51,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
               );
             })}
           </table>
+          </div>
         </CardBody>
         <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
           <div className="d-flex mb-2 mt-3">

@@ -52,3 +52,16 @@
 .unSelectAttr{
   background-color:#fff5f5
 }
+.primaryBottomCard {
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+}
+
+.bottomSticky {
+  position: sticky;
+  bottom: 0;
+}
+.shadow{
+  background-color: white;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
+}
