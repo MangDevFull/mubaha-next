@@ -9,47 +9,41 @@ import { useSession } from "next-auth/react";
 import Modal2 from "react-awesome-modal";
 import productStatus from "@/enums/productStatus.enum.js";
 import InfiniteScroll from "react-infinite-scroll-component";
-import _ from "lodash";
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import _ from 'lodash'
 import productStatusEnum from "@/enums/productStatus.enum";
-import Stciky2 from "@/components/cart/Sticky.js";
-import { useRouter } from "next/router";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-const Vendor = dynamic(() => import("@/components/cart/Vendor.js"));
+import Stciky2 from '@/components/cart/Sticky.js';
+import { useRouter } from 'next/router';
+import 'react-loading-skeleton/dist/skeleton.css'
+const Vendor = dynamic(() => import('@/components/cart/Vendor.js'))
 const CartPage = ({ data }) => {
-  const { data: session } = useSession();
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [products, setProduct] = useState(data.fullP);
-  const [isSelectedAll, setIsSelectedAll] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [totalProductSelect, setTotalProductSelect] = useState(0);
-  const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [message, setMessage] = useState("");
-  const [totalPage, setTotalPage] = useState(data.totalPage);
-  const [currentPage, setCurrentPage] = useState(data.page);
-  const [totalProduct, setTotalProduct] = useState(data.totalDocs);
-  const [unActive, setUnActive] = useState(data.unActive);
+  const { data: session } = useSession()
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
+  const [products, setProduct] = useState(data.fullP)
+  const [isSelectedAll, setIsSelectedAll] = useState(false)
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [totalProductSelect, setTotalProductSelect] = useState(0)
+  const [isOpenModalDeleteProduct, setIsOpenModalDeleteProduct] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [message, setMessage] = useState('')
+  const [totalPage, setTotalPage] = useState(data.totalPage)
+  const [currentPage, setCurrentPage] = useState(data.page)
+  const [totalProduct, setTotalProduct] = useState(data.totalDocs)
+  const [unActive, setUnActive] = useState(data.unActive)
+  const [totoalCheck,setTotalCheck] = useState(0)
   const { elementRef: comboBtnRef, isSticky } = Stciky2({ defaultSticky: true, isTop: false });
   useEffect(() => {
-    const cartID = localStorage.getItem("cartID");
-    if (cartID != null) {
-      products.forEach((product, index) => {
-        product.products.forEach((p, i) => {
-          if (p.cartID == cartID) {
-            products[index].products[i].selected = true;
-            setProduct([...products]);
-            localStorage.removeItem("cartID");
-          }
-        });
-      });
-    }
-  }, []);
+    const isSelectAll = data.fullP.some(v => v.selected === false);
+    if (!isSelectAll) setIsSelectedAll(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+  }, [])
   const updateQuantity = (vendorId, ProductId, quantity) => {
-    products[vendorId].products[ProductId].quantity = quantity;
-    setProduct([...products]);
-  };
+    products[vendorId].products[ProductId].quantity = quantity
+    setProduct([...products])
+  }
   const updateDeleteOneCart = (vendorId, ProductId, cartID) => {
     if (ProductId > -1) {
       products[vendorId].products.splice(ProductId, 1);
@@ -57,11 +51,10 @@ const CartPage = ({ data }) => {
     if (products[vendorId].products.length === 0) {
       products.splice(vendorId, 1);
     }
-    setProduct([...products]);
-  };
+    setProduct([...products])
+  }
   const updateSelectProduct = (vendorId, productId) => {
-    products[vendorId].products[productId].selected =
-      !products[vendorId].products[productId].selected;
+    products[vendorId].products[productId].selected = !products[vendorId].products[productId].selected;
     const selectAllVendor = products[vendorId].products.filter((p) => {
       return p.selected !== true && p.status !== productStatus.DISABLE && p.isOutOfStock !== true;
     });
@@ -116,31 +109,30 @@ const CartPage = ({ data }) => {
   };
 
   useEffect(() => {
-    let amount = 0;
-    let total = 0;
+    let amount = 0
+    let total = 0
+    let amoutCheckout = 0
     products.forEach((product) => {
       let t = 0;
       let a = 0;
       product.products.forEach((p) => {
         if (p.selected == true) {
-          if (p.variant != null && p.attr == null) {
-            a += 1;
-            t += p.variant.price * p.quantity * (1 - p.variant.discount);
-          } else if (p.attr != null && p.variant != null) {
-            t += p.attr.price * p.quantity * (1 - p.attr.discount);
-            a += 1;
-          } else {
-            t += p.price * p.quantity * (1 - p.discount);
-            a += 1;
+          if(p.status !== productStatus.DISABLE && !p.isChanged){
+            a += 1
+            t += p.price * p.quantity * (1 - p.discount)
+            amoutCheckout+=1
+          }else{
+            a +=1
           }
         }
-      });
-      total += t;
-      amount += a;
-    });
-    setTotalProductSelect(amount);
-    setTotalPrice(total);
-  }, [products]);
+      })
+      total += t
+      amount += a
+    })
+    setTotalCheck(amoutCheckout)
+    setTotalProductSelect(amount)
+    setTotalPrice(total)
+  }, [products])
   const deleteManyCartItem = async () => {
     let cartItems = [];
     products.forEach((product) => {
@@ -195,31 +187,20 @@ const CartPage = ({ data }) => {
   };
   const updateProduct = (body, i, index) => {
     if (body.selectedVariant != null && body.selectedAttribute != null) {
-      const v = products[i].products[index].variants.filter((product, id) => {
-        return product._id === body.selectedVariant;
-      });
-      if (v.length > 0) {
-        products[i].products[index].variant = v[0];
-        const s = v[0].attributes.filter((s) => {
-          return s._id === body.selectedAttribute;
-        });
-        if (s.length > 0) {
-          products[i].products[index].attr = s[0];
-          products[i].products[index].isOutOfStock = false;
-          setProduct([...products]);
-        }
-      }
+      products[i].products[index].variant = body.selectedVariant
+          products[i].products[index].attr = body.selectedAttribute
+          products[i].products[index].price = body.price
+          products[i].products[index].discount = body.discount
+          products[i].products[index].isOutOfStock = false
+          setProduct([...products])
     } else if (body.selectedVariant != null && body.selectedAttribute == null) {
-      products[i].products[index].variants.filter((product, id) => {
-        return product._id === body.selectedVariant;
-      });
-      if (v.length > 0) {
-        products[i].products[index].variant = v[0];
-        products[i].products[index].isOutOfStock = false;
-        setProduct([...products]);
+        products[i].products[index].variant = body.selectedVariant
+        products[i].products[index].isOutOfStock = false
+        products[i].products[index].price = body.price
+          products[i].products[index].discount = body.discount
+        setProduct([...products])
       }
     }
-  };
   function closeModal() {
     setVisible(false);
   }
@@ -243,6 +224,7 @@ const CartPage = ({ data }) => {
     const data = await response.json();
 
     if (data.status === 200) {
+      setUnActive(unActive-cartItems.length)
       products.forEach((product, i) => {
         const pr = product.products.filter((p) => {
           return !cartItems.includes(p.cartID);
@@ -280,86 +262,66 @@ const CartPage = ({ data }) => {
     const results = vendors.map((v) => {
       return {
         vendor: v[1][0].vendor,
-        products: v.pop(),
-      };
-    });
-    const fecthUnActive = 0;
-    const fullP = results.map((product) => {
-      let count = 0;
-      const d = product.products.map((p, index) => {
-        if (p.product.status === productStatusEnum.DISABLE) {
-          count += 1;
-          fecthUnActive += 1;
+        products: v.pop()
+      }
+    })
+    const fecthUnActive = 0
+  const fullP = results.map(product => {
+    let countActive = 0
+    let countOutOfStocks = 0
+    let countChange = 0
+    const d = product.products.map((p, index) => {
+      if(p.product.status === productStatusEnum.DISABLE ){
+        countActive += 1
+        fecthUnActive+=1
+      }
+      if(p.isChanged){
+        countChange += 1
+      }
+      let value = {
+        quantity: p.amount,
+        name: p.product.name,
+        currencySymbol: p.product.currencySymbol,
+        slug: p.product.slug,
+        cartID: p._id,
+        selected: false,
+        productID: p.product._id,
+        discount: p.product.discount,
+        status: p.product.status,
+        price: p.price,
+        discount: p.discount,
+        isChanged: p.isChanged
+      }
+      if (p.selectedVariant != null && p.selectedAttribute == null) {
+        value = {
+          ...value,
+          variantLable: p.product.variantLabel,
+          variant: p.selectedVariant,
+          variants: p.product.variants,
         }
-        let value = {
-          quantity: p.amount,
-          name: p.product.name,
-          currencySymbol: p.product.currencySymbol,
-          slug: p.product.slug,
-          cartID: p._id,
-          selected: false,
-          productID: p.product._id,
-          discount: p.product.discount,
-          status: p.product.status,
-        };
-        if (p.selectedVariant != null && p.selectedAttribute == null) {
-          const rs = p.product.variants.filter((variant) => {
-            return variant._id === p.selectedVariant;
-          });
+        if (p.selectedVariant.stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
+          countOutOfStocks+=1
           value = {
             ...value,
-            variant: rs[0],
-            variants: p.product.variants,
-            variantLable: p.product.variantLabel,
-          };
-          if (rs[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
-            count += 1;
-            value = {
-              ...value,
-              isOutOfStock: true,
-            };
-          } else {
-            value = {
-              ...value,
-              isOutOfStock: false,
-            };
-          }
-        } else if (p.selectedVariant != null && p.selectedAttribute != null) {
-          const rs = p.product.variants.filter((v) => v._id.toString() === p.selectedVariant);
-          let att = [];
-          if (rs.length > 0) {
-            att = rs[0].attributes.filter((s) => {
-              return s._id === p.selectedAttribute;
-            });
-          }
-          value = {
-            ...value,
-            variant: rs[0],
-            attr: att[0],
-            variants: p.product.variants,
-            variantLable: p.product.variantLabel,
-            attributeLabel: p.product.attributeLabel,
-          };
-          if (att[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
-            count += 1;
-            value = {
-              ...value,
-              isOutOfStock: true,
-            };
-          } else {
-            value = {
-              ...value,
-              isOutOfStock: false,
-            };
+            isOutOfStock: true,
           }
         } else {
           value = {
             ...value,
-            price: p.product.price,
-            image: p.product.media.featuredImage,
-          };
-          if (p.product.stock.quantity == 0) {
-            count += 1;
+            isOutOfStock: false,
+          }
+        }
+      } else if (p.selectedVariant != null && p.selectedAttribute != null) {
+          value = {
+            ...value,
+            variant: p.selectedVariant,
+            attr: p.selectedAttribute,
+            variants: p.product.variants,
+            variantLable: p.product.variantLabel,
+            attributeLabel: p.product.attributeLabel,
+          }
+          if (p.selectedAttribute.stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
+            countOutOfStocks+=1
             value = {
               ...value,
               isOutOfStock: true,
@@ -370,38 +332,59 @@ const CartPage = ({ data }) => {
               isOutOfStock: false,
             };
           }
+      } else {
+        value = {
+          ...value,
+          price: p.product.price,
+          image: p.product.media.featuredImage
         }
-        return value;
-      });
-      return {
-        vendor: product.vendor,
-        selected: false,
-        totalDocs: product.products.length,
-        products: d,
-        count: count,
-      };
-    });
+        if (p.product.stock.quantity == 0) {
+          count+=1
+          value = {
+            ...value,
+            isOutOfStock: true,
+          }
+        } else {
+          value = {
+            ...value,
+            isOutOfStock: false,
+          }
+        }
+      }
+      return value
+    })
+    return {
+      vendor: product.vendor,
+      selected: false,
+      totalDocs: product.products.length,
+      products: d,
+      count: countActive + countChange + countOutOfStocks,
+    }
+  })
     products.forEach((x) => {
       fullP.forEach((y) => {
         if (x.vendor._id === y.vendor._id) {
           x.products = _.concat(x.products, y.products);
-          x.count = x.count + y.count;
-          x.totalDocs = x.totalDocs + y.totalDocs;
+          x.count = x.count + y.count
+          x.selected = false;
+          x.totalDocs = x.totalDocs + y.totalDocs
         }
       });
     });
     setTimeout(function () {
-      setUnActive(fecthUnActive + unActive);
-      setCurrentPage(page);
-      setProduct([...products]);
-    }, 5000);
-  };
-  const handleSubmit = () => {
-    const cartItems = [];
-    products.forEach((v) => {
-      v.products.forEach((p) => {
-        if (p.selected === true) {
-          cartItems.push(p.cartID);
+      setUnActive(fecthUnActive + unActive)
+      setCurrentPage(page)
+      setProduct([...products])
+    }, 1500)
+
+  }
+  const handleSubmit = async () => {
+    console.log("check")
+    const cartItems = []
+    products.forEach(v => {
+      v.products.forEach(p => {
+        if (p.selected === true && p.status !== productStatus.DISABLE && !p.isChanged) {
+          cartItems.push(p.cartID)
         }
       });
     });
@@ -412,13 +395,29 @@ const CartPage = ({ data }) => {
         setVisible(false);
       }, 1000);
     } else {
-      router.push(
-        {
-          pathname: "/checkout",
-          query: cartItems,
+      console.log(process.env.API_ORDER_URL)
+      const response = await fetch(`${process.env.API_ORDER_URL}/checkout`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.accessToken
         },
-        "/checkout"
-      );
+        body: JSON.stringify({cartItemIds:cartItems})
+      })
+      const data = await response.json()
+      if(data.status==200) {
+        console.log(data.data)
+        const payload = {
+          s: data.data.s,
+          f: data.data.f
+        }
+        router.push({
+          pathname: '/checkout',
+         query: payload,
+        },'/checkout')
+      }else{
+        alert(data.message)
+      }
     }
   };
   if (products.length > 0) {
@@ -453,11 +452,16 @@ const CartPage = ({ data }) => {
                           <tr className={`${styles.backgroundHead}`}>
                             <th scope="col">
                               <div className="mt-4 mb-3">
-                                <input
-                                  type="checkbox"
-                                  checked={isSelectedAll}
-                                  onClick={selectAllProduct}
-                                />
+                                {isLoading ? <Skeleton
+                                  width={20} height={20} square
+                                /> :
+                                  <input
+                                    type="checkbox"
+                                    role="button"
+                                    checked={isSelectedAll}
+                                    onClick={selectAllProduct}
+                                  />
+                                }
                               </div>
                             </th>
                             <th scope="col" colSpan="2">
@@ -481,16 +485,140 @@ const CartPage = ({ data }) => {
                     </div>
                     <div className={`${styles.vendorPart} p-3`}>
                       <InfiniteScroll
+                      scrollThreshold={0.75}
                         dataLength={currentPage}
                         next={fetchMoreData}
                         hasMore={currentPage < totalPage}
                         loader={
-                          <div className="d-flex justify-content-center">
-                            <div className="spinner-border text-danger" role="status">
-                              <span className="sr-only">Loading...</span>
+                          <>
+                            <div className="d-flex" style={{backgroundColor: 'white' }}>
+                              <tbody>
+                                <tr>
+                                  <td className={`d-flex} p-2`}>
+                                      <Skeleton
+                                        width={100}
+                                        rectangle
+                                        height={100} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={300}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                      
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                </tr>
+                                <tr>
+                                  <td className={`d-flex} p-2`}>
+                                      <Skeleton
+                                        width={100}
+                                        rectangle
+                                        height={100} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={300}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                      
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                </tr>
+                                <tr>
+                                  <td className={`d-flex} p-2`}>
+                                      <Skeleton
+                                        width={100}
+                                        rectangle
+                                        height={100} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={300}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                      
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                </tr>
+                              </tbody>
                             </div>
-                            <h4 className={styles.paginateText}>Đang tải...</h4>
-                          </div>
+                          </>
                         }
                         endMessage={
                           <p style={{ textAlign: "center" }}>
@@ -500,18 +628,11 @@ const CartPage = ({ data }) => {
                       >
                         {products.map((p, i) => {
                           return (
-                            <div key={i}>
-                              <Vendor
-                                p={p}
-                                vendorKey={i}
-                                updateProduct={updateProduct}
-                                updateQuantity={updateQuantity}
-                                updateSelectProduct={updateSelectProduct}
-                                updateDeleteOneCart={updateDeleteOneCart}
-                                updateSelectVendor={updateSelectVendor}
-                              />
-                            </div>
-                          );
+                            <Vendor p={p} vendorKey={i} updateProduct={updateProduct} isLoading={isLoading}
+                              updateQuantity={updateQuantity} updateSelectProduct={updateSelectProduct}
+                              updateDeleteOneCart={updateDeleteOneCart} updateSelectVendor={updateSelectVendor}
+                            />
+                          )
                         })}
                       </InfiniteScroll>
                     </div>
@@ -537,67 +658,63 @@ const CartPage = ({ data }) => {
           </div>
         </div>
         <div ref={comboBtnRef}></div>
-        <div
-          style={{
+        {!isLoading &&
+          <div style={{
             textAlign: "center",
             position: isSticky ? "fixed" : "sticky",
             bottom: "0",
             width: "100%",
             zIndex: 2,
           }}
-        >
-          <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
-            <table className="table cart-table table-responsive-md mt-0">
-              <tfoot>
-                <tr style={{ backgroundColor: "white" }}>
-                  <td className="d-flex justify-content-between pt-4 border-0 mt-0">
-                    <div className="d-flex flex-row bd-highlight ml-5">
-                      <div className="bd-highlight">
-                        <span
-                          className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
-                          disabled={true}
-                          onClick={handleModalDeleteMany}
-                        >
-                          Xoá
-                        </span>
-                        ({totalProductSelect} sản phẩm đã chọn)
-                      </div>
-                      {unActive ? (
-                        <div className="ml-5">
-                          <span
-                            className={styles.deleteUnavailable}
-                            onClick={deleteAvailableProducts}
+          >
+            <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
+              <table className="table cart-table table-responsive-md mt-0">
+                <tfoot >
+                  <tr style={{ backgroundColor: 'white' }}>
+                    <td className="d-flex justify-content-between pt-4 border-0 mt-0">
+                      <div className="d-flex flex-row bd-highlight ml-5">
+                        <div className="bd-highlight">
+                          <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
+                            disabled={true}
+                            onClick={handleModalDeleteMany}
                           >
-                            Xoá tất cả sản phẩm không hoạt động
+                            Xoá
                           </span>
+                          ({totalProductSelect} sản phẩm đã chọn)
                         </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    <div className="ml-5">Tổng thanh toán ({totalProductSelect} sản phẩm) :</div>
-                  </td>
-                  <td className="border-0">
-                    <div className="d-flex">
-                      <h2>
-                        <NumberFormat
-                          value={totalPrice}
-                          thousandSeparator={true}
-                          displayType="text"
-                          suffix={"₫"}
-                          decimalScale={0}
-                        />
-                      </h2>
-                      <a onClick={handleSubmit} className="btn btn-solid ml-4">
-                        Thanh toán
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </Container>
-        </div>
+                        {unActive ?
+                          <div className="ml-5">
+                            <span
+                              className={styles.deleteUnavailable}
+                              onClick={deleteAvailableProducts}
+                            >Xoá tất cả sản phẩm không hoạt động</span>
+                          </div>
+                          : ""}
+                      </div>
+                      <div className="ml-5">
+                        Tổng thanh toán ({totoalCheck} sản phẩm) :
+                      </div>
+                    </td>
+                    <td className="border-0">
+                      <div className="d-flex">
+                        <h2>
+                          <NumberFormat
+                            value={totalPrice}
+                            thousandSeparator={true}
+                            displayType="text"
+                            suffix={'₫'}
+                            decimalScale={0}
+                          />
+                        </h2>
+                        <a onClick={handleSubmit} className="btn btn-solid ml-4">Thanh toán</a>
+                      </div>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </Container>
+          </div>
+        }
       </>
     );
   } else {

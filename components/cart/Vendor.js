@@ -1,32 +1,32 @@
 import styles from "@/styles/cart.module.css";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-import { Card, CardBody, CardHeader, CardFooter } from "reactstrap";
-const Products = dynamic(() => import("@/components/cart/Products.js"));
-export default function VendorCart({
-  p,
-  vendorKey,
-  updateProduct,
-  updateQuantity,
-  updateDeleteOneCart,
-  updateSelectProduct,
-  updateSelectVendor,
-}) {
-  const handleSelectVendor = () => {
-    updateSelectVendor(vendorKey);
-  };
+import dynamic from 'next/dynamic'
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import {
+   Card, CardBody, CardHeader, CardFooter
+} from "reactstrap";
+const Products = dynamic(() => import('@/components/cart/Products.js'));
+export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity ,
+  updateDeleteOneCart,updateSelectProduct,updateSelectVendor,isLoading}) {
+  const handleSelectVendor = ()=>{
+    updateSelectVendor(vendorKey)
+  }
   return (
     <>
-      <Card style={{ border: "none" }} className="mt-0">
-        <CardHeader style={{ backgroundColor: "white" }}>
+      <Card style={{ border: 'none' }} className="mt-0 mb-4">
+        <CardHeader style={{ backgroundColor: 'white' }}>
+        {isLoading ? 
+        <Skeleton
+        width={200}
+        height={50}
+        rectangle
+         />:
           <div className=" mb-2">
-            {!p.count == p.totalDocs ? (
-              ""
-            ) : (
-              <input
-                type="checkbox"
-                className="mr-4 mt-5"
+            {p.count == p.totalDocs ? "" :
+              <input type="checkbox"
+                className={`mr-4 mt-5` }
                 checked={p.selected}
+                role="button"
                 onClick={handleSelectVendor}
               />
             )}
@@ -35,28 +35,17 @@ export default function VendorCart({
               <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
             </Link>
           </div>
+        }
         </CardHeader>
         <CardBody>
           <table className="ml-3">
             {p.products.map((item, index) => {
-              let discount;
-              if (item.attr) discount = item.attr.discount;
-              else if (item.variant) discount = item.variant.discount;
-              else discount = item.discount;
               return (
-                <div key={index}>
-                  <Products
-                    item={item}
-                    discount={discount}
-                    updateDeleteOneCart={updateDeleteOneCart}
-                    vendor={p}
-                    updateSelectProduct={updateSelectProduct}
-                    updateProduct={updateProduct}
-                    productKey={index}
-                    vendorKey={vendorKey}
-                    updateQuantity={updateQuantity}
-                  />
-                </div>
+                <Products item={item} 
+                updateDeleteOneCart={updateDeleteOneCart}
+                vendor={p} updateSelectProduct={updateSelectProduct}
+                  updateProduct={updateProduct} productKey={index} vendorKey={vendorKey}
+                  updateQuantity={updateQuantity} isLoading={isLoading} />
               );
             })}
           </table>
@@ -68,6 +57,7 @@ export default function VendorCart({
           </div>
         </CardFooter>
       </Card>
+      <div style={{backgroundColor:"rgb(245, 245, 250)"}}></div>
     </>
   );
 }
