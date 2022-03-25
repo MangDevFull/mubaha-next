@@ -408,7 +408,6 @@ const CartPage = ({ data }) => {
       })
       const data = await response.json()
       if(data.status==200) {
-        console.log(data.data)
         const payload = {
           s: data.data.s,
           f: data.data.f
