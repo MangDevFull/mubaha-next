@@ -380,7 +380,8 @@ const CartPage = ({ data }) => {
     }, 1500)
 
   }
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    console.log("check")
     const cartItems = []
     products.forEach(v => {
       v.products.forEach(p => {
@@ -396,7 +397,29 @@ const CartPage = ({ data }) => {
         setVisible(false)
       }, 1000)
     } else {
-      console.log("submit",cartItems)
+      console.log(process.env.API_ORDER_URL)
+      const response = await fetch(`${process.env.API_ORDER_URL}/checkout`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.accessToken
+        },
+        body: JSON.stringify({cartItemIds:cartItems})
+      })
+      const data = await response.json()
+      if(data.status==200) {
+        console.log(data.data)
+        const payload = {
+          s: data.data.s,
+          f: data.data.f
+        }
+        router.push({
+          pathname: '/checkout',
+         query: payload,
+        },'/checkout')
+      }else{
+        alert(data.message)
+      }
     }
   }
   if (products.length > 0) {

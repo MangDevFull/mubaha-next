@@ -24,7 +24,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
           <div className=" mb-2">
             {p.count == p.totalDocs ? "" :
               <input type="checkbox"
-                className="mr-4 mt-5"
+                className={`mr-4 mt-5` }
                 checked={p.selected}
                 role="button"
                 onClick={handleSelectVendor}

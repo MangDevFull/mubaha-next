@@ -203,14 +203,12 @@ export default function ProductsCart({ item, productKey,
                 height={100} />
               :
               <>
-              {!item.isOutOfStock &&
                 <input type="checkbox"
                 role="button"
-                  className="mr-4 mt-5"
+                  className={`mr-4 mt-5 ${item.isOutOfStock ? styles.disabled : ""}`}
                   checked={item.selected}
                   onClick={handleSelectProduct}
                 />
-                 }
                 <Link href={`/${item.slug}`}>
                   <a>
                     <Media
