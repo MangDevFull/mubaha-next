@@ -13,8 +13,9 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
   }
   return (
     <>
-      <Card style={{ border: 'none' }} className="mt-0">
-        <CardHeader style={{ backgroundColor: 'white' }}>
+    <div style={{borderBottom:'10px solid rgb(245, 245, 250)'}}>
+      <Card style={{ border: 'none' }} className="mt-0 mb-4">
+        <CardHeader style={{ backgroundColor: 'white' }} className="ml-3">
         {isLoading ? 
         <Skeleton
         width={200}
@@ -22,10 +23,11 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
         rectangle
          />:
           <div className=" mb-2">
-            {!p.count == p.totalDocs ? "" :
+            {p.count == p.totalDocs ? "" :
               <input type="checkbox"
-                className="mr-4 mt-5"
+                className={`mr-4 mt-5` }
                 checked={p.selected}
+                role="button"
                 onClick={handleSelectVendor}
               />
             }
@@ -37,14 +39,11 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
         }
         </CardHeader>
         <CardBody>
+        <div>
           <table className="ml-3">
             {p.products.map((item, index) => {
-              let discount
-              if (item.attr) discount = item.attr.discount
-              else if (item.variant) discount = item.variant.discount
-              else discount = item.discount
               return (
-                <Products item={item} discount={discount}
+                <Products item={item} key={index}
                 updateDeleteOneCart={updateDeleteOneCart}
                 vendor={p} updateSelectProduct={updateSelectProduct}
                   updateProduct={updateProduct} productKey={index} vendorKey={vendorKey}
@@ -52,6 +51,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
               );
             })}
           </table>
+          </div>
         </CardBody>
         <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
           <div className="d-flex mb-2 mt-3">
@@ -59,6 +59,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
           </div>
         </CardFooter>
       </Card>
+      </div>
     </>
   )
 

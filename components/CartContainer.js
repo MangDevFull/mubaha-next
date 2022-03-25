@@ -20,22 +20,16 @@ export default function CartContainer({ icon }) {
       if (data.status === 200) {
         const products = data.data.map(product => {
           if (product.selectedVariant != null && product.selectedAttribute == null) {
-            const v = product.product.variants.filter(variant => {
-              return variant._id === product.selectedVariant
-            })
             return {
-             ...v[0],
+             ...product.selectedVariant,
                quantity: product.amount, name: product.product.name, symbol: product.product.currencySymbol,
-              image: v[0].image,slug: product.product.slug,
+              image: product.selectedVariant.image,slug: product.product.slug,
             }
           } else if (product.selectedVariant != null && product.selectedAttribute != null) {
-            const v = product.product.variants.filter(variant => {
-              return variant._id === product.selectedVariant
-            })
             return {
-            ...v[0].attributes.filter(size => size._id === product.selectedAttribute)[0], 
+            ...product.selectedAttribute,
               quantity: product.amount, name: product.product.name,
-              symbol: product.product.currencySymbol, image: v[0].image,slug: product.product.slug,
+              symbol: product.product.currencySymbol, image: product.selectedVariant.image,slug: product.product.slug,
             }
           } else {
             return {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
@@ -32,6 +32,7 @@ export default function LoginPage() {
   const [hidePass, setHidePass] = useState("none");
   const [inputValues, setInputValues] = useState("password");
   const [phone, setPhone] = useState("");
+  const [slug,setSlug] = useState("")
   const router = useRouter();
 
   const handleShowPassword = () => {
@@ -44,7 +45,10 @@ export default function LoginPage() {
     setShowPass("block");
     setInputValues("password");
   };
-
+  useEffect(() => {
+    const slug = router.query.slug
+    setSlug(slug);
+  },[])
   const checkPhone = (e) => {
     const phone = e.target.value;
     var reg = /^\d+$/;
@@ -76,10 +80,8 @@ export default function LoginPage() {
         redirect: false,
       });
       if (res.error == null) {
-        const getProduct = localStorage.getItem('addToCart')
-        if(getProduct != null){
-          localStorage.removeItem("addToCart");
-          router.push(getProduct)
+        if(slug != undefined){
+          router.push(`/${slug}`)
         }else{
           router.push('/')
         }
@@ -122,8 +124,6 @@ export default function LoginPage() {
           const params = {
             phone: phoneNumber,
           };
-          // const response = await API.instance.post("/auth/login-otp", params);
-          // const data = response.data;
           const response = await fetch(`${process.env.API_AUTH_URL}/login-otp`, {
             method: "POST",
             body: JSON.stringify(params),
@@ -207,9 +207,15 @@ export default function LoginPage() {
                     </Link>
                   </div>
                   <div>
+                  {slug!=undefined ? 
+                    <Link href={`/auth/login-otp?slug=${slug}`}>
+                      <a className={`${styles.textLink} text-primary`}>Đăng nhập SMS</a>
+                    </Link>
+                    :
                     <Link href="/auth/login-otp">
                       <a className={`${styles.textLink} text-primary`}>Đăng nhập SMS</a>
                     </Link>
+                  }   
                   </div>
                 </div>
               </div>
@@ -224,7 +230,7 @@ export default function LoginPage() {
               </div>
             </Form>
           }
-          bottom={<BottomFornLogin />} />
+          bottom={<BottomFornLogin slug={slug} />} />
       )}
 
       {isVerifyPhone && (

@@ -9,8 +9,8 @@
   background-color: rgb(245, 245, 250);
 }
 .vendorPart{
-  background-color: white;
-  padding-top: 0px;
+  padding-top: 10px;
+  background-color:white;
 }
 .backgroundCart{
   background-color: white;
@@ -35,6 +35,9 @@
   pointer-events: none;
     opacity: 0.4;
 }
+.pointer{
+  opacity: 0.4;
+}
 .disabled2 {
     opacity: 0.4;
 }
@@ -45,4 +48,20 @@
 .paginateText {
   color: red;
   margin-left: 15px;
+}
+.unSelectAttr{
+  background-color:#fff5f5
+}
+.primaryBottomCard {
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+}
+
+.bottomSticky {
+  position: sticky;
+  bottom: 0;
+}
+.shadow{
+  background-color: white;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
 }
