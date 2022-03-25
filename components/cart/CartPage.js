@@ -370,6 +370,8 @@ const CartPage = ({ data }) => {
           x.count = x.count + y.count
           x.selected = false;
           x.totalDocs = x.totalDocs + y.totalDocs
+        }else{
+          products.push(y);
         }
       })
     })
