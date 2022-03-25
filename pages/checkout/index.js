@@ -147,7 +147,8 @@ export default Checkout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const response = await fetch(`${process.env.API_ORDER_URL}/checkout`, {
+  const { id } = context.query;
+  const response = await fetch(`${process.env.API_ORDER_URL}/checkout?s=${s}&f=${f}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
