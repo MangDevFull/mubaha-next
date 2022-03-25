@@ -259,15 +259,8 @@ const CartPage = ({ data }) => {
 
     const data = await res.json()
     setTotalProduct(totalProduct + data.data.totalDocs)
-    const grouped = _.groupBy(data.data.docs, p => p.vendor._id);
-    const vendors = Object.entries(grouped)
-    const results = vendors.map(v => {
-      return {
-        vendor: v[1][0].vendor,
-        products: v.pop()
-      }
-    })
-    const fecthUnActive = 0
+    const results = data.data.grouped
+    let fecthUnActive = 0
   const fullP = results.map(product => {
     let countActive = 0
     let countOutOfStocks = 0

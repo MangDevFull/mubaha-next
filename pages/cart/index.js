@@ -32,14 +32,7 @@ export async function getServerSideProps(ctx) {
   })
 
   const data = await res.json()
-  const grouped = _.groupBy( data.data.cartItems.docs, p => p.vendor._id);
-  const vendors = Object.entries(grouped)
-  const results = vendors.map(v =>{
-    return {
-      vendor: v[1][0].vendor,
-      products: v.pop()
-    }
-  })
+  const results = data.data.cartItems.grouped
   let unActive = 0
   const fullP = results.map(product => {
     let countActive = 0
