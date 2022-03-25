@@ -29,7 +29,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
                 role="button"
                 onClick={handleSelectVendor}
               />
-            )}
+            }
             <img src="/assets/icon/shop-icon.png" className="mr-2" />
             <Link href={`/vendors/${p.vendor.owner.username}`}>
               <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
