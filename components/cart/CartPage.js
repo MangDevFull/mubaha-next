@@ -363,17 +363,16 @@ const CartPage = ({ data }) => {
       count: countActive + countChange + countOutOfStocks,
     }
   })
-    products.forEach((x) => {
-      fullP.forEach((y) => {
-        if (x.vendor._id === y.vendor._id) {
-          x.products = _.concat(x.products, y.products);
-          x.count = x.count + y.count
-          x.selected = false;
-          x.totalDocs = x.totalDocs + y.totalDocs
-        }else{
-          products.push(y);
-        }
-      })
+    fullP.forEach((i) => {
+      const check = products.findIndex((j) =>  i.vendor._id ===j.vendor._id )
+      if(check >= 0) {
+        products[check].products = products[check].products.concat(i.products)
+        products[check].count = i.count
+        products[check].totalDocs = i.totalDocs
+        products[check].selected = false
+      }else{
+        products.push(i)
+      }
     })
     setTimeout(function () {
       setUnActive(fecthUnActive + unActive)
