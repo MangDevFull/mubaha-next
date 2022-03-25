@@ -443,7 +443,7 @@ const CartPage = ({ data }) => {
                 <Row>
                   <Col sm="12">
                     <div className="mt-3" >
-                      <table className="table cart-table table-responsive-xs mt-2 mb-3">
+                      <table className="table cart-table table-responsive-xs mt-2">
                         <thead style={{ border: 'none' }}>
                           <tr className={`${styles.backgroundHead}`}>
                             <th scope="col">
@@ -486,7 +486,7 @@ const CartPage = ({ data }) => {
                         </thead>
                       </table>
                     </div>
-                    <div className={`${styles.vendorPart} p-3`}
+                    <div className={`${styles.vendorPart} mt-3`}
                     >
                       <InfiniteScroll
                       scrollThreshold={0.75}
@@ -624,11 +624,6 @@ const CartPage = ({ data }) => {
                             </div>
                           </>
                         }
-                        endMessage={
-                          <p style={{ textAlign: 'center' }}>
-                            <b>Yay! Bạn đã thấy tất cả</b>
-                          </p>
-                        }
                       >
                         {products.map((p, i) => {
                           return (
@@ -708,7 +703,7 @@ const CartPage = ({ data }) => {
                       </div>
                     </td>
                     <td className="border-0">
-                      <div className="d-flex">
+                      <div className="d-flex justify-content-between">
                         <h2>
                           <NumberFormat
                             value={totalPrice}
@@ -718,7 +713,7 @@ const CartPage = ({ data }) => {
                             decimalScale={0}
                           />
                         </h2>
-                        <a onClick={handleSubmit} className="btn btn-solid ml-4">Thanh toán</a>
+                        <a onClick={handleSubmit} className="btn btn-solid mr-1">Thanh toán</a>
                       </div>
                     </td>
                   </tr>

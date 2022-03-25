@@ -9,7 +9,8 @@
   background-color: rgb(245, 245, 250);
 }
 .vendorPart{
-  padding-top: 0px;
+  padding-top: 10px;
+  background-color:white;
 }
 .backgroundCart{
   background-color: white;

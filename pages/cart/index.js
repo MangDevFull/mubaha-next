@@ -22,7 +22,7 @@ Cart.getLayout = function getLayout(page) {
 };
 export async function getServerSideProps(ctx) {
   const session = await getSession(ctx);
-
+  const query = ctx.query.cartId
   const res = await fetch(process.env.API_CART_URL, {
     method: 'GET',
     headers: {
@@ -45,10 +45,14 @@ export async function getServerSideProps(ctx) {
     let countActive = 0
     let countOutOfStocks = 0
     let countChange = 0
+    let countSelection = 0
     const d = product.products.map((p, index) => {
       if(p.product.status === productStatusEnum.DISABLE ){
         countActive += 1
         unActive+=1
+      }
+      if(query===p._id){
+        countSelection+=1
       }
       if(p.isChanged){
         countChange += 1
@@ -59,7 +63,7 @@ export async function getServerSideProps(ctx) {
         currencySymbol: p.product.currencySymbol,
         slug: p.product.slug,
         cartID: p._id,
-        selected: false,
+        selected: query === p._id,
         productID: p.product._id,
         discount: p.product.discount,
         status: p.product.status,
@@ -130,7 +134,7 @@ export async function getServerSideProps(ctx) {
     })
     return {
       vendor: product.vendor,
-      selected: false,
+      selected:product.products.length - countChange -countOutOfStocks -countOutOfStocks === countSelection ,
       totalDocs: product.products.length,
       products: d,
       count: countActive + countChange + countOutOfStocks,

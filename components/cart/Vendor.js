@@ -13,8 +13,9 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
   }
   return (
     <>
+    <div style={{borderBottom:'10px solid rgb(245, 245, 250)'}}>
       <Card style={{ border: 'none' }} className="mt-0 mb-4">
-        <CardHeader style={{ backgroundColor: 'white' }}>
+        <CardHeader style={{ backgroundColor: 'white' }} className="ml-3">
         {isLoading ? 
         <Skeleton
         width={200}
@@ -56,7 +57,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
           </div>
         </CardFooter>
       </Card>
-      <div style={{backgroundColor:"rgb(245, 245, 250)"}}></div>
+      </div>
     </>
   )
 

@@ -224,15 +224,13 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
           body: JSON.stringify(body),
         });
         const data = await response.json()
-        console.log(data)
         if (data.status === 200) {
           setVisible(true)
-          console.log(data.data)
-          // setTimeout(() => setVisible(false), 1000)
-          // router.push({
-          //   pathname: '/cart',
-          //   query : {cartId: data.data.cartId}
-          // })
+          setTimeout(() => setVisible(false), 1000)
+          router.push({
+            pathname: '/cart',
+            query : {cartId: data.data._id}
+          },'/cart')
         } else {
           alert(data.message)
         }
