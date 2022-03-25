@@ -23,7 +23,7 @@ import {
   LinkedinShareButton,
 } from "react-share";
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  console.log(detailProduct)
+  // console.log(detailProduct)
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -459,7 +459,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               <>
                                 <h6 className="product-title size-text">
                                   {variantColor === undefined ? `Vui lòng chọn ${detailProduct.variantLabel} trước` : detailProduct.attributeLabel}
-
                                 </h6>
 
                                 <div className="size-box">
@@ -716,6 +715,7 @@ export async function getServerSideProps(context) {
     return {
       notFound: true,
     };
+
 
   return {
     props: {

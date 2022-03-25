@@ -1,3 +1,6 @@
+.section_checkout_page {
+  padding-top: 40px;
+}
 .address h4 {
   margin-bottom: 20px;
   color: #5f5f5f;
@@ -182,19 +185,21 @@
   text-decoration: none;
   color: rgba(0, 0, 0, 0.87);
   font-weight: 600;
+  margin-top: 15px;
 }
 .section_order_info {
   border-bottom: 1px dashed rgba(0, 0, 0, 0.09);
   padding-bottom: 20px;
 }
 .order_info {
-  margin: 0 30px;
+  margin: 20px 30px;
   display: flex;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
   color: #222;
   min-height: 55px;
+  /* margin-bottom: 20px; */
 }
 .title_info:last-child {
   justify-content: flex-end;
@@ -261,8 +266,8 @@
   display: flex;
   align-items: center;
 }
-.image_voucher img {
-  margin-right: 4px;
+.image_voucher > div {
+  margin-left: 5px;
 }
 .button_voucher_shop {
   flex: 4;
@@ -421,6 +426,34 @@
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 15px;
+  display: flex;
+  align-items: center;
+}
+.apply_show_voucher {
+  margin-right: 15px;
+}
+._1oOP8B {
+  flex: 1;
+}
+.show_voucher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-style: solid;
+  color: #ee4d2d;
+  border-color: #ee4d2d;
+  /* margin-left: 0.5rem; */
+  padding: 0 0.4rem;
+  font-size: 0.9rem;
+  height: 1.7rem;
+  box-sizing: border-box;
+  cursor: default;
+}
+.show_voucher > span {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .payments h4 {
@@ -501,6 +534,14 @@
 .button_order:hover {
   background-color: #f89922cc;
 }
+.button_order_disabled {
+  background-color: #f8992296;
+  color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  text-transform: capitalize;
+  width: 210px;
+  height: 40px;
+}
 .button_change {
   padding: 10px 65px 20px 0;
   display: flex;
@@ -568,13 +609,16 @@
   padding: 40px 25px 32px 0;
   flex: 1;
 }
+.modal_content {
+  margin-top: 2rem;
+}
 .modal_voucher {
   display: flex;
   flex-direction: column;
   height: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding-bottom: 5.25rem;
+  padding-bottom: 2.5rem;
 }
 .section_search_voucher {
   display: flex;
@@ -623,7 +667,18 @@
 }
 .button_apply span {
   margin-right: 0;
-
+  text-transform: uppercase;
+  color: #fff;
+}
+.voucher_used {
+  
+  height: 2.5rem;
+  flex-shrink: 0;
+  border: none;
+  background: linear-gradient(90deg, transparent 0, transparent 0.1875rem, #bbb 0);
+}
+.voucher_used span {
+  margin-right: 0;
   text-transform: uppercase;
 }
 .section_list_voucher {
@@ -633,10 +688,9 @@
   padding-right: 1.25rem;
   margin-top: 1.25rem;
   width: 100%;
-  height: 100%;
+  height: 25rem;
 }
 .title_name_list {
-  margin-bottom: 0.625rem;
   font-size: 1rem;
   color: rgba(0, 0, 0, 0.65);
   display: flex;
@@ -707,38 +761,51 @@
   white-space: nowrap;
   margin-top: 0.3125rem;
 }
-.voucher_information_basic_2, .apply_information{
+.voucher_information_basic_2,
+.apply_information {
   overflow: hidden;
-    text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
+
 .voucher_information_basic_2 {
-  
-    border-radius: 0.125rem;
-    white-space: nowrap;
-    box-sizing: border-box;
-    color: #ee4d2d;
-    border: 1px solid #ee4d2d;
-    padding: 0.0625rem 0.25rem;
+  margin-right: 0.5em;
+  border-radius: 0.125rem;
+  white-space: nowrap;
+  box-sizing: border-box;
+  color: #ee4d2d;
+  border: 1px solid #ee4d2d;
+  padding: 0.0625rem 0.25rem;
 }
 .apply_information {
-  font-size: .75rem;
-    line-height: .875rem;
-    align-items: center;
+  font-size: 0.75rem;
+  line-height: 0.875rem;
+  align-items: center;
 }
 .voucher_information_basic span {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  color: rgba(0,0,0,.54);
+  color: rgba(0, 0, 0, 0.54);
   margin-top: 0.5rem;
-  font-size: .75rem;
-    line-height: .875rem;
+  font-size: 0.75rem;
+  line-height: 0.875rem;
 }
 .button_apply_voucher {
   display: flex;
   align-items: center;
-
 }
 .button_apply_voucher button {
   margin-right: 1rem;
+}
+.credit_card {
+  margin: 5rem auto;
+  padding: 1rem;
+  text-align: center;
+}
+.credit_card h2 {
+  color: rgba(4, 99, 128, 1);
+}
+.form {
+  display: flex;
+  flex-direction: column;
 }

@@ -69,7 +69,7 @@ export default function Address({ isOpen, handleCloseCreateAdd ,isExist}) {
         }
       }
     }
-    if (inputName.current.value.length < 10) {
+    if (inputName.current.value.length < 1) {
       mess += "Tên không hợp lệ, "
     }
     if (selectPrivince.current.value == "") {
