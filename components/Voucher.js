@@ -5,7 +5,6 @@ import NumberFormat from "react-number-format";
 import format from "date-fns/format";
 
 const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher, selectedVoucher }) => {
-  console.log(selectedVoucher);
   return (
     <Modal
       size="lg"
@@ -85,7 +84,7 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher, sel
                           </div>
                           <div className={`${styles.button_apply_voucher}`}>
                             {selectedVoucher && selectedVoucher._id === voucher._id ? (
-                              <button className={`${styles.button_apply}`} disabled>
+                              <button className={`${styles.voucher_used}`} disabled>
                                 <span>Đã áp dụng</span>
                               </button>
                             ) : (

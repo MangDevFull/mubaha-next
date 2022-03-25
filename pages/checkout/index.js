@@ -4,15 +4,17 @@ import CommonLayout from "../../components/shop/CommonLayout";
 import CheckoutPage from "../../components/common/CheckoutPage";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
+import _ from 'lodash'
 import { getSession, useSession } from "next-auth/react";
 
-const Checkout = ({ cartItems }) => {
+const Checkout = ({ data }) => {
+  console.log("cartItems", data)
   const { data: session } = useSession();
   const [showVoucher, setShowVoucher] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
   const [selectedVoucher, setSelectedVoucher] = useState();
-  const [Items, setItems] = useState(cartItems.docs);
+  // const [Items, setItems] = useState(cartItems.docs);
   const [listAddress, setListAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
 
@@ -119,9 +121,9 @@ const Checkout = ({ cartItems }) => {
     <>
       <HeaderAuthen />
       <CommonLayout parent="home" title="Checkout">
-        <CheckoutPage
+        {/* <CheckoutPage
           listAddress={listAddress}
-          cartItems={Items}
+          cartItems={cartItems}
           selectedAddress={selectedAddress}
           handleVoucherShow={handleVoucherShow}
           handleCloseVoucher={handleCloseVoucher}
@@ -134,7 +136,7 @@ const Checkout = ({ cartItems }) => {
           handleOrder={handleOrder}
           selectedVoucher={selectedVoucher}
           paymentMethod={paymentMethod}
-        />
+        /> */}
       </CommonLayout>
       <Footer />
     </>
@@ -153,10 +155,24 @@ export async function getServerSideProps(context) {
     },
   });
   const { data } = await response.json();
-  console.log(data);
+  // const grouped = _.groupBy( data.cartItems.docs, p => p.vendor._id);
+  // const vendors = Object.entries(grouped)
+  // const results = vendors.map(v =>{
+  //   return {
+  //     vendor: v[1][0].vendor,
+  //     products: v.pop()
+  //   }
+  // })
+  // const fullP = results.map((product) => {
+  //   const products = product.products.map((p, index) => {
+  //     console.log("p", p)
+  //   })
+  // })
+  console.log("data", data)
+
   return {
     props: {
-      cartItems: data.cartItems,
+      data,
     },
   };
 }

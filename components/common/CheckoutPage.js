@@ -9,6 +9,7 @@ import Address from "@/components/Address";
 import Voucher from "@/components/Voucher";
 import NumberFormat from "react-number-format";
 import voucher from "../../assets/images/checkout/icon-voucher.svg";
+import voucher2 from "../../assets/images/checkout/icon-voucher-v02.svg";
 
 const CheckoutPage = ({
   listAddress,
@@ -351,29 +352,38 @@ const CheckoutPage = ({
                     <div className={`${styles.title_voucher1}`}>
                       <div className={`${styles.title_voucher2}`}>
                         {/* icon voucher */}
-                        <Image src={voucher} width={30} height={30} alt="Voucher Mubaha" />
+                        {selectedVoucher ? (
+                          <Image src={voucher2} width={30} height={30} alt="Voucher Mubaha" />
+                        ) : (
+                          <Image src={voucher} width={30} height={30} alt="Voucher Mubaha" />
+                        )}
+
                         <span className={`${styles.title_name_voucher}`}>Mubaha voucher</span>
                       </div>
                     </div>
                   </div>
                   <div className={`${styles.selectVoucher}`}>
-                    {selectedVoucher ? 
+                    {selectedVoucher ? (
                       <>
                         <div className={`${styles.apply_show_voucher}`}>
                           <div className={`${styles._1oOP8B}`}></div>
                           <div className={`${styles.show_voucher}`}>
                             <span>
-                              {" "}
-                              <NumberFormat
-                                value={selectedVoucher.discount.amount}
-                                thousandSeparator={true}
-                                displayType="text"
-                                prefix={"-"}
-                                suffix={selectedVoucher.currencySymbol}
-                                decimalScale={0}
-                              />
+                              {" - "}
+                              {selectedVoucher.discount.type === "percent" ? (
+                                    `${selectedVoucher.discount.amount}%`
+                                  ) : (
+                                    <NumberFormat
+                                      style={{ color: "red" }}
+                                      value={selectedVoucher.discount.amount}
+                                      thousandSeparator={true}
+                                      displayType="text"
+                                      suffix={selectedVoucher.currencySymbol}
+                                      decimalScale={0}
+                                    />
+                                  )}
+                             
                             </span>
-                            {console.log("11111", selectedVoucher)}
                           </div>
                         </div>
                         <button
@@ -383,16 +393,16 @@ const CheckoutPage = ({
                         >
                           Chọn Voucher Khác
                         </button>
-                      </> 
-                      :
+                      </>
+                    ) : (
                       <button
-                      className={`${styles.btn_change} btn p-0 m-0`}
-                      onClick={handleVoucherShow}
-                      disabled={cartItems.length === 0}
-                    >
-                      Chọn Voucher
-                    </button>
-                    }
+                        className={`${styles.btn_change} btn p-0 m-0`}
+                        onClick={handleVoucherShow}
+                        disabled={cartItems.length === 0}
+                      >
+                        Chọn Voucher
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -569,27 +579,8 @@ const CheckoutPage = ({
         handleCloseVoucher={handleCloseVoucher}
         vouchers={vouchers}
         handleApplyVoucher={handleApplyVoucher}
-        selectedVoucher ={selectedVoucher}
+        selectedVoucher={selectedVoucher}
       />
-      {/* <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={true}>
-        <div className={`${styles.credit_card}`}>
-          <h2>Credit card</h2>
-          <form className={`${styles.form}`}>
-            <input type="text" placeholder="NAME" />
-            <div class="line">
-              <input type="text" placeholder="CARD" /> <input type="text" placeholder="NUMBER" />{" "}
-              <input type="text" /> <input type="text" />
-            </div>
-            <div class="line">
-              <input class="litle" type="text" placeholder="EXPIRY" />
-              <input class="tall" type="text" placeholder="CCV" />
-            </div>
-            <button type="submit" class="valid-button">
-              PROCEED TO CHECKOUT
-            </button>
-          </form>
-        </div>
-      </Modal> */}
     </>
   );
 };
