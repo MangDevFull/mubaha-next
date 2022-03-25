@@ -10,7 +10,7 @@ const CartList = ({ vendor }) => {
       <div>
         <div className={`${styles.detail_order_information}`}>
           <div className={`${styles.vendor_name}`}>
-            <span>{vendor.vendor}</span>
+            <span>{vendor.vendor.brandName}</span>
           </div>
           <div className={`${styles.section_order_info}`}>
             {vendor.products.map((product, i) => {

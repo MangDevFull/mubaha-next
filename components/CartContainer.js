@@ -60,7 +60,7 @@ export default function CartContainer({ icon }) {
             <div className={styles.form}>
               <li>
                 <div className="buttons view-cart d-flex justify-content-end">
-                  <Link href={`/page/account/cart`}>
+                  <Link href={`/page/account/cart`} passHref>
                     <button className="btn btn-solid">Đến giỏ hàng</button>
                   </Link>
                 </div>
