@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
-import styles from "@/components/common/CheckoutPage.module.css";
+import styles from "@/styles/checkout.module.css";
 import NumberFormat from "react-number-format";
 import format from "date-fns/format";
 

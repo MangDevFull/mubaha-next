@@ -185,19 +185,21 @@
   text-decoration: none;
   color: rgba(0, 0, 0, 0.87);
   font-weight: 600;
+  margin-top: 15px;
 }
 .section_order_info {
   border-bottom: 1px dashed rgba(0, 0, 0, 0.09);
   padding-bottom: 20px;
 }
 .order_info {
-  margin: 0 30px;
+  margin: 20px 30px;
   display: flex;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
   color: #222;
   min-height: 55px;
+  /* margin-bottom: 20px; */
 }
 .title_info:last-child {
   justify-content: flex-end;
