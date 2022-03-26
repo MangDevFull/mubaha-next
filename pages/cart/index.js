@@ -40,17 +40,18 @@ export async function getServerSideProps(ctx) {
       products: v.pop()
     }
   })
-  const unActive = 0
+  let unActive = 0
   const fullP = results.map(product => {
-    let count = 0
-    let countSelect = 0 
+    let countActive = 0
+    let countOutOfStocks = 0
+    let countChange = 0
     const d = product.products.map((p, index) => {
       if(p.product.status === productStatusEnum.DISABLE ){
-        count += 1
+        countActive += 1
         unActive+=1
       }
-      if(p.selected==true){
-        countSelect+=1
+      if(p.isChanged){
+        countChange += 1
       }
       let value = {
         quantity: p.amount,
@@ -58,23 +59,23 @@ export async function getServerSideProps(ctx) {
         currencySymbol: p.product.currencySymbol,
         slug: p.product.slug,
         cartID: p._id,
-        selected: p.selected,
+        selected: false,
         productID: p.product._id,
         discount: p.product.discount,
-        status: p.product.status
+        status: p.product.status,
+        price: p.price,
+        discount: p.discount,
+        isChanged: p.isChanged
       }
       if (p.selectedVariant != null && p.selectedAttribute == null) {
-        const rs = p.product.variants.filter(variant => {
-          return variant._id === p.selectedVariant
-        })
         value = {
           ...value,
-          variant: rs[0],
-          variants: p.product.variants,
           variantLable: p.product.variantLabel,
+          variant: p.selectedVariant,
+          variants: p.product.variants,
         }
-        if (rs[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
-          count+=1
+        if (p.selectedVariant.stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
+          countOutOfStocks+=1
           value = {
             ...value,
             isOutOfStock: true,
@@ -86,33 +87,26 @@ export async function getServerSideProps(ctx) {
           }
         }
       } else if (p.selectedVariant != null && p.selectedAttribute != null) {
-          const rs = p.product.variants.filter((v) => v._id.toString() === p.selectedVariant)
-          let att =[]
-        if(rs.length > 0) {
-           att = rs[0].attributes.filter(s => {
-            return s._id === p.selectedAttribute
-          })
-        }
-        value = {
-          ...value,
-          variant: rs[0],
-          attr: att[0],
-          variants: p.product.variants,
-          variantLable: p.product.variantLabel,
-          attributeLabel: p.product.attributeLabel,
-        }
-        if (att[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
-          count+=1
           value = {
             ...value,
-            isOutOfStock: true,
+            variant: p.selectedVariant,
+            attr: p.selectedAttribute,
+            variants: p.product.variants,
+            variantLable: p.product.variantLabel,
+            attributeLabel: p.product.attributeLabel,
           }
-        } else {
-          value = {
-            ...value,
-            isOutOfStock: false,
+          if (p.selectedAttribute.stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
+            countOutOfStocks+=1
+            value = {
+              ...value,
+              isOutOfStock: true,
+            }
+          } else {
+            value = {
+              ...value,
+              isOutOfStock: false,
+            }
           }
-        }
       } else {
         value = {
           ...value,
@@ -136,10 +130,10 @@ export async function getServerSideProps(ctx) {
     })
     return {
       vendor: product.vendor,
-      selected: product.products.length === countSelect,
+      selected: false,
       totalDocs: product.products.length,
       products: d,
-      count: count,
+      count: countActive + countChange + countOutOfStocks,
     }
   })
   return {

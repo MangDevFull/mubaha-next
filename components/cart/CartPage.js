@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
-import {
-  Container, Row, Col, Media, Button, Modal, ModalFooter, ModalHeader
-} from "reactstrap";
+import { Container, Row, Col, Media, Button, Modal, ModalFooter, ModalHeader } from "reactstrap";
 import Breadcrumb from "../Breadcrumb";
-import styles from "@/styles/cart.module.css"
-import dynamic from 'next/dynamic'
-import { useSession } from 'next-auth/react'
-import Modal2 from 'react-awesome-modal';
-import productStatus from "@/enums/productStatus.enum.js"
+import styles from "@/styles/cart.module.css";
+import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
+import Modal2 from "react-awesome-modal";
+import productStatus from "@/enums/productStatus.enum.js";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import _ from 'lodash'
@@ -21,7 +19,7 @@ const Vendor = dynamic(() => import('@/components/cart/Vendor.js'))
 const CartPage = ({ data }) => {
   const { data: session } = useSession()
   const router = useRouter()
-  const [isLoading,setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [products, setProduct] = useState(data.fullP)
   const [isSelectedAll, setIsSelectedAll] = useState(false)
   const [totalPrice, setTotalPrice] = useState(0)
@@ -32,20 +30,21 @@ const CartPage = ({ data }) => {
   const [totalPage, setTotalPage] = useState(data.totalPage)
   const [currentPage, setCurrentPage] = useState(data.page)
   const [totalProduct, setTotalProduct] = useState(data.totalDocs)
-  const [unActive,setUnActive] = useState(data.unActive)
+  const [unActive, setUnActive] = useState(data.unActive)
+  const [totoalCheck,setTotalCheck] = useState(0)
   const { elementRef: comboBtnRef, isSticky } = Stciky2({ defaultSticky: true, isTop: false });
   useEffect(() => {
-    const isSelectAll = data.fullP.some(v=>v.selected === false);
-      if(!isSelectAll) setIsSelectedAll(true)
+    const isSelectAll = data.fullP.some(v => v.selected === false);
+    if (!isSelectAll) setIsSelectedAll(true)
     setTimeout(() => {
       setIsLoading(false)
-    },1000)
+    }, 1000)
   }, [])
-  const updateQuantity = (vendorId,ProductId,quantity) => {
+  const updateQuantity = (vendorId, ProductId, quantity) => {
     products[vendorId].products[ProductId].quantity = quantity
     setProduct([...products])
   }
-  const updateDeleteOneCart = (vendorId,ProductId,cartID)=>{
+  const updateDeleteOneCart = (vendorId, ProductId, cartID) => {
     if (ProductId > -1) {
       products[vendorId].products.splice(ProductId, 1);
     }
@@ -54,111 +53,110 @@ const CartPage = ({ data }) => {
     }
     setProduct([...products])
   }
-  const updateSelectProduct =(vendorId, productId) =>{
+  const updateSelectProduct = (vendorId, productId) => {
     products[vendorId].products[productId].selected = !products[vendorId].products[productId].selected;
     const selectAllVendor = products[vendorId].products.filter((p) => {
-      return p.selected !== true && p.status !== productStatus.DISABLE && p.isOutOfStock !== true
-    })
+      return p.selected !== true && p.status !== productStatus.DISABLE && p.isOutOfStock !== true;
+    });
     if (selectAllVendor.length < 1) {
-      products[vendorId].selected = true
+      products[vendorId].selected = true;
     } else {
-      products[vendorId].selected = false
+      products[vendorId].selected = false;
     }
 
     const selectAll = products.filter((p) => {
-      return p.selected !== true
-    })
+      return p.selected !== true;
+    });
     if (selectAll.length < 1) {
-      setIsSelectedAll(true)
+      setIsSelectedAll(true);
     } else {
-      setIsSelectedAll(false)
+      setIsSelectedAll(false);
     }
-    setProduct([...products])
-  }
+    setProduct([...products]);
+  };
   const updateSelectVendor = (vendorID) => {
-    products[vendorID].selected = !products[vendorID].selected
+    products[vendorID].selected = !products[vendorID].selected;
     products[vendorID].products.forEach((p) => {
       if (p.status !== productStatus.DISABLE) {
         if (p.isOutOfStock === false) {
-          p.selected = products[vendorID].selected
+          p.selected = products[vendorID].selected;
         }
       }
-    })
+    });
     const selectAll = products.filter((p) => {
-      return p.selected !== true
-    })
+      return p.selected !== true;
+    });
     if (selectAll.length < 1) {
-      setIsSelectedAll(true)
+      setIsSelectedAll(true);
     } else {
-      setIsSelectedAll(false)
+      setIsSelectedAll(false);
     }
-    setProduct([...products])
-  }
+    setProduct([...products]);
+  };
   const selectAllProduct = () => {
-    setIsSelectedAll(!isSelectedAll)
+    setIsSelectedAll(!isSelectedAll);
     products.forEach((product, i) => {
-      product.selected = !isSelectedAll
+      product.selected = !isSelectedAll;
       product.products.forEach((p, index) => {
         if (p.status !== productStatus.DISABLE) {
           if (p.isOutOfStock == false) {
             products[i].products[index].selected = !isSelectedAll;
           }
         }
-      })
-    })
-    setProduct([...products])
-  }
+      });
+    });
+    setProduct([...products]);
+  };
 
   useEffect(() => {
     let amount = 0
     let total = 0
+    let amoutCheckout = 0
     products.forEach((product) => {
-      let t = 0
-      let a = 0
+      let t = 0;
+      let a = 0;
       product.products.forEach((p) => {
         if (p.selected == true) {
-          if (p.variant != null && p.attr == null) {
+          if(p.status !== productStatus.DISABLE && !p.isChanged){
             a += 1
-            t += p.variant.price * p.quantity * (1 - p.variant.discount)
-          } else if (p.attr != null && p.variant != null) {
-            t += p.attr.price * p.quantity * (1 - p.attr.discount)
-            a += 1
-          } else {
             t += p.price * p.quantity * (1 - p.discount)
-            a += 1
+            amoutCheckout+=1
+          }else{
+            a +=1
           }
         }
       })
       total += t
       amount += a
     })
+    setTotalCheck(amoutCheckout)
     setTotalProductSelect(amount)
     setTotalPrice(total)
   }, [products])
   const deleteManyCartItem = async () => {
-    let cartItems = []
+    let cartItems = [];
     products.forEach((product) => {
       product.products.forEach((p) => {
         if (p.selected === true) {
-          cartItems = [...cartItems, p.cartID]
+          cartItems = [...cartItems, p.cartID];
         }
-      })
-    })
+      });
+    });
     const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
       },
-      body: JSON.stringify({ cartItems: cartItems })
-    })
-    const data = await response.json()
+      body: JSON.stringify({ cartItems: cartItems }),
+    });
+    const data = await response.json();
 
     if (data.status === 200) {
       products.forEach((product, i) => {
         const pr = product.products.filter((p) => {
-          return !cartItems.includes(p.cartID)
-        })
+          return !cartItems.includes(p.cartID);
+        });
         if (pr.length < 1) {
           products.splice(i, 1);
         } else {
@@ -166,81 +164,71 @@ const CartPage = ({ data }) => {
             vendor: product.vendor,
             selected: false,
             totalDocs: product.totalDocs,
-            products: pr
-          }
+            products: pr,
+          };
         }
-      })
-      setProduct([...products])
-      setIsOpenModalDeleteProduct(false)
+      });
+      setProduct([...products]);
+      setIsOpenModalDeleteProduct(false);
     } else {
-      alert(data.message)
+      alert(data.message);
     }
-  }
+  };
   const handleModalDeleteMany = () => {
     if (totalProductSelect < 1) {
-      setMessage("Vui lòng chọn sản phẩm") 
-      setVisible(true)
+      setMessage("Vui lòng chọn sản phẩm");
+      setVisible(true);
       setTimeout(function () {
-        setVisible(false)
-      }, 1000)
+        setVisible(false);
+      }, 1000);
     } else {
-      setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct)
+      setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct);
     }
-  }
+  };
   const updateProduct = (body, i, index) => {
     if (body.selectedVariant != null && body.selectedAttribute != null) {
-      const v = products[i].products[index].variants.filter((product, id) => {
-        return product._id === body.selectedVariant
-      })
-      if (v.length > 0) {
-        products[i].products[index].variant = v[0]
-        const s = v[0].attributes.filter((s) => {
-          return s._id === body.selectedAttribute
-        })
-        if (s.length > 0) {
-          products[i].products[index].attr = s[0]
+      products[i].products[index].variant = body.selectedVariant
+          products[i].products[index].attr = body.selectedAttribute
+          products[i].products[index].price = body.price
+          products[i].products[index].discount = body.discount
           products[i].products[index].isOutOfStock = false
           setProduct([...products])
-        }
-      }
     } else if (body.selectedVariant != null && body.selectedAttribute == null) {
-      products[i].products[index].variants.filter((product, id) => {
-        return product._id === body.selectedVariant
-      })
-      if (v.length > 0) {
-        products[i].products[index].variant = v[0]
+        products[i].products[index].variant = body.selectedVariant
         products[i].products[index].isOutOfStock = false
+        products[i].products[index].price = body.price
+          products[i].products[index].discount = body.discount
         setProduct([...products])
       }
     }
-  }
   function closeModal() {
-    setVisible(false)
+    setVisible(false);
   }
   const deleteAvailableProducts = async () => {
-    let cartItems = []
+    let cartItems = [];
     products.forEach((product) => {
       product.products.forEach((p) => {
         if (p.status === productStatus.DISABLE) {
-          cartItems = [...cartItems, p.cartID]
+          cartItems = [...cartItems, p.cartID];
         }
-      })
-    })
+      });
+    });
     const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
       },
-      body: JSON.stringify({ cartItems: cartItems })
-    })
-    const data = await response.json()
+      body: JSON.stringify({ cartItems: cartItems }),
+    });
+    const data = await response.json();
 
     if (data.status === 200) {
+      setUnActive(unActive-cartItems.length)
       products.forEach((product, i) => {
         const pr = product.products.filter((p) => {
-          return !cartItems.includes(p.cartID)
-        })
+          return !cartItems.includes(p.cartID);
+        });
         if (pr.length < 1) {
           products.splice(i, 1);
         } else {
@@ -248,175 +236,198 @@ const CartPage = ({ data }) => {
             vendor: product.vendor,
             selected: false,
             totalDocs: product.totalDocs,
-            products: pr
-          }
+            products: pr,
+          };
         }
-      })
-      setProduct([...products])
+      });
+      setProduct([...products]);
     } else {
-      alert(data.message)
+      alert(data.message);
     }
-  }
+  };
   const fetchMoreData = async () => {
-    const page = currentPage + 1
+    const page = currentPage + 1;
     const res = await fetch(`${process.env.API_CART_URL}/paginate?page=${page}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
       },
-    })
+    });
 
-    const data = await res.json()
-    setTotalProduct(totalProduct + data.data.totalDocs)
-    const grouped = _.groupBy(data.data.docs, p => p.vendor._id);
-    const vendors = Object.entries(grouped)
-    const results = vendors.map(v => {
+    const data = await res.json();
+    setTotalProduct(totalProduct + data.data.totalDocs);
+    const grouped = _.groupBy(data.data.docs, (p) => p.vendor._id);
+    const vendors = Object.entries(grouped);
+    const results = vendors.map((v) => {
       return {
         vendor: v[1][0].vendor,
         products: v.pop()
       }
     })
     const fecthUnActive = 0
-    const fullP = results.map(product => {
-      let count = 0
-      const d = product.products.map((p, index) => {
-        if (p.product.status === productStatusEnum.DISABLE) {
-          count += 1
-          fecthUnActive+=1
+  const fullP = results.map(product => {
+    let countActive = 0
+    let countOutOfStocks = 0
+    let countChange = 0
+    const d = product.products.map((p, index) => {
+      if(p.product.status === productStatusEnum.DISABLE ){
+        countActive += 1
+        fecthUnActive+=1
+      }
+      if(p.isChanged){
+        countChange += 1
+      }
+      let value = {
+        quantity: p.amount,
+        name: p.product.name,
+        currencySymbol: p.product.currencySymbol,
+        slug: p.product.slug,
+        cartID: p._id,
+        selected: false,
+        productID: p.product._id,
+        discount: p.product.discount,
+        status: p.product.status,
+        price: p.price,
+        discount: p.discount,
+        isChanged: p.isChanged
+      }
+      if (p.selectedVariant != null && p.selectedAttribute == null) {
+        value = {
+          ...value,
+          variantLable: p.product.variantLabel,
+          variant: p.selectedVariant,
+          variants: p.product.variants,
         }
-        let value = {
-          quantity: p.amount,
-          name: p.product.name,
-          currencySymbol: p.product.currencySymbol,
-          slug: p.product.slug,
-          cartID: p._id,
-          selected: false,
-          productID: p.product._id,
-          discount: p.product.discount,
-          status: p.product.status
-        }
-        if (p.selectedVariant != null && p.selectedAttribute == null) {
-          const rs = p.product.variants.filter(variant => {
-            return variant._id === p.selectedVariant
-          })
+        if (p.selectedVariant.stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
+          countOutOfStocks+=1
           value = {
             ...value,
-            variant: rs[0],
-            variants: p.product.variants,
-            variantLable: p.product.variantLabel,
-          }
-          if (rs[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
-            count += 1
-            value = {
-              ...value,
-              isOutOfStock: true,
-            }
-          } else {
-            value = {
-              ...value,
-              isOutOfStock: false,
-            }
-          }
-        } else if (p.selectedVariant != null && p.selectedAttribute != null) {
-          const rs = p.product.variants.filter((v) => v._id.toString() === p.selectedVariant)
-          let att = []
-          if (rs.length > 0) {
-            att = rs[0].attributes.filter(s => {
-              return s._id === p.selectedAttribute
-            })
-          }
-          value = {
-            ...value,
-            variant: rs[0],
-            attr: att[0],
-            variants: p.product.variants,
-            variantLable: p.product.variantLabel,
-            attributeLabel: p.product.attributeLabel,
-          }
-          if (att[0].stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
-            count += 1
-            value = {
-              ...value,
-              isOutOfStock: true,
-            }
-          } else {
-            value = {
-              ...value,
-              isOutOfStock: false,
-            }
+            isOutOfStock: true,
           }
         } else {
           value = {
             ...value,
-            price: p.product.price,
-            image: p.product.media.featuredImage
+            isOutOfStock: false,
           }
-          if (p.product.stock.quantity == 0) {
-            count += 1
+        }
+      } else if (p.selectedVariant != null && p.selectedAttribute != null) {
+          value = {
+            ...value,
+            variant: p.selectedVariant,
+            attr: p.selectedAttribute,
+            variants: p.product.variants,
+            variantLable: p.product.variantLabel,
+            attributeLabel: p.product.attributeLabel,
+          }
+          if (p.selectedAttribute.stock.quantity == 0 && p.product.status !== productStatusEnum.DISABLE) {
+            countOutOfStocks+=1
             value = {
               ...value,
               isOutOfStock: true,
-            }
+            };
           } else {
             value = {
               ...value,
               isOutOfStock: false,
-            }
+            };
+          }
+      } else {
+        value = {
+          ...value,
+          price: p.product.price,
+          image: p.product.media.featuredImage
+        }
+        if (p.product.stock.quantity == 0) {
+          count+=1
+          value = {
+            ...value,
+            isOutOfStock: true,
+          }
+        } else {
+          value = {
+            ...value,
+            isOutOfStock: false,
           }
         }
-        return value
-      })
-      return {
-        vendor: product.vendor,
-        selected: false,
-        totalDocs: product.products.length,
-        products: d,
-        count: count,
       }
+      return value
     })
+    return {
+      vendor: product.vendor,
+      selected: false,
+      totalDocs: product.products.length,
+      products: d,
+      count: countActive + countChange + countOutOfStocks,
+    }
+  })
     products.forEach((x) => {
       fullP.forEach((y) => {
         if (x.vendor._id === y.vendor._id) {
           x.products = _.concat(x.products, y.products);
           x.count = x.count + y.count
+          x.selected = false;
           x.totalDocs = x.totalDocs + y.totalDocs
         }
-      })
-    })
+      });
+    });
     setTimeout(function () {
-      setUnActive(fecthUnActive+unActive)
+      setUnActive(fecthUnActive + unActive)
       setCurrentPage(page)
       setProduct([...products])
-    },5000)
+    }, 1500)
 
   }
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const cartItems = []
     products.forEach(v => {
       v.products.forEach(p => {
-        if (p.selected === true) {
+        if (p.selected === true && p.status !== productStatus.DISABLE && !p.isChanged) {
           cartItems.push(p.cartID)
         }
-      })
-    })
+      });
+    });
     if (cartItems.length <= 0) {
-      setMessage("Vui lòng chọn sản phẩm")
-      setVisible(true)
+      setMessage("Vui lòng chọn sản phẩm");
+      setVisible(true);
       setTimeout(function () {
-        setVisible(false)
-      }, 1000)
+        setVisible(false);
+      }, 1000);
     } else {
-      router.push({
-        pathname: '/checkout',
-        query: cartItems,
-      }, '/checkout')
+      const response = await fetch(`${process.env.API_ORDER_URL}/checkout`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + session.accessToken
+        },
+        body: JSON.stringify({cartItemIds:cartItems})
+      })
+      const data = await response.json()
+      if(data.status==200) {
+        console.log(data.data)
+        const payload = {
+          s: data.data.s,
+          f: data.data.f
+        }
+        router.push({
+          pathname: '/checkout',
+         query: payload,
+        },'/checkout')
+      }else{
+        alert(data.message)
+      }
     }
-  }
+  };
   if (products.length > 0) {
     return (
       <>
-        <Modal2 visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
+        <Modal2
+          visible={visible}
+          width="400"
+          height="300"
+          effect="fadeInUp"
+          onClickAway={() => closeModal()}
+        >
           <i className="fa fa-solid fa-xmark"></i>
           <div className=" d-flex justify-content-center mt-5">
             <img width="100" height="100" src="/assets/icon/icon-danger.svg" />
@@ -425,29 +436,29 @@ const CartPage = ({ data }) => {
             <p style={{ fontSize: "16px", color: "red" }}>{message}</p>
           </div>
         </Modal2>
-        <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
+        <Breadcrumb previousLink="/" currentValue={"Giỏ hàng"} previousValue="Trang chủ" />
         <div>
-          <div >
+          <div>
             <section className={`cart-section pb-3 pt-0 ${styles.backgroundFull}`}>
-              <div>
-              </div>
+              <div></div>
               <Container>
                 <Row>
                   <Col sm="12">
-                    <div className="mt-3" >
+                    <div className="mt-3">
                       <table className="table cart-table table-responsive-xs mt-2 mb-3">
-                        <thead style={{ border: 'none' }}>
+                        <thead style={{ border: "none" }}>
                           <tr className={`${styles.backgroundHead}`}>
                             <th scope="col">
                               <div className="mt-4 mb-3">
-                              {isLoading ? <Skeleton
-                              width={20} height={20} square
-                               /> :
-                                <input
-                                  type="checkbox"
-                                  checked={isSelectedAll}
-                                  onClick={selectAllProduct}
-                                />
+                                {isLoading ? <Skeleton
+                                  width={20} height={20} square
+                                /> :
+                                  <input
+                                    type="checkbox"
+                                    role="button"
+                                    checked={isSelectedAll}
+                                    onClick={selectAllProduct}
+                                  />
                                 }
                               </div>
                             </th>
@@ -455,52 +466,170 @@ const CartPage = ({ data }) => {
                               <div className="mt-4 mb-3 ml-5">Sản phẩm</div>
                             </th>
                             <th scope="col">
-                              <div className="mt-4 mb-3 ml-5">
-                                Giá
-                              </div>
+                              <div className="mt-4 mb-3 ml-5">Giá</div>
                             </th>
                             <th scope="col">
-                              <div className="mt-4 mb-3 ml-1">
-                                Số lượng
-                              </div>
+                              <div className="mt-4 mb-3 ml-1">Số lượng</div>
                             </th>
                             <th scope="col">
-                              <div className="mt-4 mb-3 ml-2">
-                                Số Tiền
-                              </div>
+                              <div className="mt-4 mb-3 ml-2">Số Tiền</div>
                             </th>
                             <th scope="col">
-                              <div className="mt-4 mb-3">
-                                Thao Tác
-                              </div></th>
+                              <div className="mt-4 mb-3">Thao Tác</div>
+                            </th>
                           </tr>
                         </thead>
                       </table>
                     </div>
-                    <div className={`${styles.vendorPart} p-3`}
-                    >
+                    <div className={`${styles.vendorPart} p-3`}>
                       <InfiniteScroll
+                      scrollThreshold={0.75}
                         dataLength={currentPage}
                         next={fetchMoreData}
                         hasMore={currentPage < totalPage}
-                        loader={<div className="d-flex justify-content-center">
-                          <div className="spinner-border text-danger" role="status">
-                            <span className="sr-only">Loading...</span>
-                          </div>
-                          <h4 className={styles.paginateText}>Đang tải...</h4>
-                        </div>}
+                        loader={
+                          <>
+                            <div className="d-flex" style={{backgroundColor: 'white' }}>
+                              <tbody>
+                                <tr>
+                                  <td className={`d-flex} p-2`}>
+                                      <Skeleton
+                                        width={100}
+                                        rectangle
+                                        height={100} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={300}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                      
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                </tr>
+                                <tr>
+                                  <td className={`d-flex} p-2`}>
+                                      <Skeleton
+                                        width={100}
+                                        rectangle
+                                        height={100} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={300}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                      
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                </tr>
+                                <tr>
+                                  <td className={`d-flex} p-2`}>
+                                      <Skeleton
+                                        width={100}
+                                        rectangle
+                                        height={100} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={300}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                      
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+                                  <td>
+                                      <Skeleton
+                                        width={40}
+                                        rectangle
+                                        height={10} />
+                                  </td>
+
+                                </tr>
+                              </tbody>
+                            </div>
+                          </>
+                        }
                         endMessage={
-                          <p style={{ textAlign: 'center' }}>
+                          <p style={{ textAlign: "center" }}>
                             <b>Yay! Bạn đã thấy tất cả</b>
                           </p>
                         }
                       >
                         {products.map((p, i) => {
                           return (
-                         <Vendor p={p} vendorKey={i} updateProduct={updateProduct} isLoading={isLoading}
-                         updateQuantity={updateQuantity} updateSelectProduct={updateSelectProduct}
-                         updateDeleteOneCart={updateDeleteOneCart} updateSelectVendor={updateSelectVendor}
-                         />
+                            <Vendor p={p} vendorKey={i} updateProduct={updateProduct} isLoading={isLoading}
+                              updateQuantity={updateQuantity} updateSelectProduct={updateSelectProduct}
+                              updateDeleteOneCart={updateDeleteOneCart} updateSelectVendor={updateSelectVendor}
+                            />
                           )
                         })}
                       </InfiniteScroll>
@@ -514,86 +643,77 @@ const CartPage = ({ data }) => {
                         Bạn có muốn bỏ {totalProductSelect} sản phẩm?
                       </ModalHeader>
                       <ModalFooter>
-                        <Button
-                          color="danger"
-                          onClick={deleteManyCartItem}
-                        >
+                        <Button color="danger" onClick={deleteManyCartItem}>
                           Đồng ý
                         </Button>
-                        <Button onClick={handleModalDeleteMany}>
-                          Huỷ
-                        </Button>
+                        <Button onClick={handleModalDeleteMany}>Huỷ</Button>
                       </ModalFooter>
                     </Modal>
                   </Col>
-
                 </Row>
-
               </Container>
-
             </section>
           </div>
         </div>
         <div ref={comboBtnRef}></div>
-        {!isLoading && 
-        <div style={{
-          textAlign: "center",
-          position: isSticky ? "fixed" : "sticky",
-          bottom: "0",
-          width: "100%",
-          zIndex: 2,
-        }}
-        >
-          <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
-            <table className="table cart-table table-responsive-md mt-0">
-              <tfoot >
-                <tr style={{backgroundColor: 'white' }}>
-                  <td className="d-flex justify-content-between pt-4 border-0 mt-0">
-                    <div className="d-flex flex-row bd-highlight ml-5">
-                      <div className="bd-highlight">
-                        <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
-                          disabled={true}
-                          onClick={handleModalDeleteMany}
-                        >
-                          Xoá
-                        </span>
-                        ({totalProductSelect} sản phẩm đã chọn)
+        {!isLoading &&
+          <div style={{
+            textAlign: "center",
+            position: isSticky ? "fixed" : "sticky",
+            bottom: "0",
+            width: "100%",
+            zIndex: 2,
+          }}
+          >
+            <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
+              <table className="table cart-table table-responsive-md mt-0">
+                <tfoot >
+                  <tr style={{ backgroundColor: 'white' }}>
+                    <td className="d-flex justify-content-between pt-4 border-0 mt-0">
+                      <div className="d-flex flex-row bd-highlight ml-5">
+                        <div className="bd-highlight">
+                          <span className={`${styles.cursorVendor} ${styles.textDelete} mr-1`}
+                            disabled={true}
+                            onClick={handleModalDeleteMany}
+                          >
+                            Xoá
+                          </span>
+                          ({totalProductSelect} sản phẩm đã chọn)
+                        </div>
+                        {unActive ?
+                          <div className="ml-5">
+                            <span
+                              className={styles.deleteUnavailable}
+                              onClick={deleteAvailableProducts}
+                            >Xoá tất cả sản phẩm không hoạt động</span>
+                          </div>
+                          : ""}
                       </div>
-                      {unActive ?
                       <div className="ml-5">
-                        <span
-                          className={styles.deleteUnavailable}
-                          onClick={deleteAvailableProducts}
-                        >Xoá tất cả sản phẩm không hoạt động</span>
+                        Tổng thanh toán ({totoalCheck} sản phẩm) :
                       </div>
-                    :""}
-                    </div>
-                    <div className="ml-5">
-                      Tổng thanh toán ({totalProductSelect} sản phẩm) :
-                    </div>
-                  </td>
-                  <td className="border-0">
-                    <div className="d-flex">
-                      <h2>
-                        <NumberFormat
-                          value={totalPrice}
-                          thousandSeparator={true}
-                          displayType="text"
-                          suffix={'₫'}
-                          decimalScale={0}
-                        />
-                      </h2>
-                      <a onClick={handleSubmit} className="btn btn-solid ml-4">Thanh toán</a>
-                    </div>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </Container>
-        </div>
-      }
+                    </td>
+                    <td className="border-0">
+                      <div className="d-flex">
+                        <h2>
+                          <NumberFormat
+                            value={totalPrice}
+                            thousandSeparator={true}
+                            displayType="text"
+                            suffix={'₫'}
+                            decimalScale={0}
+                          />
+                        </h2>
+                        <a onClick={handleSubmit} className="btn btn-solid ml-4">Thanh toán</a>
+                      </div>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </Container>
+          </div>
+        }
       </>
-
     );
   } else {
     return (
@@ -621,10 +741,8 @@ const CartPage = ({ data }) => {
           </Row>
         </Container>
       </section>
-    )
+    );
   }
-
 };
-
 
 export default CartPage;

@@ -1,4 +1,4 @@
-import styles from "@/styles/cart.module.css"
+import styles from "@/styles/cart.module.css";
 import Link from "next/link";
 import dynamic from 'next/dynamic'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
@@ -13,7 +13,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
   }
   return (
     <>
-      <Card style={{ border: 'none' }} className="mt-0">
+      <Card style={{ border: 'none' }} className="mt-0 mb-4">
         <CardHeader style={{ backgroundColor: 'white' }}>
         {isLoading ? 
         <Skeleton
@@ -22,10 +22,11 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
         rectangle
          />:
           <div className=" mb-2">
-            {!p.count == p.totalDocs ? "" :
+            {p.count == p.totalDocs ? "" :
               <input type="checkbox"
-                className="mr-4 mt-5"
+                className={`mr-4 mt-5` }
                 checked={p.selected}
+                role="button"
                 onClick={handleSelectVendor}
               />
             }
@@ -39,12 +40,8 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
         <CardBody>
           <table className="ml-3">
             {p.products.map((item, index) => {
-              let discount
-              if (item.attr) discount = item.attr.discount
-              else if (item.variant) discount = item.variant.discount
-              else discount = item.discount
               return (
-                <Products item={item} discount={discount}
+                <Products item={item} 
                 updateDeleteOneCart={updateDeleteOneCart}
                 vendor={p} updateSelectProduct={updateSelectProduct}
                   updateProduct={updateProduct} productKey={index} vendorKey={vendorKey}
@@ -53,13 +50,14 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
             })}
           </table>
         </CardBody>
-        <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
+        <CardFooter className="text-muted" style={{ backgroundColor: "white" }}>
           <div className="d-flex mb-2 mt-3">
-            <strong>Shop Khuyến Mãi</strong> <span className="ml-2">Vui lòng chọn sản phẩm trước</span>
+            <strong>Shop Khuyến Mãi</strong>{" "}
+            <span className="ml-2">Vui lòng chọn sản phẩm trước</span>
           </div>
         </CardFooter>
       </Card>
+      <div style={{backgroundColor:"rgb(245, 245, 250)"}}></div>
     </>
-  )
-
-} 
+  );
+}
