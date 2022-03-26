@@ -4,6 +4,7 @@ import styles from "../../styles/checkout.module.css";
 import NumberFormat from "react-number-format";
 import voucher from "../../assets/images/checkout/icon-voucher.svg";
 
+
 const CartList = ({ vendor }) => {
   return (
     <div className={`${styles.total_price_information}`}>

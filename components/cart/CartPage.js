@@ -379,7 +379,6 @@ const CartPage = ({ data }) => {
 
   }
   const handleSubmit = async () => {
-    console.log("check")
     const cartItems = []
     products.forEach(v => {
       v.products.forEach(p => {
@@ -395,7 +394,6 @@ const CartPage = ({ data }) => {
         setVisible(false);
       }, 1000);
     } else {
-      console.log(process.env.API_ORDER_URL)
       const response = await fetch(`${process.env.API_ORDER_URL}/checkout`,{
         method: 'POST',
         headers: {

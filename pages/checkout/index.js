@@ -1,51 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { Container, Alert, Modal, Button, ModalBody, ModalFooter, Row } from "reactstrap";
-import Image from "next/image";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
 import styles from "../../styles/checkout.module.css";
 import CartList from "@/components/checkout/CartList";
+import VoucherShop from "@/components/checkout/VoucherShop";
 import Address from "@/components/Address";
-import Voucher from "@/components/Voucher";
 import NumberFormat from "react-number-format";
-import voucher from "../../assets/images/checkout/icon-voucher.svg";
-import voucher2 from "../../assets/images/checkout/icon-voucher-v02.svg";
 import CommonLayout from "../../components/shop/CommonLayout";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
 import _ from "lodash";
 import { getSession, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const Checkout = ({ results, order }) => {
   const { data: session } = useSession();
   const [showVoucher, setShowVoucher] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
+  const [visible, setVisible] = useState(false)
+
   const [selectedVoucher, setSelectedVoucher] = useState();
   const [groupedItems, setGroupedItems] = useState([]);
   const [listAddress, setListAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
-  const [selectedCartItems, selectedSelectedCartItems] = useState([]);
 
   const [show, setShow] = useState(false);
-  const [message, setMessage] = useState("");
-  const [showMessage, setShowMessage] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
   const [chooseAddress, setChooseAddress] = useState();
   const [showError, setShowError] = useState(true);
   const [totalPriceProduct, setTotalPriceProduct] = useState(0);
-  const { register, handleSubmit, errors } = useForm(); // initialise the hook
-
+  const router = useRouter();
   useEffect(() => {
     if (session) {
       handleGetListAddress();
       setGroupedItems(order);
       const total = 0;
       results.forEach((item) => {
-        selectedCartItems.push(item._id);
         total += (1 - item.discount) * item.price;
       });
-      selectedSelectedCartItems(selectedCartItems);
       setTotalPriceProduct(total);
     }
   }, [session]);
@@ -102,7 +95,6 @@ const Checkout = ({ results, order }) => {
   const handleApplyVoucher = (voucher) => {
     setSelectedVoucher(voucher);
     handleCloseVoucher();
-    // const a = totalPriceProduct - selectedVoucher.discount.amount
   };
 
   const handleSelectPaymentMethod = (e) => {
@@ -122,26 +114,37 @@ const Checkout = ({ results, order }) => {
   };
 
   const handleOrder = async (e) => {
+    const cartID = [];
+    results.forEach((p) => {
+      cartID.push(p._id);
+    });
     const payload = {
-      cartItemIds: selectedCartItems,
+      cartItemIds: cartID,
       method: paymentMethod,
       address: selectedAddress._id,
     };
-    const response = await fetch(`${process.env.API_ORDER_URL}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + session.accessToken,
-      },
-      body: JSON.stringify(payload),
-    });
+    setVisible(true)
+    setTimeout(function () {
+      setVisible(false);
+      router.push('/')
+    }, 3000);
+    // const response = await fetch(`${process.env.API_ORDER_URL}`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: "Bearer " + session.accessToken,
+    //   },
+    //   body: JSON.stringify({payload}),
+    // });
+    // const data = await response.json();
+    // console.log("index", response);
 
-    const data = await response.json();
-    if (data.status === 200) {
-      alert("Success");
-    } else {
-      alert(data.data);
-    }
+    // console.log(data);
+    // if (data.status === 200) {
+    //   alert("Success");
+    // } else {
+    //   alert(data.data);
+    // }
   };
   const handleCloseCreateAdd = (data, setChecked) => {
     setShow(false);
@@ -149,8 +152,6 @@ const Checkout = ({ results, order }) => {
   };
   const handleShow = () => {
     setShow(true);
-    setMessage("");
-    setShowMessage(false);
   };
 
   useEffect(() => {
@@ -164,13 +165,6 @@ const Checkout = ({ results, order }) => {
       setShowAddress(false);
     }
   }, [listAddress]);
-
-  const handleUpdateShowAddress = () => {
-    setShowAddress(!showAddress);
-  };
-  const handleQuit = () => {
-    setShowAddress(value);
-  };
 
   return (
     <>
@@ -349,7 +343,7 @@ const Checkout = ({ results, order }) => {
                   </div>
                 </div>
                 <div className={`${styles.list_cart}`}>
-                  <h4>2. Chọn hình thức giao hàng</h4>
+                  <h4>2. Danh sách đơn hàng</h4>
                   <div className={`${styles.title_section}`}>
                     <div className={`${styles.title}`}>
                       <div className={`${styles.title_name} ${styles.title_products}`}>
@@ -373,63 +367,16 @@ const Checkout = ({ results, order }) => {
                 </div>
                 <div className={`${styles.voucher}`}>
                   <h4>3. Chọn Voucher</h4>
-                  <div className={`${styles.section_voucher}`}>
-                    <div className={`${styles.title_voucher}`}>
-                      <div className={`${styles.title_voucher1}`}>
-                        <div className={`${styles.title_voucher2}`}>
-                          {/* icon voucher */}
-                          {selectedVoucher ? (
-                            <Image src={voucher2} width={30} height={30} alt="Voucher Mubaha" />
-                          ) : (
-                            <Image src={voucher} width={30} height={30} alt="Voucher Mubaha" />
-                          )}
-
-                          <span className={`${styles.title_name_voucher}`}>Mubaha voucher</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={`${styles.selectVoucher}`}>
-                      {selectedVoucher ? (
-                        <>
-                          <div className={`${styles.apply_show_voucher}`}>
-                            <div className={`${styles._1oOP8B}`}></div>
-                            <div className={`${styles.show_voucher}`}>
-                              <span>
-                                {" - "}
-                                {selectedVoucher.discount.type === "percent" ? (
-                                  `${selectedVoucher.discount.amount}%`
-                                ) : (
-                                  <NumberFormat
-                                    style={{ color: "red" }}
-                                    value={selectedVoucher.discount.amount}
-                                    thousandSeparator={true}
-                                    displayType="text"
-                                    suffix={selectedVoucher.currencySymbol}
-                                    decimalScale={0}
-                                  />
-                                )}
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            className={`${styles.btn_change} btn p-0 m-0`}
-                            onClick={handleVoucherShow}
-                            disabled={groupedItems.length === 0}
-                          >
-                            Chọn Voucher Khác
-                          </button>
-                        </>
-                      ) : (
-                        <button
-                          className={`${styles.btn_change} btn p-0 m-0`}
-                          onClick={handleVoucherShow}
-                          disabled={groupedItems.length === 0}
-                        >
-                          Chọn Voucher
-                        </button>
-                      )}
-                    </div>
-                  </div>
+                  <VoucherShop
+                    selectedVoucher={selectedVoucher}
+                    handleVoucherShow={handleVoucherShow}
+                    groupedItems={groupedItems}
+                    showVoucher={showVoucher}
+                    handleCloseVoucher={handleCloseVoucher}
+                    vouchers={vouchers}
+                    handleApplyVoucher={handleApplyVoucher}
+                    selectedVoucher={selectedVoucher}
+                  />
                 </div>
                 <div className={`${styles.payments}`}>
                   <h4>4. Chọn hình thức thanh toán</h4>
@@ -690,14 +637,23 @@ const Checkout = ({ results, order }) => {
         </section>
         {/* Modal add address */}
         <Address isOpen={show} handleCloseCreateAdd={handleCloseCreateAdd} />
-        {/* Modal voucher */}
-        <Voucher
-          isOpen={showVoucher}
-          handleCloseVoucher={handleCloseVoucher}
-          vouchers={vouchers}
-          handleApplyVoucher={handleApplyVoucher}
-          selectedVoucher={selectedVoucher}
-        />
+
+        <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={visible}>
+          <ModalBody className="container-fluid">
+            <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
+              <h3>Đặt hàng thành công</h3>
+            </Row>
+          </ModalBody>
+          <ModalFooter style={{ border: "none" }}>
+            <Button
+              className="btn btn-secondary btn-lg"
+              style={{ width: "100%", maxWidth: "100%", borderRadius: "5px" }}
+              onClick={() => router.push('/')}
+            >
+              Trở về trang chủ
+            </Button>
+          </ModalFooter>
+        </Modal>
       </CommonLayout>
       <Footer />
     </>
