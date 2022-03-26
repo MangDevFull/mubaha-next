@@ -106,7 +106,7 @@ export default function Variant({ item, vendorKey, updateProduct, productKey }) 
                   </div>
                   {item.variants.map((variant, vi) => {
                     return (
-                      <div key={vi}>
+            
                         <li className={`${variant.stock.quantity == 0 && variant.attributes.length == 0 ? styles.disabled : ""}`}
                           style={
                             selectedVariant === undefined ?
@@ -137,7 +137,7 @@ export default function Variant({ item, vendorKey, updateProduct, productKey }) 
                                 : {}
                           } className={`selected-indicator ${styles.tickImage}`} src="../assets/images/selected-variant-indicator.svg" alt="Selected"></img>
                         </li>
-                      </div>
+    
                     )
                   })}
 

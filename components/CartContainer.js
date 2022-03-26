@@ -18,7 +18,8 @@ export default function CartContainer({ icon }) {
       })
       const data = await res.json()
       if (data.status === 200) {
-        const products = data.data.map(product => {
+        const products = data.data.map((product,i) => {
+          console.log("product",product,i)
           if (product.selectedVariant != null && product.selectedAttribute == null) {
             return {
              ...product.selectedVariant,
@@ -34,14 +35,14 @@ export default function CartContainer({ icon }) {
           } else {
             return {
               name: product.product.name, price: product.product.price, quantity: product.amount, name: product.product.name, symbol: product.product.currencySymbol,
-              image: product.product.image,slug: product.product.slug, discount: product.product.discount
+              image: product.product.media.featuredImage,slug: product.product.slug, discount: product.product.discount
             }
           }
         })
         setCartList(products)
       }
     }
-  },[])
+  },[session])
   return (
     <>
       <li className="onhover-div mobile-cart">
@@ -52,7 +53,7 @@ export default function CartContainer({ icon }) {
             <i className="fa fa-shopping-cart"></i>
           </div>
         </Link>
-        <ul className="show-div shopping-cart">
+        <ul className="show-div shopping-cart" style={{  'boxShadow': '0px 0px 8px rgba(0, 0, 0, 0.12)'}}>
           {cartList.map((item, index) => (
             <CartHeader key={index} item={item} />
           ))}
@@ -74,7 +75,7 @@ export default function CartContainer({ icon }) {
                     alt="mubaha.com"
                     style={{width: "100px", maxWidth: "100px" }}
                   />
-              <h5 className="text-center">Bạn chưa có sản phẩm</h5>
+              <h5 className="text-center" style={{color: 'black' }}>Bạn chưa có sản phẩm</h5>
             </li>
           )}
         </ul>

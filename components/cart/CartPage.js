@@ -657,6 +657,7 @@ const CartPage = ({ data }) => {
             </section>
           </div>
         </div>
+        <div ref={comboBtnRef}></div>
         {!isLoading &&
           <div style={{
             textAlign: "center",
@@ -666,7 +667,6 @@ const CartPage = ({ data }) => {
             zIndex: 2,
 
           }}
-          ref={comboBtnRef}
           >
             <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
             <div>
