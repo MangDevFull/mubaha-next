@@ -16,8 +16,8 @@ const CartHeader = ({ item }) => {
           <div className="media-body d-flex justify-content-between">
             <Link href={"/" + item.slug}>
               <a>
-                <h4>{item.name}</h4>
-                <span>Số lượng: {item.quantity}</span> 
+                <h4 style={{color: 'black'}}>{item.name}</h4>
+                <span style={{color: 'black'}} >Số lượng: {item.quantity}</span> 
               </a>
             </Link>
             <h5 style={{color: "#f89922"}}>

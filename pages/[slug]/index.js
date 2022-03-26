@@ -51,12 +51,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     } else {
       let isDone = false;
       let body = {
-        vendor:detailProduct.vendor._id,
         productId: detailProduct._id,
         amount: quantity || 1,
       };
       if (detailProduct.variants.length > 0) {
-        if(detailProduct.variants[0].attributes.length > 0) {
+        if (detailProduct.variants[0].attributes.length > 0) {
           if (selectedSize == undefined) {
             setUnSelect(true)
           } else {
@@ -67,7 +66,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
               selectedAttribute: selectedSize
             }
           }
-        }else{
+        } else {
           if (variantColor == undefined) {
             setUnSelect(true)
           } else {
@@ -78,10 +77,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
             }
           }
         }
-      } else if(detailProduct.variants.length==0){
-          isDone = true
+      } else if (detailProduct.variants.length == 0) {
+        isDone = true
       }
       if (isDone) {
+        console.log(body)
         const response = await fetch(process.env.API_CART_URL, {
           method: "POST",
           headers: {
@@ -111,7 +111,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   };
   const changeQty = (e) => {
     var reg = new RegExp('^[0-9]*$');
-    if(reg.test(e.target.value)){
+    if (reg.test(e.target.value)) {
       setQuantity(e.target.value);
     }
   };
@@ -185,12 +185,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
       let isDone = false;
       let body = {
         productId: detailProduct._id,
-        amount: quantity,
-        selectValue: true,
-        vendor:detailProduct.vendor._id,
+        amount: quantity || 1,
       };
       if (detailProduct.variants.length > 0) {
-        if(detailProduct.variants[0].attributes.length > 0) {
+        if (detailProduct.variants[0].attributes.length > 0) {
           if (selectedSize == undefined) {
             setUnSelect(true)
           } else {
@@ -198,10 +196,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
             body = {
               ...body,
               selectedVariant: variantColor,
-              siselectedAttributeze: selectedSize
+              selectedAttribute: selectedSize
             }
           }
-        }else{
+        } else {
           if (variantColor == undefined) {
             setUnSelect(true)
           } else {
@@ -212,10 +210,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
             }
           }
         }
-      } else if(detailProduct.variants.length==0){
-          isDone = true
+      } else if (detailProduct.variants.length == 0) {
+        isDone = true
       }
       if (isDone) {
+        console.log(body)
         const response = await fetch(process.env.API_CART_URL, {
           method: "POST",
           headers: {
@@ -228,7 +227,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         if (data.status === 200) {
           setVisible(true)
           setTimeout(() => setVisible(false), 1000)
-          router.push('/cart')
+          router.push({
+            pathname: '/cart',
+            query : {cartId: data.data._id}
+          },'/cart')
         } else {
           alert(data.message)
         }
@@ -377,78 +379,78 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                   {detailProduct.variantLabel}
                                 </h6>
                                 <ul className="color-variant mt-1">
-                                  {detailProduct.variants[0].attributes.length >0 
-                                  ?
-                                  <>
-                                  {detailProduct.variants.map((variant) =>{ 
-                                    return (
-                                    <li
-                                      style={
-                                        selectedVariant === variant._id
-                                          ? {
-                                            border: "1px solid #ffa200",
-                                            color: "#ffa200",
-                                          }
-                                          : {}
-                                      }
-                                      key={variant._id}
-                                      checked={selectedVariant === variant._id}
-                                      value={variantColor}
-                                      onClick={(e) => selectedColor(e, variant)}
-                                    >
-                                      {variant.name}
-                                      <img
-                                        style={
-                                          selectedVariant === variant._id
-                                            ? {
-                                              display: "block",
+                                  {detailProduct.variants[0]?.attributes.length > 0
+                                    ?
+                                    <>
+                                      {detailProduct.variants.map((variant) => {
+                                        return (
+                                          <li
+                                            style={
+                                              selectedVariant === variant._id
+                                                ? {
+                                                  border: "1px solid #ffa200",
+                                                  color: "#ffa200",
+                                                }
+                                                : {}
                                             }
-                                            : {}
-                                        }
-                                        className={`selected-indicator ${styles.tickImage}`}
-                                        src="../assets/images/selected-variant-indicator.svg"
-                                        alt="Selected"
-                                      ></img>
-                                    </li>)
-                                  }
-                                  )}
-                                  </>
-                                  :
-                                  <>
-                                  {detailProduct.variants.map((variant) =>{ 
-                                    return (
-                                    <li
-                                    className={variant.stock.quantity == 0 && styles.disabled}
-                                      style={
-                                        selectedVariant === variant._id
-                                          ? {
-                                            border: "1px solid #ffa200",
-                                            color: "#ffa200",
-                                          }
-                                          : {}
+                                            key={variant._id}
+                                            checked={selectedVariant === variant._id}
+                                            value={variantColor}
+                                            onClick={(e) => selectedColor(e, variant)}
+                                          >
+                                            {variant.name}
+                                            <img
+                                              style={
+                                                selectedVariant === variant._id
+                                                  ? {
+                                                    display: "block",
+                                                  }
+                                                  : {}
+                                              }
+                                              className={`selected-indicator ${styles.tickImage}`}
+                                              src="../assets/images/selected-variant-indicator.svg"
+                                              alt="Selected"
+                                            ></img>
+                                          </li>)
                                       }
-                                      key={variant._id}
-                                      checked={selectedVariant === variant._id}
-                                      value={variantColor}
-                                      onClick={(e) => selectedColor(e, variant)}
-                                    >
-                                      {variant.name}
-                                      <img
-                                        style={
-                                          selectedVariant === variant._id
-                                            ? {
-                                              display: "block",
+                                      )}
+                                    </>
+                                    :
+                                    <>
+                                      {detailProduct.variants.map((variant) => {
+                                        return (
+                                          <li
+                                            className={variant.stock.quantity == 0 && styles.disabled}
+                                            style={
+                                              selectedVariant === variant._id
+                                                ? {
+                                                  border: "1px solid #ffa200",
+                                                  color: "#ffa200",
+                                                }
+                                                : {}
                                             }
-                                            : {}
-                                        }
-                                        className={`selected-indicator ${styles.tickImage}`}
-                                        src="../assets/images/selected-variant-indicator.svg"
-                                        alt="Selected"
-                                      ></img>
-                                    </li>)
-                                  }
-                                  )}
-                                  </>
+                                            key={variant._id}
+                                            checked={selectedVariant === variant._id}
+                                            value={variantColor}
+                                            onClick={(e) => selectedColor(e, variant)}
+                                          >
+                                            {variant.name}
+                                            <img
+                                              style={
+                                                selectedVariant === variant._id
+                                                  ? {
+                                                    display: "block",
+                                                  }
+                                                  : {}
+                                              }
+                                              className={`selected-indicator ${styles.tickImage}`}
+                                              src="../assets/images/selected-variant-indicator.svg"
+                                              alt="Selected"
+                                            ></img>
+                                          </li>)
+                                      }
+                                      )}
+                                    </>
                                   }
                                 </ul>
                               </>
@@ -463,7 +465,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                   <ul>
                                     {attributes?.map((size) => (
                                       <li
-                                      className={size.stock.quantity == 0 && styles.disabled}
+                                        className={size.stock.quantity == 0 && styles.disabled}
                                         style={
                                           selectedSize === size._id
                                             ? { lineHeight: 2.3, border: "1px solid #ffa200" }

@@ -244,7 +244,7 @@ const Checkout = ({ results, order }) => {
                                 Sửa địa chỉ
                               </button>
 
-                              <Link href="/account">
+                              <Link href="/account" passHref>
                                 <button className={`${styles.button_add_address}`}>
                                   Thiết lập địa chỉ
                                 </button>
@@ -673,15 +673,15 @@ export async function getServerSideProps(context) {
     },
   });
   const data = await response.json();
-  const results = data.data.cartItems.docs;
-  const grouped = _.chain(results)
-    .groupBy("vendor.brandName")
-    .map((value, key) => ({ vendor: key, products: value }))
-    .value();
+  // const results = data.data.cartItems.docs;
+  // const grouped = _.chain(results)
+  //   .groupBy("vendor.brandName")
+  //   .map((value, key) => ({ vendor: key, products: value }))
+  //   .value();
   return {
     props: {
-      results,
-      order: grouped,
+      results: data.data.cartItems.docs,
+      order: data.data.cartItems.grouped,
     },
   };
 }
