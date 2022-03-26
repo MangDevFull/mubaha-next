@@ -472,7 +472,7 @@ body {
       }
   
       .show-div {
-        background-color: $dark-top;
+        background-color: white;
         transition: all 0.3s ease;
         box-shadow: none;
       }
@@ -513,13 +513,13 @@ body {
             .show-div {
               &.setting {
                 h6 {
-                  color: $white-5;
+                  color: black;
                 }
   
                 ul {
                   li {
                     a {
-                      color: $white-5;
+                      color: black;
                       &:hover {
                         color: var(--theme-deafult);
                       }
