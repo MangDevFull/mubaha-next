@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Container, Alert, Modal, Button, ModalBody, ModalFooter, Row } from "reactstrap";
+import {
+  Container,
+  Alert,
+  Modal,
+  Button,
+  ModalBody,
+  ModalFooter,
+  Row,
+  Col,
+  Media,
+} from "reactstrap";
 import Link from "next/link";
 import styles from "../../styles/checkout.module.css";
 import CartList from "@/components/checkout/CartList";
@@ -12,13 +22,16 @@ import Footer from "@/components/Footer.js";
 import _ from "lodash";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Cards from 'react-credit-cards'
 
 const Checkout = ({ results, order }) => {
   const { data: session } = useSession();
   const [showVoucher, setShowVoucher] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [showCard, setShowCard] = useState(false);
+  const [succesPayment, setSuccesPayment] = useState(false);
 
   const [selectedVoucher, setSelectedVoucher] = useState();
   const [groupedItems, setGroupedItems] = useState([]);
@@ -99,6 +112,7 @@ const Checkout = ({ results, order }) => {
 
   const handleSelectPaymentMethod = (e) => {
     setPaymentMethod(e.target.value);
+    if (e.target.value === "atm") setShowCard(true);
   };
 
   const handleUpdateAddAddress = (data) => {
@@ -113,6 +127,17 @@ const Checkout = ({ results, order }) => {
     setSelectedAddress(addressItem);
   };
 
+  const handlePaymentMedthod = () => {
+    setShowCard(false);
+    setSuccesPayment(true);
+
+    setTimeout(function () {
+      setSuccesPayment(false);
+
+      // router.push("/");
+    }, 1000);
+  };
+
   const handleOrder = async (e) => {
     const cartID = [];
     results.forEach((p) => {
@@ -123,10 +148,10 @@ const Checkout = ({ results, order }) => {
       method: paymentMethod,
       address: selectedAddress._id,
     };
-    setVisible(true)
+    setVisible(true);
     setTimeout(function () {
       setVisible(false);
-      router.push('/')
+      // router.push("/");
     }, 3000);
     // const response = await fetch(`${process.env.API_ORDER_URL}`, {
     //   method: "POST",
@@ -438,7 +463,7 @@ const Checkout = ({ results, order }) => {
                             readOnly
                             value="paypal"
                             onChange={handleSelectPaymentMethod}
-                            disabled={groupedItems.length === 0}
+                            disabled
                             checked={paymentMethod === "paypal"}
                           />
                           <span>
@@ -648,14 +673,27 @@ const Checkout = ({ results, order }) => {
             <Button
               className="btn btn-secondary btn-lg"
               style={{ width: "100%", maxWidth: "100%", borderRadius: "5px" }}
-              onClick={() => router.push('/')}
+              onClick={() => router.push("/")}
             >
               Trở về trang chủ
             </Button>
           </ModalFooter>
         </Modal>
+
+        <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={showCard}>
+          
+        </Modal>
+
+        <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={succesPayment}>
+          <ModalBody className="container-fluid">
+            <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
+              <h3>Thanh toán thành công</h3>
+            </Row>
+          </ModalBody>
+        </Modal>
       </CommonLayout>
       <Footer />
+     
     </>
   );
 };
