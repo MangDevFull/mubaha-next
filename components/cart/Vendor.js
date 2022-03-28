@@ -13,8 +13,9 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
   }
   return (
     <>
+    <div style={{borderBottom:'10px solid rgb(245, 245, 250)'}}>
       <Card style={{ border: 'none' }} className="mt-0 mb-4">
-        <CardHeader style={{ backgroundColor: 'white' }}>
+        <CardHeader style={{ backgroundColor: 'white' }} className="ml-3">
         {isLoading ? 
         <Skeleton
         width={200}
@@ -31,17 +32,18 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
               />
             }
             <img src="/assets/icon/shop-icon.png" className="mr-2" />
-            <Link href={`/vendors/${p.vendor.owner.username}`}>
+            <Link href={`/vendors/${p.vendor.owner.username}`} passHref>
               <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
             </Link>
           </div>
         }
         </CardHeader>
         <CardBody>
+        <div>
           <table className="ml-3">
             {p.products.map((item, index) => {
               return (
-                <Products item={item} 
+                <Products item={item} key={index}
                 updateDeleteOneCart={updateDeleteOneCart}
                 vendor={p} updateSelectProduct={updateSelectProduct}
                   updateProduct={updateProduct} productKey={index} vendorKey={vendorKey}
@@ -49,6 +51,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
               );
             })}
           </table>
+          </div>
         </CardBody>
         <CardFooter className="text-muted" style={{ backgroundColor: "white" }}>
           <div className="d-flex mb-2 mt-3">
@@ -57,7 +60,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
           </div>
         </CardFooter>
       </Card>
-      <div style={{backgroundColor:"rgb(245, 245, 250)"}}></div>
+      </div>
     </>
   );
 }

@@ -790,6 +790,7 @@ export async function getServerSideProps(context) {
       Authorization: "Bearer " + session.accessToken,
     },
   });
+
   const { data } = await response.json();
   return {
     props: {

@@ -181,7 +181,7 @@ export default function ProductsCart({ item, productKey,
       <Modal2 visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
         <i className="fa fa-solid fa-xmark"></i>
         <div className=" d-flex justify-content-center mt-5">
-          <img width="100" height="100" src="/assets/icon/icon-danger.svg" />
+          <img alt="" width="100" height="100" src="/assets/icon/icon-danger.svg" />
         </div>
         <div className=" d-flex justify-content-center mt-5">
           <p style={{ fontSize: "16px", color: "red" }}>{message}</p>
@@ -231,7 +231,7 @@ export default function ProductsCart({ item, productKey,
                 height={10} />
               :
               <>
-                <Link href={`/${item.slug}`}>
+                <Link href={`/${item.slug}`} passHref>
                   <strong className={styles.cursorVendor}>{item.name}</strong>
                 </Link>
                 {

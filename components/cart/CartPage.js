@@ -255,17 +255,10 @@ const CartPage = ({ data }) => {
       },
     });
 
-    const data = await res.json();
-    setTotalProduct(totalProduct + data.data.totalDocs);
-    const grouped = _.groupBy(data.data.docs, (p) => p.vendor._id);
-    const vendors = Object.entries(grouped);
-    const results = vendors.map((v) => {
-      return {
-        vendor: v[1][0].vendor,
-        products: v.pop()
-      }
-    })
-    const fecthUnActive = 0
+    const data = await res.json()
+    setTotalProduct(totalProduct + data.data.totalDocs)
+    const results = data.data.grouped
+    let fecthUnActive = 0
   const fullP = results.map(product => {
     let countActive = 0
     let countOutOfStocks = 0
@@ -361,16 +354,17 @@ const CartPage = ({ data }) => {
       count: countActive + countChange + countOutOfStocks,
     }
   })
-    products.forEach((x) => {
-      fullP.forEach((y) => {
-        if (x.vendor._id === y.vendor._id) {
-          x.products = _.concat(x.products, y.products);
-          x.count = x.count + y.count
-          x.selected = false;
-          x.totalDocs = x.totalDocs + y.totalDocs
-        }
-      });
-    });
+    fullP.forEach((i) => {
+      const check = products.findIndex((j) =>  i.vendor._id ===j.vendor._id )
+      if(check >= 0) {
+        products[check].products = products[check].products.concat(i.products)
+        products[check].count = i.count
+        products[check].totalDocs = i.totalDocs
+        products[check].selected = false
+      }else{
+        products.push(i)
+      }
+    })
     setTimeout(function () {
       setUnActive(fecthUnActive + unActive)
       setCurrentPage(page)
@@ -404,7 +398,6 @@ const CartPage = ({ data }) => {
       })
       const data = await response.json()
       if(data.status==200) {
-        console.log(data.data)
         const payload = {
           s: data.data.s,
           f: data.data.f
@@ -444,9 +437,9 @@ const CartPage = ({ data }) => {
               <Container>
                 <Row>
                   <Col sm="12">
-                    <div className="mt-3">
-                      <table className="table cart-table table-responsive-xs mt-2 mb-3">
-                        <thead style={{ border: "none" }}>
+                    <div className="mt-3" >
+                      <table className="table cart-table table-responsive-xs mt-2">
+                        <thead style={{ border: 'none' }}>
                           <tr className={`${styles.backgroundHead}`}>
                             <th scope="col">
                               <div className="mt-4 mb-3">
@@ -481,7 +474,8 @@ const CartPage = ({ data }) => {
                         </thead>
                       </table>
                     </div>
-                    <div className={`${styles.vendorPart} p-3`}>
+                    <div className={`${styles.vendorPart} mt-3`}
+                    >
                       <InfiniteScroll
                       scrollThreshold={0.75}
                         dataLength={currentPage}
@@ -618,15 +612,10 @@ const CartPage = ({ data }) => {
                             </div>
                           </>
                         }
-                        endMessage={
-                          <p style={{ textAlign: "center" }}>
-                            <b>Yay! Bạn đã thấy tất cả</b>
-                          </p>
-                        }
                       >
                         {products.map((p, i) => {
                           return (
-                            <Vendor p={p} vendorKey={i} updateProduct={updateProduct} isLoading={isLoading}
+                            <Vendor key={i} p={p} vendorKey={i} updateProduct={updateProduct} isLoading={isLoading}
                               updateQuantity={updateQuantity} updateSelectProduct={updateSelectProduct}
                               updateDeleteOneCart={updateDeleteOneCart} updateSelectVendor={updateSelectVendor}
                             />
@@ -663,12 +652,14 @@ const CartPage = ({ data }) => {
             bottom: "0",
             width: "100%",
             zIndex: 2,
+
           }}
           >
             <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
+            <div>
               <table className="table cart-table table-responsive-md mt-0">
                 <tfoot >
-                  <tr style={{ backgroundColor: 'white' }}>
+                  <tr className={styles.shadow}>
                     <td className="d-flex justify-content-between pt-4 border-0 mt-0">
                       <div className="d-flex flex-row bd-highlight ml-5">
                         <div className="bd-highlight">
@@ -694,7 +685,7 @@ const CartPage = ({ data }) => {
                       </div>
                     </td>
                     <td className="border-0">
-                      <div className="d-flex">
+                      <div className="d-flex justify-content-between">
                         <h2>
                           <NumberFormat
                             value={totalPrice}
@@ -704,12 +695,13 @@ const CartPage = ({ data }) => {
                             decimalScale={0}
                           />
                         </h2>
-                        <a onClick={handleSubmit} className="btn btn-solid ml-4">Thanh toán</a>
+                        <a onClick={handleSubmit} className="btn btn-solid mr-1">Thanh toán</a>
                       </div>
                     </td>
                   </tr>
                 </tfoot>
               </table>
+              </div>
             </Container>
           </div>
         }
@@ -732,7 +724,7 @@ const CartPage = ({ data }) => {
                   <h3>
                     <strong>Giỏ hàng bạn đang chưa có sản phẩm</strong>
                   </h3>
-                  <Link href="/">
+                  <Link href="/" passHref>
                     <Button className="btn btn-solid mt-2">Khám phá ngay</Button>
                   </Link>
                 </div>
