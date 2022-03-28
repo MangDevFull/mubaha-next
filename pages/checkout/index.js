@@ -19,7 +19,6 @@ import format from "date-fns/format";
 
 const Checkout = ({ data }) => {
   const { data: session } = useSession();
-  console.log(visa);
   const [showVoucher, setShowVoucher] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
@@ -200,7 +199,7 @@ const Checkout = ({ data }) => {
                   style={{ textAlign: "center", height: "auto", marginBottom: "2rem" }}
                   color="danger"
                 >
-                  Chưa có đơn hàng được lựa chọn. Vui lòng quay lại giỏ hàng
+                  Chưa có đơn hàng được lựa chọn. Vui lòng bấm vô đây để quay lại <Link href={`/cart`} >giỏ hàng</Link> 
                 </Alert>
                 <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={showError}>
                   <ModalBody className="container-fluid">
