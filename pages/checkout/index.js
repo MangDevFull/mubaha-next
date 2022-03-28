@@ -19,7 +19,6 @@ import format from "date-fns/format";
 
 const Checkout = ({ data }) => {
   const { data: session } = useSession();
-  console.log(visa);
   const [showVoucher, setShowVoucher] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
@@ -394,7 +393,6 @@ const Checkout = ({ data }) => {
                 handleCloseVoucher={handleCloseVoucher}
                 vouchers={vouchers}
                 handleApplyVoucher={handleApplyVoucher}
-                selectedVoucher={selectedVoucher}
               />
             </div>
             <div className={`${styles.payments}`}>
