@@ -22,10 +22,9 @@ import {
   MailruShareButton,
   LinkedinShareButton,
 } from "react-share";
+let timeOut_1;
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  console.log(detailProduct)
   const { data: session } = useSession();
-
   const router = useRouter();
   const [visible, setVisible] = useState(false)
   const [quantity, setQuantity] = useState(1);
@@ -94,7 +93,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         if (data.status === 200) {
 
           setVisible(true)
-          setTimeout(() => setVisible(false), 1000)
+          timeOut_1 = setTimeout(() => setVisible(false), 1000)
         } else {
           alert(data.message)
         }
@@ -104,6 +103,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
 
   useEffect(() => {
     setShareUrl(window.location.href);
+    return () => {
+      clearTimeout(timeOut_1);
+    };
   }, []);
 
   const handleIncrease = () => {
@@ -214,7 +216,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         isDone = true
       }
       if (isDone) {
-        console.log(body)
         const response = await fetch(process.env.API_CART_URL, {
           method: "POST",
           headers: {
@@ -226,7 +227,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         const data = await response.json()
         if (data.status === 200) {
           setVisible(true)
-          setTimeout(() => setVisible(false), 1000)
+          timeOut_1 = setTimeout(() => setVisible(false), 1000)
           router.push({
             pathname: '/cart',
             query : {cartId: data.data._id}
