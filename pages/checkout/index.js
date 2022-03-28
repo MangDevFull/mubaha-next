@@ -199,7 +199,7 @@ const Checkout = ({ data }) => {
                   style={{ textAlign: "center", height: "auto", marginBottom: "2rem" }}
                   color="danger"
                 >
-                  Chưa có đơn hàng được lựa chọn. Vui lòng quay lại giỏ hàng
+                  Chưa có đơn hàng được lựa chọn. Vui lòng bấm vô đây để quay lại <Link href={`/cart`} >giỏ hàng</Link> 
                 </Alert>
                 <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={showError}>
                   <ModalBody className="container-fluid">
