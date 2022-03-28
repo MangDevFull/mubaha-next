@@ -23,7 +23,6 @@ import {
   LinkedinShareButton,
 } from "react-share";
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  // console.log(detailProduct)
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -130,7 +129,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setVariantColor(variant._id);
     setUnSelect(false)
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
-    console.log("1", index);
     slider1.current.slickGoTo(index);
     setAttributes(variant.attributes);
   };

@@ -5,21 +5,21 @@ import NumberFormat from "react-number-format";
 import voucher from "../../assets/images/checkout/icon-voucher.svg";
 
 
-const CartList = ({ vendor }) => {
+const CartList = ({ listCarts }) => {
   return (
     <div className={`${styles.total_price_information}`}>
       <div>
         <div className={`${styles.detail_order_information}`}>
           <div className={`${styles.vendor_name}`}>
-            <span>{vendor.vendor.brandName}</span>
+            <span>{listCarts.vendor.brandName}</span>
           </div>
           <div className={`${styles.section_order_info}`}>
-            {vendor.products.map((product, i) => {
+            {listCarts.products.map((product, i) => {
               return (
                 <div key={i}>
                   <div className={`${styles.order_info}`}>
                     <div className={`${styles.title_info} ${styles.title_image_product}`}>
-                      <img width="40px" src={product.product.media.featuredImage} />
+                      <img width="40px" src={product.selectedVariant.image} />
                       <span>
                         <span className={`${styles.name_product}`}>{product.product.name}</span>
                       </span>

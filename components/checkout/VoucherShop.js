@@ -50,7 +50,6 @@ const VoucherShop = ({ selectedVoucher, handleVoucherShow, groupedItems, showVou
               <button
                 className={`${styles.btn_change} btn p-0 m-0`}
                 onClick={handleVoucherShow}
-                disabled={groupedItems.length === 0}
               >
                 Chọn Voucher Khác
               </button>
