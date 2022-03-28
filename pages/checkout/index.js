@@ -560,6 +560,7 @@ const Checkout = ({ data }) => {
                             }
                             thousandSeparator={true}
                             displayType="text"
+                            prefix="-"
                             suffix={selectedVoucher.currencySymbol}
                             decimalScale={0}
                           />
@@ -600,6 +601,7 @@ const Checkout = ({ data }) => {
                             value={selectedVoucher.discount.amount}
                             thousandSeparator={true}
                             displayType="text"
+                            prefix="-"
                             suffix={selectedVoucher.currencySymbol}
                             decimalScale={0}
                           />
