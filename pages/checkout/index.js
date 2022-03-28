@@ -36,17 +36,28 @@ const Checkout = ({ data }) => {
   const [show, setShow] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
   const [chooseAddress, setChooseAddress] = useState();
-  const [showError, setShowError] = useState(true);
+  const [showError, setShowError] = useState(false);
   const [totalPriceProduct, setTotalPriceProduct] = useState(0);
 
   const router = useRouter();
   useEffect(() => {
+    let _timeout
     if (session) {
       handleGetListAddress();
       if (data !== null) {
         setGroupedItems(data.grouped);
         setTotalPriceProduct(data.totalOrdersPrice);
+      } else {
+        setShowError(true)
+        
+        _timeout = setTimeout(() => {
+          router.push('/cart')
+        }, 2000)
       }
+    }
+
+    return () => {
+      clearTimeout(_timeout)
     }
   }, [session]);
 
@@ -193,7 +204,7 @@ const Checkout = ({ data }) => {
       <CommonLayout parent="Trang chủ" title="Thanh toán đơn hàng">
         <section className={`section-b-space ${styles.section_checkout_page}`}>
           <Container>
-            {data === null && (
+            {showError && (
               <>
                 <Alert
                   style={{ textAlign: "center", height: "auto", marginBottom: "2rem" }}
