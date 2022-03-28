@@ -609,9 +609,6 @@
   padding: 40px 25px 32px 0;
   flex: 1;
 }
-.modal_content {
-  margin-top: 2rem;
-}
 .modal_voucher {
   display: flex;
   flex-direction: column;
