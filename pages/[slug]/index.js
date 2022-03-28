@@ -15,6 +15,9 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import styles from "@/styles/slug.module.css";
 import Modal from "react-awesome-modal";
+
+import priceCalculator from "@/utils/priceCalculator";
+
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -22,6 +25,7 @@ import {
   MailruShareButton,
   LinkedinShareButton,
 } from "react-share";
+import NumberFormat from "react-number-format";
 let timeOut_1;
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
   const { data: session } = useSession();
@@ -103,8 +107,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   useEffect(() => {
     if (detailProduct.variants.length > 0) {
       setPriceProduct(null);
+      setDiscount(null)
     } else {
       setPriceProduct(detailProduct.price);
+      setDiscount(detailProduct.discount);
     }
 
     setShareUrl(window.location.href);
@@ -348,10 +354,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                         >
                           {detailProduct.variants
                             ? detailProduct.media.data.map((item, index) => (
-                                <div key={index}>
-                                  <Media src={`${item.path}`} className="img-fluid" />
-                                </div>
-                              ))
+                              <div key={index}>
+                                <Media src={`${item.path}`} className="img-fluid" />
+                              </div>
+                            ))
                             : ""}
                         </Slider>
                       </Col>
@@ -374,6 +380,19 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             <h6>120 đánh giá</h6>
                           </div>
                           <h3 className="price-detail">
+                            {discount && discount > 0.0 ? (
+                              <del>
+                                <span className="money ml-1">
+                                  <NumberFormat
+                                    value={priceProduct}
+                                    thousandSeparator={true}
+                                    displayType="text"
+                                    suffix={currencySymbol}
+                                    decimalScale={0}
+                                  />
+                                </span>
+                              </del>
+                            ) : null}
                             {priceProduct ? (
                               <ProductPrice
                                 price={priceProduct}
@@ -411,9 +430,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                             style={
                                               selectedVariant === variant._id
                                                 ? {
-                                                    border: "1px solid #ffa200",
-                                                    color: "#ffa200",
-                                                  }
+                                                  border: "1px solid #ffa200",
+                                                  color: "#ffa200",
+                                                }
                                                 : {}
                                             }
                                             key={variant._id}
@@ -426,8 +445,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                               style={
                                                 selectedVariant === variant._id
                                                   ? {
-                                                      display: "block",
-                                                    }
+                                                    display: "block",
+                                                  }
                                                   : {}
                                               }
                                               className={`selected-indicator ${styles.tickImage}`}
@@ -449,9 +468,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                             style={
                                               selectedVariant === variant._id
                                                 ? {
-                                                    border: "1px solid #ffa200",
-                                                    color: "#ffa200",
-                                                  }
+                                                  border: "1px solid #ffa200",
+                                                  color: "#ffa200",
+                                                }
                                                 : {}
                                             }
                                             key={variant._id}
@@ -464,8 +483,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                               style={
                                                 selectedVariant === variant._id
                                                   ? {
-                                                      display: "block",
-                                                    }
+                                                    display: "block",
+                                                  }
                                                   : {}
                                               }
                                               className={`selected-indicator ${styles.tickImage}`}
@@ -724,9 +743,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                 <div className="theme-card">
                   <h5 className="title-border">Sản phẩm mới</h5>
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
-                    {newProducts.map((product) => {
+                    {newProducts ? newProducts.map((product) => {
                       return <SideProductCart key={product._id} product={product} />;
-                    })}
+                    }) : null}
                   </Slider>
                 </div>
               </Col>
