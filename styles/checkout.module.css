@@ -813,10 +813,7 @@
 }
 .modal_content {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  bottom: 20px;
-  transform: translate(-50%, -50%);
+  left: 25%;
   padding: 36px;
   border: none;
   border-radius: 4px;

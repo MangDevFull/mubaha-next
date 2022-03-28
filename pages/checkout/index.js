@@ -16,7 +16,6 @@ import { useRouter } from "next/router";
 import visa from "../../assets/images/checkout/visa.png";
 import format from "date-fns/format";
 
-
 const Checkout = ({ data }) => {
   const { data: session } = useSession();
   const [showVoucher, setShowVoucher] = useState(false);
@@ -25,13 +24,12 @@ const Checkout = ({ data }) => {
   const [visible, setVisible] = useState(false);
   const [showCard, setShowCard] = useState(false);
   const [succesPayment, setSuccesPayment] = useState(false);
-  const [dateEnd, setDateEnd] = useState("")
+  const [dateEnd, setDateEnd] = useState("");
 
   const [selectedVoucher, setSelectedVoucher] = useState();
   const [groupedItems, setGroupedItems] = useState([]);
   const [listAddress, setListAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
-
 
   const [show, setShow] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
@@ -206,12 +204,6 @@ const Checkout = ({ data }) => {
           <Container>
             {showError && (
               <>
-                <Alert
-                  style={{ textAlign: "center", height: "auto", marginBottom: "2rem" }}
-                  color="danger"
-                >
-                  Chưa có đơn hàng được lựa chọn. Vui lòng bấm vô đây để quay lại <Link href={`/cart`} >giỏ hàng</Link> 
-                </Alert>
                 <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={showError}>
                   <ModalBody className="container-fluid">
                     <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
@@ -554,11 +546,12 @@ const Checkout = ({ data }) => {
                         <div
                           className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
                         >
-                          Tổng Voucher giảm giá:
+                         Tổng Voucher giảm giá:
                         </div>
                         <div
                           className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}
                         >
+                          {" "} 
                           <NumberFormat
                             style={{ color: "red" }}
                             value={
@@ -567,6 +560,7 @@ const Checkout = ({ data }) => {
                             }
                             thousandSeparator={true}
                             displayType="text"
+                            prefix="-"
                             suffix={selectedVoucher.currencySymbol}
                             decimalScale={0}
                           />
@@ -607,6 +601,7 @@ const Checkout = ({ data }) => {
                             value={selectedVoucher.discount.amount}
                             thousandSeparator={true}
                             displayType="text"
+                            prefix="-"
                             suffix={selectedVoucher.currencySymbol}
                             decimalScale={0}
                           />
@@ -724,7 +719,7 @@ const Checkout = ({ data }) => {
                         name="empiry"
                         placeholder="VD: MM/YY"
                         maxLength={4}
-                        onChange={(e) => console.log(e.target.value) }
+                        onChange={(e) => console.log(e.target.value)}
                         // name={dateEnd}
                         // value={format(new Date(dateEnd), "dd/yy")}
                       />
@@ -733,12 +728,7 @@ const Checkout = ({ data }) => {
                     <div className={`${styles.number_card}`}>
                       <div className={`${styles.label_number_card}`}>Mã bảo mật:</div>
                       <div className={`${styles.wrapper}`}>
-                        <input
-                          type="text"
-                          name="cvc"
-                          placeholder="VD: 123"
-                          maxLength={3}
-                        />
+                        <input type="text" name="cvc" placeholder="VD: 123" maxLength={3} />
                         <img
                           className={`${styles.card_back}`}
                           width="61"
@@ -750,12 +740,7 @@ const Checkout = ({ data }) => {
                     </div>
                   </div>
                   <div className={`${styles.image_card}`}>
-                    <img
-                      className={`${styles.image_card_visa}`}
-                      width="400px"
-                      
-                      src={visa.src}
-                    />
+                    <img className={`${styles.image_card_visa}`} width="400px" src={visa.src} />
                   </div>
                 </div>
                 <div className={`${styles.add_card_note}`}>
@@ -767,7 +752,10 @@ const Checkout = ({ data }) => {
                     {" "}
                     Trở Lại
                   </button>
-                  <button className={`${styles.confirm}`} onClick={handlePaymentMedthod}> Xác nhận</button>
+                  <button className={`${styles.confirm}`} onClick={handlePaymentMedthod}>
+                    {" "}
+                    Xác nhận
+                  </button>
                 </div>
               </div>
             </div>
