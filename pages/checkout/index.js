@@ -1,21 +1,101 @@
-
-import React, { useContext, useState, useEffect } from "react";
-
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import Head from "next/head";
+import { Container, Alert, Modal, Button, ModalBody, ModalFooter, Row } from "reactstrap";
+import Link from "next/link";
+import styles from "../../styles/checkout.module.css";
+import CartList from "@/components/checkout/CartList";
+import VoucherShop from "@/components/checkout/VoucherShop";
+import Address from "@/components/Address";
+import NumberFormat from "react-number-format";
 import CommonLayout from "../../components/shop/CommonLayout";
-import CheckoutPage from "../../components/common/CheckoutPage";
 import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
+import _ from "lodash";
 import { getSession, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import visa from "../../assets/images/checkout/visa.png";
+import format from "date-fns/format";
 
-const Checkout = (data) => {
+const Checkout = ({ data }) => {
   const { data: session } = useSession();
   const [showVoucher, setShowVoucher] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState();
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [showCard, setShowCard] = useState(false);
+  const [succesPayment, setSuccesPayment] = useState(false);
+  const [dateEnd, setDateEnd] = useState("");
+  const [cardCode, setCardCode] = useState("")
+  const [cardNumber, setCardNumber] = useState("")
+  const [cardName, setCardName] = useState("")
+  const [cardExp, setCardExp] = useState("")
+
+  const [selectedVoucher, setSelectedVoucher] = useState();
+  const [groupedItems, setGroupedItems] = useState([]);
+  const [listAddress, setListAddress] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState();
+
+  const [show, setShow] = useState(false);
+  const [showAddress, setShowAddress] = useState(false);
+  const [chooseAddress, setChooseAddress] = useState();
+  const [showError, setShowError] = useState(false);
+  const [totalPriceProduct, setTotalPriceProduct] = useState(0);
+
+  const router = useRouter();
+  useEffect(() => {
+    let _timeout
+    if (session) {
+      handleGetListAddress();
+      if (data !== null) {
+        setGroupedItems(data.grouped);
+        setTotalPriceProduct(data.totalOrdersPrice);
+      } else {
+        setShowError(true)
+        
+        _timeout = setTimeout(() => {
+          router.push('/cart')
+        }, 2000)
+      }
+    }
+
+    return () => {
+      clearTimeout(_timeout)
+    }
+  }, [session]);
+
+  const handleGetListAddress = async () => {
+    try {
+      const res = await fetch(process.env.API_ADDRESS_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + session.accessToken,
+        },
+      });
+
+      const addressData = await res.json();
+      if (addressData.status === 200) {
+        const data = addressData.data;
+
+        setListAddress(data);
+        if (data.length > 0) {
+          const findDefaultAddress = data.filter((item) => item.isDefault == true);
+          if (!findDefaultAddress || findDefaultAddress.length == 0) {
+            setSelectedAddress(data[0]);
+          } else {
+            setSelectedAddress(findDefaultAddress[0]);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleVoucherShow = async () => {
     setShowVoucher(true);
     try {
-      const response = await fetch(`${process.env.API_VOUCHER_URL}`, {
+      const response = await fetch(process.env.API_VOUCHER_URL, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -33,29 +113,680 @@ const Checkout = (data) => {
     setShowVoucher(false);
   };
   const handleApplyVoucher = (voucher) => {
+    setSelectedVoucher(voucher);
     handleCloseVoucher();
-    console.log(voucher)
-  }
+  };
+
   const handleSelectPaymentMethod = (e) => {
-    setPaymentMethod(e.target.value)
-    console.log(e)
+    setPaymentMethod(e.target.value);
+    if (e.target.value === "atm") setShowCard(true);
+  };
+
+  const handleUpdateAddAddress = (data) => {
+    const newListAddress = [...listAddress, data];
+    setListAddress(newListAddress);
+    if (data.isDefault) {
+      setSelectedAddress(data);
+    }
+  };
+
+  const handleChangeAddress = (addressItem) => {
+    setSelectedAddress(addressItem);
+  };
+
+  const handlePaymentMedthod = () => {
+    setShowCard(false);
+    setSuccesPayment(true);
+
+    setTimeout(function () {
+      setSuccesPayment(false);
+
+      // router.push("/");
+    }, 1000);
+  };
+
+  const handleOrder = async (e) => {
+    const cartID = [];
+    groupedItems.forEach((p) => {
+      p.products.forEach((x) => {
+        cartID.push(x);
+      });
+    });
+    const payload = {
+      cartItemIds: cartID,
+      method: paymentMethod,
+      address: selectedAddress._id,
+      cardCode,
+      cardNumber,
+      cardName,
+      expirationDate: cardExp
+    };
+    setVisible(true);
     
-  }
+    const response = await fetch(`${process.env.API_ORDER_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
+      },
+      body: JSON.stringify({payload}),
+    });
+    const data = await response.json();
+    console.log("index", response);
+
+    console.log(data);
+    if (data.status === 200) {
+      setTimeout(function () {
+        setVisible(false);
+        router.push("/");
+      }, 3000);
+    } else {
+      alert(data.data);
+    }
+  };
+  const handleCloseCreateAdd = (data, setChecked) => {
+    setShow(false);
+    handleUpdateAddAddress(data);
+  };
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  useEffect(() => {
+    setChooseAddress(selectedAddress);
+  }, [selectedAddress]);
+
+  useEffect(() => {
+    if (listAddress.length === 0) {
+      setShowAddress(true);
+    } else {
+      setShowAddress(false);
+    }
+  }, [listAddress]);
 
   return (
     <>
       <HeaderAuthen />
-      <CommonLayout parent="home" title="Checkout">
-        <CheckoutPage
-          data={data}
-          handleVoucherShow={handleVoucherShow}
-          handleCloseVoucher={handleCloseVoucher}
-          showVoucher={showVoucher}
-          vouchers={vouchers}
-          handleApplyVoucher={handleApplyVoucher}
-          handleSelectPaymentMethod={handleSelectPaymentMethod}
-        />
+      <CommonLayout parent="Trang chủ" title="Thanh toán đơn hàng">
+        <section className={`section-b-space ${styles.section_checkout_page}`}>
+          <Container>
+            {showError && (
+              <>
+                <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={showError}>
+                  <ModalBody className="container-fluid">
+                    <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
+                      <h3>Giỏ hàng trống</h3>
+                    </Row>
+                  </ModalBody>
+                  <ModalFooter style={{ border: "none" }}>
+                    <Button
+                      className="btn btn-secondary btn-lg"
+                      style={{ width: "100%", maxWidth: "100%", borderRadius: "5px" }}
+                      onClick={() => setShowError(!showError)}
+                    >
+                      OK
+                    </Button>
+                  </ModalFooter>
+                </Modal>
+              </>
+            )}
+            <div className={`${styles.address}`}>
+              <h4>1. Chọn địa chỉ giao hàng</h4>
+              <div className={`${styles.table_address}`}>
+                <div className={`${styles.border_top}`}></div>
+                <div className={`${styles.padding_box}`}>
+                  <div className={`${styles.title_address}`}>
+                    <div className={`${styles.icon_address}`}>
+                      <div className={`${styles.icon}`}>
+                        <svg height="16" viewBox="0 0 12 16" width="12" fill="#f89922">
+                          <path
+                            d="M6 3.2c1.506 0 2.727 1.195 2.727 2.667 0 1.473-1.22 2.666-2.727 2.666S3.273 7.34 3.273 5.867C3.273 4.395 4.493 3.2 6 3.2zM0 6c0-3.315 2.686-6 6-6s6 2.685 6 6c0 2.498-1.964 5.742-6 9.933C1.613 11.743 0 8.498 0 6z"
+                            fillRule="evenodd"
+                          ></path>
+                        </svg>
+                      </div>
+                      <div>Địa chỉ giao hàng</div>
+                    </div>
+                    {showAddress && (
+                      <>
+                        <div className={`${styles.button_select_address}`}>
+                          <button
+                            className={`${styles.button_add_address} ${styles.method_content}`}
+                            onClick={handleShow}
+                          >
+                            <svg
+                              enableBackground="new 0 0 10 10"
+                              viewBox="0 0 10 10"
+                              role="img"
+                              className="stardust-icon stardust-icon-plus-sign _3PTu7X"
+                            >
+                              <path
+                                stroke="none"
+                                d="m10 4.5h-4.5v-4.5h-1v4.5h-4.5v1h4.5v4.5h1v-4.5h4.5z"
+                              ></path>
+                            </svg>
+                            Thêm địa chỉ mới
+                          </button>
+                          <button
+                            className={`${styles.button_add_address} ${styles.method_content}`}
+                            onClick={handleShow}
+                          >
+                            Sửa địa chỉ
+                          </button>
 
+                          <Link href="/account">
+                            <button className={`${styles.button_add_address}`}>
+                              Thiết lập địa chỉ
+                            </button>
+                          </Link>
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {showAddress && listAddress.length > 0 && chooseAddress && (
+                    <>
+                      <div className={`${styles.list_address}`}>
+                        <ul>
+                          {listAddress.map((item, index) => {
+                            return (
+                              <li key={index}>
+                                <input
+                                  type="radio"
+                                  name="delivery_address"
+                                  data-view-index="cod"
+                                  readOnly
+                                  onClick={() => setChooseAddress(item)}
+                                  value="address2"
+                                  checked={item._id === chooseAddress._id}
+                                />
+                                <div className={`${styles.detail_info}`}>
+                                  <div className={`${styles.info}`}>
+                                    <div className={`${styles.fullName}`}>
+                                      {item.fullName} {item.phone}
+                                    </div>
+                                    <div className={`${styles.detailAddress}`}>
+                                      {item.fullAddress}
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                      {listAddress.length > 0 && (
+                        <div className={`${styles.button_change}`}>
+                          <button
+                            className={`${styles.button_add_address} ${styles.button_success} `}
+                            onClick={() => {
+                              handleChangeAddress(chooseAddress);
+                              setShowAddress(!showAddress);
+                            }}
+                          >
+                            Hoàn Thành
+                          </button>
+                          <button
+                            className={`${styles.button_add_address} ${styles.button_back}`}
+                            onClick={() => {
+                              setChooseAddress(selectedAddress);
+                              setShowAddress(!showAddress);
+                            }}
+                          >
+                            Trở về
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
+
+                  {!showAddress && (
+                    <>
+                      {selectedAddress && (
+                        <div className="detail_infor">
+                          <div className={`${styles.info}`}>
+                            <div className={`${styles.fullName}`}>
+                              {selectedAddress.fullName} {selectedAddress.phone}
+                            </div>
+                            <div className={`${styles.detailAddress}`}>
+                              {selectedAddress.fullAddress}
+                            </div>
+                            <div className={`${styles.default}`}>Mặc định</div>
+                          </div>
+                        </div>
+                      )}
+
+                      <div>
+                        <button
+                          className={`${styles.btn_change} btn p-0 m-0`}
+                          onClick={() => {
+                            setShowAddress(!showAddress);
+                          }}
+                        >
+                          Thay đổi địa chỉ
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className={`${styles.border_top}`}></div>
+              </div>
+            </div>
+            <div className={`${styles.list_cart}`}>
+              <h4>2. Danh sách đơn hàng</h4>
+              <div className={`${styles.title_section}`}>
+                <div className={`${styles.title}`}>
+                  <div className={`${styles.title_name} ${styles.title_products}`}>
+                    <div className={`${styles.products}`}>Sản phẩm</div>
+                  </div>
+                  <div className={`${styles.title_name} ${styles.classify_products}`}></div>
+                  <div className={`${styles.title_name}`}>Giá tiền</div>
+                  <div className={`${styles.title_name}`}>Số lượng</div>
+                  <div className={`${styles.title_name} ${styles.title_price}`}>Thành tiền</div>
+                </div>
+              </div>
+              {groupedItems.length > 0 &&
+                groupedItems.map((listCarts, index) => {
+                  return (
+                    <div key={index}>
+                      <CartList listCarts={listCarts} />
+                    </div>
+                  );
+                })}
+            </div>
+            <div className={`${styles.voucher}`}>
+              <h4>3. Chọn Voucher</h4>
+              <VoucherShop
+                selectedVoucher={selectedVoucher}
+                handleVoucherShow={handleVoucherShow}
+                groupedItems={groupedItems}
+                showVoucher={showVoucher}
+                handleCloseVoucher={handleCloseVoucher}
+                vouchers={vouchers}
+                handleApplyVoucher={handleApplyVoucher}
+              />
+            </div>
+            <div className={`${styles.payments}`}>
+              <h4>4. Chọn hình thức thanh toán</h4>
+              <div className={`${styles.payment_methods}`}>
+                <ul>
+                  <li>
+                    <label className={`${styles.methods}`}>
+                      <input
+                        type="radio"
+                        name="payment_methods"
+                        data-view-index="cod"
+                        readOnly
+                        value="cod"
+                        onChange={handleSelectPaymentMethod}
+                        disabled={groupedItems.length === 0}
+                        checked={paymentMethod === "cod"}
+                      />
+                      <span>
+                        <div className={`${styles.method_content_name}`}>
+                          <img
+                            width="32px"
+                            src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-cod.svg"
+                          />
+                          <span>Thanh toán tiền mặt khi nhận hàng</span>
+                        </div>
+                      </span>
+                    </label>
+                  </li>
+                  <li>
+                    <label className={`${styles.methods}`}>
+                      <input
+                        type="radio"
+                        name="payment_methods"
+                        data-view-index="atm"
+                        readOnly
+                        value="atm"
+                        onChange={handleSelectPaymentMethod}
+                        disabled={groupedItems.length === 0}
+                        checked={paymentMethod === "atm"}
+                      />
+                      <span>
+                        <div className={`${styles.method_content_name}`}>
+                          <img
+                            width="32px"
+                            src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-credit.svg"
+                          />
+
+                          <span>Thanh toán bằng thẻ quốc tế Visa, Master, JCB</span>
+                        </div>
+                      </span>
+                    </label>
+                  </li>
+                  <li>
+                    <label className={`${styles.methods}`}>
+                      <input
+                        type="radio"
+                        name="payment_methods"
+                        data-view-index="paypal"
+                        readOnly
+                        value="paypal"
+                        onChange={handleSelectPaymentMethod}
+                        disabled
+                        checked={paymentMethod === "paypal"}
+                      />
+                      <span>
+                        <div className={`${styles.method_content_name}`}>
+                          <img
+                            width="32px"
+                            src="https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_fc_hl.svg"
+                          />
+                          <span>Thanh toán bằng Paypal</span>
+                        </div>
+                      </span>
+                    </label>
+                  </li>
+                  <li>
+                    <label className={`${styles.methods}`}>
+                      <input
+                        type="radio"
+                        name="payment_methods"
+                        data-view-index="vnpay"
+                        readOnly
+                        value="vnpay"
+                        onChange={handleSelectPaymentMethod}
+                        disabled={groupedItems.length === 0}
+                        checked={paymentMethod === "vnpay"}
+                      />
+                      <span>
+                        <div className={`${styles.method_content_name}`}>
+                          <img
+                            width="32px"
+                            src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-vnpay.png"
+                          />
+
+                          <span>Thanh toán bằng VNPAY</span>
+                        </div>
+                      </span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className={`${styles.total}`}>
+              <h4>5. Tổng đơn hàng </h4>
+              <div className={`${styles.total_prices}`}>
+                {groupedItems && groupedItems.length > 0 && (
+                  <>
+                    <div
+                      className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_amount}`}
+                    >
+                      Tổng tiền hàng
+                    </div>
+                    <div
+                      className={`${styles.total_title_price} ${styles.total_amount} ${styles.prices}`}
+                    >
+                      <NumberFormat
+                        value={totalPriceProduct}
+                        thousandSeparator={true}
+                        displayType="text"
+                        suffix="₫"
+                        decimalScale={0}
+                      />
+                    </div>
+                    {selectedVoucher === undefined ? (
+                      <>
+                        <div
+                          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
+                        >
+                          Tổng thanh toán:
+                        </div>
+                        <div
+                          className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}
+                        >
+                          <span>
+                            <NumberFormat
+                              value={totalPriceProduct}
+                              thousandSeparator={true}
+                              displayType="text"
+                              suffix="₫"
+                              decimalScale={0}
+                            />
+                          </span>
+                        </div>
+                      </>
+                    ) : selectedVoucher.discount.type === "percent" ? (
+                      <>
+                        <div
+                          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
+                        >
+                         Tổng Voucher giảm giá:
+                        </div>
+                        <div
+                          className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}
+                        >
+                          {" "} 
+                          <NumberFormat
+                            style={{ color: "red" }}
+                            value={
+                              totalPriceProduct -
+                              ((100 - selectedVoucher.discount.amount) / 100) * totalPriceProduct
+                            }
+                            thousandSeparator={true}
+                            displayType="text"
+                            prefix="-"
+                            suffix={selectedVoucher.currencySymbol}
+                            decimalScale={0}
+                          />
+                        </div>
+                        <div
+                          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
+                        >
+                          Tổng thanh toán:
+                        </div>
+                        <div
+                          className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}
+                        >
+                          <span>
+                            <NumberFormat
+                              value={
+                                ((100 - selectedVoucher.discount.amount) / 100) * totalPriceProduct
+                              }
+                              thousandSeparator={true}
+                              displayType="text"
+                              suffix={selectedVoucher.currencySymbol}
+                              decimalScale={0}
+                            />
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div
+                          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
+                        >
+                          Tổng Voucher giảm giá:
+                        </div>
+                        <div
+                          className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}
+                        >
+                          <NumberFormat
+                            style={{ color: "red" }}
+                            value={selectedVoucher.discount.amount}
+                            thousandSeparator={true}
+                            displayType="text"
+                            prefix="-"
+                            suffix={selectedVoucher.currencySymbol}
+                            decimalScale={0}
+                          />
+                        </div>
+                        <div
+                          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
+                        >
+                          Tổng thanh toán:
+                        </div>
+                        <div
+                          className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}
+                        >
+                          <span>
+                            <NumberFormat
+                              value={totalPriceProduct - selectedVoucher.discount.amount}
+                              thousandSeparator={true}
+                              displayType="text"
+                              suffix="₫"
+                              decimalScale={0}
+                            />
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+                <div className={`${styles.section_button_order}`}>
+                  <div className={`${styles.section_rules}`}>
+                    <div>
+                      Nhấn &quot;Đặt hàng&quot; đồng nghĩa với việc bạn đồng ý tuân theo{" "}
+                      <a href="" target="_blank" rel="noopener noreferrer">
+                        Điều khoản Mubaha
+                      </a>
+                    </div>
+                  </div>
+                  <button
+                    className={
+                      groupedItems.length === 0
+                        ? `${styles.button_order_disabled}`
+                        : `${styles.button_order}`
+                    }
+                    onClick={handleOrder}
+                    disabled={groupedItems.length === 0}
+                  >
+                    Đặt hàng
+                  </button>
+                </div>
+              </div>
+            </div>
+          </Container>
+        </section>
+        {/* Modal add address */}
+        <Address isOpen={show} handleCloseCreateAdd={handleCloseCreateAdd} />
+
+        <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={visible}>
+          <ModalBody className="container-fluid">
+            <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
+              <h3>Đặt hàng thành công</h3>
+            </Row>
+          </ModalBody>
+          <ModalFooter style={{ border: "none" }}>
+            <Button
+              className="btn btn-secondary btn-lg"
+              style={{ width: "100%", maxWidth: "100%", borderRadius: "5px" }}
+              onClick={() => router.push("/")}
+            >
+              Trở về trang chủ
+            </Button>
+          </ModalFooter>
+        </Modal>
+
+        <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={showCard}>
+          <div className={`${styles.modal_overlay}`}>
+            <div className={`${styles.modal_content}`}>
+              <div className={`${styles.card_adding}`}>
+                <div className={`${styles.title_adding}`}>Nhập thẻ thanh toán</div>
+                <div className={`${styles.card_type_list}`}>
+                  <img
+                    width="32"
+                    src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-visa.png"
+                    alt="visa"
+                  />
+                  <img
+                    width="32"
+                    src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-credit-type-mastercard.svg"
+                    alt="mastercard"
+                  />
+                  <img
+                    width="32"
+                    src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-credit-type-jcb.svg"
+                    alt="mastercard"
+                  />
+                </div>
+                <div className={`${styles.add_card_form}`}>
+                  <div className={`${styles.add_card_form_left}`}>
+                    <div className={`${styles.number_card}`}>
+                      <div className={`${styles.label_number_card}`}>Số thẻ:</div>
+                      <input
+                        type="text"
+                        name="number"
+                        placeholder="VD: 4123456789012345"
+                        maxLength={16}
+                        value={cardNumber}
+                        onChange={(e) => setCardNumber(e.target.value)}
+                      />
+                      <div className={`${styles.error_card}`}></div>
+                    </div>
+                    <div className={`${styles.number_card}`}>
+                      <div className={`${styles.label_number_card}`}>Tên in trên thẻ:</div>
+                      <input type="text" name="name" placeholder="VD: NGUYEN VAN A"
+                      value={cardName}
+                      onChange={(e) => setCardName(e.target.value)}
+                      />
+                      <div className={`${styles.error_card}`}></div>
+                    </div>
+                    <div className={`${styles.number_card}`}>
+                      <div className={`${styles.label_number_card}`}>Ngày hết hạn:</div>
+                      <input
+                        type="text"
+                        name="empiry"
+                        placeholder="VD: MM/YY"
+                        maxLength={4}
+                      
+                        value={cardExp}
+                        onChange={(e) => setCardExp(e.target.value)}
+                        // name={dateEnd}
+                        // value={format(new Date(dateEnd), "dd/yy")}
+                      />
+                      <div className={`${styles.error_card}`}></div>
+                    </div>
+                    <div className={`${styles.number_card}`}>
+                      <div className={`${styles.label_number_card}`}>Mã bảo mật:</div>
+                      <div className={`${styles.wrapper}`}>
+                        <input type="text" name="cvc" placeholder="VD: 123"
+                        value={cardCode}
+                        onChange={(e) => setCardCode(e.target.value)}
+                        maxLength={3} />
+                        <img
+                          className={`${styles.card_back}`}
+                          width="61"
+                          src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/checkout-img-cvv-hint.jpg"
+                        />
+                      </div>
+
+                      <div className={`${styles.error_card}`}></div>
+                    </div>
+                  </div>
+                  <div className={`${styles.image_card}`}>
+                    <img className={`${styles.image_card_visa}`} width="400px" src={visa.src} />
+                  </div>
+                </div>
+                <div className={`${styles.add_card_note}`}>
+                  Để đảm bảo an toàn, thông tin thẻ của bạn chỉ được lưu bởi CyberSource, công ty
+                  quản lý thanh toán lớn nhất thế giới (thuộc tổ chức VISA)
+                </div>
+                <div className={`${styles.button_group}`}>
+                  <button className={`${styles.back}`} onClick={() => setShowCard(!showCard)}>
+                    {" "}
+                    Trở Lại
+                  </button>
+                  <button className={`${styles.confirm}`} onClick={handlePaymentMedthod}>
+                    {" "}
+                    Xác nhận
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
+
+        <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={succesPayment}>
+          <ModalBody className="container-fluid">
+            <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
+              <h3>Thanh toán thành công</h3>
+            </Row>
+          </ModalBody>
+        </Modal>
       </CommonLayout>
       <Footer />
     </>
@@ -66,21 +797,19 @@ export default Checkout;
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
-  const response = await fetch(
-    `${process.env.API_ORDER_URL}/checkout?carts=6238483f9112a91018d68295`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + session.accessToken,
-      },
-    }
-  );
+  const q = context.query;
+  const response = await fetch(`${process.env.API_ORDER_URL}/checkout?s=${q.s}&f=${q.f}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + session.accessToken,
+    },
+  });
+
   const { data } = await response.json();
   return {
     props: {
       data,
     },
-
   };
 }

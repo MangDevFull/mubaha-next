@@ -1,4 +1,4 @@
-import styles from "@/styles/cart.module.css"
+import styles from "@/styles/cart.module.css";
 import Link from "next/link";
 import dynamic from 'next/dynamic'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
@@ -32,7 +32,7 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
               />
             }
             <img src="/assets/icon/shop-icon.png" className="mr-2" />
-            <Link href={`/vendors/${p.vendor.owner.username}`}>
+            <Link href={`/vendors/${p.vendor.owner.username}`} passHref>
               <strong className={styles.cursorVendor}>{p.vendor.brandName}</strong>
             </Link>
           </div>
@@ -53,14 +53,14 @@ export default function VendorCart({ p, vendorKey, updateProduct, updateQuantity
           </table>
           </div>
         </CardBody>
-        <CardFooter className="text-muted" style={{ backgroundColor: 'white' }}>
+        <CardFooter className="text-muted" style={{ backgroundColor: "white" }}>
           <div className="d-flex mb-2 mt-3">
-            <strong>Shop Khuyến Mãi</strong> <span className="ml-2">Vui lòng chọn sản phẩm trước</span>
+            <strong>Shop Khuyến Mãi</strong>{" "}
+            <span className="ml-2">Vui lòng chọn sản phẩm trước</span>
           </div>
         </CardFooter>
       </Card>
       </div>
     </>
-  )
-
-} 
+  );
+}

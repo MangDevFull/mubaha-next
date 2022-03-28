@@ -1,3 +1,6 @@
+.section_checkout_page {
+  padding-top: 40px;
+}
 .address h4 {
   margin-bottom: 20px;
   color: #5f5f5f;
@@ -182,19 +185,21 @@
   text-decoration: none;
   color: rgba(0, 0, 0, 0.87);
   font-weight: 600;
+  margin-top: 15px;
 }
 .section_order_info {
   border-bottom: 1px dashed rgba(0, 0, 0, 0.09);
   padding-bottom: 20px;
 }
 .order_info {
-  margin: 0 30px;
+  margin: 20px 30px;
   display: flex;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
   color: #222;
   min-height: 55px;
+  /* margin-bottom: 20px; */
 }
 .title_info:last-child {
   justify-content: flex-end;
@@ -261,8 +266,8 @@
   display: flex;
   align-items: center;
 }
-.image_voucher img {
-  margin-right: 4px;
+.image_voucher > div {
+  margin-left: 5px;
 }
 .button_voucher_shop {
   flex: 4;
@@ -421,6 +426,34 @@
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 15px;
+  display: flex;
+  align-items: center;
+}
+.apply_show_voucher {
+  margin-right: 15px;
+}
+._1oOP8B {
+  flex: 1;
+}
+.show_voucher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-style: solid;
+  color: #ee4d2d;
+  border-color: #ee4d2d;
+  /* margin-left: 0.5rem; */
+  padding: 0 0.4rem;
+  font-size: 0.9rem;
+  height: 1.7rem;
+  box-sizing: border-box;
+  cursor: default;
+}
+.show_voucher > span {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .payments h4 {
@@ -501,6 +534,14 @@
 .button_order:hover {
   background-color: #f89922cc;
 }
+.button_order_disabled {
+  background-color: #f8992296;
+  color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  text-transform: capitalize;
+  width: 210px;
+  height: 40px;
+}
 .button_change {
   padding: 10px 65px 20px 0;
   display: flex;
@@ -574,7 +615,7 @@
   height: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding-bottom: 5.25rem;
+  padding-bottom: 2.5rem;
 }
 .section_search_voucher {
   display: flex;
@@ -623,7 +664,17 @@
 }
 .button_apply span {
   margin-right: 0;
-
+  text-transform: uppercase;
+  color: #fff;
+}
+.voucher_used {
+  height: 2.5rem;
+  flex-shrink: 0;
+  border: none;
+  background: linear-gradient(90deg, transparent 0, transparent 0.1875rem, #bbb 0);
+}
+.voucher_used span {
+  margin-right: 0;
   text-transform: uppercase;
 }
 .section_list_voucher {
@@ -633,10 +684,9 @@
   padding-right: 1.25rem;
   margin-top: 1.25rem;
   width: 100%;
-  height: 100%;
+  height: 25rem;
 }
 .title_name_list {
-  margin-bottom: 0.625rem;
   font-size: 1rem;
   color: rgba(0, 0, 0, 0.65);
   display: flex;
@@ -707,38 +757,174 @@
   white-space: nowrap;
   margin-top: 0.3125rem;
 }
-.voucher_information_basic_2, .apply_information{
+.voucher_information_basic_2,
+.apply_information {
   overflow: hidden;
-    text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
+
 .voucher_information_basic_2 {
-  
-    border-radius: 0.125rem;
-    white-space: nowrap;
-    box-sizing: border-box;
-    color: #ee4d2d;
-    border: 1px solid #ee4d2d;
-    padding: 0.0625rem 0.25rem;
+  margin-right: 0.5em;
+  border-radius: 0.125rem;
+  white-space: nowrap;
+  box-sizing: border-box;
+  color: #ee4d2d;
+  border: 1px solid #ee4d2d;
+  padding: 0.0625rem 0.25rem;
 }
 .apply_information {
-  font-size: .75rem;
-    line-height: .875rem;
-    align-items: center;
+  font-size: 0.75rem;
+  line-height: 0.875rem;
+  align-items: center;
 }
 .voucher_information_basic span {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  color: rgba(0,0,0,.54);
+  color: rgba(0, 0, 0, 0.54);
   margin-top: 0.5rem;
-  font-size: .75rem;
-    line-height: .875rem;
+  font-size: 0.75rem;
+  line-height: 0.875rem;
 }
 .button_apply_voucher {
   display: flex;
   align-items: center;
-
 }
 .button_apply_voucher button {
   margin-right: 1rem;
+}
+.credit_card {
+  margin: 5rem auto;
+  padding: 1rem;
+  text-align: center;
+}
+.credit_card h2 {
+  color: rgba(4, 99, 128, 1);
+}
+.form {
+  display: flex;
+  flex-direction: column;
+}
+.modal_overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(39, 39, 42, 0.7);
+  z-index: 999;
+}
+.modal_content {
+  position: absolute;
+  left: 25%;
+  padding: 36px;
+  border: none;
+  border-radius: 4px;
+  overflow-y: hidden;
+  width: 750px;
+  min-height: 672px;
+  outline: 0px;
+  background-color: rgb(255, 255, 255);
+}
+.title_adding {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgb(36, 36, 36);
+}
+.card_type_list {
+  margin-top: 4px;
+}
+.add_card_form {
+  margin-top: 24px;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+}
+.add_card_form_left {
+  flex-basis: 300px;
+}
+.number_card {
+  margin-bottom: 15px;
+}
+.wrapper {
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+}
+.label_number_card {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: rgb(36, 36, 36);
+}
+.card_back {
+  margin-left: 15px;
+}
+.number_card input {
+  width: 100%;
+  border: 1px solid rgb(132, 53, 52);
+  border-radius: 4px;
+  height: 34px;
+  padding: 6px 12px;
+  line-height: 34px;
+  outline: none;
+}
+.error_card {
+  color: rgb(169, 68, 66);
+  font-size: 11px;
+  margin-top: 5px;
+  min-height: 12px;
+}
+.image_card_visa {
+  padding: 0 20px;
+}
+.add_card_note {
+  font-size: 13px;
+  line-height: 1.54;
+  color: rgb(13, 92, 182);
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  background-color: rgb(226, 235, 246);
+  margin-top: 24px;
+}
+.button_group {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+.back {
+  color: rgb(13, 92, 182);
+  border: 1px solid rgb(13, 92, 182);
+  background-color: rgb(255, 255, 255);
+  margin-right: 12px;
+  width: 192px;
+  height: 40px;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  outline: 0px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  cursor: pointer;
+}
+.confirm {
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(13, 92, 182);
+  background-color: rgb(13, 92, 182);
+  width: 192px;
+  height: 40px;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  outline: 0px;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  cursor: pointer;
 }
