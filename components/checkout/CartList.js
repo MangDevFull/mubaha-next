@@ -19,7 +19,7 @@ const CartList = ({ listCarts }) => {
                 <div key={i}>
                   <div className={`${styles.order_info}`}>
                     <div className={`${styles.title_info} ${styles.title_image_product}`}>
-                      <img width="40px" src={product.selectedVariant.image} />
+                      <img width="40px" src={product.selectedAttribute?.image || product.selectedVariant?.image || product.product.media?.featuredImage} />
                       <span>
                         <span className={`${styles.name_product}`}>{product.product.name}</span>
                       </span>
