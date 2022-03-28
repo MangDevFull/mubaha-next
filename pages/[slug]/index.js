@@ -132,7 +132,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setVariantColor(variant._id);
     setUnSelect(false)
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
-    console.log("1", index);
     slider1.current.slickGoTo(index);
     setAttributes(variant.attributes);
   };
@@ -460,7 +459,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               <>
                                 <h6 className="product-title size-text">
                                   {variantColor === undefined ? `Vui lòng chọn ${detailProduct.variantLabel} trước` : detailProduct.attributeLabel}
-
                                 </h6>
 
                                 <div className="size-box">
@@ -717,6 +715,7 @@ export async function getServerSideProps(context) {
     return {
       notFound: true,
     };
+
 
   return {
     props: {

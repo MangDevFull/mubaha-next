@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
-import {
-  Container, Row, Col, Media, Button, Modal, ModalFooter, ModalHeader
-} from "reactstrap";
+import { Container, Row, Col, Media, Button, Modal, ModalFooter, ModalHeader } from "reactstrap";
 import Breadcrumb from "../Breadcrumb";
-import styles from "@/styles/cart.module.css"
-import dynamic from 'next/dynamic'
-import { useSession } from 'next-auth/react'
-import Modal2 from 'react-awesome-modal';
-import productStatus from "@/enums/productStatus.enum.js"
+import styles from "@/styles/cart.module.css";
+import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
+import Modal2 from "react-awesome-modal";
+import productStatus from "@/enums/productStatus.enum.js";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import _ from 'lodash'
@@ -58,65 +56,65 @@ const CartPage = ({ data }) => {
   const updateSelectProduct = (vendorId, productId) => {
     products[vendorId].products[productId].selected = !products[vendorId].products[productId].selected;
     const selectAllVendor = products[vendorId].products.filter((p) => {
-      return p.selected !== true && p.status !== productStatus.DISABLE && p.isOutOfStock !== true
-    })
+      return p.selected !== true && p.status !== productStatus.DISABLE && p.isOutOfStock !== true;
+    });
     if (selectAllVendor.length < 1) {
-      products[vendorId].selected = true
+      products[vendorId].selected = true;
     } else {
-      products[vendorId].selected = false
+      products[vendorId].selected = false;
     }
 
     const selectAll = products.filter((p) => {
-      return p.selected !== true
-    })
+      return p.selected !== true;
+    });
     if (selectAll.length < 1) {
-      setIsSelectedAll(true)
+      setIsSelectedAll(true);
     } else {
-      setIsSelectedAll(false)
+      setIsSelectedAll(false);
     }
-    setProduct([...products])
-  }
+    setProduct([...products]);
+  };
   const updateSelectVendor = (vendorID) => {
-    products[vendorID].selected = !products[vendorID].selected
+    products[vendorID].selected = !products[vendorID].selected;
     products[vendorID].products.forEach((p) => {
       if (p.status !== productStatus.DISABLE) {
         if (p.isOutOfStock === false) {
-          p.selected = products[vendorID].selected
+          p.selected = products[vendorID].selected;
         }
       }
-    })
+    });
     const selectAll = products.filter((p) => {
-      return p.selected !== true
-    })
+      return p.selected !== true;
+    });
     if (selectAll.length < 1) {
-      setIsSelectedAll(true)
+      setIsSelectedAll(true);
     } else {
-      setIsSelectedAll(false)
+      setIsSelectedAll(false);
     }
-    setProduct([...products])
-  }
+    setProduct([...products]);
+  };
   const selectAllProduct = () => {
-    setIsSelectedAll(!isSelectedAll)
+    setIsSelectedAll(!isSelectedAll);
     products.forEach((product, i) => {
-      product.selected = !isSelectedAll
+      product.selected = !isSelectedAll;
       product.products.forEach((p, index) => {
         if (p.status !== productStatus.DISABLE) {
           if (p.isOutOfStock == false) {
             products[i].products[index].selected = !isSelectedAll;
           }
         }
-      })
-    })
-    setProduct([...products])
-  }
+      });
+    });
+    setProduct([...products]);
+  };
 
   useEffect(() => {
     let amount = 0
     let total = 0
     let amoutCheckout = 0
     products.forEach((product) => {
-      let t = 0
-      let a = 0
+      let t = 0;
+      let a = 0;
       product.products.forEach((p) => {
         if (p.selected == true) {
           if(p.status !== productStatus.DISABLE && !p.isChanged){
@@ -136,29 +134,29 @@ const CartPage = ({ data }) => {
     setTotalPrice(total)
   }, [products])
   const deleteManyCartItem = async () => {
-    let cartItems = []
+    let cartItems = [];
     products.forEach((product) => {
       product.products.forEach((p) => {
         if (p.selected === true) {
-          cartItems = [...cartItems, p.cartID]
+          cartItems = [...cartItems, p.cartID];
         }
-      })
-    })
+      });
+    });
     const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
       },
-      body: JSON.stringify({ cartItems: cartItems })
-    })
-    const data = await response.json()
+      body: JSON.stringify({ cartItems: cartItems }),
+    });
+    const data = await response.json();
 
     if (data.status === 200) {
       products.forEach((product, i) => {
         const pr = product.products.filter((p) => {
-          return !cartItems.includes(p.cartID)
-        })
+          return !cartItems.includes(p.cartID);
+        });
         if (pr.length < 1) {
           products.splice(i, 1);
         } else {
@@ -166,27 +164,27 @@ const CartPage = ({ data }) => {
             vendor: product.vendor,
             selected: false,
             totalDocs: product.totalDocs,
-            products: pr
-          }
+            products: pr,
+          };
         }
-      })
-      setProduct([...products])
-      setIsOpenModalDeleteProduct(false)
+      });
+      setProduct([...products]);
+      setIsOpenModalDeleteProduct(false);
     } else {
-      alert(data.message)
+      alert(data.message);
     }
-  }
+  };
   const handleModalDeleteMany = () => {
     if (totalProductSelect < 1) {
-      setMessage("Vui lòng chọn sản phẩm")
-      setVisible(true)
+      setMessage("Vui lòng chọn sản phẩm");
+      setVisible(true);
       setTimeout(function () {
-        setVisible(false)
-      }, 1000)
+        setVisible(false);
+      }, 1000);
     } else {
-      setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct)
+      setIsOpenModalDeleteProduct(!isOpenModalDeleteProduct);
     }
-  }
+  };
   const updateProduct = (body, i, index) => {
     if (body.selectedVariant != null && body.selectedAttribute != null) {
       products[i].products[index].variant = body.selectedVariant
@@ -204,33 +202,33 @@ const CartPage = ({ data }) => {
       }
     }
   function closeModal() {
-    setVisible(false)
+    setVisible(false);
   }
   const deleteAvailableProducts = async () => {
-    let cartItems = []
+    let cartItems = [];
     products.forEach((product) => {
       product.products.forEach((p) => {
         if (p.status === productStatus.DISABLE) {
-          cartItems = [...cartItems, p.cartID]
+          cartItems = [...cartItems, p.cartID];
         }
-      })
-    })
+      });
+    });
     const response = await fetch(`${process.env.API_CART_URL}/deleteMany`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
       },
-      body: JSON.stringify({ cartItems: cartItems })
-    })
-    const data = await response.json()
+      body: JSON.stringify({ cartItems: cartItems }),
+    });
+    const data = await response.json();
 
     if (data.status === 200) {
       setUnActive(unActive-cartItems.length)
       products.forEach((product, i) => {
         const pr = product.products.filter((p) => {
-          return !cartItems.includes(p.cartID)
-        })
+          return !cartItems.includes(p.cartID);
+        });
         if (pr.length < 1) {
           products.splice(i, 1);
         } else {
@@ -238,24 +236,24 @@ const CartPage = ({ data }) => {
             vendor: product.vendor,
             selected: false,
             totalDocs: product.totalDocs,
-            products: pr
-          }
+            products: pr,
+          };
         }
-      })
-      setProduct([...products])
+      });
+      setProduct([...products]);
     } else {
-      alert(data.message)
+      alert(data.message);
     }
-  }
+  };
   const fetchMoreData = async () => {
-    const page = currentPage + 1
+    const page = currentPage + 1;
     const res = await fetch(`${process.env.API_CART_URL}/paginate?page=${page}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
       },
-    })
+    });
 
     const data = await res.json()
     setTotalProduct(totalProduct + data.data.totalDocs)
@@ -320,12 +318,12 @@ const CartPage = ({ data }) => {
             value = {
               ...value,
               isOutOfStock: true,
-            }
+            };
           } else {
             value = {
               ...value,
               isOutOfStock: false,
-            }
+            };
           }
       } else {
         value = {
@@ -375,23 +373,21 @@ const CartPage = ({ data }) => {
 
   }
   const handleSubmit = async () => {
-    console.log("check")
     const cartItems = []
     products.forEach(v => {
       v.products.forEach(p => {
         if (p.selected === true && p.status !== productStatus.DISABLE && !p.isChanged) {
           cartItems.push(p.cartID)
         }
-      })
-    })
+      });
+    });
     if (cartItems.length <= 0) {
-      setMessage("Vui lòng chọn sản phẩm")
-      setVisible(true)
+      setMessage("Vui lòng chọn sản phẩm");
+      setVisible(true);
       setTimeout(function () {
-        setVisible(false)
-      }, 1000)
+        setVisible(false);
+      }, 1000);
     } else {
-      console.log(process.env.API_ORDER_URL)
       const response = await fetch(`${process.env.API_ORDER_URL}/checkout`,{
         method: 'POST',
         headers: {
@@ -414,11 +410,17 @@ const CartPage = ({ data }) => {
         alert(data.message)
       }
     }
-  }
+  };
   if (products.length > 0) {
     return (
       <>
-        <Modal2 visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
+        <Modal2
+          visible={visible}
+          width="400"
+          height="300"
+          effect="fadeInUp"
+          onClickAway={() => closeModal()}
+        >
           <i className="fa fa-solid fa-xmark"></i>
           <div className=" d-flex justify-content-center mt-5">
             <img width="100" height="100" src="/assets/icon/icon-danger.svg" />
@@ -427,12 +429,11 @@ const CartPage = ({ data }) => {
             <p style={{ fontSize: "16px", color: "red" }}>{message}</p>
           </div>
         </Modal2>
-        <Breadcrumb previousLink="/" currentValue={'Giỏ hàng'} previousValue="Trang chủ" />
+        <Breadcrumb previousLink="/" currentValue={"Giỏ hàng"} previousValue="Trang chủ" />
         <div>
-          <div >
+          <div>
             <section className={`cart-section pb-3 pt-0 ${styles.backgroundFull}`}>
-              <div>
-              </div>
+              <div></div>
               <Container>
                 <Row>
                 <SkeletonTheme
@@ -463,24 +464,17 @@ const CartPage = ({ data }) => {
                               <div className="mt-4 mb-3 ml-5">Sản phẩm</div>
                             </th>
                             <th scope="col">
-                              <div className="mt-4 mb-3 ml-5">
-                                Giá
-                              </div>
+                              <div className="mt-4 mb-3 ml-5">Giá</div>
                             </th>
                             <th scope="col">
-                              <div className="mt-4 mb-3 ml-1">
-                                Số lượng
-                              </div>
+                              <div className="mt-4 mb-3 ml-1">Số lượng</div>
                             </th>
                             <th scope="col">
-                              <div className="mt-4 mb-3 ml-2">
-                                Số Tiền
-                              </div>
+                              <div className="mt-4 mb-3 ml-2">Số Tiền</div>
                             </th>
                             <th scope="col">
-                              <div className="mt-4 mb-3">
-                                Thao Tác
-                              </div></th>
+                              <div className="mt-4 mb-3">Thao Tác</div>
+                            </th>
                           </tr>
                         </thead>
                       </table>
@@ -643,21 +637,14 @@ const CartPage = ({ data }) => {
                         Bạn có muốn bỏ {totalProductSelect} sản phẩm?
                       </ModalHeader>
                       <ModalFooter>
-                        <Button
-                          color="danger"
-                          onClick={deleteManyCartItem}
-                        >
+                        <Button color="danger" onClick={deleteManyCartItem}>
                           Đồng ý
                         </Button>
-                        <Button onClick={handleModalDeleteMany}>
-                          Huỷ
-                        </Button>
+                        <Button onClick={handleModalDeleteMany}>Huỷ</Button>
                       </ModalFooter>
                     </Modal>
                   </Col>
-
                 </Row>
-
               </Container>
             </section>
           </div>
@@ -673,7 +660,7 @@ const CartPage = ({ data }) => {
           }}
           >
             <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
-            <div>
+            <div className={`${styles.trBox} ${isSticky ? styles.shadow : ""}`}>
               <table className="table cart-table table-responsive-md mt-0">
                 <tfoot >
                   <tr className={`${styles.trBox} ${isSticky ? styles.shadow : ""}`}>
@@ -723,7 +710,6 @@ const CartPage = ({ data }) => {
           </div>
         }
       </>
-
     );
   } else {
     return (
@@ -742,7 +728,7 @@ const CartPage = ({ data }) => {
                   <h3>
                     <strong>Giỏ hàng bạn đang chưa có sản phẩm</strong>
                   </h3>
-                  <Link href="/">
+                  <Link href="/" passHref>
                     <Button className="btn btn-solid mt-2">Khám phá ngay</Button>
                   </Link>
                 </div>
@@ -751,10 +737,8 @@ const CartPage = ({ data }) => {
           </Row>
         </Container>
       </section>
-    )
+    );
   }
-
 };
-
 
 export default CartPage;
