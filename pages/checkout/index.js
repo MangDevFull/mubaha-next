@@ -731,9 +731,8 @@ const Checkout = ({ data }) => {
                         type="text"
                         name="empiry"
                         placeholder="VD: MM/YY"
-                        maxLength={4}
-                      
-                        value={cardExp}
+                        maxLength={5}
+                         value={cardExp}
                         onChange={(e) => setCardExp(e.target.value)}
                         // name={dateEnd}
                         // value={format(new Date(dateEnd), "dd/yy")}
@@ -783,7 +782,7 @@ const Checkout = ({ data }) => {
         <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={succesPayment}>
           <ModalBody className="container-fluid">
             <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
-              <h3>Thanh toán thành công</h3>
+              <h3>Nhập số thẻ thành công</h3>
             </Row>
           </ModalBody>
         </Modal>
