@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import NumberFormat from "react-number-format";
 import Link from "next/link";
 import { Container, Row, Col, Media, Button, Modal, ModalFooter, ModalHeader } from "reactstrap";
@@ -436,6 +436,11 @@ const CartPage = ({ data }) => {
               <div></div>
               <Container>
                 <Row>
+                <SkeletonTheme
+     className="skeleton"
+     color="#ff7748"
+     highlightColor="#f45728"
+    ></SkeletonTheme>
                   <Col sm="12">
                     <div className="mt-3" >
                       <table className="table cart-table table-responsive-xs mt-2">
