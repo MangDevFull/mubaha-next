@@ -721,7 +721,7 @@ const Checkout = ({ data }) => {
                       <div className={`${styles.label_number_card}`}>Tên in trên thẻ:</div>
                       <input type="text" name="name" placeholder="VD: NGUYEN VAN A"
                       value={cardName}
-                      onChange={(e) => setCardName(e.target.value)}
+                      onChange={(e) => setCardName(e.target.value.toUpperCase())}
                       />
                       <div className={`${styles.error_card}`}></div>
                     </div>

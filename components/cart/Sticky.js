@@ -27,7 +27,7 @@ const Sticky = ({ defaultSticky = false, isTop = true }) => {
   useEffect(() => {
     const handleScroll = () => {
       if (elementRef) {
-        toggleSticky(elementRef?.current.getBoundingClientRect());
+        toggleSticky(elementRef?.current?.getBoundingClientRect());
       }
     };
     window.addEventListener("scroll", handleScroll);
