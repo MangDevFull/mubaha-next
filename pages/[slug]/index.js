@@ -14,7 +14,7 @@ import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import styles from "@/styles/slug.module.css";
-import Modal from 'react-awesome-modal';
+import Modal from "react-awesome-modal";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -26,27 +26,27 @@ let timeOut_1;
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
   const { data: session } = useSession();
   const router = useRouter();
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [variantColor, setVariantColor] = useState();
   const [attributes, setAttributes] = useState();
   const [shareUrl, setShareUrl] = useState();
-  const [priceProduct, setPriceProduct] = useState(detailProduct.priceRange.min);
-  const [discount, setDiscount] = useState(0)
+  const [priceProduct, setPriceProduct] = useState();
+  const [discount, setDiscount] = useState(0);
   const [selectedSize, setSlectedSize] = useState();
   const [unSelect, setUnSelect] = useState(false);
   function closeModal() {
-    setVisible(false)
+    setVisible(false);
   }
   const addToCart = async () => {
     if (session === null) {
       const payload = {
-        slug: detailProduct.slug
-      }
+        slug: detailProduct.slug,
+      };
       router.push({
-        pathname: '/auth/login',
+        pathname: "/auth/login",
         query: payload,
-      })
+      });
     } else {
       let isDone = false;
       let body = {
@@ -56,52 +56,57 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
       if (detailProduct.variants.length > 0) {
         if (detailProduct.variants[0].attributes.length > 0) {
           if (selectedSize == undefined) {
-            setUnSelect(true)
+            setUnSelect(true);
           } else {
-            isDone = true
+            isDone = true;
             body = {
               ...body,
               selectedVariant: variantColor,
-              selectedAttribute: selectedSize
-            }
+              selectedAttribute: selectedSize,
+            };
           }
         } else {
           if (variantColor == undefined) {
-            setUnSelect(true)
+            setUnSelect(true);
           } else {
-            isDone = true
+            isDone = true;
             body = {
               ...body,
-              selectedVariant: variantColor
-            }
+              selectedVariant: variantColor,
+            };
           }
         }
       } else if (detailProduct.variants.length == 0) {
-        isDone = true
+        isDone = true;
       }
       if (isDone) {
-        console.log(body)
+        console.log(body);
         const response = await fetch(process.env.API_CART_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            'Authorization': 'Bearer ' + session.accessToken
+            Authorization: "Bearer " + session.accessToken,
           },
           body: JSON.stringify(body),
         });
-        const data = await response.json()
+        const data = await response.json();
         if (data.status === 200) {
-
-          setVisible(true)
-          timeOut_1 = setTimeout(() => setVisible(false), 1000)
+          setVisible(true);
+          timeOut_1 = setTimeout(() => setVisible(false), 1000);
         } else {
-          alert(data.message)
+          alert(data.message);
         }
       }
     }
   };
 
   useEffect(() => {
+    if (detailProduct.variants.length > 0) {
+      setPriceProduct(null);
+    } else {
+      setPriceProduct(detailProduct.price);
+    }
+
     setShareUrl(window.location.href);
     return () => {
       clearTimeout(timeOut_1);
@@ -112,7 +117,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
     setQuantity(quantity + 1);
   };
   const changeQty = (e) => {
-    var reg = new RegExp('^[0-9]*$');
+    var reg = new RegExp("^[0-9]*$");
     if (reg.test(e.target.value)) {
       setQuantity(e.target.value);
     }
@@ -126,11 +131,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   const selectedColor = (e, variant) => {
     setSelectedVariant(variant._id);
     if (variant.attributes.length === 0) {
-      setPriceProduct(variant.price)
-      setDiscount(variant.discount)
+      setPriceProduct(variant.price);
+      setDiscount(variant.discount);
     }
     setVariantColor(variant._id);
-    setUnSelect(false)
+    setUnSelect(false);
     const index = detailProduct.media.data.findIndex((e) => e._id === variant.imageId);
     slider1.current.slickGoTo(index);
     setAttributes(variant.attributes);
@@ -138,9 +143,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
 
   const handleSelectedSize = (size) => {
     setSlectedSize(size._id);
-    setUnSelect(false)
-    setPriceProduct(size.price)
-    setDiscount(size.discount)
+    setUnSelect(false);
+    setPriceProduct(size.price);
+    setDiscount(size.discount);
   };
 
   const [state, setState] = useState({ nav1: null, nav2: null });
@@ -176,12 +181,12 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   const handleCheckout = async () => {
     if (session === null) {
       const payload = {
-        slug: detailProduct.slug
-      }
+        slug: detailProduct.slug,
+      };
       router.push({
-        pathname: '/auth/login',
+        pathname: "/auth/login",
         query: payload,
-      })
+      });
     } else {
       let isDone = false;
       let body = {
@@ -191,52 +196,55 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
       if (detailProduct.variants.length > 0) {
         if (detailProduct.variants[0].attributes.length > 0) {
           if (selectedSize == undefined) {
-            setUnSelect(true)
+            setUnSelect(true);
           } else {
-            isDone = true
+            isDone = true;
             body = {
               ...body,
               selectedVariant: variantColor,
-              selectedAttribute: selectedSize
-            }
+              selectedAttribute: selectedSize,
+            };
           }
         } else {
           if (variantColor == undefined) {
-            setUnSelect(true)
+            setUnSelect(true);
           } else {
-            isDone = true
+            isDone = true;
             body = {
               ...body,
-              selectedVariant: variantColor
-            }
+              selectedVariant: variantColor,
+            };
           }
         }
       } else if (detailProduct.variants.length == 0) {
-        isDone = true
+        isDone = true;
       }
       if (isDone) {
         const response = await fetch(process.env.API_CART_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            'Authorization': 'Bearer ' + session.accessToken
+            Authorization: "Bearer " + session.accessToken,
           },
           body: JSON.stringify(body),
         });
-        const data = await response.json()
+        const data = await response.json();
         if (data.status === 200) {
-          setVisible(true)
-          timeOut_1 = setTimeout(() => setVisible(false), 1000)
-          router.push({
-            pathname: '/cart',
-            query : {cartId: data.data._id}
-          },'/cart')
+          setVisible(true);
+          timeOut_1 = setTimeout(() => setVisible(false), 1000);
+          router.push(
+            {
+              pathname: "/cart",
+              query: { cartId: data.data._id },
+            },
+            "/cart"
+          );
         } else {
-          alert(data.message)
+          alert(data.message);
         }
       }
     }
-  }
+  };
   return (
     <>
       <Head>
@@ -340,10 +348,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                         >
                           {detailProduct.variants
                             ? detailProduct.media.data.map((item, index) => (
-                              <div key={index}>
-                                <Media src={`${item.path}`} className="img-fluid" />
-                              </div>
-                            ))
+                                <div key={index}>
+                                  <Media src={`${item.path}`} className="img-fluid" />
+                                </div>
+                              ))
                             : ""}
                         </Slider>
                       </Col>
@@ -366,21 +374,36 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             <h6>120 đánh giá</h6>
                           </div>
                           <h3 className="price-detail">
-                            <ProductPrice
-                              price={priceProduct}
-                              discount={discount}
-                              currencySymbol={detailProduct.currencySymbol}
-                            />
+                            {priceProduct ? (
+                              <ProductPrice
+                                price={priceProduct}
+                                discount={discount}
+                                currencySymbol={detailProduct.currencySymbol}
+                              />
+                            ) : (
+                              <>
+                                <ProductPrice
+                                  price={detailProduct.priceRange.min}
+                                  discount={discount}
+                                  currencySymbol={detailProduct.currencySymbol}
+                                />{" "}
+                                -{" "}
+                                <ProductPrice
+                                  price={detailProduct.priceRange.max}
+                                  discount={discount}
+                                  currencySymbol={detailProduct.currencySymbol}
+                                />
+                              </>
+                            )}
                           </h3>
-                          <div className="p-2" style={{ backgroundColor: unSelect && '#fff2e0' }}>
+                          <div className="p-2" style={{ backgroundColor: unSelect && "#fff2e0" }}>
                             {detailProduct.variantLabel && (
                               <>
                                 <h6 className="product-title size-text">
                                   {detailProduct.variantLabel}
                                 </h6>
                                 <ul className="color-variant mt-1">
-                                  {detailProduct.variants[0]?.attributes.length > 0
-                                    ?
+                                  {detailProduct.variants[0]?.attributes.length > 0 ? (
                                     <>
                                       {detailProduct.variants.map((variant) => {
                                         return (
@@ -388,9 +411,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                             style={
                                               selectedVariant === variant._id
                                                 ? {
-                                                  border: "1px solid #ffa200",
-                                                  color: "#ffa200",
-                                                }
+                                                    border: "1px solid #ffa200",
+                                                    color: "#ffa200",
+                                                  }
                                                 : {}
                                             }
                                             key={variant._id}
@@ -403,30 +426,32 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                               style={
                                                 selectedVariant === variant._id
                                                   ? {
-                                                    display: "block",
-                                                  }
+                                                      display: "block",
+                                                    }
                                                   : {}
                                               }
                                               className={`selected-indicator ${styles.tickImage}`}
                                               src="../assets/images/selected-variant-indicator.svg"
                                               alt="Selected"
                                             ></img>
-                                          </li>)
-                                      }
-                                      )}
+                                          </li>
+                                        );
+                                      })}
                                     </>
-                                    :
+                                  ) : (
                                     <>
                                       {detailProduct.variants.map((variant) => {
                                         return (
                                           <li
-                                            className={variant.stock.quantity == 0 && styles.disabled}
+                                            className={
+                                              variant.stock.quantity == 0 && styles.disabled
+                                            }
                                             style={
                                               selectedVariant === variant._id
                                                 ? {
-                                                  border: "1px solid #ffa200",
-                                                  color: "#ffa200",
-                                                }
+                                                    border: "1px solid #ffa200",
+                                                    color: "#ffa200",
+                                                  }
                                                 : {}
                                             }
                                             key={variant._id}
@@ -439,26 +464,28 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                               style={
                                                 selectedVariant === variant._id
                                                   ? {
-                                                    display: "block",
-                                                  }
+                                                      display: "block",
+                                                    }
                                                   : {}
                                               }
                                               className={`selected-indicator ${styles.tickImage}`}
                                               src="../assets/images/selected-variant-indicator.svg"
                                               alt="Selected"
                                             ></img>
-                                          </li>)
-                                      }
-                                      )}
+                                          </li>
+                                        );
+                                      })}
                                     </>
-                                  }
+                                  )}
                                 </ul>
                               </>
                             )}
                             {detailProduct.variants[0]?.attributes.length > 0 && (
                               <>
                                 <h6 className="product-title size-text">
-                                  {variantColor === undefined ? `Vui lòng chọn ${detailProduct.variantLabel} trước` : detailProduct.attributeLabel}
+                                  {variantColor === undefined
+                                    ? `Vui lòng chọn ${detailProduct.variantLabel} trước`
+                                    : detailProduct.attributeLabel}
                                 </h6>
 
                                 <div className="size-box">
@@ -482,16 +509,29 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 </div>
                               </>
                             )}
-                            {unSelect && <div className="d-flex">
-                              <span style={{ color: 'red' }}><i className="fa fa-solid fa-exclamation mr-2"></i>  Vui lòng chọn sản phẩm</span>
-                            </div>}
+                            {unSelect && (
+                              <div className="d-flex">
+                                <span style={{ color: "red" }}>
+                                  <i className="fa fa-solid fa-exclamation mr-2"></i> Vui lòng chọn
+                                  sản phẩm
+                                </span>
+                              </div>
+                            )}
                           </div>
-                          <Modal visible={visible} width="400" height="300" effect="fadeInUp" onClickAway={() => closeModal()}>
+                          <Modal
+                            visible={visible}
+                            width="400"
+                            height="300"
+                            effect="fadeInUp"
+                            onClickAway={() => closeModal()}
+                          >
                             <div className=" d-flex justify-content-center mt-5">
                               <img width="100" height="100" src="/assets/icon/success-popup.svg" />
                             </div>
                             <div className=" d-flex justify-content-center mt-5">
-                              <p className={styles.textSuccess}>Sản phẩm đã được thêm vào Giỏ hàng</p>
+                              <p className={styles.textSuccess}>
+                                Sản phẩm đã được thêm vào Giỏ hàng
+                              </p>
                             </div>
                           </Modal>
 
@@ -562,9 +602,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                 padding: "1px 6px 1px 0px",
                               }}
                             >
-                              <a className="btn btn-solid"
-                                onClick={handleCheckout}
-                              >
+                              <a className="btn btn-solid" onClick={handleCheckout}>
                                 <i className="fa fa-bookmark fz-16 mx-2" aria-hidden="true" />
                                 Mua ngay
                               </a>
@@ -715,7 +753,6 @@ export async function getServerSideProps(context) {
     return {
       notFound: true,
     };
-
 
   return {
     props: {
