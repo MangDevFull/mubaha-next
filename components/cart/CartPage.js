@@ -656,10 +656,10 @@ const CartPage = ({ data }) => {
           }}
           >
             <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
-            <div>
+            <div className={styles.shadow}>
               <table className="table cart-table table-responsive-md mt-0">
                 <tfoot >
-                  <tr className={styles.shadow}>
+                  <tr>
                     <td className="d-flex justify-content-between pt-4 border-0 mt-0">
                       <div className="d-flex flex-row bd-highlight ml-5">
                         <div className="bd-highlight">
