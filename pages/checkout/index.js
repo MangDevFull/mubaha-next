@@ -25,6 +25,10 @@ const Checkout = ({ data }) => {
   const [showCard, setShowCard] = useState(false);
   const [succesPayment, setSuccesPayment] = useState(false);
   const [dateEnd, setDateEnd] = useState("");
+  const [cardCode, setCardCode] = useState("")
+  const [cardNumber, setCardNumber] = useState("")
+  const [cardName, setCardName] = useState("")
+  const [cardExp, setCardExp] = useState("")
 
   const [selectedVoucher, setSelectedVoucher] = useState();
   const [groupedItems, setGroupedItems] = useState([]);
@@ -152,29 +156,33 @@ const Checkout = ({ data }) => {
       cartItemIds: cartID,
       method: paymentMethod,
       address: selectedAddress._id,
+      cardCode,
+      cardNumber,
+      cardName,
+      expirationDate: cardExp
     };
     setVisible(true);
-    setTimeout(function () {
-      setVisible(false);
-      // router.push("/");
-    }, 3000);
-    // const response = await fetch(`${process.env.API_ORDER_URL}`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: "Bearer " + session.accessToken,
-    //   },
-    //   body: JSON.stringify({payload}),
-    // });
-    // const data = await response.json();
-    // console.log("index", response);
+    
+    const response = await fetch(`${process.env.API_ORDER_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
+      },
+      body: JSON.stringify({payload}),
+    });
+    const data = await response.json();
+    console.log("index", response);
 
-    // console.log(data);
-    // if (data.status === 200) {
-    //   alert("Success");
-    // } else {
-    //   alert(data.data);
-    // }
+    console.log(data);
+    if (data.status === 200) {
+      setTimeout(function () {
+        setVisible(false);
+        router.push("/");
+      }, 3000);
+    } else {
+      alert(data.data);
+    }
   };
   const handleCloseCreateAdd = (data, setChecked) => {
     setShow(false);
@@ -704,12 +712,17 @@ const Checkout = ({ data }) => {
                         name="number"
                         placeholder="VD: 4123456789012345"
                         maxLength={16}
+                        value={cardNumber}
+                        onChange={(e) => setCardNumber(e.target.value)}
                       />
                       <div className={`${styles.error_card}`}></div>
                     </div>
                     <div className={`${styles.number_card}`}>
                       <div className={`${styles.label_number_card}`}>Tên in trên thẻ:</div>
-                      <input type="text" name="name" placeholder="VD: NGUYEN VAN A" />
+                      <input type="text" name="name" placeholder="VD: NGUYEN VAN A"
+                      value={cardName}
+                      onChange={(e) => setCardName(e.target.value)}
+                      />
                       <div className={`${styles.error_card}`}></div>
                     </div>
                     <div className={`${styles.number_card}`}>
@@ -719,7 +732,8 @@ const Checkout = ({ data }) => {
                         name="empiry"
                         placeholder="VD: MM/YY"
                         maxLength={5}
-                        onChange={(e) => console.log(e.target.value)}
+                         value={cardExp}
+                        onChange={(e) => setCardExp(e.target.value)}
                         // name={dateEnd}
                         // value={format(new Date(dateEnd), "dd/yy")}
                       />
@@ -728,7 +742,10 @@ const Checkout = ({ data }) => {
                     <div className={`${styles.number_card}`}>
                       <div className={`${styles.label_number_card}`}>Mã bảo mật:</div>
                       <div className={`${styles.wrapper}`}>
-                        <input type="text" name="cvc" placeholder="VD: 123" maxLength={3} />
+                        <input type="text" name="cvc" placeholder="VD: 123"
+                        value={cardCode}
+                        onChange={(e) => setCardCode(e.target.value)}
+                        maxLength={3} />
                         <img
                           className={`${styles.card_back}`}
                           width="61"
