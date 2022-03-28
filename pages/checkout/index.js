@@ -715,7 +715,7 @@ const Checkout = ({ data }) => {
                         name="empiry"
                         placeholder="VD: MM/YY"
                         maxLength={4}
-                        onChange={(e) => console.log(format(e.target.value)) }
+                        onChange={(e) => console.log(e.target.value) }
                         // name={dateEnd}
                         // value={format(new Date(dateEnd), "dd/yy")}
                       />
