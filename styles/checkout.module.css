@@ -130,8 +130,7 @@
 .title {
   width: 100%;
   height: 30px;
-  font-size: 14px;
-  color: #bbb;
+  color: #777777;
 }
 .title_name {
   flex: 1;
@@ -178,7 +177,7 @@
   height: 50px;
   padding: 0 30px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   border: 0;
 }
 .vendor_name span {
@@ -196,7 +195,6 @@
   display: flex;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 14px;
   color: #222;
   min-height: 55px;
   /* margin-bottom: 20px; */
@@ -230,6 +228,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #777777;
 }
 .classify_info {
   justify-content: flex-start;
@@ -258,9 +257,6 @@
   align-items: center;
   justify-content: flex-end;
 }
-.image_voucher {
-  font-size: 14px;
-}
 .image_voucher,
 .button_voucher_shop {
   display: flex;
@@ -281,7 +277,6 @@
   border: 0 !important;
   color: #05a !important;
   line-height: 21px;
-  font-size: 14px;
   text-transform: none !important;
   font-weight: 500;
   background: transparent;
@@ -292,16 +287,11 @@
 .shipping_unit {
   display: flex;
   background-color: #fafdff;
-  min-width: 0;
-  min-height: 0;
   border-bottom: 1px dashed rgba(0, 0, 0, 0.09);
 }
 .section_shipping {
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  min-height: 0;
-  font-size: 14px;
 }
 .section_message {
   flex: 4;
@@ -377,7 +367,6 @@
   color: #f89922;
 }
 .title_total {
-  font-size: 14px;
   color: #929292;
 }
 .voucher,
@@ -474,7 +463,6 @@
   list-style: none;
 }
 .payment_methods ul li {
-  font-size: 14px;
   margin-bottom: 30px;
   display: block;
 }
@@ -558,7 +546,6 @@
   font-weight: initial;
 }
 .total_title_price {
-  font-size: 14px;
   color: rgba(0, 0, 0, 0.54);
   display: flex;
   align-items: center;
@@ -648,7 +635,6 @@
 .input_with_validator input {
   width: 100%;
   flex: 0 0 auto;
-  font-size: 14px;
   background: transparent;
   outline: none;
   box-shadow: none;
@@ -811,6 +797,7 @@
   background-color: rgba(39, 39, 42, 0.7);
   z-index: 999;
 }
+
 .modal_content {
   position: absolute;
   left: 25%;
@@ -851,7 +838,6 @@
 }
 .label_number_card {
   margin-bottom: 8px;
-  font-size: 14px;
   color: rgb(36, 36, 36);
 }
 .card_back {
@@ -911,19 +897,15 @@
 }
 .confirm {
   color: rgb(255, 255, 255);
-  border: 1px solid rgb(13, 92, 182);
   background-color: rgb(13, 92, 182);
   width: 192px;
   height: 40px;
   display: flex;
-  -webkit-box-align: center;
   align-items: center;
-  -webkit-box-pack: center;
   justify-content: center;
   outline: 0px;
   border: none;
   border-radius: 4px;
-  font-size: 15px;
   font-weight: 500;
   line-height: 1.6;
   cursor: pointer;

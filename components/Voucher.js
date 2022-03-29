@@ -9,7 +9,6 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher, sel
     <Modal
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      className={`${styles.modal_content}`}
       centered
       isOpen={isOpen}
     >
