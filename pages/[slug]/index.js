@@ -28,6 +28,7 @@ import {
 import NumberFormat from "react-number-format";
 let timeOut_1;
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
+  console.log("ProductDetail", detailProduct);
   const { data: session } = useSession();
   const router = useRouter();
   const [visible, setVisible] = useState(false);
@@ -701,38 +702,57 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                 </div>
 
                 {/* Vendor */}
-                <section className="tab-product m-0">
-                  <Container>
-                    <div className={`${styles.vendorBox}`}>
+                <section>
+                    <div className={`${styles.vendorBox} ${styles.product_shop}`}>
                       <div className={`${styles.leftVendor}`}>
-                        <a className=""></a>
-                        <div className="_27NV-r">
-                          <div className="_1wVLAc">
+                        <a
+                          className={`${styles._3IIjTV}`}
+                          href={`/vendors/${detailProduct.vendor.ownerRef.username}`}
+                        >
+                          <div className={`${styles.mubaha_avatar}`}>
+                            <img
+                              className={`${styles.shopee_avatar_img}`}
+                              src={detailProduct.vendor.avatar}
+                            />
+                          </div>
+                        </a>
+                        <div className={`${styles._27NV_r}`}>
+                          <div className={`${styles._1wVLAc}`}>
                             <a>{detailProduct.vendor.brandName}</a>
                           </div>
-                          <div className="_1NgpoA">
-                            <a className="btn btn-light btn--s btn--inline btn-light--link _1bsnOp">
-                              <Link href={`/vendors/${detailProduct.vendor.ownerRef.username}`}>
+                          <div className={`${styles.WvDg_k}`}>Online 1 giờ trước</div>
+                          <div className={`${styles._1NgpoA}`}>
+                            <Link href={`/vendors/${detailProduct.vendor.ownerRef.username}`}>
+                              <a className="btn btn-light btn--s btn--inline btn-light--link _1bsnOp">
                                 xem shop
-                              </Link>
-                            </a>
+                              </a>
+                            </Link>
                           </div>
                         </div>
                       </div>
-                      {/* <div className={`${styles.rightVendor}`}>
-                        <div className="_1utN4D">
-                          <div className="_14x4GD gy4qkp">
-                            <label className="_3ApBiN">tham gia</label>
-                            <span className="_33OqNH">3 năm trước</span>
-                          </div>
-                          <div className="_14x4GD gy4qkp">
-                            <label className="_3ApBiN">Đánh giá</label>
-                            <span className="_33OqNH">134,4k</span>
-                          </div>
+                      <div className={`${styles.rightVendor}`}>
+                        <div className={`${styles._1utN4D}`}>
+                          <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
+                            <label>Đánh giá</label>
+                            <span>{detailProduct.vendor.ratingOverall}</span>
+                          </button>
+                          <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
+                            <label>tỷ lệ phản hồi</label>
+                            <span>{detailProduct.vendor.responseRate}</span>
+                          </button>
                         </div>
-                      </div> */}
+                        <div className={`${styles._1utN4D}`}>
+                          <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
+                            <label>tham gia</label>
+                            <span>3 năm trước</span>
+                          </button>
+                          <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
+                            <label>Người theo dõi</label>
+                            <span>{detailProduct.vendor.followers}</span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </Container>
                 </section>
                 {/* Vendor end */}
                 <ProductTab detailProduct={detailProduct} />
