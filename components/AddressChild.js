@@ -97,25 +97,27 @@ export default function AddressChild({
       <Col sm="4">
         <div className="box">
           <div className={`${styles.box_function}`}>
-            <h6>
-              <a className={`${styles.button_fix}`} className={`${styles.button_function}`} role="button" onClick={hanldeShow}>
-                 <AiTwotoneEdit className={`${styles.icon_react}`} />  Sửa
-              </a>
-            </h6>
+           
+              <Button className={`${styles.button_function}`} onClick={hanldeShow}>
+                 <AiTwotoneEdit className={`${styles.icon_react}`} />  
+                 <p>Sửa</p>
+              </Button>
+           
             {!address.isDefault && (
-              <h6>
-                <a role="button" onClick={handleModalDelete} className={`${styles.button_function} ${styles.button_detele_address}`}>
+            
+                <Button onClick={handleModalDelete} className={`${styles.button_function}`}>
                   
-                 <AiFillDelete className={`${styles.icon_react}`} /> Xoá
-                </a>
-              </h6>
+                 <AiFillDelete className={`${styles.icon_react}`} /> 
+                 <p>Xoá</p>
+                </Button>
+             
             )}
             {!address.isDefault && (
-              <h6>
-                <a role="button" onClick={setUpdateDefault} className={`${styles.button_function} ${styles.button_setdefault_address}`} >
-                 <AiFillHome className={`${styles.icon_react}`} /> Mặc định
-                </a>
-              </h6>
+             
+                <Button onClick={setUpdateDefault} className={`${styles.button_function}`} >
+                 <AiFillHome className={`${styles.icon_react}`} /> <p>Mặc định</p>
+                </Button>
+            
             )}
           </div>
         </div>

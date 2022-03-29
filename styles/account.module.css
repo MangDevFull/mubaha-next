@@ -12,7 +12,6 @@
   margin-bottom: 0 !important;
 }
 .add_address button {
-  width: 10em;
   height: 3em;
   align-items: center;
   background-color: #f89922;
@@ -70,12 +69,6 @@
   margin: 40px 0;
 }
 
-.button_fix {
-  padding: 5px;
-}
-.button_detele_address {
-  color: red !important;
-}
 .box_function h6 {
   display: flex;
 }
@@ -83,23 +76,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff
+  color: #000;
+  background: #f5f5f5;
+  border: none;
+}
+.button_function:hover {
+  color: #000;
+  background: #f5f5f5;
+  border: none;
+  opacity: 0.8;
+}
+.button_function p{
+  margin: 0;
+  font-weight: 500;
 }
 .icon_react {
   margin-right: 8px;
 }
-.button_function:hover {
+.button_add_address:hover {
+  color: #fff;
   background-color: #f89922;
-  color: #fff !important;
+  border-color: none;
+  opacity: 0.7
 }
-.button_detele_address:hover {
-  background-color: red;
-  color: #fff !important;
-}
-.button_setdefault_address {
-  color: blue !important;
-}
-.button_setdefault_address:hover {
-  background-color: blue;
-  color: #fff !important;
-}
+
