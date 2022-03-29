@@ -381,19 +381,19 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             <h6>120 đánh giá</h6>
                           </div>
                           <h3 className="price-detail">
-                            {discount && discount > 0.0 ? (
+                            {/* {discount && discount > 0.0 ? (
                               <del>
                                 <span className="money ml-1">
                                   <NumberFormat
                                     value={priceProduct}
                                     thousandSeparator={true}
                                     displayType="text"
-                                    suffix={currencySymbol}
+                                    suffix={detailProduct.currencySymbol}
                                     decimalScale={0}
                                   />
                                 </span>
                               </del>
-                            ) : null}
+                            ) : null} */}
                             {priceProduct ? (
                               <ProductPrice
                                 price={priceProduct}
