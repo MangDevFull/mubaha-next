@@ -16,6 +16,7 @@ import Stciky2 from '@/components/cart/Sticky.js';
 import { useRouter } from 'next/router';
 import 'react-loading-skeleton/dist/skeleton.css'
 const Vendor = dynamic(() => import('@/components/cart/Vendor.js'))
+
 const CartPage = ({ data }) => {
   const { data: session } = useSession()
   const router = useRouter()
@@ -32,7 +33,6 @@ const CartPage = ({ data }) => {
   const [totalProduct, setTotalProduct] = useState(data.totalDocs)
   const [unActive, setUnActive] = useState(data.unActive)
   const [totoalCheck,setTotalCheck] = useState(0)
-  const { elementRef: comboBtnRef, isSticky } = Stciky2({ defaultSticky: true, isTop: false });
   useEffect(() => {
     const isSelectAll = data.fullP.some(v => v.selected === false);
     if (!isSelectAll) setIsSelectedAll(true)
@@ -412,6 +412,7 @@ const CartPage = ({ data }) => {
     }
   };
   if (products.length > 0) {
+    const { elementRef: comboBtnRef, isSticky } = Stciky2({ defaultSticky: true, isTop: false });
     return (
       <>
         <Modal2
