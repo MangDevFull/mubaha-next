@@ -146,14 +146,13 @@ const Checkout = ({ data }) => {
   const handleOrder = async (e) => {
     const cartID = [];
     const voucherID = [];
-    
+
     groupedItems.forEach((p) => {
-      p.products.forEach((x) => {
-        cartID.push(x);
-      });
+      cartID = [...p.products.map((x) => x._id)];
     });
-    if (selectedVoucher) voucherID.push(selectedVoucher._id)
-    
+    if (selectedVoucher) voucherID.push(selectedVoucher._id);
+
+    // console.log(cartID);
 
     const payload = {
       cartItemIds: cartID,
@@ -174,7 +173,7 @@ const Checkout = ({ data }) => {
         "Content-Type": "application/json",
         Authorization: "Bearer " + session.accessToken,
       },
-      body: JSON.stringify({ payload }),
+      body: JSON.stringify(payload),
     });
     console.log(response);
     const data = await response.json();
@@ -184,7 +183,8 @@ const Checkout = ({ data }) => {
         router.push("/");
       }, 3000);
     } else {
-      alert(data.data);
+      console.log(data);
+      // alert(data.data);
     }
   };
   const handleCloseCreateAdd = (data, setChecked) => {
