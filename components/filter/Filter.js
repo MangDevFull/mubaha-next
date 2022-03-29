@@ -3,6 +3,7 @@ import { Col, Media } from 'reactstrap';
 import Category from './Category';
 import Brand from './Brand'
 import Price from './Price';
+import Rating from './Rating'
 import Location from './Location.js'
 const FilterPage = ({sm,sidebarView,closeSidebar}) => {
     return (
@@ -18,15 +19,10 @@ const FilterPage = ({sm,sidebarView,closeSidebar}) => {
                     </div>
                     <Category />
                     <Location />
+                    <Rating />
                     <Brand/>
                     <Price />
                 </div>
-                {/* <!-- silde-bar colleps block end here -->*/}
-                {/* <!-- side-bar banner start here -->  */}
-                <div className="collection-sidebar-banner">
-                    <a href={null}><Media  className="img-fluid blur-up lazyload" alt="" /></a>
-                </div>
-                {/* <!-- side-bar banner end here --> */}
             </Col>
         </>
     )
