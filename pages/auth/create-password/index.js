@@ -11,7 +11,6 @@ import { useSession } from 'next-auth/react'
 
 export default function CreatePassWord() {
   const { data: session } = useSession()
-  console.log("ssssss", session)
   const [show, setShow] = useState(false);
   const [showPass, setShowPass] = useState('block');
   const [hidePass, setHidePass] = useState('none')
