@@ -5,6 +5,8 @@ export async function middleware(req) {
     req,
     secret: process.env.JWT_SECRET,
   });
-  if (!token) return NextResponse.redirect("/auth/login")
+  const url = req.nextUrl.clone()
+  url.pathname = '/auth/login'
+  if (!token) return NextResponse.rewrite(url)
   return NextResponse.next()
 }
