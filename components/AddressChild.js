@@ -99,21 +99,23 @@ export default function AddressChild({
           <div className={`${styles.box_function}`}>
            
               <Button className={`${styles.button_function}`} onClick={hanldeShow}>
-                 <AiTwotoneEdit className={`${styles.icon_react}`} />  Sửa
+                 <AiTwotoneEdit className={`${styles.icon_react}`} />  
+                 <p>Sửa</p>
               </Button>
            
             {!address.isDefault && (
             
                 <Button onClick={handleModalDelete} className={`${styles.button_function}`}>
                   
-                 <AiFillDelete className={`${styles.icon_react}`} /> Xoá
+                 <AiFillDelete className={`${styles.icon_react}`} /> 
+                 <p>Xoá</p>
                 </Button>
              
             )}
             {!address.isDefault && (
              
                 <Button onClick={setUpdateDefault} className={`${styles.button_function}`} >
-                 <AiFillHome className={`${styles.icon_react}`} /> Mặc định
+                 <AiFillHome className={`${styles.icon_react}`} /> <p>Mặc định</p>
                 </Button>
             
             )}

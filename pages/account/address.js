@@ -54,7 +54,7 @@ const AddressPage = ({ data }) => {
               <h2>Địa chỉ của tôi</h2>
             </div>
             <div className={`${styles.add_address}`}>
-              <Button style={{ width: "auto" }} onClick={handleCreateAdd}>
+              <Button className={`${styles.button_add_address}`} onClick={handleCreateAdd}>
                 <i className="fa fa-solid fa-plus mr-1"></i>
                 Thêm địa chỉ
               </Button>
