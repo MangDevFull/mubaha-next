@@ -415,7 +415,7 @@ const Checkout = ({ data }) => {
           <ModalHeader>Nhập thẻ thanh toán</ModalHeader>
           <ModalBody>
             <Container>
-            <div class="d-flex flex-row">
+              <div class="d-flex flex-row">
                 <div class="p-1">
                   <img
                     width="32"
@@ -437,84 +437,92 @@ const Checkout = ({ data }) => {
                     alt="mastercard"
                   />
                 </div>
-            </div>        
-            <div className={`${styles.add_card_form}`}>
-              <div className={`${styles.add_card_form_left}`}>
-                <div className={`${styles.number_card}`}>
-                  <div className={`${styles.label_number_card}`}>Số thẻ:</div>
-                  <input
-                    type="text"
-                    name="number"
-                    placeholder="VD: 4123456789012345"
-                    maxLength={16}
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
-                  />
-                  <div className={`${styles.error_card}`}></div>
-                </div>
-                <div className={`${styles.number_card}`}>
-                  <div className={`${styles.label_number_card}`}>Tên in trên thẻ:</div>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="VD: NGUYEN VAN A"
-                    value={cardName}
-                    onChange={(e) => setCardName(e.target.value.toUpperCase())}
-                  />
-                  <div className={`${styles.error_card}`}></div>
-                </div>
-                <div className={`${styles.number_card}`}>
-                  <div className={`${styles.label_number_card}`}>Ngày hết hạn:</div>
-                  <input
-                    type="text"
-                    name="empiry"
-                    placeholder="VD: MM/YY"
-                    maxLength={5}
-                    value={cardExp}
-                    onChange={(e) => setCardExp(e.target.value)}
-                    // name={dateEnd}
-                    // value={format(new Date(dateEnd), "dd/yy")}
-                  />
-                  <div className={`${styles.error_card}`}></div>
-                </div>
-                <div className={`${styles.number_card}`}>
-                  <div className={`${styles.label_number_card}`}>Mã bảo mật:</div>
-                  <div className={`${styles.wrapper}`}>
+              </div>
+              <div className="d-flex justify-content-between mt-3">
+                <div className={`${styles.add_card_form_left}`}>
+                  <div className="mb-4">
+                    <div className="mb-2">Số thẻ:</div>
                     <input
                       type="text"
-                      name="cvc"
-                      placeholder="VD: 123"
-                      value={cardCode}
-                      onChange={(e) => setCardCode(e.target.value)}
-                      maxLength={3}
-                    />
-                    <img
-                      className={`${styles.card_back}`}
-                      width="61"
-                      src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/checkout-img-cvv-hint.jpg"
+                      name="number"
+                      className="w-100 rounded border border-dark p-2"
+                      placeholder="VD: 4123456789012345"
+                      maxLength={16}
+                      value={cardNumber}
+                      onChange={(e) => setCardNumber(e.target.value)}
                     />
                   </div>
-
-                  <div className={`${styles.error_card}`}></div>
+                  <div className="mb-4">
+                    <div className="mb-2">Tên in trên thẻ:</div>
+                    <input
+                      type="text"
+                      name="name"
+                      className="w-100 rounded border border-dark p-2"
+                      placeholder="VD: NGUYEN VAN A"
+                      value={cardName}
+                      onChange={(e) => setCardName(e.target.value.toUpperCase())}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <div className="mb-2">Ngày hết hạn:</div>
+                    <input
+                      type="text"
+                      name="empiry"
+                      className="w-100 rounded border border-dark p-2"
+                      placeholder="VD: MM/YY"
+                      maxLength={5}
+                      value={cardExp}
+                      onChange={(e) => setCardExp(e.target.value)}
+                      // name={dateEnd}
+                      // value={format(new Date(dateEnd), "dd/yy")}
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <div className="mb-2">Mã bảo mật:</div>
+                    <div
+                      className="d-flex
+                    "
+                    >
+                      <input
+                        type="text"
+                        name="cvc"
+                        className="w-100 rounded border border-dark p-2"
+                        placeholder="VD: 123"
+                        value={cardCode}
+                        onChange={(e) => setCardCode(e.target.value)}
+                        maxLength={3}
+                      />
+                      <img
+                        className="ml-3"
+                        width="21%"
+                        src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/checkout-img-cvv-hint.jpg"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <img width="400px" src={visa.src} />
                 </div>
               </div>
-              <div className={`${styles.image_card}`}>
-                <img className={`${styles.image_card_visa}`} width="400px" src={visa.src} />
+              <div className={`${styles.add_card_note} mb-3 p-3 rounded`}>
+                Để đảm bảo an toàn, thông tin thẻ của bạn chỉ được lưu bởi CyberSource, công ty quản
+                lý thanh toán lớn nhất thế giới (thuộc tổ chức VISA)
               </div>
-            </div>
-            <div className={`${styles.add_card_note}`}>
-              Để đảm bảo an toàn, thông tin thẻ của bạn chỉ được lưu bởi CyberSource, công ty quản
-              lý thanh toán lớn nhất thế giới (thuộc tổ chức VISA)
-            </div>
             </Container>
           </ModalBody>
           <ModalFooter>
-            <div className={`${styles.button_group}`}>
-              <button className={`${styles.back}`} onClick={() => setShowCard(!showCard)}>
+            <div className="d-flex justify-content-md-end">
+              <button
+                className={`${styles.back} d-flex justify-content-center align-items-center rounded mb-0 mx-3 border border-primary`}
+                onClick={() => setShowCard(!showCard)}
+              >
                 {" "}
                 Trở Lại
               </button>
-              <button className={`${styles.confirm}`} onClick={handlePaymentMedthod}>
+              <button
+                className={`${styles.confirm} d-flex justify-content-center align-items-center border-0 rounded`}
+                onClick={handlePaymentMedthod}
+              >
                 {" "}
                 Xác nhận
               </button>
