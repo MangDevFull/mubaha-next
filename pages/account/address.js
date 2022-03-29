@@ -62,21 +62,20 @@ const AddressPage = ({ data }) => {
           </div>
 
           <div className="box-account box-info">
-            <div className="box">
-              <div className="box-title"></div>
-            </div>
             <Row className={`${styles.box_address}`}>
               {data.length > 0
                 ? address.map((a, i) => {
                     return (
-                      <AddressChild
-                        key={i}
-                        address={a}
-                        index={i}
-                        updateAddress={updateAddress}
-                        deleteAdd={deleteAddress}
-                        updateDefaultAddress={updateDefaultAddress}
-                      />
+                      <>
+                        <AddressChild
+                          key={i}
+                          address={a}
+                          index={i}
+                          updateAddress={updateAddress}
+                          deleteAdd={deleteAddress}
+                          updateDefaultAddress={updateDefaultAddress}
+                        />
+                      </>
                     );
                   })
                 : "Bạn chưa có địa chỉ nào"}

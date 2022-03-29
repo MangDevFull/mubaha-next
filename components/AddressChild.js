@@ -1,82 +1,75 @@
 import styles from "@/styles/account.module.css";
-import {
-  Col,
-  Modal,
-  ModalHeader,
-  ModalFooter,
-  Button
-} from "reactstrap";
+import { Col, Modal, ModalHeader, ModalFooter, Button, Row } from "reactstrap";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import AddressTwo from "@/components/AddressTwo.js";
-export default function AddressChild({ address, index, updateAddress, deleteAdd,updateDefaultAddress }) {
-  const [add, setAddress] = useState(address)
-  const { data: session } = useSession()
-  const [show, setShow] = useState(false)
-  const [isDelete, setIsDelete] = useState(false)
+import { AiFillDelete, AiFillHome, AiTwotoneEdit } from "react-icons/ai";
+export default function AddressChild({
+  address,
+  index,
+  updateAddress,
+  deleteAdd,
+  updateDefaultAddress,
+}) {
+  const [add, setAddress] = useState(address);
+  const { data: session } = useSession();
+  const [show, setShow] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const handleNotShow = (a) => {
     if (a) {
-      setAddress(a)
-      updateAddress(index, a)
+      setAddress(a);
+      updateAddress(index, a);
     }
-    setShow(false)
-  }
+    setShow(false);
+  };
   const hanldeShow = () => {
-    setShow(true)
-  }
+    setShow(true);
+  };
   const handleModalDelete = () => {
-    setIsDelete(!isDelete)
-  }
+    setIsDelete(!isDelete);
+  };
   const deleteAddress = async () => {
     const response = await fetch(`${process.env.API_ADDRESS_URL}/${address._id}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
       },
-    })
-    const data = await response.json()
+    });
+    const data = await response.json();
     if (data.status === 200) {
-      deleteAdd(index)
-      handleModalDelete()
+      deleteAdd(index);
+      handleModalDelete();
     }
-  }
+  };
   const setUpdateDefault = async () => {
     const res = await fetch(`${process.env.API_ADDRESS_URL}/default/${address._id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + session.accessToken
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
       },
-    })
-    const data = await res.json()
-    if(data.status === 200) {
-      updateDefaultAddress(index, data.data)
+    });
+    const data = await res.json();
+    if (data.status === 200) {
+      updateDefaultAddress(index, data.data);
     }
-  }
+  };
   return (
     <>
-      <Modal
-        className="mt-5"
-        isOpen={isDelete}
-        toggle={handleModalDelete}
-      >
-        <ModalHeader toggle={handleModalDelete}>
-          Bạn có muốn xoá địa chỉ?
-        </ModalHeader>
+      <Modal className="mt-5" isOpen={isDelete} toggle={handleModalDelete}>
+        <ModalHeader toggle={handleModalDelete}>Bạn có muốn xoá địa chỉ?</ModalHeader>
         <ModalFooter>
-          <Button
-            color="danger"
-            onClick={deleteAddress}
-          >
+          <Button color="danger" onClick={deleteAddress}>
             Đồng ý
           </Button>
-          <Button onClick={handleModalDelete}>
-            Huỷ
-          </Button>
+          <Button onClick={handleModalDelete}>Huỷ</Button>
         </ModalFooter>
       </Modal>
-      <Col sm="9">
+
+
+      <div className={`${styles.hr}`}></div>
+      <Col sm="8">
         <div className="box">
           <div className={`box-content ${styles.box_content}`}>
             <h6>
@@ -92,35 +85,43 @@ export default function AddressChild({ address, index, updateAddress, deleteAdd,
             </h6>
             <h6>
               <div className={`${styles.box_title}`}>Địa chỉ:</div>
-              <span>{address.details}{address.details && ', '}{address.fullAddress}</span>
+              <span>
+                {address.details}
+                {address.details && ", "}
+                {address.fullAddress}
+              </span>
             </h6>
           </div>
         </div>
       </Col>
-      <Col sm="3">
+      <Col sm="4">
         <div className="box">
           <div className={`${styles.box_function}`}>
             <h6>
-              <a role="button"
-                onClick={hanldeShow}
-              >
-                Sửa
+              <a className={`${styles.button_fix}`} className={`${styles.button_function}`} role="button" onClick={hanldeShow}>
+                 <AiTwotoneEdit className={`${styles.icon_react}`} />  Sửa
               </a>
             </h6>
-            {!address.isDefault &&
+            {!address.isDefault && (
               <h6>
-                <a role="button" onClick={handleModalDelete} style={{ color: 'red' }}>Xoá</a>
+                <a role="button" onClick={handleModalDelete} className={`${styles.button_function} ${styles.button_detele_address}`}>
+                  
+                 <AiFillDelete className={`${styles.icon_react}`} /> Xoá
+                </a>
               </h6>
-            }
-            {!address.isDefault &&
+            )}
+            {!address.isDefault && (
               <h6>
-                <a role="button" onClick={setUpdateDefault} style={{ color: 'blue' }}>Mặc định</a>
+                <a role="button" onClick={setUpdateDefault} className={`${styles.button_function} ${styles.button_setdefault_address}`} >
+                 <AiFillHome className={`${styles.icon_react}`} /> Mặc định
+                </a>
               </h6>
-            }
+            )}
           </div>
         </div>
       </Col>
+
       <AddressTwo isOpen={show} handleNotShow={handleNotShow} address={address} />
     </>
-  )
+  );
 }
