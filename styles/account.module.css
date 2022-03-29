@@ -15,7 +15,6 @@
   width: 10em;
   height: 3em;
   align-items: center;
-  background-color: #f89922;
   border-radius: 2px;
   color: #ffffff;
   display: flex;
@@ -70,12 +69,6 @@
   margin: 40px 0;
 }
 
-.button_fix {
-  padding: 5px;
-}
-.button_detele_address {
-  color: red !important;
-}
 .box_function h6 {
   display: flex;
 }
@@ -87,19 +80,4 @@
 }
 .icon_react {
   margin-right: 8px;
-}
-.button_function:hover {
-  background-color: #f89922;
-  color: #fff !important;
-}
-.button_detele_address:hover {
-  background-color: red;
-  color: #fff !important;
-}
-.button_setdefault_address {
-  color: blue !important;
-}
-.button_setdefault_address:hover {
-  background-color: blue;
-  color: #fff !important;
 }

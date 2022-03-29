@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getSession } from "next-auth/react";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import styles from "@/styles/account.module.css";
 import AddressChild from "@/components/AddressChild.js";
 import Address from "@/components/Address";
@@ -54,10 +54,10 @@ const AddressPage = ({ data }) => {
               <h2>Địa chỉ của tôi</h2>
             </div>
             <div className={`${styles.add_address}`}>
-              <button style={{ width: "auto" }} onClick={handleCreateAdd}>
+              <Button style={{ width: "auto" }} onClick={handleCreateAdd}>
                 <i className="fa fa-solid fa-plus mr-1"></i>
                 Thêm địa chỉ
-              </button>
+              </Button>
             </div>
           </div>
 

@@ -97,25 +97,25 @@ export default function AddressChild({
       <Col sm="4">
         <div className="box">
           <div className={`${styles.box_function}`}>
-            <h6>
-              <a className={`${styles.button_fix}`} className={`${styles.button_function}`} role="button" onClick={hanldeShow}>
+           
+              <Button className={`${styles.button_function}`} onClick={hanldeShow}>
                  <AiTwotoneEdit className={`${styles.icon_react}`} />  Sửa
-              </a>
-            </h6>
+              </Button>
+           
             {!address.isDefault && (
-              <h6>
-                <a role="button" onClick={handleModalDelete} className={`${styles.button_function} ${styles.button_detele_address}`}>
+            
+                <Button onClick={handleModalDelete} className={`${styles.button_function}`}>
                   
                  <AiFillDelete className={`${styles.icon_react}`} /> Xoá
-                </a>
-              </h6>
+                </Button>
+             
             )}
             {!address.isDefault && (
-              <h6>
-                <a role="button" onClick={setUpdateDefault} className={`${styles.button_function} ${styles.button_setdefault_address}`} >
+             
+                <Button onClick={setUpdateDefault} className={`${styles.button_function}`} >
                  <AiFillHome className={`${styles.icon_react}`} /> Mặc định
-                </a>
-              </h6>
+                </Button>
+            
             )}
           </div>
         </div>
