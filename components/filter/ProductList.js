@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import ProductItem from "./ProductBox.js";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-
-const ProductList = ({ colClass, layoutList, products, totalProduct,handleLimit }) => {
+const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit,handlePaging ,hasNextPage}) => {
   const [grid, setGrid] = useState(colClass);
   const [layout, setLayout] = useState(layoutList);
 
@@ -16,7 +16,7 @@ const ProductList = ({ colClass, layoutList, products, totalProduct,handleLimit 
               <Col xs="12" >
                 <ul className="product-filter-tags mt-3">
                   <li >
-                  <a href={null} className="filter_tag" role="button">
+                    <a href={null} className="filter_tag" role="button">
                       text
                       <i className="fa fa-close"></i>
                     </a>
@@ -144,8 +144,8 @@ const ProductList = ({ colClass, layoutList, products, totalProduct,handleLimit 
               </div>
               <div className={`product-wrapper-grid ${layout}`}>
                 <Row>
-                {!products || !products || products.length === 0 ? (
-                  products && products && products.length === 0 ? (
+                  {!products || !products || products.length === 0 ? (
+                    products && products && products.length === 0 ? (
                       <Col xs="12">
                         <div>
                           <div className="col-sm-12 empty-cart-cls text-center">
@@ -177,21 +177,28 @@ const ProductList = ({ colClass, layoutList, products, totalProduct,handleLimit 
                       </div>
                     )
                   ) : (
-                    products.map((p, i) => {
-                    return (
-                      <div className={grid} key={i}>
-                        <div className="product">
-                          <div>
-                            <ProductItem
-                              des={true}
-                              product={p}
-                              cartClass="cart-info cart-wrap"
-                            />
+                    <InfiniteScroll
+                      dataLength={products.length}
+                      next={handlePaging}
+                      hasMore={hasNextPage}
+                      loader={<h4>Loading...</h4>}
+                    >
+                    <Row>
+                      {products.map((p, i) => {
+                        return (
+                          <div className={grid} key={i}>
+                            <div className="product">
+                                <ProductItem
+                                  des={true}
+                                  product={p}
+                                  cartClass="cart-info cart-wrap"
+                                />
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    )
-                  })
+                        )
+                      })}
+                      </Row>
+                    </InfiniteScroll>
                   )}
                 </Row>
               </div>

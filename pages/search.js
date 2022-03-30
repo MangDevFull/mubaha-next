@@ -49,6 +49,47 @@ export default function FilterLayoutComponent({ data }) {
     }
     setLocation([...list])
   }
+  const handlePaging = async () => {
+    console.log('aa')
+    const page = cuurentPage + 1
+    setCurrentPage(page)
+    try {
+      let searchQuery = `limit=${limit}&page=${page}`
+      if (location.length >0) {
+        searchQuery += `&location=${location}`
+      }
+      if (brand.length >0) {
+        searchQuery += `&brand=${brand}`
+      }
+      if (text !== "") {
+        searchQuery += `&text=${text}`
+      }
+      if (cateID.length>0) {
+        searchQuery += `&cateID=${cateID}`
+      }
+      if (typeof priceMax === "number") {
+        searchQuery += `&priceMax=${priceMax}`
+      }
+      if (typeof priceMin === "number") {
+        searchQuery += `&priceMin=${priceMin}`
+      }
+      const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
+      const data = await res.json()
+      if (data.status === 200) {
+        const list = _.concat(products,data.data.docs)
+        setTimeout(() =>{
+          setProduct([...list])
+          setCurrentPage(data.data.page)
+          setTotalPages(data.data.totalPages)
+          setTotalProduct(data.data.totalDocs)
+          setHasNextPage(data.data.hasNextPage)
+        },1500)
+        
+      }
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
   const handleApi = async () => {
     try {
       let searchQuery = `limit=${limit}&page=${cuurentPage}`
@@ -73,12 +114,11 @@ export default function FilterLayoutComponent({ data }) {
       const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
       const data = await res.json()
       if (data.status === 200) {
-        setProduct([...data.data.docs])
-        setCurrentPage(data.data.page)
-        setTotalPages(data.data.totalPages)
-        setTotalProduct(data.data.totalDocs)
-        setHasNextPage(data.data.hasNextPage)
-
+          setProduct([...data.data.docs])
+          setCurrentPage(data.data.page)
+          setTotalPages(data.data.totalPages)
+          setTotalProduct(data.data.totalDocs)
+          setHasNextPage(data.data.hasNextPage)
       }
     } catch (error) {
       console.log("error", error)
@@ -97,6 +137,7 @@ export default function FilterLayoutComponent({ data }) {
               />
               <ProductList
                 limit={limit} totalProduct={totalProduct} hasNextPage={hasNextPage} totalPages={totalPages}
+                handlePaging={handlePaging}
                 cateID ={cateID} brand={brand} priceMin={priceMin} priceMax={priceMax} location={location} text={text}
                 products={products} cuurentPage={cuurentPage}
                 handleLimit={handleLimit}

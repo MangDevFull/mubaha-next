@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "reactstrap";
 import NumberFormat from "react-number-format";
+import styles from '@/styles/filter.module.css'
 const Price = () => {
   const [min, setMin] = useState(0)
   const [max, setMax] = useState(0)
@@ -31,7 +32,7 @@ const Price = () => {
                 thousandSeparator="."
                 placeholder="Từ"
                 decimalSeparator=","
-                className="w-100 h-100"
+                className={`w-100 ${styles.inputPrice}`}
                 onValueChange={(e) => hanldeMinPrice(e)}
               />
               <div className="ml-2 mr-2"><strong> - </strong></div>
@@ -40,7 +41,7 @@ const Price = () => {
                 onValueChange={(e) => hanldeMaxPrice(e)}
                 thousandSeparator="."
                 decimalSeparator=","
-                className="w-100 h-100"
+                className={`w-100 ${styles.inputPrice}`}
               />
 
             </div>
