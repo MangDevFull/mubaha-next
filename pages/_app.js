@@ -1,18 +1,16 @@
 import "../public/assets/scss/app.scss";
 import { ToastContainer } from "react-toastify";
-import Layout from "../components/Layout";
 import { SessionProvider } from "next-auth/react";
 
 export default function MyApp({ Component, pageProps }) {
-  return (
-    <>
-      <SessionProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout || ((page) => page);
+  const layout = getLayout(<Component {...pageProps} />);
 
-        <ToastContainer />
-      </SessionProvider>
-    </>
+  return (
+    <SessionProvider>
+      {layout}
+      <ToastContainer />
+    </SessionProvider>
   );
 }

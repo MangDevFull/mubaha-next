@@ -1,155 +1,148 @@
-import OtpInput from "react-otp-input"
-import {Button, Modal, Alert} from "react-bootstrap"
-import Link from "next/link"
-import {useState} from "react"
-import API from "../services/api.js"
-import {useRouter} from "next/router"
-import otpEnums from "../utils/otpEnums.js"
-import {signIn} from "next-auth/react"
-
-export default function Otp({show, handleClose, phone, type}) {
+import OtpInput from 'react-otp-input';
+import { Alert } from 'reactstrap';
+import Link from 'next/link'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+import otpEnums from "../enums/otp.enum.js";
+import { signIn } from "next-auth/react";
+import styles from '@/styles/authen.module.css'
+import API from "@/services/api.js";
+export default function VerifyOtp({ phone, type,fullName }) {
   const router = useRouter()
-  const [otp, setOtp] = useState("")
-  const [isInvalidOtp, setInvalidOtp] = useState(false)
-  const emptyOtp = () => {
-    setOtp("")
-  }
-  const handleOtp = async () => {
-    const params = {
-      phone,
-      code: otp,
-    }
-    if (type == otpEnums.REGISTRATION) {
-      const response = await API.instance.post("/auth/verify-register-otp", {params})
-      const data = response.data
-      if (data.status == 200) {
-        localStorage.setItem("userId", data.data.userId)
-        localStorage.setItem("token", data.data.token)
-        router.push("/auth/create-password")
-      } else {
-        setInvalidOtp(true)
-        setOtp("")
+  const [otp, setOtp] = useState('')
+  const [isInvalidOtp, setInvalidOtp] = useState(false);
+  const [isNotFullOtp, setNotFullOtp] = useState(true);
+
+  const checkOtp = async (e) => {
+    setOtp(e)
+    if (e.length == 4) {
+      setNotFullOtp(false);
+      if (type == otpEnums.REGISTRATION) {
+        const res = await signIn("mubaha-signup", {
+          phone: phone,
+          code: e,
+          fullName: fullName,
+          redirect: false,
+        });
+        if (res.error == null) {
+          const slug = router.query.slug
+          if(slug != undefined){
+            router.push({
+              pathname: '/auth/create-password',
+              query: {slug: slug},
+            })
+          }else{
+            router.push('/auth/create-password')
+          }
+        } else {
+          setInvalidOtp(true)
+        }
+      } else if (type == otpEnums.LOGIN) {
+        const res = await signIn("mubaha", {
+          phone: phone,
+          code: e,
+          redirect: false,
+        });
+        if (res.error == null) {
+          const slug = router.query.slug
+          if(slug != undefined){
+            router.push(`/${slug}`)
+          }else{
+            router.push('/')
+          }
+        } else {
+          setInvalidOtp(true)
+        }
+      } else if (type == otpEnums.CREATE_PASSWORD) {
+        const res = await signIn("mubaha", {
+          phone: phone,
+          code: e,
+          redirect: false,
+        });
+
+        if (res.error == null) {
+          router.push('/auth/create-password')
+        } else {
+          setInvalidOtp(true)
+
+        }
+      } else if (type = otpEnums.RECOVER_PASSWORD) {
+        const params = {
+          phone,
+          code: e
+        }
+        const response = await API.instance.post(`${process.env.API_AUTH_URL}/verify-otp-recover-password`, params)
+        const data = response.data
+   
+        if (data.status === 400) {
+          setInvalidOtp(true)
+        } else if (data.status == 200) {
+          localStorage.setItem("userId", data.data.userId);
+          localStorage.setItem("token", data.data.token);
+          router.push('/auth/update-password')
+        }
       }
-    } else if (type == otpEnums.LOGIN) {
-      // const response = await API.instance.post('/auth/verify-login-otp',params)
-      const {error, ok} = await signIn("mubaha", {
-        redirect: false,
-        phone: phone,
-        code: otp,
-        callbackUrl: `${window.location.origin}/`,
-      })
-
-      if (error) {
-        setInvalidOtp(true)
-        setOtp("")
-      } else if (ok) {
-        router.push("/")
-      }
-
-      // if(ok) {
-      //   // router.push('/');
-      // } else if(error) {
-      //   setInvalidOtp(true);
-      //   setOtp('')
-      // }
-      // console.log('check auth', error, status)
-      // if(resp.error) {
-      //   setInvalidOtp(true);
-      //   setOtp('')
-      // } else if(resp.ok) {
-
-      //   // router.push('/')
-      // }
-      // const data = response.data
-      // if(data.status==200) {
-      //   localStorage.setItem("userId", data.data.userId);
-      //   localStorage.setItem("token", data.data.token);
-      //   router.push('/')
-      // }else{
-      //   setInvalidOtp(true)
-      //   setOtp('')
-      // }
     }
   }
   return (
-    <Modal
-      show={show}
-      onHide={() => {
-        handleClose()
-        emptyOtp()
-      }}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>Vui Lòng Nhập Mã Xác Minh</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <br />
-        <p style={{textAlign: "center"}}>
+    <>
+      <div className={`card ${styles.formOtp} container`}>
+        <div className={`${styles.textTitleOtp} mt-5`}>
+          <h3>  Vui Lòng Nhập Mã Xác Minh</h3>
+        </div>
+        <p className={styles.textOtp}>
           Mã xác minh của bạn sẽ được gửi bằng tin nhắn đến số điện thoại
         </p>
-        <p style={{fontSize: "20", textAlign: "center"}}>
-          <b>({phone})</b>
-        </p>
-        {isInvalidOtp && (
-          <Alert style={{textAlign: "center", height: "60px"}} variant={"danger"}>
+        <p className={styles.textPhoneOtp}><b>({phone})</b></p>
+        {isInvalidOtp &&
+          <Alert className={styles.alertOtp} variant={'danger'}>
             Mã xác minh không hợp lệ
           </Alert>
-        )}
-        <div style={{marginTop: "50px"}} className="container">
+        }
+        <div style={{ marginTop: '10px' }} className="d-flex justify-content-center">
           <OtpInput
+            shouldAutoFocus="true"
+            isInputNum="true"
             inputStyle={{
               width: "4em",
               height: "4em",
-              // border: "none",
-              borderBottom: "2 px solid black",
-            }}
-            containerStyle={{
-              marginLeft: "90px",
-              marginBottom: "20px",
             }}
             value={otp}
-            onChange={(number) => {
-              // setOTP(number.target.value);
-              setOtp(number)
-            }}
+            onChange={checkOtp}
             numInputs={4}
-            separator={<span style={{marginLeft: "10px"}}></span>}
+            separator={<span style={{ marginLeft: '10px' }}></span>}
           />
         </div>
-        <div style={{marginTop: "60px"}} className="container">
-          <p style={{textAlign: "center"}}>
+        <div className="container d-flex justify-content-center mt-5 mb-5">
+          <p style={{ textAlign: 'center' }}>
             Bạn không nhận được mã?
             <br />
             <br></br>
-            <span style={{color: "blue"}}>
+            <span style={{ color: "blue" }}>
               {" "}
               <Link href="#">
                 <a> Gửi lại</a>
               </Link>
             </span>{" "}
-            hoặc
-            <span style={{color: "blue"}}>
-              <Link href="/auth/login">
-                <a> thử bằng phương thức xác minh khác</a>
-              </Link>
-            </span>
+            {
+              type == otpEnums.LOGIN &&
+              (
+                <>
+                  hoặc
+                  <span style={{ color: "blue" }}>
+                    <Link href="/auth/login">
+                      <a> thử bằng phương thức xác minh khác</a>
+                    </Link>
+                  </span>
+                </>
+              )
+            }
+            <div className="mt-4">
+            <button disabled={isNotFullOtp} className={`btn btn-solid ${styles.otpButton}`}>Tiếp tục</button>
+            </div>
           </p>
         </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          variant="secondary"
-          onClick={() => {
-            handleClose()
-            emptyOtp()
-          }}
-        >
-          Đóng
-        </Button>
-        <Button variant="primary" onClick={handleOtp}>
-          Xác thực
-        </Button>
-      </Modal.Footer>
-    </Modal>
+      </div>
+    </>
   )
 }

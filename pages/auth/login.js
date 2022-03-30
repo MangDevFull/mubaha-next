@@ -1,137 +1,256 @@
-import Link from "next/link"
-import Head from "next/head"
-import API from "../../services/api.js"
-import {useRef, useState} from "react"
-import {useRouter} from "next/router"
-import {Alert} from "react-bootstrap"
+import Link from "next/link";
+import Head from "next/head";
+import { useRef, useState,useEffect } from "react";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
+import { Row, Form, Alert } from "reactstrap";
+import libphone from "google-libphonenumber";
+import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
+import Footer from "@/components/Footer.js";
+import otpEnums from "../../enums/otp.enum.js";
+import styles from "@/styles/authen.module.css";
+import BottomFornLogin from "@/components/authen/BottomFornLogin.js";
+import dynamic from 'next/dynamic'
+
+const DynamicOtpComponent = dynamic(() => import('@/components/Otp.js'));
+const DynamicBreadcrumbComponent = dynamic(() => import('@/components/Breadcrumb.js'));
+const DynamicLayoutAuthComponent = dynamic(() => import('@/components/authen/LayoutAuth.js'));
+
+const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
+
+const phoneUtil = PhoneNumberUtil.getInstance();
 export default function LoginPage() {
-  const [isInvalid, setInvalid] = useState(false)
-  const [message, setMessage] = useState("")
-  const inputPhone = useRef()
-  const inputPassword = useRef()
-  const router = useRouter()
-  const getValueForm = async () => {
-    const params = {
-      phone: inputPhone.current.value,
-      password: inputPassword.current.value,
-    }
-    const response = await API.instance.post("/auth/login", params)
-    const data = response.data
-    if (data.status == 200) {
-      localStorage.setItem("userId", data.data.userId)
-      localStorage.setItem("token", data.data.token)
-      router.push("/")
+  const [isVerifyPhone, setIsVerifyPhone] = useState(false);
+  const [isNotValidPhone, setIsNotValidPhone] = useState(true);
+  const [isCreatePassword, setIsCreatePassword] = useState(false);
+  const [isInvalid, setInvalid] = useState(false);
+  const [message, setMessage] = useState("");
+  const inputPhone = useRef();
+  const inputPassword = useRef();
+  const [showPass, setShowPass] = useState("block");
+  const [hidePass, setHidePass] = useState("none");
+  const [inputValues, setInputValues] = useState("password");
+  const [phone, setPhone] = useState("");
+  const [slug,setSlug] = useState("")
+  const router = useRouter();
+
+  const handleShowPassword = () => {
+    setHidePass("block");
+    setShowPass("none");
+    setInputValues("text");
+  };
+  const handlHidePassword = () => {
+    setHidePass("none");
+    setShowPass("block");
+    setInputValues("password");
+  };
+  useEffect(() => {
+    const slug = router.query.slug
+    setSlug(slug);
+  },[])
+  const checkPhone = (e) => {
+    const phone = e.target.value;
+    var reg = /^\d+$/;
+    if (!reg.test(phone)) {
+      setIsNotValidPhone(true);
     } else {
-      if (data.errors[0] == "isCreatPassword") {
-        setInvalid(true)
-        setMessage(data.message)
-        router.push("/auth/create-password")
+      if (phone.length < 2 || phone == null) {
+        setIsNotValidPhone(true);
       } else {
-        setInvalid(true)
-        setMessage(data.message)
+        const number = phoneUtil.parse(phone, "VN");
+        if (!phoneUtil.isValidNumber(number)) {
+          setIsNotValidPhone(true);
+        } else {
+          setIsNotValidPhone(false);
+        }
       }
     }
-  }
+  };
+
+  const getValueForm = async (e) => {
+    e.preventDefault();
+    if (inputPassword.current.value == "") {
+      setMessage("Mật khẩu không được bỏ trống");
+      setInvalid(true);
+    } else {
+      const res = await signIn("mubaha-login", {
+        phone: inputPhone.current.value,
+        password: inputPassword.current.value,
+        redirect: false,
+      });
+      if (res.error == null) {
+        if(slug != undefined){
+          router.push(`/${slug}`)
+        }else{
+          router.push('/')
+        }
+      } else {
+        const data = JSON.parse(res.error);
+        if (data.errors == null) {
+          setMessage(data.message);
+          setInvalid(true);
+          setIsCreatePassword(false);
+        } else {
+          setMessage(data.message);
+          setInvalid(false);
+          setIsCreatePassword(true);
+        }
+      }
+    }
+  };
+
+  const createPassword = async () => {
+    const phone = inputPhone.current.value;
+    var reg = /^\d+$/;
+    if (!reg.test(phone)) {
+      setIsCreatePassword(false);
+      setMessage("Số điện thoại không hợp lệ");
+      setInvalid(true);
+    } else {
+      if (phone.length < 2 || phone == null) {
+        setIsCreatePassword(false);
+        setMessage("Số điện thoại không hợp lệ");
+        setInvalid(true);
+      } else {
+        const number = phoneUtil.parse(phone, "VN");
+        if (!phoneUtil.isValidNumber(number)) {
+          setMessage("Số điện thoại không hợp lệ");
+          setInvalid(true);
+          setIsCreatePassword(false);
+        } else {
+          const phoneNumber = phoneUtil.format(number, PhoneNumberFormat.E164);
+          setPhone(phoneNumber);
+          const params = {
+            phone: phoneNumber,
+          };
+          const response = await fetch(`${process.env.API_AUTH_URL}/login-otp`, {
+            method: "POST",
+            body: JSON.stringify(params),
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await response.json()
+          if (data.status == 200) {
+            setIsVerifyPhone(true);
+            setMessage("");
+          } else {
+            setMessage(data.message);
+            setInvalid(true);
+          }
+        }
+      }
+    }
+  };
+
 
   return (
     <>
       <Head>
         <title>Đăng nhập với mật khẩu</title>
       </Head>
-      {/* breadcrumb start */}
-      <div className="breadcrumb-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-sm-6">
-              <div className="page-title">
-                <h2>Đăng nhập tài khoản</h2>
+      {!isVerifyPhone && (
+        <DynamicLayoutAuthComponent
+          title="Đăng nhập"
+          form={
+            <Form className="theme-form ml-3 mr-3" onSubmit={getValueForm}>
+              {isInvalid && (
+                <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
+                  {message}
+                </Alert>
+              )}
+              {isCreatePassword && (
+                <Alert style={{ textAlign: "center", height: "auto" }} variant={"danger"}>
+                  <span>{message}</span>
+                  <br></br>
+                  <br></br>
+                  <a href="#" onClick={createPassword}>
+                    Đặt mật khẩu
+                  </a>
+                </Alert>
+              )}
+              <div className="form-group mb-1">
+                <input
+                  ref={inputPhone}
+                  onChange={checkPhone}
+                  type="text"
+                  className="form-control"
+                  placeholder="Nhập số điện thoại của bạn"
+                  autoFocus
+                />
               </div>
-            </div>
-            <div className="col-sm-6">
-              <nav aria-label="breadcrumb" className="theme-breadcrumb">
-                <ol className="breadcrumb">
-                  <li className="breadcrumb-item">
-                    <Link href="/">
-                      <a>Trang chủ</a>
+              <div className="form-group mb-1">
+                <div className="d-flex" style={{ position: "relative" }}>
+                  <input type={inputValues} className="form-control"
+                    ref={inputPassword}
+                    placeholder="Nhập mật khẩu của bạn"
+                    required=""
+                  />
+                  <div
+                    onClick={handleShowPassword}
+                    style={{ display: showPass }}
+                    className={styles.hideShowPassword}
+                  >
+                    <AiFillEye className={styles.iconPassword} />
+                  </div>
+                  <div
+                    onClick={handlHidePassword}
+                    style={{ display: hidePass }}
+                    className={styles.hideShowPassword}
+                  >
+                    <AiFillEyeInvisible className={styles.iconPassword} />
+                  </div>
+                </div>
+                <div className="d-flex justify-content-between mb-5">
+                  <div>
+                    <Link href="/auth/recover-password">
+                      <a className={`${styles.textLink} text-secondary`}>Quên mật khẩu?</a>
                     </Link>
-                  </li>
-                  <li className="breadcrumb-item active">Đăng nhập</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* breadcrumb End */}
-      {/*section start*/}
-      <section className="login-page section-b-space">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-6">
-              <h3>Đăng nhập</h3>
-              <div className="theme-card">
-                <h6 className="title-font">Đăng nhập với mật khẩu</h6>
-                <div className="theme-form">
-                  <div className="form-group">
-                    {isInvalid && (
-                      <Alert style={{textAlign: "center", height: "50px"}} variant={"danger"}>
-                        {message}
-                      </Alert>
-                    )}
-                    <div>
-                      <input
-                        type="tel"
-                        name="phone"
-                        className="form-control phone-number"
-                        ref={inputPhone}
-                        placeholder="Số điện thoại"
-                        required
-                      />
-                    </div>
                   </div>
-                  <div className="form-group">
-                    <div>
-                      <input
-                        type="password"
-                        name="password"
-                        className="form-control phone-number"
-                        ref={inputPassword}
-                        placeholder="Nhập mật khẩu"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <button onClick={getValueForm} type="submit" className="btn btn-solid">
-                      Đăng nhập
-                    </button>
+                  <div>
+                  {slug!=undefined ? 
+                    <Link href={`/auth/login-otp?slug=${slug}`}>
+                      <a className={`${styles.textLink} text-primary`}>Đăng nhập SMS</a>
+                    </Link>
+                    :
                     <Link href="/auth/login-otp">
-                      <a className="btn btn-solid">Đăng nhập với SMS</a>
+                      <a className={`${styles.textLink} text-primary`}>Đăng nhập SMS</a>
                     </Link>
+                  }   
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-lg-6 right-login">
-              <h3>Khách hàng mới</h3>
-              <div className="theme-card authentication-right">
-                <h6 className="title-font">Tạo một tài khoản mới</h6>
-                <p>
-                  Đăng ký một tài khoản miễn phí tại cửa hàng của chúng tôi. Thủ tục đăng kí nhanh
-                  chóng và đơn giản. Nó cho phép bạn có thể đặt hàng từ cửa hàng của chúng tôi. Để
-                  bắt đầu mua sắm bấm đăng ký.
-                </p>
-                <Link href="/auth/register">
-                  <a style={{marginTop: "80px"}} className="btn btn-solid">
-                    Tạo một tài khoản
-                  </a>
-                </Link>
+              <div className="d-flex justify-content-center">
+                <button
+                  type="submit"
+                  disabled={isNotValidPhone}
+                  className="btn btn-solid btn-block"
+                >
+                  Đăng nhập
+                </button>
               </div>
-            </div>
-          </div>
+            </Form>
+          }
+          bottom={<BottomFornLogin slug={slug} />} />
+      )}
+
+      {isVerifyPhone && (
+        <div>
+        <HeaderAuthen />
+        <DynamicBreadcrumbComponent
+        previousLink="/auth/login"
+            previousValue="Trang đăng nhập"
+            currentValue="Xác thực Otp"
+         />
+          <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
+          <DynamicOtpComponent
+          phone={phone} type={otpEnums.CREATE_PASSWORD}
+           />
+          </Row>
+          <Footer />
         </div>
-      </section>
-      {/*Section ends*/}
+      )}
     </>
-  )
+  );
 }
+
+

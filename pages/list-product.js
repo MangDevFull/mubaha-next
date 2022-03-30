@@ -1,15 +1,16 @@
 import React, {useState, useEffect, useRef, useContext} from "react"
 import Slider from "react-slick"
 import Image from "next/image"
-import SideProductCart from "../components/SideProductCart"
-import ProductCard from "../components/ProductCard"
+import SideProductCart from "@/components/SideProductCart"
+import ProductCard from "@/components/ProductCard"
 import {Row, Col, Media, Collapse} from "reactstrap"
 import {useRouter} from "next/router"
 // import products from "./products.json";
-import API from "../services/api"
+import API from "@/services/api"
 import Head from "next/head"
 import InputRange from "react-input-range"
 import FilterContext from "../filter/FilterContext"
+import Layout from "@/components/Layout";
 
 export default function ListProduct({results, newProducts}) {
   // const products = data.products.splice(0, 20);
@@ -26,10 +27,7 @@ export default function ListProduct({results, newProducts}) {
   // handle Price
 
   const context = useContext(FilterContext)
-  // console.log("context", context);
-  // const price = context.selectedPrice;
   const router = useRouter()
-  // const setSelectedPrice = context.setSelectedPrice;
   const [url, setUrl] = useState()
   useEffect(() => {
     const pathname = window.location.pathname
@@ -397,6 +395,14 @@ export default function ListProduct({results, newProducts}) {
       </section>
       {/* section End */}
     </>
+  )
+}
+
+ListProduct.getLayout = function getLayout(page) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
   )
 }
 
