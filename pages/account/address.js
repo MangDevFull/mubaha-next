@@ -47,9 +47,7 @@ const AddressPage = ({ data }) => {
   };
   return (
     <>
-     
       <div className="dashboard-right">
-
         <div className="dashboard">
           <div className="d-flex align-items-center">
             <div className={`page-title flex-grow-1`}>
@@ -62,36 +60,35 @@ const AddressPage = ({ data }) => {
               </Button>
             </div>
           </div>
-            <div>
-              {data.length > 0
-                ? address.map((a, i) => {
-                    return (
-                      <>
-                      <Row>
-                        <AddressChild
-                          key={i}
-                          address={a}
-                          index={i}
-                          updateAddress={updateAddress}
-                          deleteAdd={deleteAddress}
-                          updateDefaultAddress={updateDefaultAddress}
-                        />
-                        </Row>
-                      </>
-                    );
-                  })
-                : "Bạn chưa có địa chỉ nào"}
-            </div>
+          <Row>
+          {data.length > 0
+            ? address.map((a, i) => {
+                return (
+                  <>
+                    
+                      <AddressChild
+                        key={i}
+                        address={a}
+                        index={i}
+                        updateAddress={updateAddress}
+                        deleteAdd={deleteAddress}
+                        updateDefaultAddress={updateDefaultAddress}
+                      />
+                    
+                  </>
+                );
+              })
+            : "Bạn chưa có địa chỉ nào"}
+          </Row>
         </div>
       </div>
-      
+
       <Address
         isOpen={createAdd}
         handleCloseCreateAdd={handleCloseCreateAdd}
         isExist={address.length}
       />
     </>
-    
   );
 };
 

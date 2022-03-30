@@ -1,5 +1,15 @@
 import styles from "@/styles/account.module.css";
-import { Col, Modal, ModalHeader, ModalFooter, Button, Row } from "reactstrap";
+import {
+  Col,
+  Modal,
+  ModalHeader,
+  ModalFooter,
+  Button,
+  Container,
+  CardHeader,
+  CardFooter,
+  Row,
+} from "reactstrap";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import AddressTwo from "@/components/AddressTwo.js";
@@ -69,27 +79,37 @@ export default function AddressChild({
 
       <div className={`${styles.hr}`}></div>
       <Col sm="8">
-          <div className={`box-content ${styles.box_content}`}>
-            <h6>
-              <div className={`${styles.box_title}`}>Họ và tên:</div>
-              <span>
-                <strong>{address.fullName}</strong>
-              </span>
+        <Container>
+          <Row className="mb-3">
+            <Col sm="4">
+              <div className="text-right">Họ và tên:</div>
+            </Col>
+            <Col sm="8">
+              <strong>{address.fullName}</strong>
               {address.isDefault && <span className={`${styles.note}`}>Mặc định</span>}
-            </h6>
-            <h6>
-              <div className={`${styles.box_title}`}>Số điện thoại:</div>
-              <span>{address.phone}</span>{" "}
-            </h6>
-            <h6>
-              <div className={`${styles.box_title}`}>Địa chỉ:</div>
-              <span>
+            </Col>
+          </Row>
+          <Row className="mb-3">
+            <Col sm="4">
+              <div className="text-right">Số điện thoại:</div>
+            </Col>
+            <Col sm="8">
+              <div>{address.phone}</div>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="4">
+              <div className="text-right">Địa chỉ:</div>
+            </Col>
+            <Col sm="8">
+              <div>
                 {address.details}
                 {address.details && ", "}
                 {address.fullAddress}
-              </span>
-            </h6>
-        </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
       </Col>
       <Col sm="4">
         <div className="box">

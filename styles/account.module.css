@@ -22,15 +22,6 @@
   flex-shrink: 0;
   margin-left: 10px;
 }
-.box_content h6 {
-  display: flex;
-  margin-bottom: 10px !important;
-}
-.box_title {
-  width: 160px;
-  margin-right: 20px;
-  text-align: right;
-}
 .box_function {
   display: flex;
   justify-content: space-between;
@@ -75,4 +66,3 @@
   border-color: none;
   opacity: 0.7
 }
-

@@ -513,7 +513,7 @@ const Checkout = ({ data }) => {
                       <PaymentCard
                         bank="itau"
                         model="personormalnnalite"
-                        type="white"
+                        type="black"
                         brand="visa"
                         number={cardNumber}
                         cvv={cardCode}
