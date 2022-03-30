@@ -11,10 +11,7 @@ import _ from "lodash";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import AdressList from "@/components/checkout/AddressList";
-// import PaymentCard from "react-payment-card-component";
 import TotalPrice from "@/components/checkout/TotalPrice";
-// import Scroll from "../../components/Scroll";
-
 import dynamic from "next/dynamic";
 const PaymentCard = dynamic(() => import("react-payment-card-component"), {
   ssr: false,
