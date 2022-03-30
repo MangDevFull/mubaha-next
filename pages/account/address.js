@@ -5,6 +5,7 @@ import styles from "@/styles/account.module.css";
 import AddressChild from "@/components/AddressChild.js";
 import Address from "@/components/Address";
 import Layout from "@/components/profile/Layout.js";
+import Head from "next/head";
 const AddressPage = ({ data }) => {
   const [address, setAddress] = useState([]);
   const [createAdd, setCreateAdd] = useState(false);
@@ -61,11 +62,10 @@ const AddressPage = ({ data }) => {
             </div>
           </div>
           <Row>
-          {data.length > 0
-            ? address.map((a, i) => {
-                return (
-                  <>
-                    
+            {data.length > 0
+              ? address.map((a, i) => {
+                  return (
+                    <>
                       <AddressChild
                         key={i}
                         address={a}
@@ -74,11 +74,10 @@ const AddressPage = ({ data }) => {
                         deleteAdd={deleteAddress}
                         updateDefaultAddress={updateDefaultAddress}
                       />
-                    
-                  </>
-                );
-              })
-            : "Bạn chưa có địa chỉ nào"}
+                    </>
+                  );
+                })
+              : "Bạn chưa có địa chỉ nào"}
           </Row>
         </div>
       </div>
