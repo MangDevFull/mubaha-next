@@ -15,11 +15,7 @@ const ListOrder = () => {
       <div className="dashboard-right">
         <div className="d-flex flex-column">
           <div className="dashboard">
-            <div className="d-flex justify-content-between align-items-center">
-              <div className="page-title">
-                <Button variant="light">Tất cả đơn hàng</Button>
-              </div>
-            </div>
+            <h2 className="mb-0">Tất cả đơn hàng</h2>
           </div>
           <div
             className="d-flex mt-3 mb-3 align-items-center p-3 rounded"
@@ -47,7 +43,7 @@ const ListOrder = () => {
                       </span>{" "}
                     </div>
                     <Button
-                    size="sx"
+                      size="sx"
                       style={{ color: "#f89922", background: "#fff", border: "1px solid #f89922" }}
                       className="d-flex flex-row align-items-center"
                     >
