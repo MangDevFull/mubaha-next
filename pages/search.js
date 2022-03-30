@@ -1,9 +1,12 @@
 import Layout from '@/components/Layout.js'
 import { Media, Container, Row, Col } from "reactstrap";
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import FilterPage from "@/components/filter/Filter.js"
 import ProductList from "@/components/filter/ProductList.js"
+import _ from 'lodash'
+import {useRouter} from 'next/router'
 export default function FilterLayoutComponent({ data }) {
+  const router = useRouter();
   const [sidebarView, setSidebarView] = useState(false);
   const openCloseSidebar = () => {
     if (sidebarView) {
@@ -12,13 +15,75 @@ export default function FilterLayoutComponent({ data }) {
       setSidebarView(!sidebarView);
     }
   };
+  const [limit, setLimit] = useState(data.produtcs.limit)
+  const [products, setProduct] = useState(data.produtcs.docs)
+  const [cuurentPage, setCurrentPage] = useState(data.produtcs.page)
+  const [totalPages, setTotalPages] = useState(data.produtcs.totalPages)
+  const [totalProduct, setTotalProduct] = useState(data.produtcs.totalDocs)
+  const [hasNextPage, setHasNextPage] = useState(data.produtcs.hasNextPage)
+  const [text, setText] = useState(data.text)
+  const [brand, setBrand] = useState(data.brand)
+  const [cateID, setCateID] = useState(data.cateID)
+  const [priceMin, setPriceMin] = useState(data.priceMin)
+  const [priceMax, setPriceMax] = useState(data.priceMax)
+  const [location, setLocation] = useState(data.location)
 
-  const [limit,setLimit] = useState(20)
-  const [page,setPage] = useState(1)
-  const [priceRange,setPriceRange] = useState({priceMax:1000000,priceMin:0})
-  const [brand,setBrand] = useState()
-  const [cateID,setCateID] = useState()
-  const [location,setLocation] = useState()
+  const handleLimit = (limit) => {
+    setLimit(limit)
+  }
+  useLayoutEffect(() => {
+    handleApi()
+  }, [limit,brand,location,priceMin,priceMax])
+  const hanldeBrand = (brand) => {
+    console.log('brand', brand)
+    setBrand(brand)
+  }
+  const handleLocation = (e) => {
+    const isCheck = e.target.checked
+    const value = e.target.value
+    let list = []
+    if(isCheck) {
+         list = _.concat(location,value)
+    }else{
+      list = _.pull(location,value)
+    }
+    setLocation([...list])
+  }
+  const handleApi = async () => {
+    try {
+      let searchQuery = `limit=${limit}&page=${cuurentPage}`
+      if (location.length >0) {
+        searchQuery += `&location=${location}`
+      }
+      if (brand.length >0) {
+        searchQuery += `&brand=${brand}`
+      }
+      if (text !== "") {
+        searchQuery += `&text=${text}`
+      }
+      if (cateID.length>0) {
+        searchQuery += `&cateID=${cateID}`
+      }
+      if (typeof priceMax === "number") {
+        searchQuery += `&priceMax=${priceMax}`
+      }
+      if (typeof priceMin === "number") {
+        searchQuery += `&priceMin=${priceMin}`
+      }
+      const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
+      const data = await res.json()
+      if (data.status === 200) {
+        setProduct([...data.data.docs])
+        setCurrentPage(data.data.page)
+        setTotalPages(data.data.totalPages)
+        setTotalProduct(data.data.totalDocs)
+        setHasNextPage(data.data.hasNextPage)
+
+      }
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
   return (
     <div style={{ backgroundColor: "rgb(245, 245, 250);" }}>
       <section className="section-b-space ratio_asos">
@@ -26,12 +91,15 @@ export default function FilterLayoutComponent({ data }) {
           <Container>
             <Row>
               <FilterPage
-                limit={limit} page = {page} 
                 sm="3"
-                sidebarView={sidebarView}
+                sidebarView={sidebarView} hanldeBrand={hanldeBrand} handleLocation={handleLocation}
                 closeSidebar={() => openCloseSidebar(sidebarView)}
               />
               <ProductList
+                limit={limit} totalProduct={totalProduct} hasNextPage={hasNextPage} totalPages={totalPages}
+                cateID ={cateID} brand={brand} priceMin={priceMin} priceMax={priceMax} location={location} text={text}
+                products={products} cuurentPage={cuurentPage}
+                handleLimit={handleLimit}
                 colClass="col-xl-3 col-md-6 col-grid-box"
                 openSidebar={() => openCloseSidebar(sidebarView)}
               />
@@ -47,7 +115,7 @@ FilterLayoutComponent.getLayout = function getLayout(page) {
 };
 export async function getServerSideProps(ctx) {
   const { limit, page, priceMax, priceMin, location, brand, text, cateID } = ctx.query
-  const searchQuery = `limit=${limit || 20}&page=${page || 1}&priceMax=${priceMax || 10000000}&priceMin=${priceMin || 0}`
+  let searchQuery = `limit=${limit || 20}&page=${page || 1}`
 
   if (location) {
     searchQuery += `&location=${location}`
@@ -61,10 +129,16 @@ export async function getServerSideProps(ctx) {
   if (cateID) {
     searchQuery += `&cateID=${cateID}`
   }
+  if (priceMax) {
+    searchQuery += `&priceMax=${priceMax}`
+  }
+  if (priceMin) {
+    searchQuery += `&priceMin=${priceMin}`
+  }
 
   const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
   const data = await res.json()
 
-    return { props: { data } }
-  
+  return { props: { data: { produtcs: data.data, priceMax: priceMax || "", priceMin: priceMin || "", location: location || [], brand: brand || [], text: text || "", cateID: cateID || [] } } }
+
 }

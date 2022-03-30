@@ -28,7 +28,6 @@ import {
 import NumberFormat from "react-number-format";
 let timeOut_1;
 export default function ProductDetail({ detailProduct, relatedProducts, newProducts }) {
-  console.log("ProductDetail", detailProduct);
   const { data: session } = useSession();
   const router = useRouter();
   const [visible, setVisible] = useState(false);
@@ -85,7 +84,6 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         isDone = true;
       }
       if (isDone) {
-        console.log(body);
         const response = await fetch(process.env.API_CART_URL, {
           method: "POST",
           headers: {

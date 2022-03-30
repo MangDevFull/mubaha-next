@@ -1,11 +1,12 @@
-import React from 'react';
+import React ,{useContext}from 'react';
 import { Col, Media } from 'reactstrap';
 import Category from './Category';
 import Brand from './Brand'
 import Price from './Price';
 import Rating from './Rating'
 import Location from './Location.js'
-const FilterPage = ({sm,sidebarView,closeSidebar}) => {
+const FilterPage = ({sm,sidebarView,closeSidebar,hanldeBrand,handleLocation}) => {
+
     return (
         <>
             <Col sm={sm} className="collection-filter" style={sidebarView ? {left:"0px"} : {}}>
@@ -18,9 +19,9 @@ const FilterPage = ({sm,sidebarView,closeSidebar}) => {
                         </span>
                     </div>
                     <Category />
-                    <Location />
+                    <Location handleLocation={handleLocation} />
                     <Rating />
-                    <Brand/>
+                    <Brand hanldeBrand={hanldeBrand}/>
                     <Price />
                 </div>
             </Col>

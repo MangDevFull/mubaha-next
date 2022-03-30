@@ -1,9 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Collapse, Input } from "reactstrap";
 
 
-const Brand = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Brand = ({hanldeBrand}) => {
+  const [isOpen, setIsOpen] = useState(true);
   const toggleBrand = () => setIsOpen(!isOpen);
 
 
@@ -13,20 +13,17 @@ const Brand = () => {
         Thương hiệu
       </h3>
       <Collapse isOpen={isOpen}>
-        <div className="collection-collapse-block-content">
-          <div className="collection-brand-filter">
+      <div className="collection-collapse-block-content">
+            <div className="collection-brand-filter">
   
-                  <div
-                    className="custom-control custom-checkbox collection-filter-checkbox"
-
-                  >
+                  <div className="custom-control custom-checkbox collection-filter-checkbox" >
                     <Input
-                     
                       type="checkbox"
                       className="custom-control-input"
+                      id="A"
       
                     />
-                    <label className="custom-control-label">
+                    <label className="custom-control-label" htmlFor={`A`}>
     
                     </label>
                   </div>

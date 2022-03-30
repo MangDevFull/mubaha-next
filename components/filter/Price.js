@@ -1,69 +1,67 @@
-import React, { useState, useContext, useEffect } from "react";
-import InputRange from "react-input-range";
-import { useRouter } from "next/router";
-import { Input, FormGroup, Label, Row } from "reactstrap";
+import React, { useState } from "react";
+import { Input, Button } from "reactstrap";
 import NumberFormat from "react-number-format";
-import styles from '@/components/filter/filter.module.css'
 const Price = () => {
-  const router = useRouter();
-  const [value, setValue] = useState({ min: 0, max: 10000000 });
+  const [min, setMin] = useState(0)
+  const [max, setMax] = useState(0)
+  const [isInvalidPrice, setIsInvalidPrice] = useState(false)
+  const hanldeMinPrice = (e) => {
+    setMin(parseInt(e.value))
+  }
+  const hanldeMaxPrice = (e) => {
+    setMax(parseInt(e.value))
+  }
+  const handlePrice = () => {
+    if (min >= max) {
+      const prevMin = min
+      const prevMax = max
+      setMin(prevMax)
+      setMax(prevMin)
+    } 
+  }
 
   return (
     <>
       <div className="collection-collapse-block border-0 open">
-        <h3 className="collapse-block-title">Giá</h3>
+        <h3 className="collapse-block-title">Khoảng Giá</h3>
         <div className="collection-collapse-block-content">
-          <div className="wrapper mt-3">
-            <div className="range-slider">
-              <InputRange
-                minValue={0}
-                maxValue={10000000}
-                step={500000}
-                value={value}
-                formatLabel={(value) => (
-                  <NumberFormat
-                    value={value}
-                    thousandSeparator={true}
-                    displayType="text"
-                    suffix="₫"
-                    decimalScale={0}
-                  />
-                )}
-                onChangeComplete={(value) => {
-                  // handleCallApi(limit, 1, orderBy, value);
-                  console.log(value)
-                }}
-                onChange={(value) => {
-                  setValue(value);
-                }}
+          <div className="wrapper mt-3" >
+            <div className="range-slider d-flex" >
+              <NumberFormat
+                thousandSeparator="."
+                placeholder="Từ"
+                decimalSeparator=","
+                className="w-100 h-100"
+                onValueChange={(e) => hanldeMinPrice(e)}
               />
+              <div className="ml-2 mr-2"><strong> - </strong></div>
+              <NumberFormat
+                placeholder="Đến"
+                onValueChange={(e) => hanldeMaxPrice(e)}
+                thousandSeparator="."
+                decimalSeparator=","
+                className="w-100 h-100"
+              />
+
             </div>
-            {/* <div className="mt-4 ml-2">
-              <Row>
-                <FormGroup>
-                  <Label for="exampleEmail">
-                    Chọn khoảng giá
-                  </Label>
-                  <div className="d-flex">
-                    <Input
-                      className={styles.inputPrice}
-                      name="minPrice"
-                      step={1000}
-                      type="number"
-                    />
-                    <div className="ml-1 mr-1">
-                      <strong> - </strong>
-                    </div>
-                    <Input
-                      className={styles.inputPrice}
-                      name="maxPrice"
-                      step={1000}
-                      type="number"
-                    />
-                  </div>
-                </FormGroup>
-              </Row>
-            </div> */}
+            {isInvalidPrice && (
+              <div className="d-flex mt-2">
+                <span style={{ color: "red" }}>
+                  <i className="fa fa-solid fa-exclamation mr-2"></i> Khoảng giá không hợp lệ
+                </span>
+              </div>
+            )}
+            <div>
+              <div className="d-flex justify-content-center mt-3">
+                <Button
+                  className="btn btn-solid"
+                  style={{ width: "100%" }}
+                  onClick={handlePrice}
+                >
+                  Áp dụng
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 

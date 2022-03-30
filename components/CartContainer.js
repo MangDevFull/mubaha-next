@@ -19,7 +19,6 @@ export default function CartContainer({ icon }) {
       const data = await res.json()
       if (data.status === 200) {
         const products = data.data.map((product,i) => {
-          console.log("product",product,i)
           if (product.selectedVariant != null && product.selectedAttribute == null) {
             return {
              ...product.selectedVariant,

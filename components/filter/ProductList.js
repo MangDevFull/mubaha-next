@@ -1,56 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import ProductItem from "./ProductBox.js";
-import { useRouter } from "next/router";
 
 
-const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
+const ProductList = ({ colClass, layoutList, products, totalProduct,handleLimit }) => {
   const [grid, setGrid] = useState(colClass);
   const [layout, setLayout] = useState(layoutList);
-
-  const handlePagination = () => {
-    setIsLoading(true);
-    setTimeout(
-      () =>
-        fetchMore({
-          variables: {
-            indexFrom: data.products.items.length,
-          },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev;
-            setIsLoading(false);
-            return {
-              products: {
-                __typename: prev.products.__typename,
-                total: prev.products.total,
-                items: [
-                  ...prev.products.items,
-                  ...fetchMoreResult.products.items,
-                ],
-                hasMore: fetchMoreResult.products.hasMore,
-              },
-            };
-          },
-        }),
-      1000
-    );
-  };
-
-  const removeBrand = (val) => {
-    const temp = [...selectedBrands];
-    temp.splice(selectedBrands.indexOf(val), 1);
-    filterContext.setSelectedBrands(temp);
-  };
-
-  const removeSize = (val) => {
-    const temp = [...selectedSize];
-    temp.splice(selectedSize.indexOf(val), 1);
-    filterContext.setSelectedSize(temp);
-  };
-
-  const removeColor = () => {
-    filterContext.setSelectedColor("");
-  };
 
   return (
     <Col className="collection-content" style={{ backgroundColor: 'white' }}>
@@ -61,12 +16,29 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
               <Col xs="12" >
                 <ul className="product-filter-tags mt-3">
                   <li >
-                    <a href={null} className="filter_tag">
-                      aaaa
-                      <i
-                        className="fa fa-close"
-                        onClick={() => removeBrand()}
-                      ></i>
+                  <a href={null} className="filter_tag" role="button">
+                      text
+                      <i className="fa fa-close"></i>
+                    </a>
+                    <a href={null} className="filter_tag" role="button">
+                      Cate
+                      <i className="fa fa-close"></i>
+                    </a>
+                    <a href={null} className="filter_tag" role="button">
+                      noi ban
+                      <i className="fa fa-close"></i>
+                    </a>
+                    <a href={null} className="filter_tag" role="button">
+                      danh gia
+                      <i className="fa fa-close"></i>
+                    </a>
+                    <a href={null} className="filter_tag" role="button">
+                      thuong hieu
+                      <i className="fa fa-close"></i>
+                    </a>
+                    <a href={null} className="filter_tag" role="button">
+                      gia
+                      <i className="fa fa-close"></i>
                     </a>
                   </li>
 
@@ -77,14 +49,11 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
               <div className="product-top-filter">
 
                 <Row>
-                <Col>
+                  <Col>
                     <div className="product-filter-content">
                       <div className="search-count">
                         <h5>
-                 
-                            Showing Products 
-
-        
+                          Hiển Thị {products.length} Trên {totalProduct} Sản Phẩm
                         </h5>
                       </div>
                       <div className="collection-view">
@@ -154,11 +123,11 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
                       </div>
                       <div className="product-page-per-view">
                         <select
-                          onChange={(e) => setLimit(parseInt(e.target.value))}
+                          onChange={(e) => handleLimit(e.target.value)}
                         >
-                          <option value="10">10 sản phẩm trên trang</option>
-                          <option value="15">15 sản phẩm trên trang</option>
                           <option value="20">20 sản phẩm trên trang</option>
+                          <option value="25">25 sản phẩm trên trang</option>
+                          <option value="30">30 sản phẩm trên trang</option>
                         </select>
                       </div>
                       <div className="product-page-filter">
@@ -175,16 +144,55 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
               </div>
               <div className={`product-wrapper-grid ${layout}`}>
                 <Row>
-                  <div>
-                    <div className="product">
-                      <div>
-                        <ProductItem
-                          des={true}
-                          cartClass="cart-info cart-wrap"
-                        />
+                {!products || !products || products.length === 0 ? (
+                  products && products && products.length === 0 ? (
+                      <Col xs="12">
+                        <div>
+                          <div className="col-sm-12 empty-cart-cls text-center">
+                            <img
+                              src={`/assets/images/empty-search.jpg`}
+                              className="img-fluid mb-4 mx-auto"
+                              alt=""
+                            />
+                            <h3>
+                              <strong>Không có sản phẩm nào</strong>
+                            </h3>
+                          </div>
+                        </div>
+                      </Col>
+                    ) : (
+                      <div className="row mx-0 margin-default mt-4">
+                        <div className="col-xl-3 col-lg-4 col-6">
+                          <PostLoader />
+                        </div>
+                        <div className="col-xl-3 col-lg-4 col-6">
+                          <PostLoader />
+                        </div>
+                        <div className="col-xl-3 col-lg-4 col-6">
+                          <PostLoader />
+                        </div>
+                        <div className="col-xl-3 col-lg-4 col-6">
+                          <PostLoader />
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                    )
+                  ) : (
+                    products.map((p, i) => {
+                    return (
+                      <div className={grid} key={i}>
+                        <div className="product">
+                          <div>
+                            <ProductItem
+                              des={true}
+                              product={p}
+                              cartClass="cart-info cart-wrap"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })
+                  )}
                 </Row>
               </div>
             </div>
