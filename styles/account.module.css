@@ -1,16 +1,3 @@
-.box_address {
-  margin-bottom: 10px;
-}
-.section_header {
-  display: flex;
-  align-items: center;
-}
-.title {
-  flex: 1;
-}
-.title h2 {
-  margin-bottom: 0 !important;
-}
 .add_address button {
   height: 3em;
   align-items: center;
@@ -21,12 +8,6 @@
   padding: 0px 20px;
   text-transform: capitalize;
   border: none;
-}
-
-.button_with_icon {
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
 }
 .note {
   display: inline-block;
@@ -53,6 +34,7 @@
 .box_function {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .box_function a {
   padding: 5px 10px;
@@ -86,13 +68,7 @@
   border: none;
   opacity: 0.8;
 }
-.button_function p{
-  margin: 0;
-  font-weight: 500;
-}
-.icon_react {
-  margin-right: 8px;
-}
+
 .button_add_address:hover {
   color: #fff;
   background-color: #f89922;

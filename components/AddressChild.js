@@ -67,10 +67,8 @@ export default function AddressChild({
         </ModalFooter>
       </Modal>
 
-
       <div className={`${styles.hr}`}></div>
       <Col sm="8">
-        <div className="box">
           <div className={`box-content ${styles.box_content}`}>
             <h6>
               <div className={`${styles.box_title}`}>Họ và tên:</div>
@@ -91,33 +89,26 @@ export default function AddressChild({
                 {address.fullAddress}
               </span>
             </h6>
-          </div>
         </div>
       </Col>
       <Col sm="4">
         <div className="box">
           <div className={`${styles.box_function}`}>
-           
-              <Button className={`${styles.button_function}`} onClick={hanldeShow}>
-                 <AiTwotoneEdit className={`${styles.icon_react}`} />  
-                 <p>Sửa</p>
-              </Button>
-           
+            <Button className={`${styles.button_function}`} onClick={hanldeShow}>
+              <AiTwotoneEdit className="mr-2" />
+              <p class="font-weight-normal m-0">Sửa</p>
+            </Button>
+
             {!address.isDefault && (
-            
-                <Button onClick={handleModalDelete} className={`${styles.button_function}`}>
-                  
-                 <AiFillDelete className={`${styles.icon_react}`} /> 
-                 <p>Xoá</p>
-                </Button>
-             
+              <Button onClick={handleModalDelete} className={`${styles.button_function}`}>
+                <AiFillDelete className="mr-2" />
+                <p class="font-weight-normal m-0">Xoá</p>
+              </Button>
             )}
             {!address.isDefault && (
-             
-                <Button onClick={setUpdateDefault} className={`${styles.button_function}`} >
-                 <AiFillHome className={`${styles.icon_react}`} /> <p>Mặc định</p>
-                </Button>
-            
+              <Button onClick={setUpdateDefault} className={`${styles.button_function}`}>
+                <AiFillHome className="mr-2" /> <p class="font-weight-normal m-0">Mặc định</p>
+              </Button>
             )}
           </div>
         </div>

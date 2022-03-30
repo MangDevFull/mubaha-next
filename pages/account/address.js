@@ -47,11 +47,13 @@ const AddressPage = ({ data }) => {
   };
   return (
     <>
+     
       <div className="dashboard-right">
+
         <div className="dashboard">
-          <div className={`${styles.section_header}`}>
-            <div className={`page-title ${styles.title}`}>
-              <h2>Địa chỉ của tôi</h2>
+          <div className="d-flex align-items-center">
+            <div className={`page-title flex-grow-1`}>
+              <h2 className="mb-0">Địa chỉ của tôi</h2>
             </div>
             <div className={`${styles.add_address}`}>
               <Button className={`${styles.button_add_address}`} onClick={handleCreateAdd}>
@@ -60,13 +62,12 @@ const AddressPage = ({ data }) => {
               </Button>
             </div>
           </div>
-
-          <div className="box-account box-info">
-            <Row className={`${styles.box_address}`}>
+            <div>
               {data.length > 0
                 ? address.map((a, i) => {
                     return (
                       <>
+                      <Row>
                         <AddressChild
                           key={i}
                           address={a}
@@ -75,20 +76,22 @@ const AddressPage = ({ data }) => {
                           deleteAdd={deleteAddress}
                           updateDefaultAddress={updateDefaultAddress}
                         />
+                        </Row>
                       </>
                     );
                   })
                 : "Bạn chưa có địa chỉ nào"}
-            </Row>
-          </div>
+            </div>
         </div>
       </div>
+      
       <Address
         isOpen={createAdd}
         handleCloseCreateAdd={handleCloseCreateAdd}
         isExist={address.length}
       />
     </>
+    
   );
 };
 
