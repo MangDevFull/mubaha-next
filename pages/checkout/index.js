@@ -1,15 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Head from "next/head";
-import {
-  Container,
-  Modal,
-  Button,
-  ModalBody,
-  ModalFooter,
-  Row,
-  ModalHeader,
-  Col,
-} from "reactstrap";
+import { Container, Modal, Button, ModalBody, ModalFooter, Row, ModalHeader } from "reactstrap";
 import styles from "../../styles/checkout.module.css";
 import CartList from "@/components/checkout/CartList";
 import VoucherShop from "@/components/checkout/VoucherShop";
@@ -19,12 +10,19 @@ import Footer from "@/components/Footer.js";
 import _ from "lodash";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import visa from "../../assets/images/checkout/visa.png";
 import AdressList from "@/components/checkout/AddressList";
+// import PaymentCard from "react-payment-card-component";
 import TotalPrice from "@/components/checkout/TotalPrice";
+// import Scroll from "../../components/Scroll";
+
+import dynamic from "next/dynamic";
+const PaymentCard = dynamic(() => import("react-payment-card-component"), {
+  ssr: false,
+});
 
 const Checkout = ({ data }) => {
   const { data: session } = useSession();
+
   const [showVoucher, setShowVoucher] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
@@ -35,6 +33,7 @@ const Checkout = ({ data }) => {
   const [cardNumber, setCardNumber] = useState("");
   const [cardName, setCardName] = useState("");
   const [cardExp, setCardExp] = useState("");
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const [selectedVoucher, setSelectedVoucher] = useState();
   const [groupedItems, setGroupedItems] = useState([]);
@@ -47,8 +46,12 @@ const Checkout = ({ data }) => {
   const [showError, setShowError] = useState(false);
   const [totalPriceProduct, setTotalPriceProduct] = useState(0);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const router = useRouter();
   useEffect(() => {
+    setIsLoading(false);
+
     let _timeout;
     if (session) {
       handleGetListAddress();
@@ -450,6 +453,7 @@ const Checkout = ({ data }) => {
                       maxLength={16}
                       value={cardNumber}
                       onChange={(e) => setCardNumber(e.target.value)}
+                      onFocus={() => setIsFlipped(false)}
                     />
                   </div>
                   <div className="mb-4">
@@ -461,6 +465,7 @@ const Checkout = ({ data }) => {
                       placeholder="VD: NGUYEN VAN A"
                       value={cardName}
                       onChange={(e) => setCardName(e.target.value.toUpperCase())}
+                      onFocus={() => setIsFlipped(false)}
                     />
                   </div>
                   <div className="mb-4">
@@ -473,6 +478,7 @@ const Checkout = ({ data }) => {
                       maxLength={5}
                       value={cardExp}
                       onChange={(e) => setCardExp(e.target.value)}
+                      onFocus={() => setIsFlipped(false)}
                       // name={dateEnd}
                       // value={format(new Date(dateEnd), "dd/yy")}
                     />
@@ -490,6 +496,7 @@ const Checkout = ({ data }) => {
                         placeholder="VD: 123"
                         value={cardCode}
                         onChange={(e) => setCardCode(e.target.value)}
+                        onFocus={() => setIsFlipped(true)}
                         maxLength={3}
                       />
                       <img
@@ -500,8 +507,27 @@ const Checkout = ({ data }) => {
                     </div>
                   </div>
                 </div>
-                <div>
-                  <img width="400px" src={visa.src} />
+                <div className="p-3">
+                  {!isLoading ? (
+                    <>
+                      <PaymentCard
+                        bank="itau"
+                        model="personormalnnalite"
+                        type="black"
+                        brand="visa"
+                        number={cardNumber}
+                        cvv={cardCode}
+                        holderName={cardName}
+                        expiration={cardExp}
+                        flipped={isFlipped}
+                      />
+                      <style jsx>{`
+                        .santander-normal-black {
+                          background: #000000;
+                        }
+                      `}</style>
+                    </>
+                  ) : null}
                 </div>
               </div>
               <div className={`${styles.add_card_note} mb-3 p-3 rounded`}>
