@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Row, Col, Media, Modal, ModalBody } from "reactstrap";
+import ReactStars from "react-rating-stars-component";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice.js";
-
 const ProductItem2 = ({ product,backImage,des}) => {
-  const length = product.rating || 5
-  const init = 0
-  const ratings = Array.from({ length }, () => init )
+  let firstExample = {
+    size: 15,
+    value: product.avgRating,
+    isHalf: true,
+    edit: false
+  };
   return (
     <div className="product-box product-wrap">
       <div className="img-wrapper">
@@ -50,10 +53,8 @@ const ProductItem2 = ({ product,backImage,des}) => {
       </div>
       <div className={`product-detail`}>
       <div className="product-info">
-        <div className="rating">
-        {ratings.map(rating =>{
-          return(<i className="fa fa-star"></i>)
-        })}
+        <div className="rating d-flex justify-content-center">
+        <ReactStars {...firstExample} />
         </div>
         <Link href={`/${product.slug}`}>
           <a>

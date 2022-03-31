@@ -1,28 +1,60 @@
-import React ,{useContext}from 'react';
-import { Col, Media } from 'reactstrap';
+import { useEffect } from 'react';
+import { Col } from 'reactstrap';
 import Category from './Category';
 import Brand from './Brand'
 import Price from './Price';
 import Rating from './Rating'
 import Location from './Location.js'
-const FilterPage = ({sm,sidebarView,closeSidebar,hanldeBrand,handleLocation}) => {
-
+import useSWR from 'swr'
+import fetcher from '../../libs/fetcher'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+const FilterPage = ({ sm, sidebarView, closeSidebar, hanldeBrand, handleLocation, hanldePrice, text ,hanldeRating,hanldeCategory}) => {
+    const { data, error } = useSWR(`${process.env.API_PRODUCT_URL}/filters?t=${text}`, fetcher)
     return (
         <>
-            <Col sm={sm} className="collection-filter" style={sidebarView ? {left:"0px"} : {}}>
-                {/* <!-- side-bar colleps block stat --> */}
+            <Col sm={sm} className="collection-filter" style={sidebarView ? { left: "0px" } : {}}>
                 <div className="collection-filter-block">
-                    {/* <!-- brand filter start --> */}
                     <div className="collection-mobile-back" onClick={() => closeSidebar()}>
                         <span className="filter-back">
                             <i className="fa fa-angle-left" aria-hidden="true"></i> back
                         </span>
                     </div>
-                    <Category />
-                    <Location handleLocation={handleLocation} />
-                    <Rating />
-                    <Brand hanldeBrand={hanldeBrand}/>
-                    <Price />
+                    {data ? (
+                        data.data != null 
+                        ?
+                        <>
+                            <Category categories={data.data.categories} hanldeCategory={hanldeCategory} />
+                            <Location stockCountries={data.data.stockCountries} handleLocation={handleLocation} />
+                            <Rating hanldeRating={hanldeRating} />
+                            <Brand hanldeBrand={hanldeBrand} brands={data.data.brands} />
+                            <Price hanldePrice={hanldePrice} />
+                        </>
+                        :"Không tìm thấy các sự lựa chọn nào"
+                    ) : (
+                        <>
+                        <Skeleton height={30} /> 
+                        <Skeleton width={"50%"} count={2} />
+                        <Skeleton width={"25%"} count={2} />
+                        <br></br>
+                        <Skeleton height={30} /> 
+                        <Skeleton width={"50%"} count={2} />
+                        <Skeleton width={"25%"} count={2} />
+                        <br></br>
+                        <Skeleton height={30} /> 
+                        <Skeleton width={"50%"} count={2} />
+                        <Skeleton width={"25%"} count={2} />
+                        <br></br>
+                        <Skeleton height={30} /> 
+                        <Skeleton width={"50%"} count={2} />
+                        <Skeleton width={"25%"} count={2} />
+                        <br></br>
+                        <Skeleton height={30} /> 
+                        <Skeleton width={"50%"} count={2} />
+                        <Skeleton width={"25%"} count={2} />
+                        </>
+                    )}
+
                 </div>
             </Col>
         </>

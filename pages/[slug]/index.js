@@ -701,56 +701,56 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
 
                 {/* Vendor */}
                 <section>
-                    <div className={`${styles.vendorBox} ${styles.product_shop}`}>
-                      <div className={`${styles.leftVendor}`}>
-                        <a
-                          className={`${styles._3IIjTV}`}
-                          href={`/vendors/${detailProduct.vendor.ownerRef.username}`}
-                        >
-                          <div className={`${styles.mubaha_avatar}`}>
-                            <img
-                              className={`${styles.shopee_avatar_img}`}
-                              src={detailProduct.vendor.avatar}
-                            />
-                          </div>
-                        </a>
-                        <div className={`${styles._27NV_r}`}>
-                          <div className={`${styles._1wVLAc}`}>
-                            <a>{detailProduct.vendor.brandName}</a>
-                          </div>
-                          <div className={`${styles.WvDg_k}`}>Online 1 giờ trước</div>
-                          <div className={`${styles._1NgpoA}`}>
-                            <Link href={`/vendors/${detailProduct.vendor.ownerRef.username}`}>
-                              <a className="btn btn-light btn--s btn--inline btn-light--link _1bsnOp">
-                                xem shop
-                              </a>
-                            </Link>
-                          </div>
+                  <div className={`${styles.vendorBox} ${styles.product_shop}`}>
+                    <div className={`${styles.leftVendor}`}>
+                      <a
+                        className={`${styles._3IIjTV}`}
+                        href={`/vendors/${detailProduct.vendor.ownerRef.username}`}
+                      >
+                        <div className={`${styles.mubaha_avatar}`}>
+                          <img
+                            className={`${styles.shopee_avatar_img}`}
+                            src={detailProduct.vendor.avatar}
+                          />
                         </div>
-                      </div>
-                      <div className={`${styles.rightVendor}`}>
-                        <div className={`${styles._1utN4D}`}>
-                          <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
-                            <label>Đánh giá</label>
-                            <span>{detailProduct.vendor.ratingOverall}</span>
-                          </button>
-                          <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
-                            <label>tỷ lệ phản hồi</label>
-                            <span>{detailProduct.vendor.responseRate}</span>
-                          </button>
+                      </a>
+                      <div className={`${styles._27NV_r}`}>
+                        <div className={`${styles._1wVLAc}`}>
+                          <a>{detailProduct.vendor.brandName}</a>
                         </div>
-                        <div className={`${styles._1utN4D}`}>
-                          <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
-                            <label>tham gia</label>
-                            <span>3 năm trước</span>
-                          </button>
-                          <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
-                            <label>Người theo dõi</label>
-                            <span>{detailProduct.vendor.followers}</span>
-                          </button>
+                        <div className={`${styles.WvDg_k}`}>Online 1 giờ trước</div>
+                        <div className={`${styles._1NgpoA}`}>
+                          <Link href={`/vendors/${detailProduct.vendor.ownerRef.username}`}>
+                            <a className="btn btn-light btn--s btn--inline btn-light--link _1bsnOp">
+                              xem shop
+                            </a>
+                          </Link>
                         </div>
                       </div>
                     </div>
+                    <div className={`${styles.rightVendor}`}>
+                      <div className={`${styles._1utN4D}`}>
+                        <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
+                          <label>Đánh giá</label>
+                          <span>{detailProduct.vendor.ratingOverall}</span>
+                        </button>
+                        <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
+                          <label>tỷ lệ phản hồi</label>
+                          <span>{detailProduct.vendor.responseRate}</span>
+                        </button>
+                      </div>
+                      <div className={`${styles._1utN4D}`}>
+                        <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
+                          <label>tham gia</label>
+                          <span>3 năm trước</span>
+                        </button>
+                        <button className={`${styles._14x4GD} ${styles.gy4qkp}`}>
+                          <label>Người theo dõi</label>
+                          <span>{detailProduct.vendor.followers}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </section>
                 {/* Vendor end */}
                 <ProductTab detailProduct={detailProduct} />

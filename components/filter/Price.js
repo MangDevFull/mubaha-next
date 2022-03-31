@@ -2,23 +2,26 @@ import React, { useState } from "react";
 import { Input, Button } from "reactstrap";
 import NumberFormat from "react-number-format";
 import styles from '@/styles/filter.module.css'
-const Price = () => {
+const Price = ({hanldePrice}) => {
   const [min, setMin] = useState(0)
   const [max, setMax] = useState(0)
-  const [isInvalidPrice, setIsInvalidPrice] = useState(false)
   const hanldeMinPrice = (e) => {
-    setMin(parseInt(e.value))
+    setMin(parseInt(e.value) || "")
   }
   const hanldeMaxPrice = (e) => {
-    setMax(parseInt(e.value))
+    setMax(parseInt(e.value) || "")
   }
-  const handlePrice = () => {
+  const handlePrice1 = () => {
     if (min >= max) {
       const prevMin = min
       const prevMax = max
       setMin(prevMax)
       setMax(prevMin)
-    } 
+      hanldePrice(prevMax, prevMin)
+    }else{
+      hanldePrice(min, max)
+    }
+    
   }
 
   return (
@@ -45,19 +48,12 @@ const Price = () => {
               />
 
             </div>
-            {isInvalidPrice && (
-              <div className="d-flex mt-2">
-                <span style={{ color: "red" }}>
-                  <i className="fa fa-solid fa-exclamation mr-2"></i> Khoảng giá không hợp lệ
-                </span>
-              </div>
-            )}
             <div>
               <div className="d-flex justify-content-center mt-3">
                 <Button
                   className="btn btn-solid"
                   style={{ width: "100%" }}
-                  onClick={handlePrice}
+                  onClick={handlePrice1}
                 >
                   Áp dụng
                 </Button>

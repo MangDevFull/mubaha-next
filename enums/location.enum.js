@@ -1,9 +1,9 @@
  const locations = {
-  VIETNAM: 'Việt Nam',
+  VN: 'Việt Nam',
   US: 'Mỹ',
-  EUROPE: 'Châu Âu',
-  CHINA: 'Trung Quốc',
-  JAPAN: 'Nhật Bản',
-  KOREA: 'Hàn Quốc',
+  EU: 'Châu Âu',
+  CN: 'Trung Quốc',
+  JP: 'Nhật Bản',
+  KR: 'Hàn Quốc',
 }
 export default locations

@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";;
 import styles from '@/styles/filter.module.css'
-const Rating = () => {
+const Rating = ({hanldeRating}) => {
+  const arrRating = [0,1,2,3,4]
   const router = useRouter();
-  const [value, setValue] = useState({ min: 0, max: 10000000 });
   return (
     <>
       <div className="collection-collapse-block border-0 open">
@@ -12,24 +12,20 @@ const Rating = () => {
           <div className="wrapper mt-3">
             <div className="range-slider">
               <div className="rating-section">
-                <div className="rating" role="button">
-                  <i className="fa fa-star" /> <i className="fa fa-star" />
-                  <i className="fa fa-star" /> <i className="fa fa-star" />
-                  <i className="fa fa-star" />
-                  Từ 5 sao
+              {[4,3,2,1,0].map((item,value) =>{
+                return (
+                  <div className="rating" role="button" value="5" onClick={() => hanldeRating(item+1)}>
+                  {arrRating.map((value,index) =>{
+                    if(item - value >= 0){
+                      return  <i className="fa fa-star" />
+                    }else{
+                      return  <i className="fa fa-light fa-star" style={{color:"rgb(184, 184, 184)"}}></i>
+                    }
+                  })}
+                  Từ {item + 1} sao
                 </div>
-                <div className="rating" role="button">
-                  <i className="fa fa-star" /> <i className="fa fa-star" />
-                  <i className="fa fa-star" /> <i className="fa fa-star" />
-                  <i className="fa fa-light fa-star" style={{color:"rgb(184, 184, 184)"}}></i>
-                  Từ 4 sao
-                </div>
-                <div className="rating" role="button">
-                  <i className="fa fa-star" /> <i className="fa fa-star" />
-                  <i className="fa fa-star" /> <i className="fa fa-light fa-star" style={{color:"rgb(184, 184, 184)"}}></i>
-                  <i className="fa fa-light fa-star" style={{color:"rgb(184, 184, 184)"}}></i>
-                  Từ 3 sao
-                </div>
+                )
+              })}
               </div>
             </div>
           </div>

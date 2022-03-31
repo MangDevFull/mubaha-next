@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Collapse, Input } from "reactstrap";
 import { StockCountry } from '@/enums/product.enum.js'
 import locationEnum from "@/enums/location.enum";
-const Location = ({handleLocation}) => {
+const Location = ({handleLocation,stockCountries}) => {
   const [isOpen, setIsOpen] = useState(true);
   const toggleLocation = () => setIsOpen(!isOpen);
 
@@ -16,19 +16,23 @@ const Location = ({handleLocation}) => {
       <div className="collection-collapse-block-content">
             <div className="collection-brand-filter">
             {
-              Object.keys(StockCountry).map((value, index) => {
+              stockCountries.length > 0 ?
+              stockCountries.map((value, index) => {
                 return (
                 <div className="custom-control custom-checkbox collection-filter-checkbox">
-                  <Input type="checkbox" value={StockCountry[value]} 
+                  <Input type="checkbox" value={value.country} 
                   onChange={handleLocation}
                   className="custom-control-input" id={`location${index}`} />
                 <label className="custom-control-label" htmlFor={`location${index}`}>
-                  {locationEnum[value]}
+                  {locationEnum[value.country]} ({value.total})
                 </label>
                   </div>
 
                 )
-              })}
+              })
+              :
+              "Không tìm thấy các sự lựa chọn nào"
+              }
 
           </div>
         </div>

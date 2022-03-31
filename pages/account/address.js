@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getSession } from "next-auth/react";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import styles from "@/styles/account.module.css";
 import AddressChild from "@/components/AddressChild.js";
 import Address from "@/components/Address";
 import Layout from "@/components/profile/Layout.js";
+import Head from "next/head";
 const AddressPage = ({ data }) => {
   const [address, setAddress] = useState([]);
   const [createAdd, setCreateAdd] = useState(false);
@@ -49,26 +50,22 @@ const AddressPage = ({ data }) => {
     <>
       <div className="dashboard-right">
         <div className="dashboard">
-          <div className={`${styles.section_header}`}>
-            <div className={`page-title ${styles.title}`}>
-              <h2>Địa chỉ của tôi</h2>
+          <div className="d-flex align-items-center">
+            <div className={`page-title flex-grow-1`}>
+              <h2 className="mb-0">Địa chỉ của tôi</h2>
             </div>
             <div className={`${styles.add_address}`}>
-              <button style={{ width: "auto" }} onClick={handleCreateAdd}>
+              <Button className={`${styles.button_add_address}`} onClick={handleCreateAdd}>
                 <i className="fa fa-solid fa-plus mr-1"></i>
                 Thêm địa chỉ
-              </button>
+              </Button>
             </div>
           </div>
-
-          <div className="box-account box-info">
-            <div className="box">
-              <div className="box-title"></div>
-            </div>
-            <Row className={`${styles.box_address}`}>
-              {data.length > 0
-                ? address.map((a, i) => {
-                    return (
+          <Row>
+            {data.length > 0
+              ? address.map((a, i) => {
+                  return (
+                    <>
                       <AddressChild
                         key={i}
                         address={a}
@@ -77,13 +74,14 @@ const AddressPage = ({ data }) => {
                         deleteAdd={deleteAddress}
                         updateDefaultAddress={updateDefaultAddress}
                       />
-                    );
-                  })
-                : "Bạn chưa có địa chỉ nào"}
-            </Row>
-          </div>
+                    </>
+                  );
+                })
+              : "Bạn chưa có địa chỉ nào"}
+          </Row>
         </div>
       </div>
+
       <Address
         isOpen={createAdd}
         handleCloseCreateAdd={handleCloseCreateAdd}

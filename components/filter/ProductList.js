@@ -2,145 +2,126 @@ import React, { useState } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import ProductItem from "./ProductBox.js";
 import InfiniteScroll from 'react-infinite-scroll-component';
-
-const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit,handlePaging ,hasNextPage}) => {
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit, handlePaging, hasNextPage, text }) => {
   const [grid, setGrid] = useState(colClass);
   const [layout, setLayout] = useState(layoutList);
-
   return (
-    <Col className="collection-content" style={{ backgroundColor: 'white' }}>
+    <Col className="collection-content pl-5 pr-5" style={{ backgroundColor: 'white' }}>
       <div className="page-main-content" >
         <Row>
           <Col sm="12">
             <Row>
               <Col xs="12" >
-                <ul className="product-filter-tags mt-3">
-                  <li >
-                    <a href={null} className="filter_tag" role="button">
-                      text
-                      <i className="fa fa-close"></i>
-                    </a>
-                    <a href={null} className="filter_tag" role="button">
-                      Cate
-                      <i className="fa fa-close"></i>
-                    </a>
-                    <a href={null} className="filter_tag" role="button">
-                      noi ban
-                      <i className="fa fa-close"></i>
-                    </a>
-                    <a href={null} className="filter_tag" role="button">
-                      danh gia
-                      <i className="fa fa-close"></i>
-                    </a>
-                    <a href={null} className="filter_tag" role="button">
-                      thuong hieu
-                      <i className="fa fa-close"></i>
-                    </a>
-                    <a href={null} className="filter_tag" role="button">
-                      gia
-                      <i className="fa fa-close"></i>
-                    </a>
-                  </li>
-
-                </ul>
+                <div className="mt-4 mb-4 ml-4">
+                  <h3>Kết quả tìm kiếm cho: <strong>{text}</strong></h3>
+                </div>
               </Col>
             </Row>
             <div className="collection-product-wrapper">
               <div className="product-top-filter">
 
-                <Row>
-                  <Col>
-                    <div className="product-filter-content">
-                      <div className="search-count">
-                        <h5>
-                          Hiển Thị {products.length} Trên {totalProduct} Sản Phẩm
-                        </h5>
-                      </div>
-                      <div className="collection-view">
-                        <ul>
-                          <li>
-                            <i
-                              className="fa fa-th grid-layout-view"
-                              onClick={() => {
-                                setLayout("");
-                                setGrid("col-lg-3");
-                              }}
-                            ></i>
-                          </li>
-                          <li>
-                            <i
-                              className="fa fa-list-ul list-layout-view"
-                              onClick={() => {
-                                setLayout("list-view");
-                                setGrid("col-lg-12");
-                              }}
-                            ></i>
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        className="collection-grid-view"
-                        style={
-                          layout === "list-view"
-                            ? { opacity: 0 }
-                            : { opacity: 1 }
-                        }
-                      >
-                        <ul>
-                          <li>
-                            <Media
-                              src={`/assets/icon/2.png`}
-                              alt=""
-                              className="product-2-layout-view"
-                              onClick={() => setGrid("col-lg-6")}
-                            />
-                          </li>
-                          <li>
-                            <Media
-                              src={`/assets/icon/3.png`}
-                              alt="aaa"
-                              className="product-3-layout-view"
-                              onClick={() => setGrid("col-lg-4")}
-                            />
-                          </li>
-                          <li>
-                            <Media
-                              src={`/assets/icon/4.png`}
-                              alt=""
-                              className="product-4-layout-view"
-                              onClick={() => setGrid("col-lg-3")}
-                            />
-                          </li>
-                          <li>
-                            <Media
-                              src={`/assets/icon/6.png`}
-                              alt=""
-                              className="product-6-layout-view"
-                              onClick={() => setGrid("col-lg-2")}
-                            />
-                          </li>
-                        </ul>
-                      </div>
-                      <div className="product-page-per-view">
-                        <select
-                          onChange={(e) => handleLimit(e.target.value)}
-                        >
-                          <option value="20">20 sản phẩm trên trang</option>
-                          <option value="25">25 sản phẩm trên trang</option>
-                          <option value="30">30 sản phẩm trên trang</option>
-                        </select>
-                      </div>
-                      <div className="product-page-filter">
-                        <select onChange={(e) => setSortBy(e.target.value)}>
-                          <option value="AscOrder">Phổ biến</option>
-                          <option value="HighToLow">Cao tới thấp</option>
-                          <option value="LowToHigh">Thấp tới cao</option>
-                          <option value="Newest">Mới nhất</option>
-                        </select>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
+                {products.length > 0
+                  ?
+                  <>
+                    <Row>
+                      <Col>
+                        <div className="product-filter-content">
+                          <div className="search-count">
+                            <h5>
+                              Hiển Thị {products.length} Trên {totalProduct} Sản Phẩm
+                            </h5>
+                          </div>
+                          <div className="collection-view">
+                            <ul>
+                              <li>
+                                <i
+                                  className="fa fa-th grid-layout-view"
+                                  onClick={() => {
+                                    setLayout("");
+                                    setGrid("col-lg-3");
+                                  }}
+                                ></i>
+                              </li>
+                              <li>
+                                <i
+                                  className="fa fa-list-ul list-layout-view"
+                                  onClick={() => {
+                                    setLayout("list-view");
+                                    setGrid("col-lg-12");
+                                  }}
+                                ></i>
+                              </li>
+                            </ul>
+                          </div>
+                          <div
+                            className="collection-grid-view"
+                            style={
+                              layout === "list-view"
+                                ? { opacity: 0 }
+                                : { opacity: 1 }
+                            }
+                          >
+                            <ul>
+                              <li>
+                                <Media
+                                  src={`/assets/icon/2.png`}
+                                  alt=""
+                                  className="product-2-layout-view"
+                                  onClick={() => setGrid("col-lg-6")}
+                                />
+                              </li>
+                              <li>
+                                <Media
+                                  src={`/assets/icon/3.png`}
+                                  alt="aaa"
+                                  className="product-3-layout-view"
+                                  onClick={() => setGrid("col-lg-4")}
+                                />
+                              </li>
+                              <li>
+                                <Media
+                                  src={`/assets/icon/4.png`}
+                                  alt=""
+                                  className="product-4-layout-view"
+                                  onClick={() => setGrid("col-lg-3")}
+                                />
+                              </li>
+                              <li>
+                                <Media
+                                  src={`/assets/icon/6.png`}
+                                  alt=""
+                                  className="product-6-layout-view"
+                                  onClick={() => setGrid("col-lg-2")}
+                                />
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="product-page-per-view">
+                            <select
+                              onChange={(e) => handleLimit(e.target.value)}
+                            >
+                              <option value="20">20 sản phẩm trên trang</option>
+                              <option value="25">25 sản phẩm trên trang</option>
+                              <option value="30">30 sản phẩm trên trang</option>
+                            </select>
+                          </div>
+                          <div className="product-page-filter">
+                            <select onChange={(e) => setSortBy(e.target.value)}>
+                              <option value="AscOrder">Phổ biến</option>
+                              <option value="HighToLow">Cao tới thấp</option>
+                              <option value="LowToHigh">Thấp tới cao</option>
+                              <option value="Newest">Mới nhất</option>
+                            </select>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                  </>
+                  :
+                  ""
+                }
               </div>
               <div className={`product-wrapper-grid ${layout}`}>
                 <Row>
@@ -181,22 +162,46 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
                       dataLength={products.length}
                       next={handlePaging}
                       hasMore={hasNextPage}
-                      loader={<h4>Loading...</h4>}
-                    >
-                    <Row>
-                      {products.map((p, i) => {
-                        return (
-                          <div className={grid} key={i}>
+                      loader={
+                        <Row className="mb-4">
+                          <div className={grid}>
                             <div className="product">
+                              <Skeleton count={1} height={250} />
+                            </div>
+                          </div>
+                          <div className={grid}>
+                            <div className="product">
+                              <Skeleton count={1} height={250} />
+                            </div>
+                          </div>
+                          <div className={grid}>
+                            <div className="product">
+                              <Skeleton count={1} height={250} />
+                            </div>
+                          </div>
+                          <div className={grid}>
+                            <div className="product">
+                              <Skeleton count={1} height={250} />
+                            </div>
+                          </div>
+                        </Row>
+                      }
+                    >
+                      <Row>
+                        {products.map((p, i) => {
+                          console.log(p,i)
+                          return (
+                            <div className={grid} key={i}>
+                              <div className="product">
                                 <ProductItem
                                   des={true}
                                   product={p}
                                   cartClass="cart-info cart-wrap"
                                 />
+                              </div>
                             </div>
-                          </div>
-                        )
-                      })}
+                          )
+                        })}
                       </Row>
                     </InfiniteScroll>
                   )}

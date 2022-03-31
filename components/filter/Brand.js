@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Collapse, Input } from "reactstrap";
 
 
-const Brand = ({hanldeBrand}) => {
+const Brand = ({hanldeBrand,brands}) => {
+  console.log("brand",brands);
   const [isOpen, setIsOpen] = useState(true);
   const toggleBrand = () => setIsOpen(!isOpen);
 
@@ -15,19 +16,29 @@ const Brand = ({hanldeBrand}) => {
       <Collapse isOpen={isOpen}>
       <div className="collection-collapse-block-content">
             <div className="collection-brand-filter">
-  
-                  <div className="custom-control custom-checkbox collection-filter-checkbox" >
+                  {
+                    brands.length > 0
+                    ?
+                    brands.map((value, i) =>{
+                    return(
+                      <div className="custom-control custom-checkbox collection-filter-checkbox" >
                     <Input
                       type="checkbox"
                       className="custom-control-input"
-                      id="A"
-      
+                      value={value.brand._id}
+                      id={`brand${i}`}
+                      onChange={hanldeBrand}
                     />
-                    <label className="custom-control-label" htmlFor={`A`}>
-    
+                    <label className="custom-control-label" htmlFor={`brand${i}`}>
+                        {value.brand.name} ({value.total})
                     </label>
                   </div>
+                    )
 
+                  })
+                  :
+                  "Không tìm thấy các sự lựa chọn nào"
+                  }
           </div>
         </div>
       </Collapse>
