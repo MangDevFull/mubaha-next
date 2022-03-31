@@ -6,11 +6,9 @@ import {
   ModalFooter,
   Button,
   Container,
-  CardHeader,
-  CardFooter,
   Row,
 } from "reactstrap";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useSession } from "next-auth/react";
 import AddressTwo from "@/components/AddressTwo.js";
 import { AiFillDelete, AiFillHome, AiTwotoneEdit } from "react-icons/ai";
