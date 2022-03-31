@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import ProductItem from "./ProductBox.js";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit, handlePaging, hasNextPage, text }) => {
+const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit, handlePaging, hasNextPage, text,hanldeOrder }) => {
   const [grid, setGrid] = useState(colClass);
   const [layout, setLayout] = useState(layoutList);
   return (
@@ -108,11 +108,11 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
                             </select>
                           </div>
                           <div className="product-page-filter">
-                            <select onChange={(e) => setSortBy(e.target.value)}>
-                              <option value="AscOrder">Phổ biến</option>
-                              <option value="HighToLow">Cao tới thấp</option>
-                              <option value="LowToHigh">Thấp tới cao</option>
-                              <option value="Newest">Mới nhất</option>
+                            <select onChange={(e) => {hanldeOrder(e)}}>
+                              <option >Phổ biến</option>
+                              <option >Cao tới thấp</option>
+                              <option >Thấp tới cao</option>
+                              <option >Mới nhất</option>
                             </select>
                           </div>
                         </div>

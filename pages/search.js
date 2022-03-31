@@ -4,8 +4,11 @@ import React, { useState, useLayoutEffect } from "react";
 import FilterPage from "@/components/filter/Filter.js"
 import ProductList from "@/components/filter/ProductList.js"
 import _ from 'lodash'
-import Skeleton from 'react-loading-skeleton'
+import sortByType from "@/enums/sortByType.enum.js";
+import orderType from "@/enums/sortOrderType.enum.js"
 import 'react-loading-skeleton/dist/skeleton.css'
+import useSWR, { SWRConfig } from "swr";
+import fetcher from '../libs/fetcher'
 export default function FilterLayoutComponent({ data }) {
   const [sidebarView, setSidebarView] = useState(false);
   const openCloseSidebar = () => {
@@ -28,12 +31,14 @@ export default function FilterLayoutComponent({ data }) {
   const [priceMax, setPriceMax] = useState(data.maxPrice)
   const [location, setLocation] = useState(data.location)
   const [rating,setRating] = useState(data.rating)
+  const [order,setOrder] = useState(data.order)
+  const [sortBy,setSortBy] = useState(data.sortBy)
   const handleLimit = (limit) => {
     setLimit(limit)
   }
   useLayoutEffect(() => {
     handleApi()
-  }, [limit,brand,location,rating,cat,text,priceMin,priceMax])
+  }, [limit,brand,location,rating,cat,text,priceMin,priceMax,order,sortBy])
   const hanldeBrand = (e) => {
     const isCheck = e.target.checked
     const value = e.target.value
@@ -96,6 +101,12 @@ export default function FilterLayoutComponent({ data }) {
       if(rating >0){
         searchQuery += `&rating=${rating}`
       }
+      if(order){
+        searchQuery += `&order=${order}`
+      }
+      if(sortBy){
+        searchQuery += `&sortBy=${sortBy}`
+      }
       const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
       const data = await res.json()
       if (data.status === 200) {
@@ -123,7 +134,7 @@ export default function FilterLayoutComponent({ data }) {
         searchQuery += `&brands=${brand}`
       }
       if (text !== "") {
-        searchQuery += `&text=${text}`
+        searchQuery += `&t=${text}`
       }
       if (cat !== "") {
         searchQuery += `&cat=${cat}`
@@ -136,6 +147,12 @@ export default function FilterLayoutComponent({ data }) {
       }
       if(rating >0){
         searchQuery += `&rating=${rating}`
+      }
+      if(order){
+        searchQuery += `&order=${order}`
+      }
+      if(sortBy){
+        searchQuery += `&sortBy=${sortBy}`
       }
       console.log(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
       const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
@@ -151,12 +168,35 @@ export default function FilterLayoutComponent({ data }) {
       console.log("error", error)
     }
   }
-  console.log("product",products)
   const hanldeRating = (value) =>{
     setRating(value)
   }
   const hanldeCategory = (value) =>{
     setCateID(value)
+  }
+  const hanldeOrder = (e) =>{
+    switch(e.target.options.selectedIndex){
+      case 0:{
+        setOrder("")
+        setSortBy("")
+        break;
+      }
+      case 1:{
+        setOrder(orderType.DESC)
+        setSortBy(sortByType.PRICE)
+        break;
+      }
+      case 2:{
+        setOrder(orderType.ASC)
+        setSortBy(sortByType.PRICE)
+        break;
+      }
+      case 3:{
+        setOrder(orderType.DESC)
+        setSortBy(sortByType.TIME)
+        break;
+      }
+    }
   }
   return (
     <div style={{ backgroundColor: "rgb(245, 245, 250);" }}>
@@ -174,7 +214,7 @@ export default function FilterLayoutComponent({ data }) {
               <ProductList
                 limit={limit} totalProduct={totalProduct} hasNextPage={hasNextPage} totalPages={totalPages}
                 handlePaging={handlePaging}
-                text={text}
+                text={text} hanldeOrder={hanldeOrder}
                 products={products} cuurentPage={cuurentPage} 
                 handleLimit={handleLimit}
                 colClass="col-xl-3 col-md-6 col-grid-box"
@@ -193,7 +233,7 @@ FilterLayoutComponent.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 export async function getServerSideProps(ctx) {
-  const { limit, page, maxPrice, minPrice, location, brands, t, cat ,rating} = ctx.query
+  const { limit, page, maxPrice, minPrice, location, brands, t, cat ,rating,order,sortBy} = ctx.query
   let searchQuery = `limit=${limit || 20}&page=${page || 1}`
 
   if (location) {
@@ -217,12 +257,18 @@ export async function getServerSideProps(ctx) {
   if(rating){
     searchQuery += `&rating=${rating}`
   }
-
-  const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
+  if(order){
+    searchQuery += `&order=${order}`
+  }
+  if(sortBy){
+    searchQuery += `&sortBy=${sortBy}`
+  }
+   const API = `${process.env.API_PRODUCT_URL}/search?${searchQuery}`
+  const repoInfo = await fetcher(API);
   const data = await res.json()
 
   return { props: { data: { produtcs: data.data, maxPrice: maxPrice || "", 
   minPrice: minPrice || "", location: location || "", brands: brands || "", 
-  t: t || "", cat: cat || "",rating:rating ||"" } } }
+  t: t || "", cat: cat || "",rating:rating ||"" ,sortBy:sortBy || "",order:order || ""} } }
 
 }

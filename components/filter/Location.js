@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Collapse, Input } from "reactstrap";
+import { Collapse, Input,Label } from "reactstrap";
 import { StockCountry } from '@/enums/product.enum.js'
 import locationEnum from "@/enums/location.enum";
 const Location = ({handleLocation,stockCountries}) => {
@@ -19,13 +19,13 @@ const Location = ({handleLocation,stockCountries}) => {
               stockCountries.length > 0 ?
               stockCountries.map((value, index) => {
                 return (
-                <div className="custom-control custom-checkbox collection-filter-checkbox">
+                <div key={index} className="custom-control custom-checkbox collection-filter-checkbox">
                   <Input type="checkbox" value={value.country} 
                   onChange={handleLocation}
                   className="custom-control-input" id={`location${index}`} />
-                <label className="custom-control-label" htmlFor={`location${index}`}>
+                <Label className="custom-control-label" htmlFor={`location${index}`}>
                   {locationEnum[value.country]} ({value.total})
-                </label>
+                </Label>
                   </div>
 
                 )

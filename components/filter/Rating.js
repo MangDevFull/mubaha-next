@@ -12,14 +12,14 @@ const Rating = ({hanldeRating}) => {
           <div className="wrapper mt-3">
             <div className="range-slider">
               <div className="rating-section">
-              {[4,3,2,1,0].map((item,value) =>{
+              {[4,3,2,1,0].map((item,i) =>{
                 return (
-                  <div className="rating" role="button" value="5" onClick={() => hanldeRating(item+1)}>
+                  <div key={i}className="rating" role="button" value="5" onClick={() => hanldeRating(item+1)}>
                   {arrRating.map((value,index) =>{
                     if(item - value >= 0){
-                      return  <i className="fa fa-star" />
+                      return  <i key={index} className="fa fa-star" />
                     }else{
-                      return  <i className="fa fa-light fa-star" style={{color:"rgb(184, 184, 184)"}}></i>
+                      return  <i key={index} className="fa fa-light fa-star" style={{color:"rgb(184, 184, 184)"}}></i>
                     }
                   })}
                   Từ {item + 1} sao

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Collapse } from "reactstrap";
+import {Label} from 'reactstrap'
 
 const Category = ({categories,hanldeCategory}) => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
@@ -16,15 +17,14 @@ const Category = ({categories,hanldeCategory}) => {
               <ul className="category-list">
               {categories.length >0
               ?
-              categories.map(category =>{
+              categories.map((category,i) =>{
                   return(
-                    <>
-                    <li onClick={() => hanldeCategory(category.category._id)}>
-                  <lable className="custom-control-label" >
+                    <li key={i} onClick={() => hanldeCategory(category.category._id)}>
+                  <Label className="custom-control-label" >
                     {category.category.name} ({category.total})
-                  </lable>
+                  </Label>
                 </li>
-                    </>
+ 
                   )
               })
               :

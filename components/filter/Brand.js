@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import { Collapse, Input } from "reactstrap";
+import { Collapse, Input,Label } from "reactstrap";
 
 
 const Brand = ({hanldeBrand,brands}) => {
-  console.log("brand",brands);
   const [isOpen, setIsOpen] = useState(true);
   const toggleBrand = () => setIsOpen(!isOpen);
-
-
   return (
     <div className="collection-collapse-block open">
       <h3 className="collapse-block-title" onClick={toggleBrand}>
@@ -21,7 +18,7 @@ const Brand = ({hanldeBrand,brands}) => {
                     ?
                     brands.map((value, i) =>{
                     return(
-                      <div className="custom-control custom-checkbox collection-filter-checkbox" >
+                      <div key={i} className="custom-control custom-checkbox collection-filter-checkbox" >
                     <Input
                       type="checkbox"
                       className="custom-control-input"
@@ -29,9 +26,9 @@ const Brand = ({hanldeBrand,brands}) => {
                       id={`brand${i}`}
                       onChange={hanldeBrand}
                     />
-                    <label className="custom-control-label" htmlFor={`brand${i}`}>
+                    <Label className="custom-control-label" htmlFor={`brand${i}`}>
                         {value.brand.name} ({value.total})
-                    </label>
+                    </Label>
                   </div>
                     )
 
