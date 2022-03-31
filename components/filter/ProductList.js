@@ -189,6 +189,7 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
                     >
                       <Row>
                         {products.map((p, i) => {
+                          console.log(p,i)
                           return (
                             <div className={grid} key={i}>
                               <div className="product">
