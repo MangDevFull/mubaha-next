@@ -1,6 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Collapse } from "reactstrap";
-import {Label} from 'reactstrap'
+import { memo } from "react";
 
 const Category = ({categories,hanldeCategory}) => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
@@ -19,10 +19,10 @@ const Category = ({categories,hanldeCategory}) => {
               ?
               categories.map((category,i) =>{
                   return(
-                    <li key={i} onClick={() => hanldeCategory(category.category._id)}>
-                  <Label className="custom-control-label" >
+                    <li key={i} onClick={() => hanldeCategory(category.category._id)} role="button">
+                  <a className="custom-control-label" role="button" >
                     {category.category.name} ({category.total})
-                  </Label>
+                  </a>
                 </li>
  
                   )
@@ -39,4 +39,4 @@ const Category = ({categories,hanldeCategory}) => {
   );
 };
 
-export default Category;
+export default memo(Category);

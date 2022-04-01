@@ -199,7 +199,7 @@ export default function FilterLayoutComponent({ data }) {
     }
   }
   return (
-    <div style={{ backgroundColor: "rgb(245, 245, 250);" }}>
+    <div style={{ backgroundColor: "rgb(245, 245, 250)" }}>
       <section className="section-b-space ratio_asos">
         <div className="collection-wrapper">
           <Container>
@@ -263,8 +263,7 @@ export async function getServerSideProps(ctx) {
   if(sortBy){
     searchQuery += `&sortBy=${sortBy}`
   }
-   const API = `${process.env.API_PRODUCT_URL}/search?${searchQuery}`
-  const repoInfo = await fetcher(API);
+   const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
   const data = await res.json()
 
   return { props: { data: { produtcs: data.data, maxPrice: maxPrice || "", 
