@@ -16,23 +16,7 @@ export default function FilterLayoutComponent({children}){
   return (
     <>
   <HeaderTwo />
-      <section className="section-b-space ratio_asos">
-        <div className="collection-wrapper">
-          <Container>
-            <Row>
-              <FilterPage
-                sm="3"
-                sidebarView={sidebarView}
-                closeSidebar={() => openCloseSidebar(sidebarView)}
-              />
-              <ProductList
-                colClass="col-xl-3 col-md-6 col-grid-box"
-                openSidebar={() => openCloseSidebar(sidebarView)}
-              />
-            </Row>
-          </Container>
-        </div>
-      </section>
+  {children}
       <Footer />
     </>
   );

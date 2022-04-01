@@ -1,0 +1,20 @@
+.boxVendor{
+  position: relative;
+    background-color: #fff;
+    height: 7.5rem;
+    padding: 0 1.5625rem;
+    box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
+    border-radius: 0.125rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: rgba(0,0,0,.87);
+}
+.iconSize{
+  width: 20px; height : 20px;
+  text-align: center;
+}
+.numberFormat{
+  color:#f89922
+}
