@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout.js'
 import { Media, Container, Row, Col } from "reactstrap";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect ,useEffect} from "react";
 import FilterPage from "@/components/filter/Filter.js"
 import ProductList from "@/components/filter/ProductList.js"
 import _ from 'lodash'
@@ -36,6 +36,9 @@ export default function FilterLayoutComponent({ data }) {
   const handleLimit = (limit) => {
     setLimit(limit)
   }
+  useEffect(() => {
+    setText(data.t)
+  },[data.t])
   useLayoutEffect(() => {
     handleApi()
   }, [limit,brand,location,rating,cat,text,priceMin,priceMax,order,sortBy])
@@ -214,7 +217,7 @@ export default function FilterLayoutComponent({ data }) {
               <ProductList
                 limit={limit} totalProduct={totalProduct} hasNextPage={hasNextPage} totalPages={totalPages}
                 handlePaging={handlePaging}
-                text={text} hanldeOrder={hanldeOrder}
+                text={data.t} hanldeOrder={hanldeOrder}
                 products={products} cuurentPage={cuurentPage} 
                 handleLimit={handleLimit}
                 colClass="col-xl-3 col-md-6 col-grid-box"

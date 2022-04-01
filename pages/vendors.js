@@ -9,6 +9,7 @@ import fetcher from "../libs/fetcher"
 import _ from "lodash"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import Link from "next/link"
 const API = `${process.env.API_VENDOR_URL}/search`
 export default function Searchvendor({ fallback }) {
   const [text, setText] = useState(fallback.text)
@@ -17,7 +18,7 @@ export default function Searchvendor({ fallback }) {
   const PAGE_SIZE = fallback.data.data.totalPages
   const { data, error, mutate, size, setSize, isValidating } = useSWRInfinite(
     (index) =>
-      `${API}?t=${text || ""}&limit=${limit || 10}&page=${index + 1
+      `${API}?t=${fallback.text || ""}&limit=${limit || 10}&page=${index + 1
       }`,
     fetcher
   );
@@ -113,7 +114,9 @@ export default function Searchvendor({ fallback }) {
                                 </Col>
                                 <Col xs={2} >
                                   <div className="d-flex justify-content-center">
+                                  <Link href={`vendors/${value.owner.username}`} >
                                     <Button className="btn btn-solid mt-3">Xem shop</Button>
+                                    </Link>
                                   </div>
 
                                 </Col>
@@ -123,7 +126,20 @@ export default function Searchvendor({ fallback }) {
                         )
                       })
                       :
-                      ""
+                      <Col xs="12">
+                        <div>
+                          <div className="col-sm-12 empty-cart-cls text-center">
+                            <img
+                              src={`/assets/images/empty-search.jpg`}
+                              className="img-fluid mb-4 mx-auto"
+                              alt=""
+                            />
+                            <h3>
+                              <strong>Không có shop nào</strong>
+                            </h3>
+                          </div>
+                        </div>
+                      </Col>
                     :
                     <>
                       <Skeleton count={3} height={100} width="100%" />

@@ -19,7 +19,7 @@ export default function Search() {
     router.push({
       pathname: '/search',
       query: { t: value },
-    })
+    },undefined)
   }
   const handleBrand = (value) => {
     setBrand(value);
@@ -30,7 +30,6 @@ export default function Search() {
       query: { t: brand },
     },undefined)
   }
-  console.log("brabd",brand)
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="d-flex justify-content-center">
@@ -44,8 +43,10 @@ export default function Search() {
               autoComplete="off"
               id="query search-autocomplete"
               type="search"
+              value={brand}
+              ref={inputRef}
               onChange={(e) => handleBrand(e.target.value)}
-              placeholder="Tìm kiếm sản phẩm..."
+              placeholder="Tìm kiếm sản phẩm, thương hiệu, ..."
               className="nav-search nav-search-field"
               aria-expanded="true"
             />
