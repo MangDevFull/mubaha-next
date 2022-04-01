@@ -5,6 +5,7 @@ import styles from "@/styles/account.module.css";
 import AddressChild from "@/components/AddressChild.js";
 import Address from "@/components/Address";
 import Layout from "@/components/profile/Layout.js";
+import Head from "next/head";
 const AddressPage = ({ data }) => {
   const [address, setAddress] = useState([]);
   const [createAdd, setCreateAdd] = useState(false);
@@ -49,9 +50,9 @@ const AddressPage = ({ data }) => {
     <>
       <div className="dashboard-right">
         <div className="dashboard">
-          <div className={`${styles.section_header}`}>
-            <div className={`page-title ${styles.title}`}>
-              <h2>Địa chỉ của tôi</h2>
+          <div className="d-flex align-items-center">
+            <div className={`page-title flex-grow-1`}>
+              <h2 className="mb-0">Địa chỉ của tôi</h2>
             </div>
             <div className={`${styles.add_address}`}>
               <Button className={`${styles.button_add_address}`} onClick={handleCreateAdd}>
@@ -60,29 +61,27 @@ const AddressPage = ({ data }) => {
               </Button>
             </div>
           </div>
-
-          <div className="box-account box-info">
-            <Row className={`${styles.box_address}`}>
-              {data.length > 0
-                ? address.map((a, i) => {
-                    return (
-                      <>
-                        <AddressChild
-                          key={i}
-                          address={a}
-                          index={i}
-                          updateAddress={updateAddress}
-                          deleteAdd={deleteAddress}
-                          updateDefaultAddress={updateDefaultAddress}
-                        />
-                      </>
-                    );
-                  })
-                : "Bạn chưa có địa chỉ nào"}
-            </Row>
-          </div>
+          <Row>
+            {data.length > 0
+              ? address.map((a, i) => {
+                  return (
+                    <>
+                      <AddressChild
+                        key={i}
+                        address={a}
+                        index={i}
+                        updateAddress={updateAddress}
+                        deleteAdd={deleteAddress}
+                        updateDefaultAddress={updateDefaultAddress}
+                      />
+                    </>
+                  );
+                })
+              : "Bạn chưa có địa chỉ nào"}
+          </Row>
         </div>
       </div>
+
       <Address
         isOpen={createAdd}
         handleCloseCreateAdd={handleCloseCreateAdd}

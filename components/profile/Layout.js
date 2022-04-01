@@ -23,6 +23,11 @@ export default function Lyout({ children }) {
                       <a>Địa chỉ</a>
                       </Link>
                     </li>
+                    <li className="active">
+                      <Link href='/account/list-order'>
+                      <a>Danh sách đơn hàng</a>
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </div>

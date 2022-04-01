@@ -6,12 +6,12 @@ import HeaderAuthen from "@/components/authen/HeaderAuthen.js";
 import Footer from "@/components/Footer.js";
 import otpEnums from "../../enums/otp.enum.js";
 import styles from "@/styles/authen.module.css";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 import BottomFormRegister from "@/components/authen/BottomFormRegister.js";
 
-const DynamicOtpComponent = dynamic(() => import('@/components/Otp.js'));
-const DynamicBreadcrumbComponent = dynamic(() => import('@/components/Breadcrumb.js'));
-const DynamicLayoutAuthComponent = dynamic(() => import('@/components/authen/LayoutAuth.js'));
+const DynamicOtpComponent = dynamic(() => import("@/components/Otp.js"));
+const DynamicBreadcrumbComponent = dynamic(() => import("@/components/Breadcrumb.js"));
+const DynamicLayoutAuthComponent = dynamic(() => import("@/components/authen/LayoutAuth.js"));
 
 const { PhoneNumberFormat, PhoneNumberUtil } = libphone;
 
@@ -40,26 +40,26 @@ export default function RegisterPage() {
     }
   };
   const handleFullname = (e) => {
-    setFullName(e.target.value)
-  }
+    setFullName(e.target.value);
+  };
 
   const getOtp = async (e) => {
     e.preventDefault();
-    if(fullName == ""){
+    if (fullName == "") {
       setMessage("Họ và tên không hợp lệ");
       setIsRegisted(true);
-    }else{
+    } else {
       const params = {
         phone,
-        fullName:fullName
+        fullName: fullName,
       };
       const response = await fetch(`${process.env.API_AUTH_URL}/register-otp`, {
         method: "POST",
         body: JSON.stringify(params),
         headers: { "Content-Type": "application/json" },
       });
-      const data = await response.json()
-     
+      const data = await response.json();
+
       if (data.status == 200) {
         setIsVerifyPhone(true);
       } else {
@@ -75,58 +75,53 @@ export default function RegisterPage() {
       </Head>
       {!isVerifyPhone && (
         <DynamicLayoutAuthComponent
-        title="Đăng ký"
-        form={
-          <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
-                  {isRegisted && (
-                    <Alert style={{ textAlign: "center", height: "40px" }} variant={"danger"}>
-                      {message}
-                    </Alert>
-                  )}
-                  <div className="form-group mb-1">
-                    
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Nhập họ và tên"
-                      onChange={handleFullname}
-                      autoFocus
-                    />
-                    <input
-                      onChange={checkPhone}
-                      type="text"
-                      className="form-control"
-                      placeholder="Nhập số điện thoại của bạn"
-                    />
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <button
-                      type="submit"
-                      disabled={isNotValidPhone}
-                      className="btn btn-solid btn-block"
-                    >
-                      Đăng Ký
-                    </button>
-                  </div>
-                </Form>
-        }
-        bottom={<BottomFormRegister />}
-         />
-               
-
+          title="Đăng ký"
+          form={
+            <Form className="theme-form ml-3 mr-3" onSubmit={getOtp}>
+              {isRegisted && (
+                <Alert style={{ textAlign: "center", height: "40px" }} variant={"danger"}>
+                  {message}
+                </Alert>
+              )}
+              <div className="form-group mb-1">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Nhập họ và tên"
+                  onChange={handleFullname}
+                  autoFocus
+                />
+                <input
+                  onChange={checkPhone}
+                  type="text"
+                  className="form-control"
+                  placeholder="Nhập số điện thoại của bạn"
+                />
+              </div>
+              <div className="d-flex justify-content-center">
+                <button
+                  type="submit"
+                  disabled={isNotValidPhone}
+                  className="btn btn-solid btn-block"
+                >
+                  Đăng Ký
+                </button>
+              </div>
+            </Form>
+          }
+          bottom={<BottomFormRegister />}
+        />
       )}
       {isVerifyPhone && (
         <div>
-        <HeaderAuthen />
+          <HeaderAuthen />
           <DynamicBreadcrumbComponent
-     previousLink="/auth/register"
+            previousLink="/auth/register"
             previousValue="Đăng ký"
             currentValue="Xác thực Otp"
-         />
+          />
           <Row className={`${styles.backgroundLogin} d-flex justify-content-center`}>
-          <DynamicOtpComponent
-          phone={phone} type={otpEnums.REGISTRATION} fullName={fullName}
-           />
+            <DynamicOtpComponent phone={phone} type={otpEnums.REGISTRATION} fullName={fullName} />
           </Row>
           <Footer />
         </div>
@@ -134,4 +129,3 @@ export default function RegisterPage() {
     </>
   );
 }
-

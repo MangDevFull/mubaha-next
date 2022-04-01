@@ -4,13 +4,13 @@ import styles from "../../styles/checkout.module.css";
 import NumberFormat from "react-number-format";
 import voucher from "../../assets/images/checkout/icon-voucher.svg";
 
-
 const CartList = ({ listCarts }) => {
   return (
     <div className={`${styles.total_price_information}`}>
       <div>
         <div className={`${styles.detail_order_information}`}>
           <div className={`${styles.vendor_name}`}>
+            <img src="/assets/icon/shop-icon.png" className="mr-2" />
             <span>{listCarts.vendor.brandName}</span>
           </div>
           <div className={`${styles.section_order_info}`}>
@@ -19,9 +19,18 @@ const CartList = ({ listCarts }) => {
                 <div key={i}>
                   <div className={`${styles.order_info}`}>
                     <div className={`${styles.title_info} ${styles.title_image_product}`}>
-                      <img width="40px" src={product.selectedAttribute?.image || product.selectedVariant?.image || product.product.media?.featuredImage} />
+                      <img
+                        width="40px"
+                        src={
+                          product.selectedAttribute?.image ||
+                          product.selectedVariant?.image ||
+                          product.product.media?.featuredImage
+                        }
+                      />
                       <span>
-                        <span className={`${styles.name_product}`}>{product.product.name}</span>
+                        <strong>
+                          <span className={`${styles.name_product}`}>{product.product.name}</span>
+                        </strong>
                       </span>
                     </div>
 
