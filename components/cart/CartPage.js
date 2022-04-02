@@ -12,7 +12,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import _ from 'lodash'
 import productStatusEnum from "@/enums/productStatus.enum";
-import Stciky2 from '@/components/cart/Sticky.js';
+import Sticky from '@/components/cart/Sticky';
 import { useRouter } from 'next/router';
 import 'react-loading-skeleton/dist/skeleton.css'
 const Vendor = dynamic(() => import('@/components/cart/Vendor.js'))
@@ -412,7 +412,7 @@ const CartPage = ({ data }) => {
     }
   };
   if (products.length > 0) {
-    const { elementRef: comboBtnRef, isSticky } = Stciky2({ defaultSticky: true, isTop: false });
+    const { elementRef: comboBtnRef, isSticky } = Sticky({ defaultSticky: false, isTop: false });
     return (
       <>
         <Modal2

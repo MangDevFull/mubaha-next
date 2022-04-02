@@ -13,11 +13,6 @@ export default function Lyout({ children }) {
               <div className="dashboard-left">
                 <div className="block-content">
                   <ul>
-                    {/* <li className="active">
-                      <Link href='/account/profile'>
-                      <a>Thông tin</a>
-                      </Link>
-                    </li> */}
                     <li className="active">
                       <Link href="/account/address">
                         <a>Địa chỉ</a>
