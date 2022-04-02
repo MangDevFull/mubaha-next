@@ -12,6 +12,7 @@ import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
 import NumberFormat from "react-number-format";
 
 const OrderList = ({ order }) => {
+  console.log("fff", order);
   return (
     <>
       <Card className="p-4 my-2" style={{ backgroundColor: "rgba(0, 0, 0, 0.03)" }}>
@@ -57,18 +58,17 @@ const OrderList = ({ order }) => {
         <CardBody className="py-0">
           {order.products.length > 0 &&
             order.products.map((product, i) => {
-              console.log(product);
               return (
                 <div key={i} className="d-flex align-items-center justify-content-between my-3">
                   <div className="d-flex align-items-center justify-content-center">
                     <img
                       className="border mr-3"
                       width="85vw"
-                      src={`${product.media.featuredImage}`}
+                      src={`${product.product.media.featuredImage}`}
                     />
                     <div className="d-flex flex-column justify-content-between p-2">
                       <h4 className="mb-0" style={{ lineHeight: "1.3" }}>
-                        {product.name}
+                        {product.product.name}
                       </h4>
                       {product.selectedVariant === null ? (
                         ""
