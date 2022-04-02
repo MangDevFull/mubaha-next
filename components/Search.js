@@ -24,6 +24,7 @@ export default function Search() {
   const handleBrand = (value) => {
     setBrand(value);
   }
+  const [options,setOptions] = useState(["Awesome Wooden Chicken","Tasty Cotton Soap","Gorgeous Metal Towels"])
   const hanldeSearchBrand = (value) => {
     router.push({
       pathname: '/vendors',
@@ -75,21 +76,19 @@ export default function Search() {
               </div>
             </DropdownItem>
           }
-          <DropdownItem>
-            Some Action
+          {
+            options.length > 0
+            ? 
+            options.map((value, i) =>{
+              <DropdownItem key={i}>
+            {value}
           </DropdownItem>
-          <DropdownItem text>
-            Dropdown Item Text
-          </DropdownItem>
-          <DropdownItem>
-            Foo Action
-          </DropdownItem>
-          <DropdownItem>
-            Bar Action
-          </DropdownItem>
-          <DropdownItem>
-            Quo Action
-          </DropdownItem>
+            })
+            :
+            ""
+          }
+         
+         
         </DropdownMenu>
       </Dropdown>
     </div>
