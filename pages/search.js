@@ -1,5 +1,5 @@
 import Layout from '@/components/Layout.js'
-import { Media, Container, Row, Col } from "reactstrap";
+import { Container, Row } from "reactstrap";
 import React, { useState, useLayoutEffect ,useEffect} from "react";
 import FilterPage from "@/components/filter/Filter.js"
 import ProductList from "@/components/filter/ProductList.js"
@@ -33,6 +33,7 @@ export default function FilterLayoutComponent({ data }) {
   const [rating,setRating] = useState(data.rating)
   const [order,setOrder] = useState(data.order)
   const [sortBy,setSortBy] = useState(data.sortBy)
+
   const handleLimit = (limit) => {
     setLimit(limit)
   }
