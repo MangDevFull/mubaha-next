@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Head from "next/head";
-import { Container, Modal, Button, ModalBody, ModalFooter, Row, ModalHeader } from "reactstrap";
+import { Container, Modal, Button, ModalBody, ModalFooter, Row, ModalHeader, Alert, AlertTitle } from "reactstrap";
 import styles from "../../styles/checkout.module.css";
 import CartList from "@/components/checkout/CartList";
 import VoucherShop from "@/components/checkout/VoucherShop";
@@ -191,9 +191,8 @@ const Checkout = ({ data }) => {
       // alert(data.data);
     }
   };
-  const handleCloseCreateAdd = (data, setChecked) => {
+  const handleCloseCreateAdd = () => {
     setShow(false);
-    handleUpdateAddAddress(data);
   };
   const handleShow = () => {
     setShow(true);
@@ -546,7 +545,8 @@ const Checkout = ({ data }) => {
           </ModalFooter>
         </Modal>
 
-        <Modal aria-labelledby="contained-modal-title-vcenter" centered isOpen={succesPayment}>
+        
+        <Modal aria-labelledby="contained-modal-title-vcenter" centered>
           <ModalBody className="container-fluid">
             <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
               <h3>Nhập số thẻ thành công</h3>
