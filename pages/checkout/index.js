@@ -189,7 +189,6 @@ const Checkout = ({ data }) => {
       },
       body: JSON.stringify(payload),
     });
-    console.log(response);
     const data = await response.json();
     if (data.status === 200) {
       

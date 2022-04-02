@@ -10,5 +10,7 @@ module.exports = {
     API_VOUCHER_URL: process.env.API_VOUCHER_URL,
     API_ORDER_URL: process.env.API_ORDER_URL,
     API_ADDRESS_URL: process.env.API_ADDRESS_URL,
+    API_PRODUCT_URL: process.env.API_PRODUCT_URL,
+    API_VENDOR_URL: process.env.API_VENDOR_URL,
   },
 };

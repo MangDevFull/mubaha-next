@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer.js'
-import HeaderTwo from '@components/HeaderTwo.js';
+import HeaderTwo from '../HeaderTwo.js';
 import React, { useState } from "react";
-export default function FilterLayoutComponent({children}){
+export default function FilterLayoutComponent({ children }) {
   const [sidebarView, setSidebarView] = useState(false);
   const openCloseSidebar = () => {
     if (sidebarView) {
@@ -12,8 +12,8 @@ export default function FilterLayoutComponent({children}){
   };
   return (
     <>
-  <HeaderTwo />
-  {children}
+      <HeaderTwo />
+      {children}
       <Footer />
     </>
   );

@@ -15,7 +15,7 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
             <Row>
               <Col xs="12" >
                 <div className="mt-4 mb-4 ml-4">
-                  <h3>Kết quả tìm kiếm cho: <strong>{text}</strong></h3>
+                  <h3>Kết quả tìm kiếm cho danh mục: <strong>{text}</strong></h3>
                 </div>
               </Col>
             </Row>

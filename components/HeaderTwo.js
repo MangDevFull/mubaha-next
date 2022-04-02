@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Media, InputGroup, Button, Input } from "reactstrap";
+import { Container, Row, Col, Media } from "reactstrap";
 
 import TopBarDark from "@/components/common/TopbarDark";
 
@@ -15,7 +15,7 @@ import CartContainer from "./CartContainer";
 
 import cart from "../assets/icons/cart.png";
 import SearchOverlay from "@/components/common/SearchOverlay";
-
+import Search from "@/components/Search.js";
 export default function HeaderTwo({}) {
   const [toggleSearch, setToggleSearch] = useState(false);
   const [navClose, setNavClose] = useState({ right: "0px" });
@@ -83,20 +83,7 @@ export default function HeaderTwo({}) {
                     </a>
                   </Link>
                 </div>
-                <div>
-                  <form className={`${styles.form_search} d-none d-xl-block`} role="form">
-                    <input
-                      id="query search-autocomplete"
-                      type="search"
-                      placeholder="Tìm kiếm sản phẩm..."
-                      className="nav-search nav-search-field"
-                      aria-expanded="true"
-                    />
-                    <button type="submit" name="nav-submit-button" className="btn-search">
-                      <i className="fa fa-search"></i>
-                    </button>
-                  </form>
-                </div>
+               <Search />
                 <div className="menu-right pull-right">
                   {/* <NavBar /> */}
                   <nav className="text-start">

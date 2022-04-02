@@ -13,7 +13,6 @@ import NumberFormat from "react-number-format";
 import ProductType from "./ProductType";
 
 const FilterPage = ({ sm, sidebarView, closeSidebar, newProducts, handleCallApi, limit, orderBy }) => {
-  console.log("limit", limit);
   const [value, setValue] = useState({ min: 0, max: 10000000 });
   return (
     <>

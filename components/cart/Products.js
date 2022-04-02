@@ -110,7 +110,6 @@ export default function ProductsCart({ item, productKey,
       },
     })
     const data = await response.json()
-    console.log(data)
     if (data.status == 200) {
       updateDeleteOneCart(vendorKey, productKey, item.cartID)
     }

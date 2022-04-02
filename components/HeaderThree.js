@@ -9,7 +9,7 @@ import logo from "../assets/images/logo-white.svg"
 
 import HeaderSettings from "./common/HeaderSettings"
 
-import styles from "./HeaderTwo.module.css"
+import Search from "@/components/Search.js";
 
 import SearchOverlay from "@/components/common/SearchOverlay";
 
@@ -48,16 +48,7 @@ export default function HeaderThree(){
                   </a>
                 </Link>
               </div>
-              <div>
-                <form className={`${styles.form_search} d-none d-xl-block`} role="form">
-                  <input id="query search-autocomplete" type="search"
-                    placeholder="Tìm kiếm sản phẩm..." className="nav-search nav-search-field"
-                    aria-expanded="true" />
-                  <button type="submit" name="nav-submit-button" className="btn-search">
-                    <i className="fa fa-search"></i>
-                  </button>
-                </form>
-              </div>
+              <Search />
               <div className="menu-right pull-right">
                 {/* <NavBar /> */}
                 <nav className="text-start">
