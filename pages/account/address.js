@@ -19,7 +19,7 @@ const AddressPage = ({ data }) => {
     if (add) {
       if (isDefault) {
         address.forEach((add) => {
-          if (add.isDefault === true) {
+          if (add && add.isDefault === true) {
             add.isDefault = false;
           }
         });

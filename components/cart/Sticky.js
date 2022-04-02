@@ -6,19 +6,18 @@ const Sticky = ({ defaultSticky = false, isTop = true }) => {
 
   const toggleSticky = useCallback(
     ({ top, bottom }) => {
-      if (!isTop) {
+      if (!isTop && top) {
         if (window.pageYOffset < top) {
-          !isSticky && setIsSticky(true)
+          !isSticky && setIsSticky(true);
         } else {
-          isSticky && setIsSticky(false)
+          isSticky && setIsSticky(false);
         }
       } else {
         if (window.pageYOffset > bottom) {
-          !isSticky && setIsSticky(true)
+          !isSticky && setIsSticky(true);
         } else {
-          isSticky && setIsSticky(false)
+          isSticky && setIsSticky(false);
         }
-
       }
     },
     [isSticky, isTop]

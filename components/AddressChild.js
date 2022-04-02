@@ -1,14 +1,6 @@
 import styles from "@/styles/account.module.css";
-import {
-  Col,
-  Modal,
-  ModalHeader,
-  ModalFooter,
-  Button,
-  Container,
-  Row,
-} from "reactstrap";
-import { useState} from "react";
+import { Col, Modal, ModalHeader, ModalFooter, Button, Container, Row } from "reactstrap";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import AddressTwo from "@/components/AddressTwo.js";
 import { AiFillDelete, AiFillHome, AiTwotoneEdit } from "react-icons/ai";
@@ -114,18 +106,18 @@ export default function AddressChild({
           <div className={`${styles.box_function}`}>
             <Button className={`${styles.button_function}`} onClick={hanldeShow}>
               <AiTwotoneEdit className="mr-2" />
-              <p class="font-weight-normal m-0">Sửa</p>
+              <p className="font-weight-normal m-0">Sửa</p>
             </Button>
 
             {!address.isDefault && (
               <Button onClick={handleModalDelete} className={`${styles.button_function}`}>
                 <AiFillDelete className="mr-2" />
-                <p class="font-weight-normal m-0">Xoá</p>
+                <p className="font-weight-normal m-0">Xoá</p>
               </Button>
             )}
             {!address.isDefault && (
               <Button onClick={setUpdateDefault} className={`${styles.button_function}`}>
-                <AiFillHome className="mr-2" /> <p class="font-weight-normal m-0">Mặc định</p>
+                <AiFillHome className="mr-2" /> <p className="font-weight-normal m-0">Mặc định</p>
               </Button>
             )}
           </div>

@@ -404,32 +404,26 @@ const Checkout = ({ data }) => {
           </Container>
         </section>
 
-        <Modal
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-          centered
-          isOpen={showCard}
-        >
+        <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered isOpen={showCard}>
           <ModalHeader>Nhập thẻ thanh toán</ModalHeader>
           <ModalBody>
             <Container>
-              <div class="d-flex flex-row">
-                <div class="p-1">
+              <div className="d-flex flex-row">
+                <div className="p-1">
                   <img
                     width="32"
                     src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-visa.png"
                     alt="visa"
                   />
                 </div>
-                <div class="p-1">
+                <div className="p-1">
                   <img
                     width="32"
                     src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-credit-type-mastercard.svg"
                     alt="mastercard"
                   />
                 </div>
-                <div class="p-1">
+                <div className="p-1">
                   <img
                     width="32"
                     src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-credit-type-jcb.svg"

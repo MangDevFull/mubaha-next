@@ -85,7 +85,7 @@ const OrderList = ({ order }) => {
                   </div>
                   <div className="d-flex justify-content-center">
                     <del className="mx-1">
-                      <span class="money ml-1">
+                      <span className="money ml-1">
                         <span>
                           {product.discount > 0 && (
                             <del>
