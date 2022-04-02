@@ -181,7 +181,7 @@ const Checkout = ({ data }) => {
     };
     setVisible(true);
 
-    const response = await fetch(`${process.env.API_ORDER_URL}`, {
+    const response = await fetch(`${process.env.API_ORDER_URL}?s=${router.query.s}&f=${router.query.f}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -192,6 +192,7 @@ const Checkout = ({ data }) => {
     console.log(response);
     const data = await response.json();
     if (data.status === 200) {
+      
       setTimeout(function () {
         setVisible(false);
         router.push("/");
@@ -397,7 +398,7 @@ const Checkout = ({ data }) => {
                   <div className="mb-4">
                     <div className="mb-2">Số thẻ:</div>
                     <input
-                      type="number"
+                      type="type"
                       name="number"
                       className="w-100 rounded border border-dark p-2"
                       placeholder="VD: 4123456789012345"
