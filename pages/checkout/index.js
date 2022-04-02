@@ -404,7 +404,7 @@ const Checkout = ({ data }) => {
                   <div className="mb-4">
                     <div className="mb-2">Số thẻ:</div>
                     <input
-                      type="type"
+                      type="text"
                       name="number"
                       className="w-100 rounded border border-dark p-2"
                       placeholder="VD: 4123456789012345"
