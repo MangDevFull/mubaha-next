@@ -1,29 +1,40 @@
 import React, { useState } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import ProductItem from "./ProductBox.js";
-import InfiniteScroll from 'react-infinite-scroll-component';
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
-const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit, handlePaging, hasNextPage, text,hanldeOrder }) => {
+import InfiniteScroll from "react-infinite-scroll-component";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import PostLoader from "../common/PostLoader.js";
+const ProductList = ({
+  colClass,
+  layoutList,
+  products,
+  totalProduct,
+  handleLimit,
+  handlePaging,
+  hasNextPage,
+  text,
+  hanldeOrder,
+}) => {
   const [grid, setGrid] = useState(colClass);
   const [layout, setLayout] = useState(layoutList);
   return (
-    <Col className="collection-content pl-5 pr-5" style={{ backgroundColor: 'white' }}>
-      <div className="page-main-content" >
+    <Col className="collection-content pl-5 pr-5" style={{ backgroundColor: "white" }}>
+      <div className="page-main-content">
         <Row>
           <Col sm="12">
             <Row>
-              <Col xs="12" >
+              <Col xs="12">
                 <div className="mt-4 mb-4 ml-4">
-                  <h3>Kết quả tìm kiếm cho: <strong>{text}</strong></h3>
+                  <h3>
+                    Kết quả tìm kiếm cho: <strong>{text}</strong>
+                  </h3>
                 </div>
               </Col>
             </Row>
             <div className="collection-product-wrapper">
               <div className="product-top-filter">
-
-                {products.length > 0
-                  ?
+                {products.length > 0 ? (
                   <>
                     <Row>
                       <Col>
@@ -57,11 +68,7 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
                           </div>
                           <div
                             className="collection-grid-view"
-                            style={
-                              layout === "list-view"
-                                ? { opacity: 0 }
-                                : { opacity: 1 }
-                            }
+                            style={layout === "list-view" ? { opacity: 0 } : { opacity: 1 }}
                           >
                             <ul>
                               <li>
@@ -99,29 +106,31 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
                             </ul>
                           </div>
                           <div className="product-page-per-view">
-                            <select
-                              onChange={(e) => handleLimit(e.target.value)}
-                            >
+                            <select onChange={(e) => handleLimit(e.target.value)}>
                               <option value="20">20 sản phẩm trên trang</option>
                               <option value="25">25 sản phẩm trên trang</option>
                               <option value="30">30 sản phẩm trên trang</option>
                             </select>
                           </div>
                           <div className="product-page-filter">
-                            <select onChange={(e) => {hanldeOrder(e)}}>
-                              <option >Phổ biến</option>
-                              <option >Cao tới thấp</option>
-                              <option >Thấp tới cao</option>
-                              <option >Mới nhất</option>
+                            <select
+                              onChange={(e) => {
+                                hanldeOrder(e);
+                              }}
+                            >
+                              <option>Phổ biến</option>
+                              <option>Cao tới thấp</option>
+                              <option>Thấp tới cao</option>
+                              <option>Mới nhất</option>
                             </select>
                           </div>
                         </div>
                       </Col>
                     </Row>
                   </>
-                  :
+                ) : (
                   ""
-                }
+                )}
               </div>
               <div className={`product-wrapper-grid ${layout}`}>
                 <Row>
@@ -199,7 +208,7 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
                                 />
                               </div>
                             </div>
-                          )
+                          );
                         })}
                       </Row>
                     </InfiniteScroll>
