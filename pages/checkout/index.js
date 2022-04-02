@@ -170,7 +170,6 @@ const Checkout = ({ data }) => {
       // expirationDate: cardExp,
     };
     setVisible(true);
-    console.log(session);
 
     const response = await fetch(`${process.env.API_ORDER_URL}`, {
       method: "POST",
