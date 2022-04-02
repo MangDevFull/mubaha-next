@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import Head from "next/head";
-import { Container, Modal, Button, ModalBody, ModalFooter, Row, ModalHeader, Alert, AlertTitle } from "reactstrap";
+import {
+  Container,
+  Modal,
+  Button,
+  ModalBody,
+  ModalFooter,
+  Row,
+  ModalHeader,
+  Alert,
+  AlertTitle,
+} from "reactstrap";
 import styles from "../../styles/checkout.module.css";
 import CartList from "@/components/checkout/CartList";
 import VoucherShop from "@/components/checkout/VoucherShop";
@@ -147,7 +157,7 @@ const Checkout = ({ data }) => {
 
     setTimeout(function () {
       setSuccesPayment(false);
-    }, 1000);
+    }, 2000);
   };
 
   const handleOrder = async (e) => {
@@ -188,7 +198,6 @@ const Checkout = ({ data }) => {
       }, 3000);
     } else {
       console.log(data);
-      // alert(data.data);
     }
   };
   const handleCloseCreateAdd = () => {
@@ -340,53 +349,6 @@ const Checkout = ({ data }) => {
                       </span>
                     </label>
                   </li>
-                  <li>
-                    <label className={`${styles.methods}`}>
-                      <input
-                        type="radio"
-                        name="payment_methods"
-                        data-view-index="paypal"
-                        readOnly
-                        value="paypal"
-                        onChange={handleSelectPaymentMethod}
-                        disabled
-                        checked={paymentMethod === "paypal"}
-                      />
-                      <span>
-                        <div className={`${styles.method_content_name}`}>
-                          <img
-                            width="32px"
-                            src="https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_fc_hl.svg"
-                          />
-                          <span>Thanh toán bằng Paypal</span>
-                        </div>
-                      </span>
-                    </label>
-                  </li>
-                  <li>
-                    <label className={`${styles.methods}`}>
-                      <input
-                        type="radio"
-                        name="payment_methods"
-                        data-view-index="vnpay"
-                        readOnly
-                        value="vnpay"
-                        onChange={handleSelectPaymentMethod}
-                        disabled={groupedItems.length === 0}
-                        checked={paymentMethod === "vnpay"}
-                      />
-                      <span>
-                        <div className={`${styles.method_content_name}`}>
-                          <img
-                            width="32px"
-                            src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-vnpay.png"
-                          />
-
-                          <span>Thanh toán bằng VNPAY</span>
-                        </div>
-                      </span>
-                    </label>
-                  </li>
                 </ul>
               </div>
             </div>
@@ -441,7 +403,7 @@ const Checkout = ({ data }) => {
                   <div className="mb-4">
                     <div className="mb-2">Số thẻ:</div>
                     <input
-                      type="text"
+                      type="number"
                       name="number"
                       className="w-100 rounded border border-dark p-2"
                       placeholder="VD: 4123456789012345"
@@ -456,6 +418,7 @@ const Checkout = ({ data }) => {
                     <input
                       type="text"
                       name="name"
+                      maxLength={25}
                       className="w-100 rounded border border-dark p-2"
                       placeholder="VD: NGUYEN VAN A"
                       value={cardName}
@@ -551,14 +514,18 @@ const Checkout = ({ data }) => {
           </ModalFooter>
         </Modal>
 
-        
-        <Modal aria-labelledby="contained-modal-title-vcenter" centered>
-          <ModalBody className="container-fluid">
-            <Row className="pl-5 pr-5 pt-3" style={{ justifyContent: "center" }}>
-              <h3>Nhập số thẻ thành công</h3>
-            </Row>
+        <Modal isOpen={succesPayment}>
+          <ModalBody className="my-5">
+            <div className="text-center">
+              <img width="100" height="100" src="/assets/icon/success-popup.svg" />
+            </div>
+            <div className="text-center mt-3">
+              <p>Nhập số thẻ thành công</p>
+            </div>
           </ModalBody>
         </Modal>
+
+
       </CommonLayout>
       <Footer />
     </>
