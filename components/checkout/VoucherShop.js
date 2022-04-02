@@ -6,14 +6,21 @@ import styles from "../../styles/checkout.module.css";
 import Voucher from "@/components/Voucher";
 import NumberFormat from "react-number-format";
 
-const VoucherShop = ({ selectedVoucher, handleVoucherShow, groupedItems, showVoucher, handleCloseVoucher, vouchers , handleApplyVoucher}) => {
+const VoucherShop = ({
+  selectedVoucher,
+  handleVoucherShow,
+  groupedItems,
+  showVoucher,
+  handleCloseVoucher,
+  vouchers,
+  handleApplyVoucher,
+}) => {
   return (
     <>
       <div className={`${styles.section_voucher}`}>
         <div className={`${styles.title_voucher}`}>
           <div className={`${styles.title_voucher1}`}>
             <div className={`${styles.title_voucher2}`}>
-              {/* icon voucher */}
               {selectedVoucher ? (
                 <Image src={voucher2} width={30} height={30} alt="Voucher Mubaha" />
               ) : (
@@ -47,10 +54,7 @@ const VoucherShop = ({ selectedVoucher, handleVoucherShow, groupedItems, showVou
                   </span>
                 </div>
               </div>
-              <button
-                className={`${styles.btn_change} btn p-0 m-0`}
-                onClick={handleVoucherShow}
-              >
+              <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleVoucherShow}>
                 Chọn Voucher Khác
               </button>
             </>

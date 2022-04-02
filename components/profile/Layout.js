@@ -1,7 +1,7 @@
 import HeaderThree from "@/components/HeaderThree.js";
 import Footer from "@/components/Footer.js";
 import { Container, Row, Col } from "reactstrap";
-import Link from 'next/link'
+import Link from "next/link";
 export default function Lyout({ children }) {
   return (
     <>
@@ -13,19 +13,19 @@ export default function Lyout({ children }) {
               <div className="dashboard-left">
                 <div className="block-content">
                   <ul>
-                    <li className="active">
+                    {/* <li className="active">
                       <Link href='/account/profile'>
                       <a>Thông tin</a>
                       </Link>
-                    </li>
+                    </li> */}
                     <li className="active">
-                      <Link href='/account/address'>
-                      <a>Địa chỉ</a>
+                      <Link href="/account/address">
+                        <a>Địa chỉ</a>
                       </Link>
                     </li>
                     <li className="active">
-                      <Link href='/account/list-order'>
-                      <a>Danh sách đơn hàng</a>
+                      <Link href="/account/list-order">
+                        <a>Danh sách đơn hàng</a>
                       </Link>
                     </li>
                   </ul>

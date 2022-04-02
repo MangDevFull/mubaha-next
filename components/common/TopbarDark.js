@@ -3,8 +3,8 @@ import { Container, Row, Col } from "reactstrap";
 import Link from "next/link";
 import accountTypeEnum from "@/enums/accountType.enum";
 
-import { useSession,signOut } from 'next-auth/react'
-import { useRouter } from 'next/router'
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function TopBarDark({ topClass, fluid }) {
   const { data: session, status } = useSession();
@@ -55,12 +55,13 @@ export default function TopBarDark({ topClass, fluid }) {
                 <>
                   {session.user.type === accountTypeEnum.VENDOR ? (
                     <li>
-                      
                       <a href="https://vendor.mubaha.com">Kênh người bán</a>
                     </li>
-                  ) : ""}
+                  ) : (
+                    ""
+                  )}
                   <li>
-                    <Link href="/account/profile">
+                    <Link href="/account/address">
                       <a>Thông tin tài khoản</a>
                     </Link>
                   </li>
