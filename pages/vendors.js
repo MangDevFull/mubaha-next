@@ -26,7 +26,6 @@ export default function Searchvendor({ fallback }) {
   if (data && data[data.length - 1].status === 200) {
     issues = _.concat(issues, data[data.length - 1].data.docs)
   }
-  console.log("text", text)
   const isLoadingInitialData = !data && !error;
   const isLoadingMore =
     isLoadingInitialData ||

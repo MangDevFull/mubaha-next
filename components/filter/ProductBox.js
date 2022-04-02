@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Link from "next/link";
 import { Row, Col, Media, Modal, ModalBody } from "reactstrap";
 import ReactStars from "react-rating-stars-component";
 import ProductPrice from "@/components/common/ProductDetails/ProductPrice.js";
 const ProductItem2 = ({ product,backImage,des}) => {
-  let firstExample = {
-    size: 15,
-    value: product.avgRating,
-    isHalf: true,
-    edit: false
-  };
+  const [startNumber, setStarNumber] = useState(product.avgRating)
+  useEffect(() => {
+    setStarNumber(product.avgRating)
+  })
   return (
     <div className="product-box product-wrap">
       <div className="img-wrapper">
@@ -54,7 +52,12 @@ const ProductItem2 = ({ product,backImage,des}) => {
       <div className={`product-detail`}>
       <div className="product-info">
         <div className="rating d-flex justify-content-center">
-        <ReactStars {...firstExample} />
+        <ReactStars
+              size={15}
+              value={startNumber}
+              isHalf={true}
+              edit={false}
+            />
         </div>
         <Link href={`/${product.slug}`}>
           <a>
