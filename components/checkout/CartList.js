@@ -70,7 +70,7 @@ const CartList = ({ listCarts }) => {
             })}
           </div>
 
-          <div className={`${styles.section_voucher_shop}`}>
+          {/* <div className={`${styles.section_voucher_shop}`}>
             <div className={`${styles.voucher_shop}`}>
               <div className={`${styles.title_voucher_shop}`}>
                 <div className={`${styles.image_voucher}`}>
@@ -84,7 +84,7 @@ const CartList = ({ listCarts }) => {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -49,14 +49,8 @@ const AdressList = ({
                   </svg>
                   Thêm địa chỉ mới
                 </button>
-                <button
-                  className={`${styles.button_add_address} ${styles.method_content}`}
-                  onClick={handleShow}
-                >
-                  Sửa địa chỉ
-                </button>
 
-                <Link href="/account">
+                <Link href="/account/address" passHref>
                   <button className={`${styles.button_add_address}`}>Thiết lập địa chỉ</button>
                 </Link>
               </div>

@@ -34,34 +34,13 @@ export default function ProductItem({ product, oldThumbnail }) {
             <a>
               <Media
                 src={product.media.featuredImage}
-                style={ !oldThumbnail ? {maxHeight: "204px"} : {} }
+                style={!oldThumbnail ? { maxHeight: "204px" } : {}}
                 className="img-fluid bg-img blur-up"
                 alt=""
               />
             </a>
           </Link>
         </div>
-        {/* <div className="back">
-          <Media
-            src={product.media.featuredImage}
-            className="img-fluid"
-            alt=""
-          />
-        </div> */}
-       
-        {/* {product.media.data ? (
-          <ul className="product-thumb-list">
-            {product.media.data.map((img, i) => (
-              <li className={`grid_thumb_img ${img.path === image ? "active" : ""}`} key={i}>
-                <a href={null} title="Add to Wishlist">
-                  <Media src={`${img.path}`} alt="wishlist" onClick={() => onClickImageHandle(img.path)} />
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          ""
-        )} */}
       </div>
       <MasterProductDetail currency={currency} product={product} />
       <Modal isOpen={modal} toggle={toggle} className="modal-lg quickview-modal" centered>
@@ -69,11 +48,7 @@ export default function ProductItem({ product, oldThumbnail }) {
           <Row>
             <Col lg="6" xs="12">
               <div className="quick-view-img">
-                <Media
-                  src={`${product.media.featuredImage}`}
-                  alt=""
-                  className="img-fluid"
-                />
+                <Media src={`${product.media.featuredImage}`} alt="" className="img-fluid" />
               </div>
             </Col>
             <Col lg="6" className="rtl-text">

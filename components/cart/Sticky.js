@@ -6,38 +6,36 @@ const Sticky = ({ defaultSticky = false, isTop = true }) => {
 
   const toggleSticky = useCallback(
     ({ top, bottom }) => {
-      if (!isTop) {
+      if (!isTop && top) {
         if (window.pageYOffset < top) {
-          !isSticky && setIsSticky(true)
+          !isSticky && setIsSticky(true);
         } else {
-          isSticky && setIsSticky(false)
+          isSticky && setIsSticky(false);
         }
       } else {
         if (window.pageYOffset > bottom) {
-          !isSticky && setIsSticky(true)
+          !isSticky && setIsSticky(true);
         } else {
-          isSticky && setIsSticky(false)
+          isSticky && setIsSticky(false);
         }
-
       }
     },
     [isSticky, isTop]
   );
 
+  const handleScroll = useCallback(() => {
+    toggleSticky(elementRef?.current?.getBoundingClientRect());
+  }, []);
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (elementRef) {
-        toggleSticky(elementRef?.current?.getBoundingClientRect());
-      }
-    };
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [toggleSticky, elementRef]);
+  }, [toggleSticky, handleScroll]);
 
-  return { elementRef, isSticky };
+  return { elementRef, isSticky, handleScroll };
 };
 
 export default Sticky;
