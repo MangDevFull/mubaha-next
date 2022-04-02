@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Slider from "react-slick";
 import Head from "next/head";
 import SideProductCart from "@/components/SideProductCart";
-import { Row, Col, Media, Container, Input } from "reactstrap";
+import { Row, Col, Media, Container, Input, Modal, ModalBody } from "reactstrap";
 import RelatedProducts from "@/components/RelatedProducts";
 import Layout from "@/components/Layout";
 import ProductTab from "@/components/common/product-details/product-tab";
@@ -14,7 +14,7 @@ import ProductPrice from "@/components/common/ProductDetails/ProductPrice";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import styles from "@/styles/slug.module.css";
-import Modal from "react-awesome-modal";
+// import Modal from "react-awesome-modal";
 
 import priceCalculator from "@/utils/priceCalculator";
 
@@ -95,7 +95,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         const data = await response.json();
         if (data.status === 200) {
           setVisible(true);
-          timeOut_1 = setTimeout(() => setVisible(false), 1000);
+          timeOut_1 = setTimeout(() => setVisible(false), 3000);
         } else {
           alert(data.message);
         }
@@ -537,20 +537,17 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                             )}
                           </div>
                           <Modal
-                            visible={visible}
-                            width="400"
-                            height="300"
-                            effect="fadeInUp"
-                            onClickAway={() => closeModal()}
+                            isOpen={visible}
                           >
-                            <div className=" d-flex justify-content-center mt-5">
+                            <ModalBody className="my-5">
+                            <div className="text-center">
                               <img width="100" height="100" src="/assets/icon/success-popup.svg" />
                             </div>
-                            <div className=" d-flex justify-content-center mt-5">
-                              <p className={styles.textSuccess}>
+                            <div className="text-center mt-3">
+                              <p>
                                 Sản phẩm đã được thêm vào Giỏ hàng
                               </p>
-                            </div>
+                            </div></ModalBody>
                           </Modal>
 
                           <div

@@ -56,9 +56,8 @@ export default function Footer({ categories }) {
             <Row className="footer-theme partition-f">
               <Col lg="4" md="6">
                 <div
-                  className={`footer-title ${
-                    isOpen && collapse == 1 ? "active" : ""
-                  } footer-mobile-title`}
+                  className={`footer-title ${isOpen && collapse == 1 ? "active" : ""
+                    } footer-mobile-title`}
                 >
                   <h4
                     onClick={() => {
@@ -139,16 +138,18 @@ export default function Footer({ categories }) {
                     <div className="footer-contant">
                       <ul>
                         <li>
-                          <a href="#">Trung tâm trợ giúp</a>
+                          <Link href="/p/operating-regulations">
+                           Quy chế hoạt động
+                          </Link>
                         </li>
                         <li>
-                          <a href="#">Hướng dẫn mua hàng</a>
+                          <Link href="/p/guide_pay">Hướng dẫn mua hàng</Link>
                         </li>
                         <li>
-                          <a href="#">Hướng dẫn bán hàng</a>
+                          <Link href="/p/regulations-on-posting-products-on-mubaha">Quy định đăng bán sản phẩm trên Mubaha</Link>
                         </li>
                         <li>
-                          <a href="#">Vận chuyển</a>
+                          <Link href="/p/products-banningrelimitation-policy">Chính sách Cấm/Hạn chế sản phẩm</Link>
                         </li>
                       </ul>
                     </div>
@@ -174,19 +175,19 @@ export default function Footer({ categories }) {
                     <div className="footer-contant">
                       <ul>
                         <li>
-                          <a href="#">Giới thiệu về Mubaha Việt Nam</a>
+                          <Link href="/p/about-us">Giới thiệu về Mubaha Việt Nam</Link>
                         </li>
                         <li>
-                          <a href="#">Chính sách bảo mật</a>
+                          <Link href="/p/privacy-policy">Chính sách bảo mật</Link>
                         </li>
                         <li>
-                          <a href="#">Điều khoản Mubaha</a>
+                          <Link href="/p/terms-of-service">Điều khoản và dịch vụ</Link>
                         </li>
                         <li>
-                          <a href="#">Kênh người bán</a>
+                          <Link href="https://vendor.mubaha.com">Kênh người bán</Link>
                         </li>
                         <li>
-                          <a href="#">Liên hệ với truyền thông</a>
+                          <Link href="/p/service">Cam kết dịch vụ vận chuyển</Link>
                         </li>
                       </ul>
                     </div>
