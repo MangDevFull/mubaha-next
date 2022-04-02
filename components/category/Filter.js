@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Col } from 'reactstrap';
 import Category from './Category';
 import Brand from './Brand'
@@ -9,8 +8,10 @@ import useSWR from 'swr'
 import fetcher from '../../libs/fetcher'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-const FilterPage = ({ sm, sidebarView, closeSidebar, hanldeBrand, handleLocation, hanldePrice, text ,hanldeRating,hanldeCategory}) => {
-    const { data, error } = useSWR(`${process.env.API_PRODUCT_URL}/filters?t=${text}`, fetcher)
+const FilterPage = ({ sm, sidebarView, closeSidebar, slug,
+    hanldeBrand, handleLocation, hanldePrice, cateChild, hanldeRating, hanldeCategory }) => {
+    const { data, error } = useSWR(`${process.env.API_URL}/categories/${slug}/filters`, fetcher)
+    console.log("jsjjsjsjjsjsjjs",data)
     return (
         <>
             <Col sm={sm} className="collection-filter" style={sidebarView ? { left: "0px" } : {}}>
@@ -20,38 +21,39 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, hanldeBrand, handleLocation
                             <i className="fa fa-angle-left" aria-hidden="true"></i> back
                         </span>
                     </div>
+
+                    {cateChild.length > 0 && <Category cateChild={cateChild} hanldeCategory={hanldeCategory} />}
                     {data ? (
-                        data.data != null 
-                        ?
-                        <>
-                            <Category categories={data.data.categories} hanldeCategory={hanldeCategory} />
-                            <Location stockCountries={data.data.stockCountries} handleLocation={handleLocation} />
-                            <Rating hanldeRating={hanldeRating} />
-                            <Brand hanldeBrand={hanldeBrand} brands={data.data.brands} />
-                            <Price hanldePrice={hanldePrice} />
-                        </>
-                        :"Không tìm thấy các sự lựa chọn nào"
+                        data.data != null
+                            ?
+                            <>
+                                <Location stockCountries={data.data.stockCountries} handleLocation={handleLocation} />
+                                <Rating hanldeRating={hanldeRating} />
+                                <Brand hanldeBrand={hanldeBrand} brands={data.data.brands} />
+                                <Price hanldePrice={hanldePrice} />
+                            </>
+                            : "Không tìm thấy các sự lựa chọn nào"
                     ) : (
                         <>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
-                        <br></br>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
-                        <br></br>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
-                        <br></br>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
-                        <br></br>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
+                            <Skeleton height={30} />
+                            <Skeleton width={"50%"} count={2} />
+                            <Skeleton width={"25%"} count={2} />
+                            <br></br>
+                            <Skeleton height={30} />
+                            <Skeleton width={"50%"} count={2} />
+                            <Skeleton width={"25%"} count={2} />
+                            <br></br>
+                            <Skeleton height={30} />
+                            <Skeleton width={"50%"} count={2} />
+                            <Skeleton width={"25%"} count={2} />
+                            <br></br>
+                            <Skeleton height={30} />
+                            <Skeleton width={"50%"} count={2} />
+                            <Skeleton width={"25%"} count={2} />
+                            <br></br>
+                            <Skeleton height={30} />
+                            <Skeleton width={"50%"} count={2} />
+                            <Skeleton width={"25%"} count={2} />
                         </>
                     )}
 

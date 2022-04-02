@@ -7,9 +7,9 @@ import _ from 'lodash'
 import sortByType from "@/enums/sortByType.enum.js";
 import orderType from "@/enums/sortOrderType.enum.js"
 import 'react-loading-skeleton/dist/skeleton.css'
-import useSWR, { SWRConfig } from "swr";
-import fetcher from '../libs/fetcher'
+import {useRouter} from 'next/router'
 export default function FilterLayoutComponent({ data }) {
+  const router = useRouter()
   const [sidebarView, setSidebarView] = useState(false);
   const openCloseSidebar = () => {
     if (sidebarView) {
@@ -39,6 +39,46 @@ export default function FilterLayoutComponent({ data }) {
   useEffect(() => {
     setText(data.t)
   },[data.t])
+  useLayoutEffect(() => {
+    let searchQuery = {
+      limit: limit,
+      page:cuurentPage
+    }
+    if (location !== "") {
+      searchQuery ={
+        ...searchQuery,
+        location: location,
+      }
+    }
+    if (brand !== "") {
+      searchQuery ={...searchQuery, brand: brand}
+    }
+    if (text !== "") {
+      searchQuery ={...searchQuery, t: text}
+    }
+    if (cat !== "") {
+      searchQuery = {...searchQuery, cat: cat}
+    }
+    if (typeof priceMax === "number") {
+      searchQuery = {...searchQuery,priceMax}
+    }
+    if (typeof priceMin === "number") {
+      searchQuery ={...searchQuery,priceMin}
+    }
+    if(rating >0){
+      searchQuery = {...searchQuery,rating: rating}
+    }
+    if(order){
+      searchQuery = {...searchQuery,order:order}
+    }
+    if(sortBy){
+      searchQuery = {...searchQuery,sortBy: sortBy}
+    }
+    router.push({
+      pathname : `/search`,
+      query: searchQuery
+    })
+  }, [limit,brand,location,rating,cat,text,priceMin,priceMax,order,sortBy,cuurentPage])
   useLayoutEffect(() => {
     handleApi()
   }, [limit,brand,location,rating,cat,text,priceMin,priceMax,order,sortBy])

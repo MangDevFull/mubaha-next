@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Collapse } from "reactstrap";
 import { memo } from "react";
 
-const Category = ({categories,hanldeCategory}) => {
+const Category = ({cateChild,hanldeCategory}) => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
   const toggleCategory = () => setIsCategoryOpen(!isCategoryOpen);
   return (
@@ -15,13 +15,13 @@ const Category = ({categories,hanldeCategory}) => {
           <div className="collection-collapse-block-content">
             <div className="collection-brand-filter">
               <ul className="category-list">
-              {categories.length >0
+              {cateChild.length >0
               ?
-              categories.map((category,i) =>{
+              cateChild.map((category,i) =>{
                   return(
-                    <li key={i} onClick={() => hanldeCategory(category.category._id)} role="button">
+                    <li key={i} onClick={() => hanldeCategory(category.slug)} role="button">
                   <a className="custom-control-label" role="button" >
-                    {category.category.name} ({category.total})
+                    {category.name}
                   </a>
                 </li>
  

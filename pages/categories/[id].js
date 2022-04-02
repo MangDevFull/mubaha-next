@@ -7,7 +7,9 @@ import _ from 'lodash'
 import sortByType from "@/enums/sortByType.enum.js";
 import orderType from "@/enums/sortOrderType.enum.js"
 import 'react-loading-skeleton/dist/skeleton.css'
+import {useRouter} from 'next/router'
 export default function SerchCategory({data}){
+  const router = useRouter()
   const [sidebarView, setSidebarView] = useState(false);
   const openCloseSidebar = () => {
     if (sidebarView) {
@@ -17,7 +19,7 @@ export default function SerchCategory({data}){
     }
   };
   const [limit, setLimit] = useState(data.produtcs.products.limit)
-  const [cateChild, setChild] = useState(data.produtcs.category.childCategories)
+  const [cateChild, setCateChild] = useState(data.produtcs.category.childCategories)
   const [products, setProduct] = useState(data.produtcs.products.docs)
   const [cuurentPage, setCurrentPage] = useState(data.produtcs.products.page)
   const [totalPages, setTotalPages] = useState(data.produtcs.products.totalPages)
@@ -35,6 +37,40 @@ export default function SerchCategory({data}){
   const handleLimit = (limit) => {
     setLimit(limit)
   }
+  useLayoutEffect(() => {
+    let searchQuery = {
+      limit: limit,
+      page:cuurentPage
+    }
+    if (location !== "") {
+      searchQuery ={
+        ...searchQuery,
+        location: location,
+      }
+    }
+    if (brand !== "") {
+      searchQuery ={...searchQuery, brand: brand}
+    }
+    if (typeof priceMax === "number") {
+      searchQuery = {...searchQuery,priceMax}
+    }
+    if (typeof priceMin === "number") {
+      searchQuery ={...searchQuery,priceMin}
+    }
+    if(rating >0){
+      searchQuery = {...searchQuery,rating: rating}
+    }
+    if(order){
+      searchQuery = {...searchQuery,order:order}
+    }
+    if(sortBy){
+      searchQuery = {...searchQuery,sortBy: sortBy}
+    }
+    router.push({
+      pathname : `/categories/${slug}`,
+      query: searchQuery
+    })
+  }, [limit,brand,location,rating,slug,priceMin,priceMax,order,sortBy,cuurentPage])
   useLayoutEffect(() => {
     handleApi()
   }, [limit,brand,location,rating,slug,priceMin,priceMax,order,sortBy])
@@ -103,7 +139,7 @@ export default function SerchCategory({data}){
       const res = await fetch(`${process.env.API_URL}/categories/${slug}/products?${searchQuery}`)
       const data = await res.json()
       if (data.status === 200) {
-        const list = _.concat(products,data.data.docs)
+        const list = _.concat(products,data.data.products.docs)
         setTimeout(() =>{
           setProduct([...list])
           setCurrentPage(data.data.page)
@@ -149,8 +185,8 @@ export default function SerchCategory({data}){
           setTotalPages(data.data.products.totalPages)
           setTotalProduct(data.data.products.totalDocs)
           setHasNextPage(data.data.products.hasNextPage)
-          setName(data.data.products.category.name)
-          setSlug(data.data.products.category.slug)
+          setName(data.data.category?.name)
+          setSlug(data.data.category?.slug)
       }
     } catch (error) {
       console.log("error", error)
@@ -160,7 +196,7 @@ export default function SerchCategory({data}){
     setRating(value)
   }
   const hanldeCategory = (value) =>{
-    setCateID(value)
+    setSlug(value)
   }
   const hanldeOrder = (e) =>{
     switch(e.target.options.selectedIndex){
@@ -186,6 +222,7 @@ export default function SerchCategory({data}){
       }
     }
   }
+  console.log("brand",brand)
   return(
     <>
      <div style={{ backgroundColor: "rgb(245, 245, 250)" }}>
@@ -193,13 +230,14 @@ export default function SerchCategory({data}){
         <div className="collection-wrapper">
           <Container>
             <Row>
-              {/* <FilterPage
+              <FilterPage
                 sm="3"
                 sidebarView={sidebarView} hanldeBrand={hanldeBrand} handleLocation={handleLocation}
                 hanldeCategory={hanldeCategory}
+                cateChild={cateChild} 
                 closeSidebar={() => openCloseSidebar(sidebarView)} hanldePrice={hanldePrice} slug={slug}
                 hanldeRating={hanldeRating}
-              /> */}
+              />
               <ProductList
                 limit={limit} totalProduct={totalProduct} hasNextPage={hasNextPage} totalPages={totalPages}
                 handlePaging={handlePaging}
@@ -249,7 +287,6 @@ export async function getServerSideProps(ctx) {
   }
    const res = await fetch(`${process.env.API_URL}/categories/${id}/products?${searchQuery}`)
   const data = await res.json()
-
   return { props: { data: { produtcs: data.data, maxPrice: maxPrice || "", 
   minPrice: minPrice || "", location: location || "", brands: brands || "", 
   rating:rating ||"" ,sortBy:sortBy || "",order:order || "",cateSlug : id || ""} } }
