@@ -263,7 +263,7 @@ export default function Address({ isOpen, handleCloseCreateAdd ,isExist}) {
         </ModalBody>
         <ModalFooter>
           <Button className="btn btn-secondary btn-lg" style={{ width: '120px', height: '50px' }}
-            onClick={() => { handleCloseCreateAdd() }}
+            onClick={() => handleCloseCreateAdd() }
           >
             Huỷ
           </Button>
