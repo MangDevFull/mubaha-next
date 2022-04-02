@@ -23,20 +23,19 @@ const Sticky = ({ defaultSticky = false, isTop = true }) => {
     [isSticky, isTop]
   );
 
+  const handleScroll = useCallback(() => {
+    toggleSticky(elementRef?.current?.getBoundingClientRect());
+  }, []);
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (elementRef) {
-        toggleSticky(elementRef?.current?.getBoundingClientRect());
-      }
-    };
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [toggleSticky, elementRef]);
+  }, [toggleSticky, handleScroll]);
 
-  return { elementRef, isSticky };
+  return { elementRef, isSticky, handleScroll };
 };
 
 export default Sticky;
