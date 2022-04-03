@@ -80,7 +80,7 @@ const OrderList = ({ order }) => {
                           {product.selectedAttribute.name}
                         </span>
                       )}
-                      <p className="mb-0">Số lượng: {product.amount}</p>
+                      <p className="mb-0">x {product.amount}</p>
                     </div>
                   </div>
                   <div className="d-flex justify-content-center">
