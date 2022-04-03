@@ -1,7 +1,6 @@
-import Layout from '@/components/Layout.js'
-import { Media, Container, Row, Col } from "reactstrap";
-import React, { useState, useLayoutEffect ,useEffect} from "react";
-import FilterPage from "@/components/category/Filter.js"
+import SearchLayout from "@/components/SearchLayout"
+import React, { useState, useLayoutEffect} from "react";
+import FilterPage from "@/components/category/FilterCate.js"
 import ProductList from "@/components/category/ProductList.js"
 import _ from 'lodash'
 import sortByType from "@/enums/sortByType.enum.js";
@@ -222,14 +221,8 @@ export default function SerchCategory({data}){
       }
     }
   }
-  console.log("brand",brand)
   return(
     <>
-     <div style={{ backgroundColor: "rgb(245, 245, 250)" }}>
-      <section className="section-b-space ratio_asos">
-        <div className="collection-wrapper">
-          <Container>
-            <Row>
               <FilterPage
                 sm="3"
                 sidebarView={sidebarView} hanldeBrand={hanldeBrand} handleLocation={handleLocation}
@@ -247,18 +240,11 @@ export default function SerchCategory({data}){
                 colClass="col-xl-3 col-md-6 col-grid-box"
                 openSidebar={() => openCloseSidebar(sidebarView)}
               />
-             
-             
-            </Row>
-          </Container>
-        </div>
-      </section>
-    </div>
     </>
   )
 }
 SerchCategory.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <SearchLayout>{page}</SearchLayout>;
 };
 export async function getServerSideProps(ctx) {
   const { limit, page, maxPrice, minPrice, location, brands, id ,rating,order,sortBy} = ctx.query

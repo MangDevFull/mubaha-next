@@ -5,8 +5,6 @@ import locationEnum from "@/enums/location.enum";
 const Location = ({handleLocation,stockCountries}) => {
   const [isOpen, setIsOpen] = useState(true);
   const toggleLocation = () => setIsOpen(!isOpen);
-
-
   return (
     <div className="collection-collapse-block open">
       <h3 className="collapse-block-title" onClick={toggleLocation}>

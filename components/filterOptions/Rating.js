@@ -1,9 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useRouter } from "next/router";;
-import styles from '@/styles/filter.module.css'
 const Rating = ({hanldeRating}) => {
   const arrRating = [0,1,2,3,4]
-  const router = useRouter();
   return (
     <>
       <div className="collection-collapse-block border-0 open">

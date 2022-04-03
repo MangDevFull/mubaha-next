@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Collapse, Input,Label } from "reactstrap";
-
-
 const Brand = ({hanldeBrand,brands}) => {
   const [isOpen, setIsOpen] = useState(true);
   const toggleBrand = () => setIsOpen(!isOpen);

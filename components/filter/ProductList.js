@@ -1,17 +1,24 @@
 import React, { useState } from "react";
-import { Col, Row, Media, Button } from "reactstrap";
-import ProductItem from "./ProductBox.js";
+import { Col, Row, Button } from "reactstrap";
 import InfiniteScroll from 'react-infinite-scroll-component';
-import VendorBox from "@/components/VendorBox"
 import useSWR from 'swr'
 import fetcher from '../../libs/fetcher'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 import { useRouter } from "next/router";
-const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit, handlePaging, hasNextPage, text, hanldeOrder }) => {
+import dynamic from 'next/dynamic'
+
+const TextResult = dynamic(() => import('@/components/searchOptions/TextResult'))
+const Options = dynamic(() => import('@/components/searchOptions/Options'))
+const NoProduct = dynamic(() => import('@/components/searchOptions/NoProduct'))
+const VendorBox = dynamic(() => import('@/components/VendorBox'))
+const ProductItem = dynamic(() => import('@/components/filterOptions/ProductBox'))
+const Skeleton = dynamic(() => import('@/components/filterOptions/SkeletonProduct'))
+
+const ProductList = ({ colClass, layoutList, products,totalProduct,handleLimit,hanldeOrder,
+  handlePaging, hasNextPage, text }) => {
   const [grid, setGrid] = useState(colClass);
   const [layout, setLayout] = useState(layoutList);
   const router = useRouter()
+  const [skeletonArray,setSkeletonArray] = useState(Array.from({length: 4}, (v, i) => i))
   const brandResult = useSWR(`${process.env.API_VENDOR_URL}/search?t=${text}&limit=1&page=1`, fetcher)
   return (
     <>
@@ -20,31 +27,30 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
           <Row>
             {brandResult.data && brandResult.data.data.docs.length > 0
               ?
-
               <Col md="12">
                 <Row>
                   <Col xs="12" >
                     <div className="mt-4 mb-2">
                       <h4>Shop liên quan đến: <strong>{text}</strong></h4>
                     </div>
-                   {
-                    brandResult.data.data.docs.length > 1 && 
-                     <div className="d-flex justify-content-end">
-                    <Button
-                    onClick={() => {
-                      router.push({
-      pathname: '/vendors',
-      query: { t: text },
-    },undefined)
-                    }}
-                  className="boder-0"
-    color="warning"
-    outline
-  >
-   Thêm Kết Quả 
-  </Button>
-                    </div>
-                   }
+                    {
+                      brandResult.data.data.docs.length > 1 &&
+                      <div className="d-flex justify-content-end">
+                        <Button
+                          onClick={() => {
+                            router.push({
+                              pathname: '/vendors',
+                              query: { t: text },
+                            }, undefined)
+                          }}
+                          className="boder-0"
+                          color="warning"
+                          outline
+                        >
+                          Thêm Kết Quả
+                        </Button>
+                      </div>
+                    }
                     {brandResult.data.data.docs.map((value, i) => {
                       return (
                         <VendorBox value={value} key={i} page={"search"} />
@@ -53,119 +59,19 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
                   </Col>
                 </Row>
               </Col>
-
-
               :
               ""
             }
             <Col sm="12">
-              <Row>
-                <Col xs="12" >
-                  <div className="mt-4 mb-4">
-                    <h4>Kết quả tìm kiếm cho: <strong>{text}</strong></h4>
-                  </div>
-                </Col>
-              </Row>
+             <TextResult text={text} />
               <div className="collection-product-wrapper">
                 <div className="product-top-filter">
-
                   {products.length > 0
                     ?
-                    <>
-                      <Row>
-                        <Col>
-                          <div className="product-filter-content">
-                            <div className="search-count">
-                              <h5>
-                                Hiển Thị {products.length} Trên {totalProduct} Sản Phẩm
-                              </h5>
-                            </div>
-                            <div className="collection-view">
-                              <ul>
-                                <li>
-                                  <i
-                                    className="fa fa-th grid-layout-view"
-                                    onClick={() => {
-                                      setLayout("");
-                                      setGrid("col-lg-3");
-                                    }}
-                                  ></i>
-                                </li>
-                                <li>
-                                  <i
-                                    className="fa fa-list-ul list-layout-view"
-                                    onClick={() => {
-                                      setLayout("list-view");
-                                      setGrid("col-lg-12");
-                                    }}
-                                  ></i>
-                                </li>
-                              </ul>
-                            </div>
-                            <div
-                              className="collection-grid-view"
-                              style={
-                                layout === "list-view"
-                                  ? { opacity: 0 }
-                                  : { opacity: 1 }
-                              }
-                            >
-                              <ul>
-                                <li>
-                                  <Media
-                                    src={`/assets/icon/2.png`}
-                                    alt=""
-                                    className="product-2-layout-view"
-                                    onClick={() => setGrid("col-lg-6")}
-                                  />
-                                </li>
-                                <li>
-                                  <Media
-                                    src={`/assets/icon/3.png`}
-                                    alt="aaa"
-                                    className="product-3-layout-view"
-                                    onClick={() => setGrid("col-lg-4")}
-                                  />
-                                </li>
-                                <li>
-                                  <Media
-                                    src={`/assets/icon/4.png`}
-                                    alt=""
-                                    className="product-4-layout-view"
-                                    onClick={() => setGrid("col-lg-3")}
-                                  />
-                                </li>
-                                <li>
-                                  <Media
-                                    src={`/assets/icon/6.png`}
-                                    alt=""
-                                    className="product-6-layout-view"
-                                    onClick={() => setGrid("col-lg-2")}
-                                  />
-                                </li>
-                              </ul>
-                            </div>
-                            <div className="product-page-per-view">
-                              <select
-                                onChange={(e) => handleLimit(e.target.value)}
-                              >
-                                <option value="20">20 sản phẩm trên trang</option>
-                                <option value="25">25 sản phẩm trên trang</option>
-                                <option value="30">30 sản phẩm trên trang</option>
-                              </select>
-                            </div>
-                            <div className="product-page-filter">
-                              <select onChange={(e) => { hanldeOrder(e) }}>
-                                <option >Phổ biến</option>
-                                <option >Cao tới thấp</option>
-                                <option >Thấp tới cao</option>
-                                <option >Mới nhất</option>
-                              </select>
-                            </div>
-                          </div>
-                        </Col>
-                      </Row>
-                    </>
+                  <Options totalProduct={totalProduct} handleLimit={handleLimit} hanldeOrder={hanldeOrder}
+                  setGrid={setGrid} setLayout={setLayout} currentProduct={products.length} layout={layout}
+                  setSkeletonArray={setSkeletonArray}
+                   />
                     :
                     ""
                   }
@@ -174,20 +80,7 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
                   <Row>
                     {!products || !products || products.length === 0 ? (
                       products && products && products.length === 0 ? (
-                        <Col xs="12">
-                          <div>
-                            <div className="col-sm-12 empty-cart-cls text-center">
-                              <img
-                                src={`/assets/images/empty-search.jpg`}
-                                className="img-fluid mb-4 mx-auto"
-                                alt=""
-                              />
-                              <h3>
-                                <strong>Không có sản phẩm nào</strong>
-                              </h3>
-                            </div>
-                          </div>
-                        </Col>
+                        <NoProduct />
                       ) : (
                         <div className="row mx-0 margin-default mt-4">
                           <div className="col-xl-3 col-lg-4 col-6">
@@ -210,28 +103,7 @@ const ProductList = ({ colClass, layoutList, products, totalProduct, handleLimit
                         next={handlePaging}
                         hasMore={hasNextPage}
                         loader={
-                          <Row className="mb-4">
-                            <div className={grid}>
-                              <div className="product">
-                                <Skeleton count={1} height={250} />
-                              </div>
-                            </div>
-                            <div className={grid}>
-                              <div className="product">
-                                <Skeleton count={1} height={250} />
-                              </div>
-                            </div>
-                            <div className={grid}>
-                              <div className="product">
-                                <Skeleton count={1} height={250} />
-                              </div>
-                            </div>
-                            <div className={grid}>
-                              <div className="product">
-                                <Skeleton count={1} height={250} />
-                              </div>
-                            </div>
-                          </Row>
+                         <Skeleton grid={grid} value={skeletonArray} />
                         }
                       >
                         <Row>
