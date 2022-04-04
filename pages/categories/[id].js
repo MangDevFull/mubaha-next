@@ -68,6 +68,8 @@ export default function SerchCategory({data}){
     router.push({
       pathname : `/categories/${slug}`,
       query: searchQuery
+    },undefined, {
+      shallow: true,
     })
   }, [limit,brand,location,rating,slug,priceMin,priceMax,order,sortBy,cuurentPage])
   useLayoutEffect(() => {
@@ -111,7 +113,6 @@ export default function SerchCategory({data}){
   }
   const handlePaging = async () => {
     const page = cuurentPage + 1
-    setCurrentPage(page)
     try {
       let searchQuery = `limit=${limit}&page=${page}`
       if (location !== "") {
@@ -141,10 +142,11 @@ export default function SerchCategory({data}){
         const list = _.concat(products,data.data.products.docs)
         setTimeout(() =>{
           setProduct([...list])
-          setCurrentPage(data.data.page)
-          setTotalPages(data.data.totalPages)
-          setTotalProduct(data.data.totalDocs)
-          setHasNextPage(data.data.hasNextPage)
+          setCurrentPage(data.data.products.page)
+          setCurrentPage(page)
+          setTotalPages(data.data.products.totalPages)
+          setTotalProduct(data.data.products.totalDocs)
+          setHasNextPage(data.data.products.hasNextPage)
         },1500)
         
       }

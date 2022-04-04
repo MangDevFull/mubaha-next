@@ -76,6 +76,8 @@ export default function FilterLayoutComponent({ data }) {
     }
     router.push({
       query: searchQuery
+    },undefined, {
+      shallow: true,
     })
   }, [limit, brand, location, rating, cat, text, priceMin, priceMax, order, sortBy, cuurentPage])
   useLayoutEffect(() => {
