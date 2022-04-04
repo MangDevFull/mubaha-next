@@ -14,8 +14,8 @@ const ProductList = ({ colClass, layoutList, products,
   const [grid, setGrid] = useState(colClass);
   const [layout, setLayout] = useState(layoutList);
   return (
-    <Col className="collection-content pl-5 pr-5" style={{ backgroundColor: 'white' }}>
-      <div className="page-main-content" >
+    <Col className="collection-content pl-5 pr-5" style={{ backgroundColor: "white" }}>
+      <div className="page-main-content">
         <Row>
           <Col sm="12">
           <TextResult text={text} cat="showCat" />
@@ -93,7 +93,7 @@ const ProductList = ({ colClass, layoutList, products,
                                 />
                               </div>
                             </div>
-                          )
+                          );
                         })}
                       </Row>
                     </InfiniteScroll>
