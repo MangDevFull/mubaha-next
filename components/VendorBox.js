@@ -42,7 +42,7 @@ export default function VendorBox({value,page}) {
               <Col className="border-left">
                 <div className="d-flex justify-content-center">
 
-                  <img src="/assets/icon/product.png" className={styles.iconSize} />
+                  <img src="/assets/icon/product.svg" className={styles.iconSize} />
                   <p className={`mt-1 ml-2 ${styles.numberFormat}`}>{value.responseRate}</p>
 
                 </div>
@@ -52,7 +52,7 @@ export default function VendorBox({value,page}) {
               </Col>
               <Col className="border-left">
                 <div className="d-flex justify-content-center">
-                  <img src="/assets/icon/star.png" className={styles.iconSize} />
+                  <img src="/assets/icon/star.svg" className={styles.iconSize} />
                   <p className={`mt-1 ml-2 ${styles.numberFormat}`}>{value.ratingOverall}</p>
                 </div>
                 <div className="d-flex justify-content-center">
@@ -61,7 +61,7 @@ export default function VendorBox({value,page}) {
               </Col>
               <Col className="border-left" style={{ width: "800px" }} >
                 <div className="d-flex justify-content-center">
-                  <img src="/assets/icon/message.png" className={styles.iconSize} />
+                  <img src="/assets/icon/message.svg" className={styles.iconSize} />
                   <p className={`mt-1 ml-2 ${styles.numberFormat}`}>{value.responseRate}</p>
                 </div>
                 <div className="d-flex justify-content-center">
@@ -71,7 +71,7 @@ export default function VendorBox({value,page}) {
             </Row>
           </Container>
         </Col>
-        {!page=="search" && 
+        {!(page==="search") && 
         <Col xs={2} >
           <div className="d-flex justify-content-center">
           <Link href={`vendors/${value.owner.username}`} >

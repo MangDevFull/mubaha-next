@@ -47,7 +47,7 @@ export default function Search() {
               value={brand}
               ref={inputRef}
               onChange={(e) => handleBrand(e.target.value)}
-              placeholder="Tìm kiếm sản phẩm, thương hiệu, ..."
+              placeholder="Tìm kiếm sản phẩm, thương hiệu , danh mục bạn muốn ....."
               className="nav-search nav-search-field"
               aria-expanded="true"
             />

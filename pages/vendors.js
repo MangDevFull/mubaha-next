@@ -46,7 +46,7 @@ export default function Searchvendor({ fallback }) {
                       ?
                       issues.map((value, i) => {
                         return (
-                         <VendorBox value={value} key={i} />
+                         <VendorBox value={value} key={i} page="vendor" />
                         )
                       })
                       :
