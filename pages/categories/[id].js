@@ -68,10 +68,44 @@ export default function SerchCategory({data}){
     router.push({
       pathname : `/categories/${slug}`,
       query: searchQuery
+    })
+  }, [limit,brand,location,rating,slug,priceMin,priceMax,order,sortBy])
+  useLayoutEffect(() => {
+    let searchQuery = {
+      limit: limit,
+      page:cuurentPage
+    }
+    if (location !== "") {
+      searchQuery ={
+        ...searchQuery,
+        location: location,
+      }
+    }
+    if (brand !== "") {
+      searchQuery ={...searchQuery, brand: brand}
+    }
+    if (typeof priceMax === "number") {
+      searchQuery = {...searchQuery,priceMax}
+    }
+    if (typeof priceMin === "number") {
+      searchQuery ={...searchQuery,priceMin}
+    }
+    if(rating >0){
+      searchQuery = {...searchQuery,rating: rating}
+    }
+    if(order){
+      searchQuery = {...searchQuery,order:order}
+    }
+    if(sortBy){
+      searchQuery = {...searchQuery,sortBy: sortBy}
+    }
+    router.push({
+      pathname : `/categories/${slug}`,
+      query: searchQuery
     },undefined, {
       shallow: true,
     })
-  }, [limit,brand,location,rating,slug,priceMin,priceMax,order,sortBy,cuurentPage])
+  }, [cuurentPage])
   useLayoutEffect(() => {
     handleApi()
   }, [limit,brand,location,rating,slug,priceMin,priceMax,order,sortBy])

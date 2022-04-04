@@ -21,7 +21,7 @@ const Category = ({categories,hanldeCategory}) => {
                   return(
                     <li key={i} onClick={() => hanldeCategory(category.category._id)} role="button">
                   <a className="custom-control-label" role="button" >
-                    {category.category.name} ({category.total})
+                    {category.category.name}
                   </a>
                 </li>
  

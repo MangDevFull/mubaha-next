@@ -25,11 +25,10 @@ const Brand = ({hanldeBrand,brands}) => {
                       onChange={hanldeBrand}
                     />
                     <Label className="custom-control-label" htmlFor={`brand${i}`}>
-                        {value.brand.name} ({value.total})
+                        {value.brand.name}
                     </Label>
                   </div>
                     )
-
                   })
                   :
                   "Không tìm thấy các sự lựa chọn nào"

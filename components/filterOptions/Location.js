@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { Collapse, Input,Label } from "reactstrap";
-import { StockCountry } from '@/enums/product.enum.js'
 import locationEnum from "@/enums/location.enum";
 const Location = ({handleLocation,stockCountries}) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -22,7 +21,7 @@ const Location = ({handleLocation,stockCountries}) => {
                   onChange={handleLocation}
                   className="custom-control-input" id={`location${index}`} />
                 <Label className="custom-control-label" htmlFor={`location${index}`}>
-                  {locationEnum[value.country]} ({value.total})
+                  {locationEnum[value.country]}
                 </Label>
                   </div>
 

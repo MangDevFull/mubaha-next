@@ -63,7 +63,7 @@ const ProductList = ({ colClass, layoutList, products,totalProduct,handleLimit,h
               ""
             }
             <Col sm="12">
-             <TextResult text={text} t="showtext" />
+             <TextResult text={text} location={"oke"}/>
               <div className="collection-product-wrapper">
                 <div className="product-top-filter">
                   {products.length > 0
@@ -114,6 +114,7 @@ const ProductList = ({ colClass, layoutList, products,totalProduct,handleLimit,h
                                   <ProductItem
                                     des={true}
                                     product={p}
+                                    rating={p.avgRating}
                                     cartClass="cart-info cart-wrap"
                                   />
                                 </div>

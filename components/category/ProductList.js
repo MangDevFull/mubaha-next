@@ -18,7 +18,7 @@ const ProductList = ({ colClass, layoutList, products,
       <div className="page-main-content" >
         <Row>
           <Col sm="12">
-          <TextResult text={text} />
+          <TextResult text={text} cat="showCat" />
             <div className="collection-product-wrapper">
               <div className="product-top-filter">
 
