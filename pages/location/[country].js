@@ -1,13 +1,13 @@
 import SearchLayout from "@/components/SearchLayout"
-import React, { useState, useLayoutEffect, useEffect } from "react";
-import FilterPage from "@/components/filter/FilterTextSearch.js"
-import ProductList from "@/components/filter/ProductList.js"
+import React, { useState, useLayoutEffect } from "react";
+import FilterPage from "@/components/location/FilterLocationSearch"
+import ProductList from "@/components/location/ProductList.js"
 import _ from 'lodash'
 import sortByType from "@/enums/sortByType.enum.js";
 import orderType from "@/enums/sortOrderType.enum.js"
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useRouter } from 'next/router'
-export default function FilterLayoutComponent({ data }) {
+export default function SearchLocation({data}){
   const router = useRouter()
   const [sidebarView, setSidebarView] = useState(false);
   const openCloseSidebar = () => {
@@ -23,7 +23,6 @@ export default function FilterLayoutComponent({ data }) {
   const [totalPages, setTotalPages] = useState(data.produtcs.totalPages)
   const [totalProduct, setTotalProduct] = useState(data.produtcs.totalDocs)
   const [hasNextPage, setHasNextPage] = useState(data.produtcs.hasNextPage)
-  const [text, setText] = useState(data.t)
   const [brand, setBrand] = useState(data.brands)
   const [cat, setCateID] = useState(data.cat)
   const [priceMin, setPriceMin] = useState(data.minPrice)
@@ -36,25 +35,13 @@ export default function FilterLayoutComponent({ data }) {
   const handleLimit = (limit) => {
     setLimit(limit)
   }
-  useEffect(() => {
-    setText(data.t)
-  }, [data.t])
   useLayoutEffect(() => {
     let searchQuery = {
       limit: limit,
       page: cuurentPage
     }
-    if (location !== "") {
-      searchQuery = {
-        ...searchQuery,
-        location: location,
-      }
-    }
     if (brand !== "") {
       searchQuery = { ...searchQuery, brand: brand }
-    }
-    if (text !== "") {
-      searchQuery = { ...searchQuery, t: text }
     }
     if (cat !== "") {
       searchQuery = { ...searchQuery, cat: cat }
@@ -75,25 +62,17 @@ export default function FilterLayoutComponent({ data }) {
       searchQuery = { ...searchQuery, sortBy: sortBy }
     }
     router.push({
+      pathname : `/location/${location}`,
       query: searchQuery
     },undefined)
-  }, [limit, brand, location, rating, cat, text, priceMin, priceMax, order, sortBy])
+  }, [limit, brand, rating, cat, priceMin, priceMax, order, sortBy])
   useLayoutEffect(() => {
     let searchQuery = {
       limit: limit,
       page: cuurentPage
     }
-    if (location !== "") {
-      searchQuery = {
-        ...searchQuery,
-        location: location,
-      }
-    }
     if (brand !== "") {
       searchQuery = { ...searchQuery, brand: brand }
-    }
-    if (text !== "") {
-      searchQuery = { ...searchQuery, t: text }
     }
     if (cat !== "") {
       searchQuery = { ...searchQuery, cat: cat }
@@ -114,15 +93,15 @@ export default function FilterLayoutComponent({ data }) {
       searchQuery = { ...searchQuery, sortBy: sortBy }
     }
     router.push({
+      pathname : `/location/${location}`,
       query: searchQuery
-    },undefined, {
-      shallow: true,
+    },undefined,{
+      shallow:true,
     })
   }, [cuurentPage])
-  
   useLayoutEffect(() => {
     handleApi()
-  }, [limit, brand, location, rating, cat, text, priceMin, priceMax, order, sortBy])
+  }, [limit, brand, location, rating, cat, priceMin, priceMax, order, sortBy])
   const hanldeBrand = (e) => {
     const isCheck = e.target.checked
     const value = e.target.value
@@ -139,22 +118,6 @@ export default function FilterLayoutComponent({ data }) {
       setBrand(rs.toString())
     }
   }
-  const handleLocation = (e) => {
-    const isCheck = e.target.checked
-    const value = e.target.value
-    if (isCheck) {
-      if (location === "") {
-        setLocation(value)
-      } else {
-        const prev = `${location},${value}`
-        setLocation(prev)
-      }
-    } else {
-      const list = _.split(location, ',')
-      const rs = _.pull(list, value)
-      setLocation(rs.toString())
-    }
-  }
   const hanldePrice = (min, max) => {
     setPriceMax(max)
     setPriceMin(min)
@@ -164,14 +127,8 @@ export default function FilterLayoutComponent({ data }) {
     setCurrentPage(page)
     try {
       let searchQuery = `limit=${limit}&page=${page}`
-      if (location !== "") {
-        searchQuery += `&location=${location}`
-      }
       if (brand !== "") {
         searchQuery += `&brands=${brand}`
-      }
-      if (text !== "") {
-        searchQuery += `&t=${text}`
       }
       if (cat !== "") {
         searchQuery += `&cat=${cat}`
@@ -191,7 +148,7 @@ export default function FilterLayoutComponent({ data }) {
       if (sortBy) {
         searchQuery += `&sortBy=${sortBy}`
       }
-      const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
+      const res = await fetch(`${process.env.API_LOCATION_URL}/${location}?${searchQuery}`)
       const data = await res.json()
       if (data.status === 200) {
         const list = _.concat(products, data.data.docs)
@@ -202,7 +159,6 @@ export default function FilterLayoutComponent({ data }) {
           setTotalProduct(data.data.totalDocs)
           setHasNextPage(data.data.hasNextPage)
         }, 1500)
-
       }
     } catch (error) {
       console.log("error", error)
@@ -211,14 +167,8 @@ export default function FilterLayoutComponent({ data }) {
   const handleApi = async () => {
     try {
       let searchQuery = `limit=${limit}&page=${cuurentPage}`
-      if (location !== "") {
-        searchQuery += `&location=${location}`
-      }
       if (brand !== "") {
         searchQuery += `&brands=${brand}`
-      }
-      if (text !== "") {
-        searchQuery += `&t=${text}`
       }
       if (cat !== "") {
         searchQuery += `&cat=${cat}`
@@ -238,7 +188,7 @@ export default function FilterLayoutComponent({ data }) {
       if (sortBy) {
         searchQuery += `&sortBy=${sortBy}`
       }
-      const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
+      const res = await fetch(`${process.env.API_LOCATION_URL}/${location}?${searchQuery}`)
       const data = await res.json()
       if (data.status === 200) {
         setProduct([...data.data.docs])
@@ -281,19 +231,19 @@ export default function FilterLayoutComponent({ data }) {
       }
     }
   }
-  return (
+  return(
     <>
-      <FilterPage
+     <FilterPage
         sm="3"
-        sidebarView={sidebarView} hanldeBrand={hanldeBrand} handleLocation={handleLocation}
-        hanldeCategory={hanldeCategory}
-        closeSidebar={() => openCloseSidebar(sidebarView)} hanldePrice={hanldePrice} text={text}
+        sidebarView={sidebarView} hanldeBrand={hanldeBrand}
+        hanldeCategory={hanldeCategory} location={location}
+        closeSidebar={() => openCloseSidebar(sidebarView)} hanldePrice={hanldePrice}
         hanldeRating={hanldeRating}
       />
       <ProductList
         limit={limit} totalProduct={totalProduct} hasNextPage={hasNextPage} totalPages={totalPages}
         handlePaging={handlePaging}
-        text={data.t} hanldeOrder={hanldeOrder}
+        text={location} hanldeOrder={hanldeOrder}
         products={products} cuurentPage={cuurentPage}
         handleLimit={handleLimit}
         colClass="col-xl-3 col-md-6 col-grid-box"
@@ -302,24 +252,18 @@ export default function FilterLayoutComponent({ data }) {
     </>
   )
 }
-FilterLayoutComponent.getLayout = function getLayout(page) {
+SearchLocation.getLayout = function getLayout(page) {
   return <SearchLayout>{page}</SearchLayout>;
 };
 export async function getServerSideProps(ctx) {
-  const { limit, page, maxPrice, minPrice, location, brands, t, cat, rating, order, sortBy } = ctx.query
+  const { limit, page, maxPrice, minPrice, brands,cat, country,rating,order,sortBy} = ctx.query
   let searchQuery = `limit=${limit || 20}&page=${page || 1}`
 
-  if (location) {
-    searchQuery += `&location=${location}`
+  if (cat) {
+    searchQuery += `&cat=${cat}`
   }
   if (brands) {
     searchQuery += `&brands=${brands}`
-  }
-  if (t) {
-    searchQuery += `&t=${t}`
-  }
-  if (cat) {
-    searchQuery += `&cat=${cat}`
   }
   if (maxPrice) {
     searchQuery += `&maxPrice=${maxPrice}`
@@ -327,26 +271,20 @@ export async function getServerSideProps(ctx) {
   if (minPrice) {
     searchQuery += `&minPrice=${minPrice}`
   }
-  if (rating) {
+  if(rating){
     searchQuery += `&rating=${rating}`
   }
-  if (order) {
+  if(order){
     searchQuery += `&order=${order}`
   }
-  if (sortBy) {
+  if(sortBy){
     searchQuery += `&sortBy=${sortBy}`
   }
-  const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
+   const res = await fetch(`${process.env.API_LOCATION_URL}/${country}?${searchQuery}`)
   const data = await res.json()
-
-  return {
-    props: {
-      data: {
-        produtcs: data.data, maxPrice: maxPrice || "",
-        minPrice: minPrice || "", location: location || "", brands: brands || "",
-        t: t || "", cat: cat || "", rating: rating || "", sortBy: sortBy || "", order: order || ""
-      }
-    }
-  }
+  console.log("data",data)
+  return { props: { data: { produtcs: data.data, maxPrice: maxPrice || "", 
+  minPrice: minPrice || "", brands: brands || "", cat:cat || "",
+  rating:rating ||"" ,sortBy:sortBy || "",order:order || "",location : country || ""} } }
 
 }

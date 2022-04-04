@@ -1,16 +1,19 @@
-import { useEffect } from 'react';
 import { Col } from 'reactstrap';
-import Category from './Category';
-import Brand from './Brand'
-import Price from './Price';
-import Rating from './Rating'
-import Location from './Location.js'
 import useSWR from 'swr'
 import fetcher from '../../libs/fetcher'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
-const FilterPage = ({ sm, sidebarView, closeSidebar, hanldeBrand, handleLocation, hanldePrice, text ,hanldeRating,hanldeCategory}) => {
+import dynamic from 'next/dynamic'
+const Category = dynamic(() => import('@/components/filterOptions/Category'))
+const Price = dynamic(() => import('@/components/filterOptions//Price'))
+const Rating = dynamic(() => import('@/components/filterOptions//Rating'))
+const Brand = dynamic(() => import('@/components/filterOptions//Brand'))
+const Location = dynamic(() => import('@/components/filterOptions//Location'))
+const Skeleton = dynamic(() => import('@/components/filterOptions/SkeletonFilterOption'))
+const FilterPage = ({ sm, sidebarView, closeSidebar, hanldeBrand, handleLocation,
+     hanldePrice, text ,hanldeRating,hanldeCategory}) => {
     const { data, error } = useSWR(`${process.env.API_PRODUCT_URL}/filters?t=${text}`, fetcher)
+    if(error) {
+        console.error(error)
+    }
     return (
         <>
             <Col sm={sm} className="collection-filter" style={sidebarView ? { left: "0px" } : {}}>
@@ -32,27 +35,7 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, hanldeBrand, handleLocation
                         </>
                         :"Không tìm thấy các sự lựa chọn nào"
                     ) : (
-                        <>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
-                        <br></br>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
-                        <br></br>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
-                        <br></br>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
-                        <br></br>
-                        <Skeleton height={30} /> 
-                        <Skeleton width={"50%"} count={2} />
-                        <Skeleton width={"25%"} count={2} />
-                        </>
+                        <Skeleton /> 
                     )}
 
                 </div>

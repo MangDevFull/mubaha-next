@@ -25,11 +25,6 @@ const Vendor = dynamic(() => import("@/components/cart/Vendor.js"));
 // const Sticky = dynamic(() => import("@/components/cart/Sticky"));
 export default function Cart({ data }) {
   const { data: session } = useSession();
-  const {
-    elementRef: comboBtnRef,
-    isSticky,
-    handleScroll,
-  } = Sticky({ defaultSticky: false, isTop: false });
 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -52,9 +47,7 @@ export default function Cart({ data }) {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    
   }, []);
   const updateQuantity = (vendorId, ProductId, quantity) => {
     products[vendorId].products[ProductId].quantity = quantity;
@@ -438,6 +431,10 @@ export default function Cart({ data }) {
   };
 
   if (products.length > 0) {
+    const {
+      elementRef: comboBtnRef,
+      isSticky,
+    } = Sticky({ defaultSticky: false, isTop: false });
     return (
       <>
         <Head>
@@ -704,7 +701,15 @@ export default function Cart({ data }) {
             <Row>
               <Col sm="12">
                 <div className="mt-5">
-                  <div className="col-sm-12 empty-cart-cls text-center">
+                  <div className="col-sm-12 empty-cart-cls text-center"
+                   style={{
+              textAlign: "center",
+              position: isSticky ? "fixed" : "sticky",
+              bottom: "0",
+              width: "100%",
+              zIndex: 2,
+            }}
+                  >
                     <Media
                       src="/assets/icon/cart-is-empty-800x800.png"
                       className="img-fluid mx-auto"
