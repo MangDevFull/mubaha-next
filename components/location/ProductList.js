@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import fetcher from '../../libs/fetcher'
 import { useRouter } from "next/router";
 import dynamic from 'next/dynamic'
+import PostLoader from '@/components/common/PostLoader'
 
 const TextResult = dynamic(() => import('@/components/searchOptions/TextResult'))
 const Options = dynamic(() => import('@/components/searchOptions/Options'))
