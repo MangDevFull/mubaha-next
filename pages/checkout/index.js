@@ -31,6 +31,7 @@ const Checkout = ({ data }) => {
   const { data: session } = useSession();
 
   const [showVoucher, setShowVoucher] = useState(false);
+  const [showVoucherShop, setShowVoucherShop] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -42,7 +43,9 @@ const Checkout = ({ data }) => {
   const [cardExp, setCardExp] = useState("");
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const [selectedVoucher, setSelectedVoucher] = useState();
+  const [selectedVoucher, setSelectedVoucher] = useState([]);
+  const [selectedVoucherShop, setSelectedVoucherShop] = useState([]);
+  const [voucherTotal, setVoucherTotal] = useState([]);
   const [groupedItems, setGroupedItems] = useState([]);
   const [listAddress, setListAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
@@ -108,10 +111,10 @@ const Checkout = ({ data }) => {
     }
   };
 
-  const handleVoucherShow = async () => {
+  const handleVoucherShow = async (type) => {
     setShowVoucher(true);
     try {
-      const response = await fetch(process.env.API_VOUCHER_URL, {
+      const response = await fetch(`${process.env.API_VOUCHER_URL}?type=${type}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -125,14 +128,73 @@ const Checkout = ({ data }) => {
       console.error(error);
     }
   };
+  const handleVoucherShopShow = async (type, vendorId) => {
+    setShowVoucherShop(true);
+    try {
+      const response = await fetch(
+        `${process.env.API_VOUCHER_URL}?type=${type}&vendorId=${vendorId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + session.accessToken,
+          },
+        }
+      );
+      const data = await response.json();
+      const newVouchers = data.data;
+      setVouchers(newVouchers);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const handleCloseVoucher = () => {
     setShowVoucher(false);
   };
-  const handleApplyVoucher = (voucher) => {
-    setSelectedVoucher(voucher);
-    handleCloseVoucher();
-    console.log(voucher);
+  const handleCloseVoucherShop = () => {
+    setShowVoucherShop(false);
   };
+  useEffect(() => {})
+  const handleApplyVoucher = async (voucher) => {
+    setSelectedVoucher([voucher._id]);
+    const usedVouchers = [...selectedVoucher, ...selectedVoucherShop];
+ 
+    const response = await fetch(`${process.env.API_ORDER_URL}/pre-voucher?s=${router.query.s}&f=${router.query.f}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
+      },
+      body: JSON.stringify({ voucherIds: usedVouchers }),
+    })
+    console.log(response)
+    // const data = await response.json()
+    // if(data.status == 200) {
+    //   console.log('pre-voucher', data)
+    // }
+  };
+  const handleApplyVoucherShop = async (voucher) => {
+    setSelectedVoucherShop([voucher._id]);
+
+    const usedVouchers = [...selectedVoucher, ...selectedVoucherShop];
+    
+    const response = await fetch(`${process.env.API_ORDER_URL}/pre-voucher?s=${router.query.s}&f=${router.query.f}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + session.accessToken,
+      },
+      body: JSON.stringify({ voucherIds: usedVouchers }),
+    })
+    const data = await response.json()
+    if(data.status == 200) {
+      console.log('pre-voucher', data)
+      
+    }
+    console.log('usedvoucher', usedVouchers)
+  };
+  
+
 
   const handleSelectPaymentMethod = (e) => {
     setPaymentMethod(e.target.value);
@@ -181,17 +243,19 @@ const Checkout = ({ data }) => {
     };
     setVisible(true);
 
-    const response = await fetch(`${process.env.API_ORDER_URL}?s=${router.query.s}&f=${router.query.f}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + session.accessToken,
-      },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(
+      `${process.env.API_ORDER_URL}?s=${router.query.s}&f=${router.query.f}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + session.accessToken,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
     const data = await response.json();
     if (data.status === 200) {
-      
       setTimeout(function () {
         setVisible(false);
         router.push("/");
@@ -281,7 +345,15 @@ const Checkout = ({ data }) => {
                 groupedItems.map((listCarts, index) => {
                   return (
                     <div key={index}>
-                      <CartList listCarts={listCarts} />
+                      <CartList
+                        listCarts={listCarts}
+                        selectedVoucherShop={selectedVoucherShop}
+                        handleVoucherShopShow={handleVoucherShopShow}
+                        handleApplyVoucherShop={handleApplyVoucherShop}
+                        vouchers={vouchers}
+                        showVoucherShop={showVoucherShop}
+                        handleCloseVoucher={() => setShowVoucherShop(false)}
+                      />
                     </div>
                   );
                 })}
@@ -289,13 +361,14 @@ const Checkout = ({ data }) => {
             <div className={`${styles.voucher}`}>
               <h4>3. Chọn Voucher</h4>
               <VoucherShop
-                selectedVoucher={selectedVoucher}
+                selectedVoucher={selectedVoucherShop}
                 handleVoucherShow={handleVoucherShow}
                 groupedItems={groupedItems}
                 showVoucher={showVoucher}
                 handleCloseVoucher={handleCloseVoucher}
                 vouchers={vouchers}
                 handleApplyVoucher={handleApplyVoucher}
+                groupedItems={groupedItems}
               />
             </div>
             <div className={`${styles.payments}`}>
@@ -357,6 +430,7 @@ const Checkout = ({ data }) => {
               <TotalPrice
                 groupedItems={groupedItems}
                 totalPriceProduct={totalPriceProduct}
+                selectedVoucherShop={selectedVoucherShop}
                 selectedVoucher={selectedVoucher}
                 handleOrder={handleOrder}
                 visible={visible}
@@ -518,8 +592,6 @@ const Checkout = ({ data }) => {
             </div>
           </ModalBody>
         </Modal>
-
-
       </CommonLayout>
       <Footer />
     </>

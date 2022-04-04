@@ -222,7 +222,6 @@ export default function SerchCategory({data}){
       }
     }
   }
-  console.log("brand",brand)
   return(
     <>
      <div style={{ backgroundColor: "rgb(245, 245, 250)" }}>

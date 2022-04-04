@@ -4,7 +4,7 @@ import styles from "@/styles/checkout.module.css";
 import NumberFormat from "react-number-format";
 import format from "date-fns/format";
 
-const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher, selectedVoucher }) => {
+const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher, selectedVoucher, titleHeader, placeholder, typeVoucher }) => {
   return (
     <Modal
       size="lg"
@@ -12,14 +12,14 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher, sel
       centered
       isOpen={isOpen}
     >
-      <ModalHeader>Chọn Mubaha Voucher</ModalHeader>
+      <ModalHeader>{titleHeader}</ModalHeader>
       <ModalBody>
         <div className={`${styles.modal_voucher}`}>
           <div className={`${styles.section_search_voucher}`}>
             <span>Mã voucher</span>
             <div className={`${styles.input_voucher}`}>
               <div className={`${styles.input_with_validator}`}>
-                <input type="text" placeholder="Mã Mubaha Voucher" maxLength="255" />
+                <input type="text" placeholder={placeholder} maxLength="255" />
               </div>
             </div>
             <button className={`${styles.button_apply}`}>
@@ -28,10 +28,10 @@ const Voucher = ({ isOpen, handleCloseVoucher, vouchers, handleApplyVoucher, sel
           </div>
           <div className={`${styles.section_list_voucher}`}>
             <div className={`${styles.title_name_list}`}>
-              mã miễn phí vận chuyển và mã giảm giá đơn hàng
+              {typeVoucher}
             </div>
 
-            {vouchers.docs &&
+             { vouchers && vouchers.docs &&
               vouchers.docs.length > 0 &&
               vouchers.docs.map((voucher, index) => {
                 return (

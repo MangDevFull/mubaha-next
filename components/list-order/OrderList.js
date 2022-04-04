@@ -12,7 +12,6 @@ import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
 import NumberFormat from "react-number-format";
 
 const OrderList = ({ order }) => {
-  console.log("fff", order);
   return (
     <>
       <Card className="p-4 my-2" style={{ backgroundColor: "rgba(0, 0, 0, 0.03)" }}>

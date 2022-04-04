@@ -11,7 +11,6 @@ import 'react-loading-skeleton/dist/skeleton.css'
 const FilterPage = ({ sm, sidebarView, closeSidebar, slug,
     hanldeBrand, handleLocation, hanldePrice, cateChild, hanldeRating, hanldeCategory }) => {
     const { data, error } = useSWR(`${process.env.API_URL}/categories/${slug}/filters`, fetcher)
-    console.log("jsjjsjsjjsjsjjs",data)
     return (
         <>
             <Col sm={sm} className="collection-filter" style={sidebarView ? { left: "0px" } : {}}>

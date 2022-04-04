@@ -197,7 +197,6 @@ export default function FilterLayoutComponent({ data }) {
       if(sortBy){
         searchQuery += `&sortBy=${sortBy}`
       }
-      console.log(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
       const res = await fetch(`${process.env.API_PRODUCT_URL}/search?${searchQuery}`)
       const data = await res.json()
       if (data.status === 200) {
