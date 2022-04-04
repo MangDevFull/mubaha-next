@@ -8,6 +8,7 @@ import _ from "lodash"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import VendorBox from "@/components/VendorBox.js"
+import Head from "next/head";
 const API = `${process.env.API_VENDOR_URL}/search`
 export default function Searchvendor({ fallback }) {
   const [text, setText] = useState(fallback.text)
@@ -31,6 +32,7 @@ export default function Searchvendor({ fallback }) {
   const isReachingEnd = data && data[data.length - 1].data.page === PAGE_SIZE
   return (
     <SWRConfig value={{ fallback }}>
+       <Head>  <title>{text}</title></Head>
       <div style={{ backgroundColor: "rgb(245, 245, 250)" }}>
         <section className="section-b-space ratio_asos">
           <div className="collection-wrapper">

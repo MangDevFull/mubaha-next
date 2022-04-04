@@ -47,7 +47,7 @@ export default function Cart({ data }) {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    
+
   }, []);
   const updateQuantity = (vendorId, ProductId, quantity) => {
     products[vendorId].products[ProductId].quantity = quantity;
@@ -429,12 +429,11 @@ export default function Cart({ data }) {
       }
     }
   };
-
+  const {
+    elementRef: comboBtnRef,
+    isSticky,
+  } = Sticky({ defaultSticky: false, isTop: false });
   if (products.length > 0) {
-    const {
-      elementRef: comboBtnRef,
-      isSticky,
-    } = Sticky({ defaultSticky: false, isTop: false });
     return (
       <>
         <Head>
@@ -699,16 +698,14 @@ export default function Cart({ data }) {
         <section className={`cart-section section-b-space ${styles.backgroundFull}`}>
           <Container>
             <Row>
+            <div ref={comboBtnRef}></div>
               <Col sm="12">
                 <div className="mt-5">
                   <div className="col-sm-12 empty-cart-cls text-center"
-                   style={{
-              textAlign: "center",
-              position: isSticky ? "fixed" : "sticky",
-              bottom: "0",
-              width: "100%",
-              zIndex: 2,
-            }}
+                    style={{
+                      textAlign: "center",
+                      position: isSticky ? "sticky" : "sticky",
+                    }}
                   >
                     <Media
                       src="/assets/icon/cart-is-empty-800x800.png"
