@@ -11,3 +11,14 @@
 .starThin{
   color: #ffa200;
 }
+.priceOptions{
+  font-size: 16px;
+  background-color:rgb(238, 238, 238);
+  color: rgb(36, 36, 36);
+}
+.productBox{
+  box-shadow: 0 0.0625rem 0.125rem 0 rgb(0 0 0 / 10%);
+  background-color: white;
+  border-radius: 0.125rem;
+  cursor: pointer;
+}

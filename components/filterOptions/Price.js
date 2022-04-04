@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Input, Button } from "reactstrap";
+import { Button, Badge } from "reactstrap";
 import NumberFormat from "react-number-format";
 import styles from '@/styles/filter.module.css'
-const Price = ({hanldePrice}) => {
+import priceOptins from "@/enums/priceOptions.enum"
+const Price = ({ hanldePrice }) => {
   const [min, setMin] = useState(0)
   const [max, setMax] = useState(0)
   const hanldeMinPrice = (e) => {
@@ -18,10 +19,12 @@ const Price = ({hanldePrice}) => {
       setMin(prevMax)
       setMax(prevMin)
       hanldePrice(prevMax, prevMin)
-    }else{
+    } else {
       hanldePrice(min, max)
     }
-    
+  }
+  const hanldeOptions = (minOptions, maxOptions)=> {
+    hanldePrice(minOptions, maxOptions)
   }
 
   return (
@@ -29,6 +32,15 @@ const Price = ({hanldePrice}) => {
       <div className="collection-collapse-block border-0 open">
         <h3 className="collapse-block-title">Khoảng Giá</h3>
         <div className="collection-collapse-block-content">
+          {priceOptins.map((value, index) => {
+            return (
+              <Badge pill className={`${styles.priceOptions} mt-1`} 
+              role="button" onClick={()=>hanldeOptions(value.min,value.max)}>
+                {value.text}
+              </Badge>
+            )
+
+          })}
           <div className="wrapper mt-3" >
             <div className="range-slider d-flex" >
               <NumberFormat

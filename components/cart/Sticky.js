@@ -30,7 +30,7 @@ const Sticky = ({ defaultSticky = false, isTop = true }) => {
     };
   }, [isSticky, isTop]);
 
-  return { elementRef, isSticky, handleScroll };
+  return { elementRef, isSticky };
 };
 
 export default Sticky;

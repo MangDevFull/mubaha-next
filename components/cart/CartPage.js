@@ -421,7 +421,6 @@ const CartPage = ({ data }) => {
     }
   };
   if (products.length > 0) {
-    const { elementRef: comboBtnRef, isSticky } = Sticky({ defaultSticky: false, isTop: false });
     return (
       <>
         <Modal2
@@ -607,15 +606,7 @@ const CartPage = ({ data }) => {
         </div>
         <div ref={comboBtnRef}></div>
         {!isLoading && (
-          <div
-            style={{
-              textAlign: "center",
-              position: isSticky ? "fixed" : "sticky",
-              bottom: "0",
-              width: "100%",
-              zIndex: 2,
-            }}
-          >
+
             <Container className={`${styles.totalPart} mt-0 boder-0 pl-3 pr-3 border-0`}>
               <div className={`${styles.trBox} ${isSticky ? styles.shadow : ""}`}>
                 <table className="table cart-table table-responsive-md mt-0">
@@ -669,7 +660,7 @@ const CartPage = ({ data }) => {
                 </table>
               </div>
             </Container>
-          </div>
+ 
         )}
       </>
     );

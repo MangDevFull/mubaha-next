@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Container, Row } from "reactstrap";
-import styles from "./Navbar.module.css"
-
-export default function NavBar({navClose, closeNav}) {
+import { StockCountry } from "@/enums/product.enum"
+import location from "@/enums/location.enum"
+export default function NavBar({ navClose, closeNav }) {
+  const locationArray = Object.values(StockCountry);
   // const [navClose, setNavClose] = useState({ right: "0px" });
 
   // useEffect(() => {
@@ -24,7 +23,7 @@ export default function NavBar({navClose, closeNav}) {
   // };
 
   return (
-    
+
     <div>
       <div className="main-navbar">
         <div id="mainnav">
@@ -38,28 +37,32 @@ export default function NavBar({navClose, closeNav}) {
                 <i className="fa fa-angle-right pl-2" aria-hidden="true"></i>
               </div>
             </li>
-            <li>
-              <a href="#" className="nav-link">Việt Nam</a>
-            </li>
-            <li>
-              <div className="lable-nav">hot</div>
-              <a href="#" className="nav-link">Trung Quốc</a>
-            </li>
-            <li>
-              <a href="#" className="nav-link">Hàn Quốc</a>
-            </li>
-            <li>
-              <a href="#" className="nav-link">Âu Mỹ</a>
-            </li>
-            <li>
-              <a href="#" className="nav-link">
-                Thương Hiệu
-                <span className="sub-arrow"></span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="nav-link">Tin tức</a>
-            </li>
+            {
+              locationArray.map((val, i) => {
+                if (val == "VN") {
+                  return (
+                    <>
+                      <li role="button" key={i}>
+                        <div className="lable-nav">hot</div>
+                        <Link href={`location/${val}`}>
+                          <a className="nav-link">{location[val]}</a>
+                        </Link>
+                      </li>
+                    </>
+                  )
+                } else {
+                  return (
+                    <>
+                      <li role="button" key={i}>
+                      <Link href={`location/${val}`}>
+                        <a className="nav-link">{location[val]}</a>
+                        </Link>
+                      </li>
+                    </>
+                  )
+                }
+              })
+            }
           </ul>
         </div>
       </div>

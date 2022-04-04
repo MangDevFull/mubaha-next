@@ -1,7 +1,6 @@
-import Layout from '@/components/Layout.js'
-import { Media, Container, Row, Col } from "reactstrap";
-import React, { useState, useLayoutEffect ,useEffect} from "react";
-import FilterPage from "@/components/category/Filter.js"
+import SearchLayout from "@/components/SearchLayout"
+import React, { useState, useLayoutEffect} from "react";
+import FilterPage from "@/components/category/FilterCate.js"
 import ProductList from "@/components/category/ProductList.js"
 import _ from 'lodash'
 import sortByType from "@/enums/sortByType.enum.js";
@@ -70,7 +69,43 @@ export default function SerchCategory({data}){
       pathname : `/categories/${slug}`,
       query: searchQuery
     })
-  }, [limit,brand,location,rating,slug,priceMin,priceMax,order,sortBy,cuurentPage])
+  }, [limit,brand,location,rating,slug,priceMin,priceMax,order,sortBy])
+  useLayoutEffect(() => {
+    let searchQuery = {
+      limit: limit,
+      page:cuurentPage
+    }
+    if (location !== "") {
+      searchQuery ={
+        ...searchQuery,
+        location: location,
+      }
+    }
+    if (brand !== "") {
+      searchQuery ={...searchQuery, brand: brand}
+    }
+    if (typeof priceMax === "number") {
+      searchQuery = {...searchQuery,priceMax}
+    }
+    if (typeof priceMin === "number") {
+      searchQuery ={...searchQuery,priceMin}
+    }
+    if(rating >0){
+      searchQuery = {...searchQuery,rating: rating}
+    }
+    if(order){
+      searchQuery = {...searchQuery,order:order}
+    }
+    if(sortBy){
+      searchQuery = {...searchQuery,sortBy: sortBy}
+    }
+    router.push({
+      pathname : `/categories/${slug}`,
+      query: searchQuery
+    },undefined, {
+      shallow: true,
+    })
+  }, [cuurentPage])
   useLayoutEffect(() => {
     handleApi()
   }, [limit,brand,location,rating,slug,priceMin,priceMax,order,sortBy])
@@ -112,7 +147,6 @@ export default function SerchCategory({data}){
   }
   const handlePaging = async () => {
     const page = cuurentPage + 1
-    setCurrentPage(page)
     try {
       let searchQuery = `limit=${limit}&page=${page}`
       if (location !== "") {
@@ -142,10 +176,11 @@ export default function SerchCategory({data}){
         const list = _.concat(products,data.data.products.docs)
         setTimeout(() =>{
           setProduct([...list])
-          setCurrentPage(data.data.page)
-          setTotalPages(data.data.totalPages)
-          setTotalProduct(data.data.totalDocs)
-          setHasNextPage(data.data.hasNextPage)
+          setCurrentPage(data.data.products.page)
+          setCurrentPage(page)
+          setTotalPages(data.data.products.totalPages)
+          setTotalProduct(data.data.products.totalDocs)
+          setHasNextPage(data.data.products.hasNextPage)
         },1500)
         
       }
@@ -222,14 +257,8 @@ export default function SerchCategory({data}){
       }
     }
   }
-  console.log("brand",brand)
   return(
     <>
-     <div style={{ backgroundColor: "rgb(245, 245, 250)" }}>
-      <section className="section-b-space ratio_asos">
-        <div className="collection-wrapper">
-          <Container>
-            <Row>
               <FilterPage
                 sm="3"
                 sidebarView={sidebarView} hanldeBrand={hanldeBrand} handleLocation={handleLocation}
@@ -247,18 +276,11 @@ export default function SerchCategory({data}){
                 colClass="col-xl-3 col-md-6 col-grid-box"
                 openSidebar={() => openCloseSidebar(sidebarView)}
               />
-             
-             
-            </Row>
-          </Container>
-        </div>
-      </section>
-    </div>
     </>
   )
 }
 SerchCategory.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <SearchLayout>{page}</SearchLayout>;
 };
 export async function getServerSideProps(ctx) {
   const { limit, page, maxPrice, minPrice, location, brands, id ,rating,order,sortBy} = ctx.query
