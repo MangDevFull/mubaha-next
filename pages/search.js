@@ -7,6 +7,7 @@ import sortByType from "@/enums/sortByType.enum.js";
 import orderType from "@/enums/sortOrderType.enum.js"
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useRouter } from 'next/router'
+import Head from "next/head";
 export default function FilterLayoutComponent({ data }) {
   const router = useRouter()
   const [sidebarView, setSidebarView] = useState(false);
@@ -283,6 +284,11 @@ export default function FilterLayoutComponent({ data }) {
   }
   return (
     <>
+    <Head>
+    <title>
+    {text} giá tốt
+    </title>
+    </Head>
       <FilterPage
         sm="3"
         sidebarView={sidebarView} hanldeBrand={hanldeBrand} handleLocation={handleLocation}

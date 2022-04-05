@@ -1,8 +1,5 @@
 .backgroundHead{
   background-color: rgb(253, 253, 253);
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
   box-shadow: 10px 10px 10px 10px rgb(253, 253, 253);
 }
 .backgroundFull{
