@@ -8,12 +8,11 @@ import Voucher from "@/components/Voucher";
 const CartList = ({
   listCarts,
   handleVoucherShopShow,
-  selectedVoucherShop,
   showVoucherShop,
   handleCloseVoucher,
   handleApplyVoucherShop,
   vouchers,
-  groupedItems
+  totalDiscountShop,
 }) => {
   return (
     <>
@@ -90,38 +89,7 @@ const CartList = ({
                   </div>
                 </div>
                 <div className={`${styles.selectVoucher}`}>
-                  {selectedVoucherShop ? (
-                    <>
-                      <div className={`${styles.apply_show_voucher}`}>
-                        <div className={`${styles._1oOP8B}`}></div>
-                        <div className={`${styles.show_voucher}`}>
-                          {/* <span>
-                            {" - "}
-                            {selectedVoucherShop.discount.type === "percent" ? (
-                              `${selectedVoucherShop.discount.amount}%`
-                            ) : (
-                              <NumberFormat
-                                style={{ color: "red" }}
-                                value={selectedVoucherShop.discount.amount}
-                                thousandSeparator={true}
-                                displayType="text"
-                                suffix={selectedVoucherShop.currencySymbol}
-                                decimalScale={0}
-                              />
-                            )}
-                          </span> */}
-                        </div>
-                      </div>
-                      <div className={`${styles.button_voucher_shop}`}>
-                        <button
-                          onClick={() => handleVoucherShopShow("vendor", listCarts.vendor._id)}
-                         
-                        >
-                          Chọn Voucher
-                        </button>
-                      </div>
-                    </>
-                  ) : (
+                  {totalDiscountShop === 0  ? (
                     <div className={`${styles.button_voucher_shop}`}>
                       <button
                         onClick={() => handleVoucherShopShow("vendor", listCarts.vendor._id)}
@@ -130,6 +98,32 @@ const CartList = ({
                         Chọn Voucher
                       </button>
                     </div>
+                  ) : (
+                    <>
+                      <div className={`${styles.apply_show_voucher}`}>
+                        <div className={`${styles._1oOP8B}`}></div>
+                        <div className={`${styles.show_voucher}`}>
+                          <span>
+                          {" - "}
+                            <NumberFormat
+                              style={{ color: "red" }}
+                              value={totalDiscountShop}
+                              thousandSeparator={true}
+                              displayType="text"
+                              suffix={listCarts.currencySymbol}
+                              decimalScale={0}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                      <div className={`${styles.button_voucher_shop}`}>
+                        <button
+                          onClick={() => handleVoucherShopShow("vendor", listCarts.vendor._id)}
+                        >
+                          Chọn Voucher Khác
+                        </button>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -142,7 +136,6 @@ const CartList = ({
         vouchers={vouchers}
         handleCloseVoucher={handleCloseVoucher}
         handleApplyVoucher={handleApplyVoucherShop}
-        selectedVoucherShop={selectedVoucherShop}
         titleHeader={`Chọn Voucher ${listCarts.vendor.brandName}`}
         placeholder={"Mã Voucher của Shop"}
         // typeVoucher={"mã miễn phí vận chuyển và mã giảm giá đơn hàng"}

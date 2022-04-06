@@ -29,6 +29,7 @@
     "react-autosuggest": "^10.1.0",
     "react-awesome-modal": "^2.0.5",
     "react-bootstrap": "^2.1.2",
+    "react-checkmark": "^1.4.0",
     "react-color": "^2.19.3",
     "react-content-loader": "^6.1.0",
     "react-countdown": "^2.3.2",

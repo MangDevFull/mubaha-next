@@ -24,6 +24,7 @@ import { useState, useEffect } from "react";
 const Vendor = dynamic(() => import("@/components/cart/Vendor.js"));
 // const Sticky = dynamic(() => import("@/components/cart/Sticky"));
 export default function Cart({ data }) {
+  console.log("daa",data.fullP);
   const { data: session } = useSession();
 
   const router = useRouter();
