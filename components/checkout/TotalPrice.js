@@ -11,7 +11,8 @@ const TotalPrice = ({
   handleOrder,
   visible,
   selectedVoucherShop,
-  totalOrdersPrice
+  totalOrdersPrice,
+  totalVoucherDiscount
 }) => {
   return (
     <>
@@ -30,9 +31,27 @@ const TotalPrice = ({
             decimalScale={0}
           />
         </div>
-        
-       
+
         <div
+          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
+        >
+          Tổng thanh toán:
+        </div>
+        <div className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}>
+          <span>
+            <NumberFormat
+              value={totalOrdersPrice}
+              thousandSeparator={true}
+              displayType="text"
+              suffix="₫"
+              decimalScale={0}
+            />
+          </span>
+        </div>
+
+        
+        
+       {totalVoucherDiscount > 0 ? <><div
           className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
         >
           Tổng Voucher giảm giá của Shop:
@@ -40,14 +59,15 @@ const TotalPrice = ({
         <div className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}>
           <NumberFormat
             style={{ color: "red" }}
-            value={0}
+            value={totalVoucherDiscount}
             thousandSeparator={true}
             displayType="text"
             prefix="-"
             suffix={selectedVoucherShop.currencySymbol}
             decimalScale={0}
           />
-        </div>
+        </div></> : <></>}
+        
 
         <div
           className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}

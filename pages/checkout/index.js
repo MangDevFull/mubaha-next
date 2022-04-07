@@ -189,6 +189,7 @@ const Checkout = ({ data }) => {
         setTotalDiscountShop(pr.voucherDiscountAmount)
       })
       setTotalOrdersPrice(data.data.totalOrdersPrice)
+      setTotalVoucherDiscount(data.data.totalVoucherDiscount)
     }
     setShowVoucher(false)
   };
@@ -214,6 +215,7 @@ const Checkout = ({ data }) => {
         setTotalDiscountShop(pr.voucherDiscountAmount)
       })
       setTotalOrdersPrice(data.data.totalOrdersPrice)
+      setTotalVoucherDiscount(data.data.totalVoucherDiscount)
     }
 
     setShowVoucherShop(false)
@@ -304,7 +306,7 @@ const Checkout = ({ data }) => {
       setShowAddress(false);
     }
   }, [listAddress]);
-
+  console.log(totalVoucherDiscount);
   return (
     <>
       <HeaderAuthen />
@@ -456,6 +458,7 @@ const Checkout = ({ data }) => {
                 selectedVoucher={selectedVoucher}
                 handleOrder={handleOrder}
                 visible={visible}
+                totalVoucherDiscount={totalVoucherDiscount}
               />
             </div>
           </Container>
