@@ -545,40 +545,6 @@
   padding: 10px 30px;
   font-weight: initial;
 }
-.total_title_price {
-  color: rgba(0, 0, 0, 0.54);
-  display: flex;
-  align-items: center;
-}
-.title_each_total {
-  grid-column-start: 2;
-  grid-column-end: 3;
-}
-.prices {
-  padding: 0 25px 0 10px;
-  height: 40px;
-  min-width: 100px;
-  grid-column-start: 3;
-  grid-column-end: 4;
-  justify-content: flex-end;
-}
-.total_amount {
-  grid-row-start: 11;
-  grid-row-end: 12;
-}
-.transport_fee {
-  grid-row-start: 12;
-  grid-row-end: 13;
-}
-.total_payment {
-  grid-row-start: 13;
-  grid-row-end: 14;
-}
-.total_payment span {
-  height: 40px;
-  color: #f89922;
-  font-size: 25px;
-}
 .section_button_order {
   grid-column-start: 1;
   grid-column-end: 4;

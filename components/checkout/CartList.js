@@ -13,8 +13,10 @@ const CartList = ({
   handleApplyVoucherShop,
   vouchers,
   totalDiscountShop,
+  totalPriceProduct,
 }) => {
   return (
+    
     <>
       <div className={`${styles.total_price_information}`}>
         <div>
@@ -89,7 +91,7 @@ const CartList = ({
                   </div>
                 </div>
                 <div className={`${styles.selectVoucher}`}>
-                  {totalDiscountShop === 0  ? (
+                  {totalDiscountShop === 0 ? (
                     <div className={`${styles.button_voucher_shop}`}>
                       <button
                         onClick={() => handleVoucherShopShow("vendor", listCarts.vendor._id)}
@@ -104,7 +106,7 @@ const CartList = ({
                         <div className={`${styles._1oOP8B}`}></div>
                         <div className={`${styles.show_voucher}`}>
                           <span>
-                          {" - "}
+                            {" - "}
                             <NumberFormat
                               style={{ color: "red" }}
                               value={totalDiscountShop}
@@ -126,6 +128,23 @@ const CartList = ({
                     </>
                   )}
                 </div>
+              </div>
+            </div>
+            <div
+              className="d-flex p-4 justify-content-end align-items-center"
+              style={{ borderTop: "1px dashed rgba(0, 0, 0, 0.09)" }}
+            >
+              <div>Tổng số tiền (1 sản phẩm):</div>
+              <div className="ml-4">
+                <h3 style={{ color: "#f89922" }}>
+                  <NumberFormat
+                    value={totalPriceProduct}
+                    thousandSeparator={true}
+                    displayType="text"
+                    suffix={listCarts.currencySymbol}
+                    decimalScale={0}
+                  />
+                </h3>
               </div>
             </div>
           </div>

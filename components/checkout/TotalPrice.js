@@ -10,80 +10,108 @@ const TotalPrice = ({
   selectedVoucher,
   handleOrder,
   visible,
-  selectedVoucherShop,
   totalOrdersPrice,
-  totalVoucherDiscount
+  totalVoucherDiscount,
+  listOrder,
+  totalDiscountSystem,
+  totalDiscountShop,
+  totalPriceProducts,
 }) => {
   return (
     <>
       <div className={`${styles.total_prices}`}>
-        <div
-          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_amount}`}
-        >
-          Tổng tiền hàng
-        </div>
-        <div className={`${styles.total_title_price} ${styles.total_amount} ${styles.prices}`}>
-          <NumberFormat
-            value={totalPriceProduct}
-            thousandSeparator={true}
-            displayType="text"
-            suffix="₫"
-            decimalScale={0}
-          />
-        </div>
+        <div className="d-flex align-items-end justify-content-center flex-column">
+          <div className="d-flex">
+            <div className="mr-2" style={{ width: "10rem" }}>
+              Tổng tiền hàng:
+            </div>
+            <div className="ml-5 mr-2" style={{ width: "12rem" }}>
+              <h5 className="text-right mb-0">
+                <NumberFormat
+                  value={totalPriceProducts}
+                  thousandSeparator={true}
+                  displayType="text"
+                  suffix={listOrder.currencySymbol}
+                  decimalScale={0}
+                />
+              </h5>
+            </div>
+          </div>
+          {totalDiscountShop > 0 ? (
+            <>
+              <div className="d-flex mt-4">
+                <div style={{ marginRight: "5.3rem" }}>Giảm giá từ Voucher Shop:</div>
+                <div className="ml-5 mr-2">
+                  <NumberFormat
+                    style={{ color: "red" }}
+                    value={totalDiscountShop}
+                    thousandSeparator={true}
+                    displayType="text"
+                    prefix="-"
+                    suffix={listOrder.currencySymbol}
+                    decimalScale={0}
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
 
-        <div
-          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
-        >
-          Tổng thanh toán:
-        </div>
-        <div className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}>
-          <span>
-            <NumberFormat
-              value={totalOrdersPrice}
-              thousandSeparator={true}
-              displayType="text"
-              suffix="₫"
-              decimalScale={0}
-            />
-          </span>
-        </div>
+          {totalDiscountSystem > 0 ? (
+            <div className="d-flex mt-4">
+              <div style={{ marginRight: "3.8rem" }}>Giảm giá từ Voucher Mubaha:</div>
+              <div className="ml-5 mr-2">
+                <NumberFormat
+                  style={{ color: "red" }}
+                  value={totalDiscountSystem}
+                  thousandSeparator={true}
+                  displayType="text"
+                  prefix="-"
+                  suffix={listOrder.currencySymbol}
+                  decimalScale={0}
+                />
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
 
-        
-        
-       {totalVoucherDiscount > 0 ? <><div
-          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.transport_fee}`}
-        >
-          Tổng Voucher giảm giá của Shop:
-        </div>
-        <div className={`${styles.total_title_price} ${styles.transport_fee} ${styles.prices}`}>
-          <NumberFormat
-            style={{ color: "red" }}
-            value={totalVoucherDiscount}
-            thousandSeparator={true}
-            displayType="text"
-            prefix="-"
-            suffix={selectedVoucherShop.currencySymbol}
-            decimalScale={0}
-          />
-        </div></> : <></>}
-        
+          {totalVoucherDiscount > 0 ? (
+            <div className="d-flex mt-4">
+              <div style={{ marginRight: "3.5rem" }}>Tổng cộng Voucher giảm giá:</div>
+              <div className="ml-5 mr-2">
+                <h5 className="mb-0">
+                  <NumberFormat
+                    style={{ color: "red" }}
+                    value={totalVoucherDiscount}
+                    thousandSeparator={true}
+                    displayType="text"
+                    prefix="-"
+                    suffix={listOrder.currencySymbol}
+                    decimalScale={0}
+                  />
+                </h5>
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
 
-        <div
-          className={`${styles.total_title_price} ${styles.title_each_total} ${styles.total_payment}`}
-        >
-          Tổng thanh toán:
-        </div>
-        <div className={`${styles.total_title_price} ${styles.total_payment} ${styles.prices}`}>
-          <span>
-            <NumberFormat
-              value={totalOrdersPrice}
-              thousandSeparator={true}
-              displayType="text"
-              suffix="₫"
-              decimalScale={0}
-            />
-          </span>
+          <div className="d-flex mt-4">
+            <div style={{ width: "10rem" }}>Tổng thanh toán:</div>
+            <div className="ml-4 mr-2" style={{ width: "14rem" }}>
+              <h3 className="text-right" style={{ color: "#f89922" }}>
+                <NumberFormat
+                  value={totalOrdersPrice}
+                  thousandSeparator={true}
+                  displayType="text"
+                  suffix={listOrder.currencySymbol}
+                  decimalScale={0}
+                />
+              </h3>
+            </div>
+          </div>
         </div>
 
         <div className={`${styles.section_button_order}`}>

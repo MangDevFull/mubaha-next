@@ -61,3 +61,20 @@
   border-color: none;
   opacity: 0.7;
 }
+.border {
+  height: 3px;
+  width: 100%;
+  background-position-x: -30px;
+  background-size: 116px 3px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #222222,
+    #222222 33px,
+    transparent 0,
+    transparent 41px,
+    #f89922 0,
+    #f89922 74px,
+    transparent 0,
+    transparent 82px
+  );
+}

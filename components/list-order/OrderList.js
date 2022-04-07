@@ -1,33 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
-  Container,
-  Row,
-  Col,
   Button,
   Card,
   CardBody,
   CardHeader,
   CardFooter,
-  Modal,
-  ModalFooter,
-  ModalHeader,
-  ModalTitle,
-  ModalBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
 } from "reactstrap";
-import Link from "next/link";
-import styles from "@/styles/account.module.css";
-import AddressChild from "@/components/AddressChild.js";
-import Address from "@/components/Address";
-import Layout from "@/components/profile/Layout.js";
-import Head from "next/head";
-import { AiOutlineSearch, AiOutlineQuestionCircle } from "react-icons/ai";
+
+import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
 import NumberFormat from "react-number-format";
-import { MdNotificationImportant } from "react-icons/md";
 
 const OrderList = ({ order, setShowModal, setOrderId }) => {
   return (
@@ -165,8 +147,6 @@ const OrderList = ({ order, setShowModal, setOrderId }) => {
           )}
         </CardFooter>
       </Card>
-
-    
     </>
   );
 };
