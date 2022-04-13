@@ -1,31 +1,31 @@
 import React, { useState } from "react";
 import { Button, Badge } from "reactstrap";
 import NumberFormat from "react-number-format";
-import styles from '@/styles/filter.module.css'
-import priceOptins from "@/enums/priceOptions.enum"
+import styles from "@/styles/filter.module.css";
+import priceOptins from "@/enums/priceOptions.enum";
 const Price = ({ hanldePrice }) => {
-  const [min, setMin] = useState(0)
-  const [max, setMax] = useState(0)
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(0);
   const hanldeMinPrice = (e) => {
-    setMin(parseInt(e.value) || "")
-  }
+    setMin(parseInt(e.value) || "");
+  };
   const hanldeMaxPrice = (e) => {
-    setMax(parseInt(e.value) || "")
-  }
+    setMax(parseInt(e.value) || "");
+  };
   const handlePrice1 = () => {
     if (min >= max) {
-      const prevMin = min
-      const prevMax = max
-      setMin(prevMax)
-      setMax(prevMin)
-      hanldePrice(prevMax, prevMin)
+      const prevMin = min;
+      const prevMax = max;
+      setMin(prevMax);
+      setMax(prevMin);
+      hanldePrice(prevMax, prevMin);
     } else {
-      hanldePrice(min, max)
+      hanldePrice(min, max);
     }
-  }
-  const hanldeOptions = (minOptions, maxOptions)=> {
-    hanldePrice(minOptions, maxOptions)
-  }
+  };
+  const hanldeOptions = (minOptions, maxOptions) => {
+    hanldePrice(minOptions, maxOptions);
+  };
 
   return (
     <>
@@ -34,15 +34,19 @@ const Price = ({ hanldePrice }) => {
         <div className="collection-collapse-block-content">
           {priceOptins.map((value, index) => {
             return (
-              <Badge pill className={`${styles.priceOptions} mt-1`} 
-              role="button" onClick={()=>hanldeOptions(value.min,value.max)}>
+              <Badge
+                key={index}
+                pill
+                className={`${styles.priceOptions} mt-1`}
+                role="button"
+                onClick={() => hanldeOptions(value.min, value.max)}
+              >
                 {value.text}
               </Badge>
-            )
-
+            );
           })}
-          <div className="wrapper mt-3" >
-            <div className="range-slider d-flex" >
+          <div className="wrapper mt-3">
+            <div className="range-slider d-flex">
               <NumberFormat
                 thousandSeparator="."
                 placeholder="Từ"
@@ -50,7 +54,9 @@ const Price = ({ hanldePrice }) => {
                 className={`w-100 ${styles.inputPrice}`}
                 onValueChange={(e) => hanldeMinPrice(e)}
               />
-              <div className="ml-2 mr-2"><strong> - </strong></div>
+              <div className="ml-2 mr-2">
+                <strong> - </strong>
+              </div>
               <NumberFormat
                 placeholder="Đến"
                 onValueChange={(e) => hanldeMaxPrice(e)}
@@ -58,27 +64,18 @@ const Price = ({ hanldePrice }) => {
                 decimalSeparator=","
                 className={`w-100 ${styles.inputPrice}`}
               />
-
             </div>
             <div>
               <div className="d-flex justify-content-center mt-3">
-                <Button
-                  className="btn btn-solid"
-                  style={{ width: "100%" }}
-                  onClick={handlePrice1}
-                >
+                <Button className="btn btn-solid" style={{ width: "100%" }} onClick={handlePrice1}>
                   Áp dụng
                 </Button>
               </div>
             </div>
           </div>
         </div>
-
       </div>
-
     </>
-
-
   );
 };
 

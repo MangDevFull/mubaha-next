@@ -5,7 +5,7 @@ import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
 import NumberFormat from "react-number-format";
 
-const OrderList = ({ order, setShowModal, setOrderId }) => {
+const OrderItem = ({ order, setShowModal, setOrderId }) => {
   return (
     <>
       {!order ? (
@@ -157,4 +157,4 @@ const OrderList = ({ order, setShowModal, setOrderId }) => {
     </>
   );
 };
-export default OrderList;
+export default OrderItem;
