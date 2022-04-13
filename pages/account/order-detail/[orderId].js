@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { getSession, useSession } from "next-auth/react";
+import React, { useState } from "react";
+import { getSession } from "next-auth/react";
 import Link from "next/link";
 import Layout from "@/components/profile/Layout.js";
-import { Button, Card, CardBody, CardHeader, CardFooter, Popover, PopoverBody } from "reactstrap";
+import { Button, Card, CardBody, CardHeader, Popover, PopoverBody } from "reactstrap";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
 import styles from "@/styles/account.module.css";
 import { FaStore, FaInfoCircle, FaMoneyCheck, FaTruck, FaRegStar } from "react-icons/fa";
@@ -12,6 +12,9 @@ import { FcInTransit } from "react-icons/fc";
 import NumberFormat from "react-number-format";
 import Steps from "@/components/order-detail/Steps";
 import format from "date-fns/format";
+import statusEnums from "@/enums/statusOrder.enum"
+import methodEnums from "@/enums/paymenMethod.enum"
+import shipmentEnums from "@/enums/shipmentType.enum"
 
 const OrderDetail = ({ data }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -42,105 +45,191 @@ const OrderDetail = ({ data }) => {
               <div className="text-uppercase">
                 <span>id đơn hàng: {data.orderId}</span>
                 <span className="mx-2">|</span>
-                <span style={{ color: "#f89922" }}>{data.status}</span>
+                <span style={{ color: "#f89922" }}>{statusEnums[data.status]}</span>
               </div>
             </div>
           </div>
           <div style={{ border: " 1px dotted rgba(0, 0, 0, 0.09)" }}></div>
           <div className="dashboard py-3 px-3 d-flex flex-column border-top-0">
             <div className="  align-items-center justify-content-between">
-              
               <div className="main_container">
-                <div class="container padding-bottom-3x mb-1">
-                  <div class="card mb-3">
-                    <div class="p-4 text-center text-white text-lg bg-dark rounded-top">
-                      <span class="text-uppercase">Tracking Order No - </span>
-                      <span class="text-medium">{data.orderId}</span>
-                    </div>
-                    <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
-                      <div class="w-100 text-center py-1 px-2">
-                        <span class="text-medium">Vận chuyển qua:</span> {data.shipmentMethod.name}
-                      </div>
-                      <div class="w-100 text-center py-1 px-2">
-                        <span class="text-medium">Trạng thái:</span> Đã thanh toán
-                      </div>
-                     
-                    </div>
-                    <div class="card-body">
-                      <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-around padding-top-2x padding-bottom-1x">
-                      
-                        <div class="step completed flex-fill">
-                          <div class="step-icon-wrap">
-                            <div class="step-icon">
-                              <i className="pt-0">
-                                <RiBillFill />
-                              </i>
+                <div className="container padding-bottom-3x mt-4">
+                  
+                   
+                      <div className="steps d-flex flex-wrap flex-sm-nowrap justify-content-around">
+                        {!data.proccessingInfo.orderAt ? (
+                          <div className="step flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
+                                <i style={{ opacity: "0.4" }}>
+                                  <RiBillFill />
+                                </i>
+                              </div>
                             </div>
+                            <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
+                              Đơn hàng đã đặt
+                            </h4>
                           </div>
-                          <h4 class="step-title text-center">
-                            <strong>Đơn hàng đã đặt</strong>
-                            <p>
-                            {format(
-                                  new Date(data.proccessingInfo.orderAt),
-                                  "HH:mm MM/dd/yyyy"
-                                )}</p>
-                          </h4>
-                        </div>
-                        <div class="step completed flex-grow-1">
-                          <div class="step-icon-wrap">
-                            <div class="step-icon">
-                              <i>
-                                <FaMoneyCheck />
-                              </i>
+                        ) : (
+                          <div className="step completed flex-fill">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
+                                <i>
+                                  <RiBillFill />
+                                </i>
+                              </div>
                             </div>
+                            <h4 className="step-title text-center ">
+                              Đơn hàng đã đặt
+                              <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
+                                {format(new Date(data.proccessingInfo.orderAt), "HH:mm MM/dd/yyyy")}
+                              </p>
+                            </h4>
                           </div>
-                          <h4 class="step-title text-center">
-                            <strong>Đã thanh toán</strong>
-                            <p>{format(
+                        )}
+
+                        {!data.proccessingInfo.paymentAt ? (
+                          <div className="step flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
+                                <i style={{ opacity: "0.4" }}>
+                                  <FaMoneyCheck />
+                                </i>
+                              </div>
+                            </div>
+                            <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
+                              Đã thanh toán
+                            </h4>
+                          </div>
+                        ) : (
+                          <div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
+                                <i>
+                                  <FaMoneyCheck />
+                                </i>
+                              </div>
+                            </div>
+                            <h4 className="step-title text-center">
+                              Đã thanh toán
+                              <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
+                                {format(
                                   new Date(data.proccessingInfo.paymentAt),
                                   "HH:mm MM/dd/yyyy"
-                                )}</p>
-                          </h4>
-                        </div>
-                        <div class="step flex-grow-1">
-                          <div class="step-icon-wrap">
-                            <div class="step-icon">
-                              <i>
+                                )}
+                              </p>
+                            </h4>
+                          </div>
+                        )}
+
+                        {!data.proccessingInfo.intransitAt ? (<div className="step flex-grow-1">
+                          <div className="step-icon-wrap">
+                            <div className="step-icon">
+                              <i style={{ opacity: "0.4" }}>
                                 <FaTruck />
                               </i>
                             </div>
                           </div>
-                          <h4 class="step-title text-center">
-                            <strong>Đã giao cho ĐVVC</strong>
+                          <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
+                            Đã giao cho ĐVVC
                           </h4>
-                        </div>
-                        <div class="step flex-grow-1">
-                          <div class="step-icon-wrap">
-                            <div class="step-icon">
-                              <i>
-                                <MdDeliveryDining />
+                        </div>) : (<div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
+                                <i>
+                                <FaTruck />
+                                </i>
+                              </div>
+                            </div>
+                            <h4 className="step-title text-center">
+                            Đã giao cho ĐVVC
+                              <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
+                                {format(
+                                  new Date(data.proccessingInfo.intransitAt),
+                                  "HH:mm MM/dd/yyyy"
+                                )}
+                              </p>
+                            </h4>
+                          </div>)}
+
+                        
+
+                          {!data.proccessingInfo.pickupAt ? (<div className="step flex-grow-1">
+                          <div className="step-icon-wrap">
+                            <div className="step-icon">
+                              <i style={{ opacity: "0.4" }}>
+                              <MdDeliveryDining />
                               </i>
                             </div>
                           </div>
-                          <h4 class="step-title text-center">
-                            <strong>Đang giao</strong>
+                          <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
+                          Đang giao
                           </h4>
-                        </div>
-                        <div class="step flex-grow-1">
-                          <div class="step-icon-wrap">
-                            <div class="step-icon">
-                              <i>
+                        </div>) : (!data.proccessingInfo.deliveredAt ? <div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
+                                <i>
+                                <MdDeliveryDining />
+                                </i>
+                              </div>
+                            </div>
+                            <h4 className="step-title text-center">
+                            Đang giao
+                              <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
+                                {format(
+                                  new Date(data.proccessingInfo.pickupAt),
+                                  "HH:mm MM/dd/yyyy"
+                                )}
+                              </p>
+                            </h4>
+                          </div> : <div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
+                                <i>
+                                <MdDeliveryDining />
+                                </i>
+                              </div>
+                            </div>
+                            <h4 className="step-title text-center">
+                            Đơn hàng đã nhận
+                              <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
+                                {format(
+                                  new Date(data.proccessingInfo.deliveredAt),
+                                  "HH:mm MM/dd/yyyy"
+                                )}
+                              </p>
+                            </h4>
+                          </div>)}
+
+                        
+                                  {!data.proccessingInfo.reviewAt ? ( <div className="step flex-grow-1">
+                          <div className="step-icon-wrap  ">
+                            <div className="step-icon">
+                              <i style={{ opacity: "0.4"}}>
                                 <FaRegStar />
                               </i>
                             </div>
                           </div>
-                          <h4 class="step-title text-center">
-                            <strong>Đánh giá</strong>
+                          <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
+                           Đánh giá
                           </h4>
-                        </div>
+                        </div>) : (<div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
+                                <i>
+                                <FaRegStar />
+                                </i>
+                              </div>
+                            </div>
+                            <h4 className="step-title text-center">
+                            Đã đánh giá
+                             
+                            </h4>
+                          </div>)}
+                       
                       </div>
-                    </div>
-                  </div>
+                   
+                  
                 </div>
               </div>
             </div>
@@ -159,7 +248,7 @@ const OrderDetail = ({ data }) => {
                   style={{ fontSize: "12px", color: "rgba(0,0,0,.54)" }}
                 >
                   <span>
-                    <span className="text-uppercase">{data.shipmentMethod.type}</span> -{" "}
+                    <span className="text-uppercase">{shipmentEnums[data.shipmentMethod.type]}</span> -{" "}
                     {data.shipmentMethod.name}
                   </span>
                   {data.shipmentMethod._id ? <span>{data.shipmentMethod._id}</span> : <span></span>}
@@ -175,7 +264,7 @@ const OrderDetail = ({ data }) => {
                   <div>{data.deliveryAddress.fullAddress}</div>
                 </div>
               </div>
-              <div class="border-left border-dark">
+              <div className="border-left border-dark">
                 <div className="d-flex flex-column pt-1 pl-4">
                   {data.shipment?.details.length > 0 ? (
                     <>
@@ -258,9 +347,9 @@ const OrderDetail = ({ data }) => {
                   </div>
                 </div>
               </CardHeader>
-              {data.products.map((product) => {
+              {data.products.map((product,i) => {
                 return (
-                  <CardBody className="py-0">
+                  <CardBody key={i} className="py-0">
                     <div className="d-flex align-items-center justify-content-between mt-3">
                       <div className="d-flex align-items-center justify-content-center">
                         <img
@@ -482,7 +571,7 @@ const OrderDetail = ({ data }) => {
                   style={{ width: "15vw", fontSize: "13px" }}
                   className="text-right pr-2 font-weight-bold"
                 >
-                  {data.payment.method}
+                  {methodEnums[data.payment.method]}
                 </div>
               </div>
             </div>

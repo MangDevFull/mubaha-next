@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
 import NumberFormat from "react-number-format";
+import statusEnums from "@/enums/statusOrder.enum";
 
 const OrderItem = ({ order, setShowModal, setOrderId }) => {
   return (
@@ -39,15 +40,19 @@ const OrderItem = ({ order, setShowModal, setOrderId }) => {
               </div>
               <div className="d-flex align-items-center">
                 <div className="d-flex flex-row align-items-center border-right border-dark mr-2">
-                  <FaShuttleVan className="mx-2" color="" />
-                  {/* <span className="text-capitalize">{order.shipment.status}</span> */}
-                  <div className="mx-2">
-                    <AiOutlineQuestionCircle />
-                  </div>
+                  {order.shipment?.details[0]?.title && (
+                    <>
+                      <FaShuttleVan className="mx-2" />
+                      <span className="text-capitalize">{order.shipment?.details[0]?.title}</span>
+                      <div className="mx-2">
+                        <AiOutlineQuestionCircle />
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div>
                   <span style={{ textTransform: "uppercase", color: "#f89922" }}>
-                    {order.status}
+                    {statusEnums[order.status]}
                   </span>
                 </div>
               </div>
@@ -58,63 +63,65 @@ const OrderItem = ({ order, setShowModal, setOrderId }) => {
             {order.products.length > 0 &&
               order.products.map((product, i) => {
                 return (
-                  <Link href={`/account/order-detail/${order.orderId}`}>
-                    <div key={i} className="d-flex align-items-center justify-content-between my-3">
-                      <div className="d-flex align-items-center justify-content-center">
-                        <img
-                          className="border mr-3"
-                          width="85vw"
-                          src={`${product.product.media.featuredImage}`}
-                        />
-                        <div className="d-flex flex-column justify-content-between p-2">
-                          <h4 className="mb-0" style={{ lineHeight: "1.3" }}>
-                            {product.product.name}
-                          </h4>
-                          {product.selectedVariant === null ? (
-                            ""
-                          ) : product.selectedAttribute === null ? (
-                            <span>Phân loại hàng: {product.selectedVariant.name}</span>
-                          ) : (
-                            <span>
-                              Phân loại hàng: {product.selectedVariant.name} -{" "}
-                              {product.selectedAttribute.name}
+                  <div key={i}>
+                    <Link href={`/account/order-detail/${order.orderId}`}>
+                      <div className="d-flex align-items-center justify-content-between my-3">
+                        <div className="d-flex align-items-center justify-content-center">
+                          <img
+                            className="border mr-3"
+                            width="85vw"
+                            src={`${product.product.media.featuredImage}`}
+                          />
+                          <div className="d-flex flex-column justify-content-between p-2">
+                            <h4 className="mb-0" style={{ lineHeight: "1.3" }}>
+                              {product.product.name}
+                            </h4>
+                            {product.selectedVariant === null ? (
+                              ""
+                            ) : product.selectedAttribute === null ? (
+                              <span>Phân loại hàng: {product.selectedVariant.name}</span>
+                            ) : (
+                              <span>
+                                Phân loại hàng: {product.selectedVariant.name} -{" "}
+                                {product.selectedAttribute.name}
+                              </span>
+                            )}
+                            <p className="mb-0">x {product.amount}</p>
+                          </div>
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          <del className="mx-1">
+                            <span className="money ml-1">
+                              <span>
+                                {product.discount > 0 && (
+                                  <del>
+                                    <span className="money ml-1">
+                                      <NumberFormat
+                                        value={product.price}
+                                        thousandSeparator={true}
+                                        displayType="text"
+                                        suffix={product.currencySymbol}
+                                        decimalScale={0}
+                                      />
+                                    </span>
+                                  </del>
+                                )}
+                              </span>
                             </span>
-                          )}
-                          <p className="mb-0">x {product.amount}</p>
+                          </del>
+                          <span>
+                            <NumberFormat
+                              value={product.price * (1 - product.discount)}
+                              thousandSeparator={true}
+                              displayType="text"
+                              suffix={product.currencySymbol}
+                              decimalScale={0}
+                            />
+                          </span>
                         </div>
                       </div>
-                      <div className="d-flex justify-content-center">
-                        <del className="mx-1">
-                          <span className="money ml-1">
-                            <span>
-                              {product.discount > 0 && (
-                                <del>
-                                  <span className="money ml-1">
-                                    <NumberFormat
-                                      value={product.price}
-                                      thousandSeparator={true}
-                                      displayType="text"
-                                      suffix={product.currencySymbol}
-                                      decimalScale={0}
-                                    />
-                                  </span>
-                                </del>
-                              )}
-                            </span>
-                          </span>
-                        </del>
-                        <span>
-                          <NumberFormat
-                            value={product.price * (1 - product.discount)}
-                            thousandSeparator={true}
-                            displayType="text"
-                            suffix={product.currencySymbol}
-                            decimalScale={0}
-                          />
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
+                    </Link>
+                  </div>
                 );
               })}
           </CardBody>
