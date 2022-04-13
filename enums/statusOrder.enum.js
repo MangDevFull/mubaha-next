@@ -1,6 +1,6 @@
 const status = {
   processing: "đang xử lí",
-  cancelled : "cancelled",
+  cancelled : "đã huỷ",
   in_transit: "đang giao",
   pickup_available: "đợi lấy hàng",
   returned: "trả hàng",
