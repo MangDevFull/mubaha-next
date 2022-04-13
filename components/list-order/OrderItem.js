@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardFooter,
-} from "reactstrap";
+import { Button, Card, CardBody, CardHeader, CardFooter } from "reactstrap";
 
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
 import NumberFormat from "react-number-format";
 
-const OrderList = ({ order, setShowModal, setOrderId }) => {
+const OrderItem = ({ order, setShowModal, setOrderId }) => {
   return (
     <>
       <Card className="p-4 my-2" style={{ backgroundColor: "rgba(0, 0, 0, 0.03)" }}>
@@ -41,13 +35,15 @@ const OrderList = ({ order, setShowModal, setOrderId }) => {
               </Button>
             </div>
             <div className="d-flex align-items-center">
-              <div className="d-flex flex-row align-items-center border-right border-dark mr-2">
-                <FaShuttleVan className="mx-2" color="" />
-                <span className="text-capitalize">{order.shipment.status}</span>
-                <div className="mx-2">
-                  <AiOutlineQuestionCircle />
-                </div>
-              </div>
+              {order.shipment ? (
+                <>
+                  <div className="d-flex flex-row align-items-center border-right border-dark mr-2">
+                    <FaShuttleVan className="mx-2" color="" />
+                    <span className="text-capitalize mr-2">{order.shipment.status}</span>
+                  </div>
+                </>
+              ) : null}
+
               <div>
                 <span style={{ textTransform: "uppercase", color: "#f89922" }}>{order.status}</span>
               </div>
@@ -130,14 +126,17 @@ const OrderList = ({ order, setShowModal, setOrderId }) => {
               />
             </h3>
           </div>
-          {order && order.status === "awaiting_confirmation" || order.status === "pickup_available" ? (
+          {(order && order.status === "awaiting_confirmation") ||
+          order.status === "pickup_available" ? (
             <div className="mt-3">
               <div className="d-flex justify-content-end align-items-center">
-                <Button size="lg" onClick={() => 
-                  {
-                    setOrderId(order._id)
-                    setShowModal(true)
-                  }}>
+                <Button
+                  size="lg"
+                  onClick={() => {
+                    setOrderId(order._id);
+                    setShowModal(true);
+                  }}
+                >
                   Huỷ đơn hàng
                 </Button>
               </div>
@@ -150,4 +149,4 @@ const OrderList = ({ order, setShowModal, setOrderId }) => {
     </>
   );
 };
-export default OrderList;
+export default OrderItem;

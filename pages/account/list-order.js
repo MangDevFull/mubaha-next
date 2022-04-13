@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { getSession, useSession } from "next-auth/react";
-import { Row, TabContent, TabPane, Nav, NavItem, NavLink,Button,
+import {
+  Row,
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+  Button,
   Modal,
   ModalFooter,
   ModalHeader,
@@ -9,49 +16,51 @@ import { Row, TabContent, TabPane, Nav, NavItem, NavLink,Button,
   Form,
   FormGroup,
   Label,
-  Input, } from "reactstrap";
+  Input,
+} from "reactstrap";
 import Link from "next/link";
 import Layout from "@/components/profile/Layout.js";
-import OrderList from "@/components/list-order/OrderList.js";
+import OrderItem from "@/components/list-order/OrderItem.js";
 import { AiOutlineSearch, AiOutlineQuestionCircle } from "react-icons/ai";
 import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
 import { MdNotificationImportant } from "react-icons/md";
 
+const reasons = [
+  {
+    id: 1,
+    name: "Muốn thay đổi địa chỉ giao hàng",
+  },
+  {
+    id: 2,
+    name: "Muốn nhập/thay đổi mã Voucher",
+  },
+  {
+    id: 3,
+    name: "Muốn thay đổi sản phẩm trong đơn hàng (size, màu sắc, số lượng,...)",
+  },
+  {
+    id: 4,
+    name: "Đổi ý, không muốn mua nữa",
+  },
+  {
+    id: 5,
+    name: "Khác",
+  },
+];
+
 const ListOrder = ({ data }) => {
-  
   // console.log("data",data)
   // data.docs.forEach((order, i) => {
   //   console.log("order", order);
   //   console.log("i", i)
   // })
-  const reasons = [
-    {
-      id: 1,
-      name: "Muốn thay đổi địa chỉ giao hàng",
-    },
-    {
-      id: 2,
-      name: "Muốn nhập/thay đổi mã Voucher",
-    },
-    {
-      id: 3,
-      name: "Muốn thay đổi sản phẩm trong đơn hàng (size, màu sắc, số lượng,...)",
-    },
-    {
-      id: 4,
-      name: "Đổi ý, không muốn mua nữa",
-    },
-    {
-      id: 5,
-      name: "Khác",
-    },
-  ];
+
   const { data: session } = useSession();
   const [listOrder, setListOrder] = useState(data.docs);
   const [activeTab, setActiveTab] = useState("1");
   const [showModal, setShowModal] = useState(false);
   const [reason, setReason] = useState("");
-  const [orderId, setOrderId] = useState("")
+  const [orderId, setOrderId] = useState("");
 
   const handleTransport = async (status) => {
     try {
@@ -71,8 +80,8 @@ const ListOrder = ({ data }) => {
 
   const handleCancleOrder = async () => {
     const payload = {
-      reason: reason
-    }
+      reason: reason,
+    };
     const response = await fetch(`${process.env.API_ORDER_URL}/${orderId}/cancel`, {
       method: "PUT",
       headers: {
@@ -82,22 +91,22 @@ const ListOrder = ({ data }) => {
       body: JSON.stringify(payload),
     });
     const data = await response.json();
-    if(data.status === 200) {
+    if (data.status === 200) {
       const orderId = data.data._id;
-    const newListOrder = listOrder.map((e) =>{
-      if(e._id === orderId ){
-        return {
-          ...e,
-          status: "cancelled"
+      const newListOrder = listOrder.map((e) => {
+        if (e._id === orderId) {
+          return {
+            ...e,
+            status: "cancelled",
+          };
         }
-      }
-      return e
-    })
-     console.log(newListOrder);
-     setListOrder(newListOrder); 
+        return e;
+      });
+      console.log(newListOrder);
+      setListOrder(newListOrder);
       setShowModal(false);
-    }else {
-      alert(data.message)
+    } else {
+      alert(data.message);
     }
   };
 
@@ -146,7 +155,7 @@ const ListOrder = ({ data }) => {
                     className={activeTab === "4" ? "active" : ""}
                     onClick={() => {
                       setActiveTab("4");
-                      handleTransport("shipping");
+                      handleTransport("in_transit");
                     }}
                   >
                     Đang giao
@@ -157,7 +166,7 @@ const ListOrder = ({ data }) => {
                     className={activeTab === "5" ? "active" : ""}
                     onClick={() => {
                       setActiveTab("5");
-                      handleTransport("done");
+                      handleTransport("delivered");
                     }}
                   >
                     Đã giao
@@ -194,7 +203,7 @@ const ListOrder = ({ data }) => {
                 listOrder.map((order, i) => {
                   return (
                     <div key={i}>
-                      <OrderList
+                      <OrderItem
                         order={order}
                         setShowModal={setShowModal}
                         setOrderId={setOrderId}
@@ -220,7 +229,7 @@ const ListOrder = ({ data }) => {
                 listOrder.map((order, i) => {
                   return (
                     <div key={i}>
-                      <OrderList
+                      <OrderItem
                         order={order}
                         showModal={showModal}
                         setShowModal={setShowModal}
@@ -249,7 +258,7 @@ const ListOrder = ({ data }) => {
                 listOrder.map((order, i) => {
                   return (
                     <div key={i}>
-                      <OrderList
+                      <OrderItem
                         order={order}
                         showModal={showModal}
                         setShowModal={setShowModal}
@@ -278,7 +287,7 @@ const ListOrder = ({ data }) => {
                 listOrder.map((order, i) => {
                   return (
                     <div key={i}>
-                      <OrderList order={order} />
+                      <OrderItem order={order} />
                     </div>
                   );
                 })
@@ -300,7 +309,7 @@ const ListOrder = ({ data }) => {
                 listOrder.map((order, i) => {
                   return (
                     <div key={i}>
-                      <OrderList order={order} />
+                      <OrderItem order={order} />
                     </div>
                   );
                 })
@@ -322,7 +331,7 @@ const ListOrder = ({ data }) => {
                 listOrder.map((order, i) => {
                   return (
                     <div key={i}>
-                      <OrderList order={order} />
+                      <OrderItem order={order} />
                     </div>
                   );
                 })

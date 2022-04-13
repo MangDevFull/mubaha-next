@@ -17,6 +17,8 @@ const TotalPrice = ({
   totalDiscountShop,
   totalPriceProducts,
 }) => {
+  const router = useRouter();
+
   return (
     <>
       <div className={`${styles.total_prices}`}>

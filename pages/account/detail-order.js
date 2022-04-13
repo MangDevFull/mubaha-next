@@ -5,7 +5,7 @@ import { Button, Card, CardBody, CardHeader, CardFooter } from "reactstrap";
 import { AiOutlineDoubleLeft, AiOutlineQuestionCircle } from "react-icons/ai";
 import styles from "@/styles/account.module.css";
 import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
-import {FcInTransit} from 'react-icons/fc'
+import { FcInTransit } from "react-icons/fc";
 import NumberFormat from "react-number-format";
 
 const OrderDetail = () => {
@@ -70,7 +70,7 @@ const OrderDetail = () => {
                 </div>
               </div>
             </div>
-            <div class="border-left border-dark">
+            <div className="border-left border-dark">
               <div className="d-flex flex-column pt-1 pl-4">
                 <span>Nhanh - Shopee Xpress</span>
                 <span>SPXVN022222721754</span>
@@ -173,56 +173,95 @@ const OrderDetail = () => {
         </div>
         <div className={`${styles.border}`}></div>
         <div className="dashboard p-0">
-          <div className="d-flex justify-content-end px-3" style={{ borderBottom: "1px dotted rgba(0,0,0,.09)"}}>
+          <div
+            className="d-flex justify-content-end px-3"
+            style={{ borderBottom: "1px dotted rgba(0,0,0,.09)" }}
+          >
             <div className="p-3">
-              <h6 className="ml-2 mb-0" style={{fontSize: "13px"}}>Tổng tiền hàng</h6>
+              <h6 className="ml-2 mb-0" style={{ fontSize: "13px" }}>
+                Tổng tiền hàng
+              </h6>
             </div>
-            <div className="p-3" style={{borderLeft: "1px dotted rgba(0,0,0,.09)"}}>
-              <div style={{width: "15vw"}} className="text-right pr-2">252.000₫</div>
+            <div className="p-3" style={{ borderLeft: "1px dotted rgba(0,0,0,.09)" }}>
+              <div style={{ width: "15vw" }} className="text-right pr-2">
+                252.000₫
+              </div>
             </div>
           </div>
-          <div className="d-flex justify-content-end px-3" style={{ borderBottom: "1px dotted rgba(0,0,0,.09)"}}>
+          <div
+            className="d-flex justify-content-end px-3"
+            style={{ borderBottom: "1px dotted rgba(0,0,0,.09)" }}
+          >
             <div className="p-3">
-              <h6 className="ml-2 mb-0" style={{fontSize: "13px"}}>Phí vận chuyển</h6>
+              <h6 className="ml-2 mb-0" style={{ fontSize: "13px" }}>
+                Phí vận chuyển
+              </h6>
             </div>
-            <div className="p-3" style={{borderLeft: "1px dotted rgba(0,0,0,.09)"}}>
-              <div style={{width: "15vw"}} className="text-right pr-2">252.000₫</div>
+            <div className="p-3" style={{ borderLeft: "1px dotted rgba(0,0,0,.09)" }}>
+              <div style={{ width: "15vw" }} className="text-right pr-2">
+                252.000₫
+              </div>
             </div>
           </div>
-          <div className="d-flex justify-content-end px-3" style={{ borderBottom: "1px dotted rgba(0,0,0,.09)"}}>
+          <div
+            className="d-flex justify-content-end px-3"
+            style={{ borderBottom: "1px dotted rgba(0,0,0,.09)" }}
+          >
             <div className="p-3">
-              <h6 className="ml-2 mb-0" style={{fontSize: "13px"}}>Giảm giá phí vận chuyển</h6>
+              <h6 className="ml-2 mb-0" style={{ fontSize: "13px" }}>
+                Giảm giá phí vận chuyển
+              </h6>
             </div>
-            <div className="p-3" style={{borderLeft: "1px dotted rgba(0,0,0,.09)"}}>
-              <div style={{width: "15vw"}} className="text-right pr-2">- 252.000₫</div>
+            <div className="p-3" style={{ borderLeft: "1px dotted rgba(0,0,0,.09)" }}>
+              <div style={{ width: "15vw" }} className="text-right pr-2">
+                - 252.000₫
+              </div>
             </div>
           </div>
-          <div className="d-flex justify-content-end px-3" style={{ borderBottom: "1px dotted rgba(0,0,0,.09)"}}>
+          <div
+            className="d-flex justify-content-end px-3"
+            style={{ borderBottom: "1px dotted rgba(0,0,0,.09)" }}
+          >
             <div className="p-3">
-              <h6 className="ml-2 mb-0" style={{fontSize: "13px"}}>Voucher từ Mubaha</h6>
+              <h6 className="ml-2 mb-0" style={{ fontSize: "13px" }}>
+                Voucher từ Mubaha
+              </h6>
             </div>
-            <div className="p-3" style={{borderLeft: "1px dotted rgba(0,0,0,.09)"}}>
-              <div style={{width: "15vw"}} className="text-right pr-2">- 252.000₫</div>
+            <div className="p-3" style={{ borderLeft: "1px dotted rgba(0,0,0,.09)" }}>
+              <div style={{ width: "15vw" }} className="text-right pr-2">
+                - 252.000₫
+              </div>
             </div>
           </div>
           <div className="d-flex justify-content-end align-items-center px-3">
             <div className="p-3">
-              <h6 className="ml-2 mb-0" style={{fontSize: "13px"}}>Tổng số tiền</h6>
+              <h6 className="ml-2 mb-0" style={{ fontSize: "13px" }}>
+                Tổng số tiền
+              </h6>
             </div>
-            <div className="p-3" style={{borderLeft: "1px dotted rgba(0,0,0,.09)"}}>
-              <h3  style={{width: "15vw" , color: "#f89922" }} className="text-right pr-2">252.000₫</h3>
+            <div className="p-3" style={{ borderLeft: "1px dotted rgba(0,0,0,.09)" }}>
+              <h3 style={{ width: "15vw", color: "#f89922" }} className="text-right pr-2">
+                252.000₫
+              </h3>
             </div>
           </div>
         </div>
         <div className={`${styles.border}`}></div>
         <div className="dashboard p-0">
-        <div className="d-flex justify-content-end px-3">
+          <div className="d-flex justify-content-end px-3">
             <div className="p-3 d-flex justify-content-center align-items-center">
               <FcInTransit />
-              <h6 className="ml-2 mb-0" style={{fontSize: "13px"}}>Phương thức thanh toán</h6>
+              <h6 className="ml-2 mb-0" style={{ fontSize: "13px" }}>
+                Phương thức thanh toán
+              </h6>
             </div>
-            <div className="p-3" style={{borderLeft: "1px dotted rgba(0,0,0,.09)"}}>
-              <div style={{width: "15vw", fontSize: "13px"}} className="text-right pr-2 font-weight-bold">Thanh toán khi nhận hàng</div>
+            <div className="p-3" style={{ borderLeft: "1px dotted rgba(0,0,0,.09)" }}>
+              <div
+                style={{ width: "15vw", fontSize: "13px" }}
+                className="text-right pr-2 font-weight-bold"
+              >
+                Thanh toán khi nhận hàng
+              </div>
             </div>
           </div>
         </div>
