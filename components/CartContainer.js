@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Media } from "reactstrap";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import CartHeader from "@/components/CartHeader.js";
 import styles from "@/styles/cartModal.module.css";
 import useSWR from "swr";
-import fetcherToken from "../libs/fetcherToken"
+import fetcherToken from "../libs/fetcherToken";
 export default function CartContainer({ icon }) {
   const { data: session } = useSession();
-  const getTootalCart = useSWR([`${process.env.API_CART_URL}/header`, session?.accessToken], fetcherToken,{
-    refreshInterval: 1000
-  })
+  const { data, error, isValidating } = useSWR(
+    [`${process.env.API_CART_URL}/header`, session?.accessToken],
+    fetcherToken,
+    {
+      refreshInterval: 1000,
+    }
+  );
+  // if (data && data.status == 401) {
+  //   return signOut();
+  // }
+
   return (
     <>
-      {getTootalCart.data && session != null ?
+      {data && session != null ? (
         <li className="onhover-div mobile-cart">
-          <div className="cart-qty-cls">{getTootalCart.data.data.totalCartItems}</div>
+          <div className="cart-qty-cls">{data.data.totalCartItems}</div>
           <Link href={`/cart`} passHref>
             <div>
               <Media src="/assets/images/icon/cart.png" className="img-fluid" alt="" />
@@ -26,28 +34,32 @@ export default function CartContainer({ icon }) {
             className="show-div shopping-cart pb-0 pl-0 pr-0 pt-0"
             style={{ boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.12)" }}
           >
-           { getTootalCart.data.data.totalCartItems > 0 &&
-            <div className={styles.form2}>
-
-<div className="buttons view-cart d-flex justify-content-between">
-  <p style={{ color: 'black' }} className="mt-3 ml-2">
-    {getTootalCart.data.data.carts.length} sản phẩm thêm gần nhất
-  </p>
-
-</div>
-
-</div>
-           }
-            {getTootalCart.data.data.carts.map((item, index) => (
+            {data.data.totalCartItems > 0 && (
+              <div className={styles.form2}>
+                <div className="buttons view-cart d-flex justify-content-between">
+                  <p style={{ color: "black" }} className="mt-3 ml-2">
+                    {data.data.carts.length} sản phẩm thêm gần nhất
+                  </p>
+                </div>
+              </div>
+            )}
+            {data.data.carts.map((item, index) => (
               <CartHeader key={index} item={item} />
             ))}
-            {getTootalCart.data.data.totalCartItems > 0 ? (
+            {data.data.totalCartItems > 0 ? (
               <div className={styles.form}>
                 <li>
                   <div className="buttons view-cart d-flex justify-content-between">
-                    <p style={{ color: 'black' }} className="mt-3 ml-2">
-                      Còn {getTootalCart.data.data.totalViewMore} sản phẩm trong giỏ hàng
-                    </p>
+                    <div>
+                      {data.data.totalViewMore > 0 ? (
+                        <>
+                          <p style={{ color: "black" }} className="mt-3 ml-2">
+                            Còn {data.data.totalViewMore} sản phẩm trong giỏ hàng
+                          </p>
+                        </>
+                      ) : null}
+                    </div>
+
                     <Link href={`/cart`} passHref>
                       <button className="btn mr-2">Xem giỏ hàng</button>
                     </Link>
@@ -69,8 +81,7 @@ export default function CartContainer({ icon }) {
             )}
           </ul>
         </li>
-        : ""
-      }
+      ) : null}
     </>
   );
 }

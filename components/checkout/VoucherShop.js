@@ -14,6 +14,7 @@ const VoucherShop = ({
   handleCloseVoucher,
   vouchers,
   handleApplyVoucher,
+  totalDiscountSystem,
 }) => {
   return (
     <>
@@ -32,40 +33,39 @@ const VoucherShop = ({
           </div>
         </div>
         <div className={`${styles.selectVoucher}`}>
-          {selectedVoucher ? (
+          {totalDiscountSystem === 0 ? (
+            <button
+              className={`${styles.btn_change} btn p-0 m-0`}
+              onClick={() => handleVoucherShow("system")}
+              // disabled={groupedItems.length === 0}
+            >
+              Chọn Voucher
+            </button>
+          ) : (
             <>
               <div className={`${styles.apply_show_voucher}`}>
                 <div className={`${styles._1oOP8B}`}></div>
                 <div className={`${styles.show_voucher}`}>
                   <span>
                     {" - "}
-                    {selectedVoucher.discount.type === "percent" ? (
-                      `${selectedVoucher.discount.amount}%`
-                    ) : (
-                      <NumberFormat
+                    <NumberFormat
                         style={{ color: "red" }}
-                        value={selectedVoucher.discount.amount}
+                        value={totalDiscountSystem}
                         thousandSeparator={true}
                         displayType="text"
                         suffix={selectedVoucher.currencySymbol}
                         decimalScale={0}
                       />
-                    )}
                   </span>
                 </div>
               </div>
-              <button className={`${styles.btn_change} btn p-0 m-0`} onClick={handleVoucherShow}>
+              <button
+                className={`${styles.btn_change} btn p-0 m-0`}
+                onClick={() => handleVoucherShow("system")}
+              >
                 Chọn Voucher Khác
               </button>
             </>
-          ) : (
-            <button
-              className={`${styles.btn_change} btn p-0 m-0`}
-              onClick={handleVoucherShow}
-              disabled={groupedItems.length === 0}
-            >
-              Chọn Voucher
-            </button>
           )}
         </div>
       </div>
@@ -76,6 +76,9 @@ const VoucherShop = ({
         vouchers={vouchers}
         handleApplyVoucher={handleApplyVoucher}
         selectedVoucher={selectedVoucher}
+        titleHeader={"Chọn Mubaha Voucher"}
+        placeholder={"Mã Mubaha Voucher"}
+        typeVoucher={"mã miễn phí vận chuyển và mã giảm giá đơn hàng"}
       />
     </>
   );

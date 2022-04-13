@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import Head from "next/head";
 import {
   Container,
@@ -23,7 +23,11 @@ import { useRouter } from "next/router";
 import AdressList from "@/components/checkout/AddressList";
 import TotalPrice from "@/components/checkout/TotalPrice";
 import dynamic from "next/dynamic";
+// import { Checkmark } from 'react-checkmark'
 const PaymentCard = dynamic(() => import("react-payment-card-component"), {
+  ssr: false,
+});
+const Checkmark = dynamic(() => import("react-checkmark"), {
   ssr: false,
 });
 
@@ -31,6 +35,7 @@ const Checkout = ({ data }) => {
   const { data: session } = useSession();
 
   const [showVoucher, setShowVoucher] = useState(false);
+  const [showVoucherShop, setShowVoucherShop] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [vouchers, setVouchers] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -42,8 +47,11 @@ const Checkout = ({ data }) => {
   const [cardExp, setCardExp] = useState("");
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const [selectedVoucher, setSelectedVoucher] = useState();
+  const [selectedVoucher, setSelectedVoucher] = useState([]);
+  const [selectedVoucherShop, setSelectedVoucherShop] = useState([]);
   const [groupedItems, setGroupedItems] = useState([]);
+  const [listOrder, setListOrder] = useState([]);
+
   const [listAddress, setListAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState();
 
@@ -51,7 +59,12 @@ const Checkout = ({ data }) => {
   const [showAddress, setShowAddress] = useState(false);
   const [chooseAddress, setChooseAddress] = useState();
   const [showError, setShowError] = useState(false);
+  const [totalPriceProducts, setTotalPriceProducts] = useState(0);
+  const [totalDiscountShop, setTotalDiscountShop] = useState(0);
+  const [totalDiscountSystem, setTotalDiscountSystem] = useState(0);
   const [totalPriceProduct, setTotalPriceProduct] = useState(0);
+  const [totalVoucherDiscount, setTotalVoucherDiscount] = useState(0);
+  const [totalOrdersPrice, setTotalOrdersPrice] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -63,8 +76,15 @@ const Checkout = ({ data }) => {
     if (session) {
       handleGetListAddress();
       if (data !== null) {
+        setListOrder(data);
         setGroupedItems(data.grouped);
-        setTotalPriceProduct(data.totalOrdersPrice);
+        setTotalOrdersPrice(data.totalOrdersPrice);
+
+        let newPrice = 0;
+        data.grouped.forEach((item) => {
+          newPrice += item.totalPrice;
+        });
+        setTotalPriceProducts(newPrice);
       } else {
         setShowError(true);
 
@@ -79,6 +99,7 @@ const Checkout = ({ data }) => {
     };
   }, [session]);
 
+  console.log("setTotalPriceProducts(newTotal)", totalPriceProducts);
   const handleGetListAddress = async () => {
     try {
       const res = await fetch(process.env.API_ADDRESS_URL, {
@@ -107,11 +128,10 @@ const Checkout = ({ data }) => {
       console.log(error);
     }
   };
-
-  const handleVoucherShow = async () => {
+  const handleVoucherShow = async (type) => {
     setShowVoucher(true);
     try {
-      const response = await fetch(process.env.API_VOUCHER_URL, {
+      const response = await fetch(`${process.env.API_VOUCHER_URL}?type=${type}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -125,15 +145,87 @@ const Checkout = ({ data }) => {
       console.error(error);
     }
   };
+  const handleVoucherShopShow = async (type, vendorId) => {
+    setShowVoucherShop(true);
+    try {
+      const response = await fetch(
+        `${process.env.API_VOUCHER_URL}?type=${type}&vendorId=${vendorId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + session.accessToken,
+          },
+        }
+      );
+      const data = await response.json();
+      const newVouchers = data.data;
+      setVouchers(newVouchers);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const handleCloseVoucher = () => {
     setShowVoucher(false);
   };
-  const handleApplyVoucher = (voucher) => {
-    setSelectedVoucher(voucher);
-    handleCloseVoucher();
-    console.log(voucher);
+  const handleCloseVoucherShop = () => {
+    setShowVoucherShop(false);
   };
+  const handleApplyVoucher = async (voucher) => {
+    setSelectedVoucher([voucher._id]);
+    const usedVouchers = [...[voucher._id], ...selectedVoucherShop];
+    const response = await fetch(
+      `${process.env.API_ORDER_URL}/pre-voucher?s=${router.query.s}&f=${router.query.f}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + session.accessToken,
+        },
+        body: JSON.stringify({ voucherIds: usedVouchers }),
+      }
+    );
+    const data = await response.json();
+    if (data.status == 200) {
+      setTotalDiscountSystem(data.data.totalSystemDiscount);
+      data.data.grouped.forEach((pr) => {
+        setTotalDiscountShop(pr.voucherDiscountAmount);
+        setTotalPriceProduct(pr.totalPrice);
+      });
+      setTotalOrdersPrice(data.data.totalOrdersPrice);
+      setTotalVoucherDiscount(data.data.totalVoucherDiscount);
+    }
+    setShowVoucher(false);
+  };
+  const handleApplyVoucherShop = async (voucher) => {
+    setSelectedVoucherShop([voucher._id]);
 
+    const usedVouchers = [...selectedVoucher, ...[voucher._id]];
+
+    const response = await fetch(
+      `${process.env.API_ORDER_URL}/pre-voucher?s=${router.query.s}&f=${router.query.f}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + session.accessToken,
+        },
+        body: JSON.stringify({ voucherIds: usedVouchers }),
+      }
+    );
+    const data = await response.json();
+    if (data.status == 200) {
+      data.data.grouped.forEach((pr) => {
+        setTotalDiscountShop(pr.voucherDiscountAmount);
+        setTotalPriceProduct(pr.totalPrice);
+      });
+      setTotalOrdersPrice(data.data.totalOrdersPrice);
+      setTotalVoucherDiscount(data.data.totalVoucherDiscount);
+      setTotalDiscountSystem(data.data.totalSystemDiscount);
+    }
+
+    setShowVoucherShop(false);
+  };
   const handleSelectPaymentMethod = (e) => {
     setPaymentMethod(e.target.value);
     if (e.target.value === "atm") setShowCard(true);
@@ -181,17 +273,19 @@ const Checkout = ({ data }) => {
     };
     setVisible(true);
 
-    const response = await fetch(`${process.env.API_ORDER_URL}?s=${router.query.s}&f=${router.query.f}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + session.accessToken,
-      },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(
+      `${process.env.API_ORDER_URL}?s=${router.query.s}&f=${router.query.f}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + session.accessToken,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
     const data = await response.json();
     if (data.status === 200) {
-      
       setTimeout(function () {
         setVisible(false);
         router.push("/");
@@ -277,11 +371,21 @@ const Checkout = ({ data }) => {
                   <div className={`${styles.title_name} ${styles.title_price}`}>Thành tiền</div>
                 </div>
               </div>
-              {groupedItems.length > 0 &&
+              {groupedItems &&
+                groupedItems.length > 0 &&
                 groupedItems.map((listCarts, index) => {
                   return (
                     <div key={index}>
-                      <CartList listCarts={listCarts} />
+                      <CartList
+                        listCarts={listCarts}
+                        handleVoucherShopShow={handleVoucherShopShow}
+                        handleApplyVoucherShop={handleApplyVoucherShop}
+                        vouchers={vouchers}
+                        showVoucherShop={showVoucherShop}
+                        handleCloseVoucher={() => setShowVoucherShop(false)}
+                        totalDiscountShop={totalDiscountShop}
+                        totalPriceProduct={totalPriceProduct}
+                      />
                     </div>
                   );
                 })}
@@ -289,13 +393,13 @@ const Checkout = ({ data }) => {
             <div className={`${styles.voucher}`}>
               <h4>3. Chọn Voucher</h4>
               <VoucherShop
-                selectedVoucher={selectedVoucher}
+                selectedVoucher={selectedVoucherShop}
                 handleVoucherShow={handleVoucherShow}
-                groupedItems={groupedItems}
                 showVoucher={showVoucher}
                 handleCloseVoucher={handleCloseVoucher}
                 vouchers={vouchers}
                 handleApplyVoucher={handleApplyVoucher}
+                totalDiscountSystem={totalDiscountSystem}
               />
             </div>
             <div className={`${styles.payments}`}>
@@ -311,7 +415,7 @@ const Checkout = ({ data }) => {
                         readOnly
                         value="cod"
                         onChange={handleSelectPaymentMethod}
-                        disabled={groupedItems.length === 0}
+                        // disabled={groupedItems.length === 0}
                         checked={paymentMethod === "cod"}
                       />
                       <span>
@@ -334,7 +438,7 @@ const Checkout = ({ data }) => {
                         readOnly
                         value="atm"
                         onChange={handleSelectPaymentMethod}
-                        disabled={groupedItems.length === 0}
+                        // disabled={groupedItems.length === 0}
                         checked={paymentMethod === "atm"}
                       />
                       <span>
@@ -357,9 +461,16 @@ const Checkout = ({ data }) => {
               <TotalPrice
                 groupedItems={groupedItems}
                 totalPriceProduct={totalPriceProduct}
+                totalOrdersPrice={totalOrdersPrice}
+                selectedVoucherShop={selectedVoucherShop}
                 selectedVoucher={selectedVoucher}
                 handleOrder={handleOrder}
                 visible={visible}
+                totalVoucherDiscount={totalVoucherDiscount}
+                listOrder={listOrder}
+                totalDiscountSystem={totalDiscountSystem}
+                totalDiscountShop={totalDiscountShop}
+                totalPriceProducts= {totalPriceProducts}
               />
             </div>
           </Container>
@@ -508,18 +619,14 @@ const Checkout = ({ data }) => {
           </ModalFooter>
         </Modal>
 
-        <Modal isOpen={succesPayment}>
+        <Modal centered isOpen={succesPayment}>
           <ModalBody className="my-5">
-            <div className="text-center">
-              <img width="100" height="100" src="/assets/icon/success-popup.svg" />
-            </div>
+            <Checkmark size="96px" />
             <div className="text-center mt-3">
               <p>Nhập số thẻ thành công</p>
             </div>
           </ModalBody>
         </Modal>
-
-
       </CommonLayout>
       <Footer />
     </>

@@ -95,7 +95,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
         const data = await response.json();
         if (data.status === 200) {
           setVisible(true);
-          timeOut_1 = setTimeout(() => setVisible(false), 3000);
+          timeOut_1 = setTimeout(() => setVisible(false), 1500);
         } else {
           alert(data.message);
         }
