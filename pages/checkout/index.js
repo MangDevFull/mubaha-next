@@ -470,7 +470,7 @@ const Checkout = ({ data }) => {
                 listOrder={listOrder}
                 totalDiscountSystem={totalDiscountSystem}
                 totalDiscountShop={totalDiscountShop}
-                totalPriceProducts={totalPriceProducts}
+                totalPriceProducts= {totalPriceProducts}
               />
             </div>
           </Container>
