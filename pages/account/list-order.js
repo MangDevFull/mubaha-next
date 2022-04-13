@@ -24,6 +24,7 @@ import OrderItem from "@/components/list-order/OrderItem.js";
 import { AiOutlineSearch, AiOutlineQuestionCircle } from "react-icons/ai";
 import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
 import { MdNotificationImportant } from "react-icons/md";
+import Head from "next/head";
 
 const reasons = [
   {
@@ -112,6 +113,9 @@ const ListOrder = ({ data }) => {
 
   return (
     <>
+      <Head>
+        <title>Đơn mua | Mubaha</title>
+      </Head>
       <div className="dashboard-right">
         <div className="d-flex flex-column">
           <div className="tab-product pt-0 m-0">
