@@ -94,7 +94,6 @@ const ListOrder = ({ data }) => {
         }
         return e;
       });
-      console.log(newListOrder);
       setListOrder(newListOrder);
       setShowModal(false);
     } else {

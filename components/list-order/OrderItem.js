@@ -40,11 +40,15 @@ const OrderItem = ({ order, setShowModal, setOrderId }) => {
               </div>
               <div className="d-flex align-items-center">
                 <div className="d-flex flex-row align-items-center border-right border-dark mr-2">
-                  <FaShuttleVan className="mx-2" color="" />
-                  {/* <span className="text-capitalize">{order.shipment.status}</span> */}
-                  <div className="mx-2">
-                    <AiOutlineQuestionCircle />
-                  </div>
+                  {order.shipment?.details[0]?.title && (
+                    <>
+                      <FaShuttleVan className="mx-2" />
+                      <span className="text-capitalize">{order.shipment?.details[0]?.title}</span>
+                      <div className="mx-2">
+                        <AiOutlineQuestionCircle />
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div>
                   <span style={{ textTransform: "uppercase", color: "#f89922" }}>
