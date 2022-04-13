@@ -288,7 +288,7 @@ const Checkout = ({ data }) => {
     if (data.status === 200) {
       setTimeout(function () {
         setVisible(false);
-        router.push("/");
+        router.push("/account/list-order");
       }, 3000);
     } else {
       console.log(data);

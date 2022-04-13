@@ -130,7 +130,7 @@ const CartList = ({
                 </div>
               </div>
             </div>
-            <div
+            {/* <div
               className="d-flex p-4 justify-content-end align-items-center"
               style={{ borderTop: "1px dashed rgba(0, 0, 0, 0.09)" }}
             >
@@ -146,7 +146,7 @@ const CartList = ({
                   />
                 </h3>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

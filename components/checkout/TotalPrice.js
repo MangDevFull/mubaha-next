@@ -149,9 +149,9 @@ const TotalPrice = ({
           <Button
             className="btn btn-secondary btn-lg"
             style={{ width: "100%", maxWidth: "100%", borderRadius: "5px" }}
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/account/list-order")}
           >
-            Trở về trang chủ
+            Quay về danh sách đơn hàng
           </Button>
         </ModalFooter>
       </Modal>
