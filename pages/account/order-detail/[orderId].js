@@ -53,33 +53,33 @@ const OrderDetail = ({ data }) => {
           <div className="dashboard py-3 px-3 d-flex flex-column border-top-0">
             <div className="  align-items-center justify-content-between">
               <div className="main_container">
-                <div class="container padding-bottom-3x mt-4">
+                <div className="container padding-bottom-3x mt-4">
                   
                    
-                      <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-around">
+                      <div className="steps d-flex flex-wrap flex-sm-nowrap justify-content-around">
                         {!data.proccessingInfo.orderAt ? (
-                          <div class="step flex-grow-1">
-                            <div class="step-icon-wrap">
-                              <div class="step-icon">
+                          <div className="step flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
                                 <i style={{ opacity: "0.4" }}>
                                   <RiBillFill />
                                 </i>
                               </div>
                             </div>
-                            <h4 class="step-title text-center" style={{ opacity: "0.4" }}>
+                            <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
                               Đơn hàng đã đặt
                             </h4>
                           </div>
                         ) : (
-                          <div class="step completed flex-fill">
-                            <div class="step-icon-wrap">
-                              <div class="step-icon">
+                          <div className="step completed flex-fill">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
                                 <i>
                                   <RiBillFill />
                                 </i>
                               </div>
                             </div>
-                            <h4 class="step-title text-center ">
+                            <h4 className="step-title text-center ">
                               Đơn hàng đã đặt
                               <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
                                 {format(new Date(data.proccessingInfo.orderAt), "HH:mm MM/dd/yyyy")}
@@ -89,28 +89,28 @@ const OrderDetail = ({ data }) => {
                         )}
 
                         {!data.proccessingInfo.paymentAt ? (
-                          <div class="step flex-grow-1">
-                            <div class="step-icon-wrap">
-                              <div class="step-icon">
+                          <div className="step flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
                                 <i style={{ opacity: "0.4" }}>
                                   <FaMoneyCheck />
                                 </i>
                               </div>
                             </div>
-                            <h4 class="step-title text-center" style={{ opacity: "0.4" }}>
+                            <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
                               Đã thanh toán
                             </h4>
                           </div>
                         ) : (
-                          <div class="step completed flex-grow-1">
-                            <div class="step-icon-wrap">
-                              <div class="step-icon">
+                          <div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
                                 <i>
                                   <FaMoneyCheck />
                                 </i>
                               </div>
                             </div>
-                            <h4 class="step-title text-center">
+                            <h4 className="step-title text-center">
                               Đã thanh toán
                               <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
                                 {format(
@@ -122,26 +122,26 @@ const OrderDetail = ({ data }) => {
                           </div>
                         )}
 
-                        {!data.proccessingInfo.intransitAt ? (<div class="step flex-grow-1">
-                          <div class="step-icon-wrap">
-                            <div class="step-icon">
+                        {!data.proccessingInfo.intransitAt ? (<div className="step flex-grow-1">
+                          <div className="step-icon-wrap">
+                            <div className="step-icon">
                               <i style={{ opacity: "0.4" }}>
                                 <FaTruck />
                               </i>
                             </div>
                           </div>
-                          <h4 class="step-title text-center" style={{ opacity: "0.4" }}>
+                          <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
                             Đã giao cho ĐVVC
                           </h4>
-                        </div>) : (<div class="step completed flex-grow-1">
-                            <div class="step-icon-wrap">
-                              <div class="step-icon">
+                        </div>) : (<div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
                                 <i>
                                 <FaTruck />
                                 </i>
                               </div>
                             </div>
-                            <h4 class="step-title text-center">
+                            <h4 className="step-title text-center">
                             Đã giao cho ĐVVC
                               <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
                                 {format(
@@ -154,26 +154,26 @@ const OrderDetail = ({ data }) => {
 
                         
 
-                          {!data.proccessingInfo.pickupAt ? (<div class="step flex-grow-1">
-                          <div class="step-icon-wrap">
-                            <div class="step-icon">
+                          {!data.proccessingInfo.pickupAt ? (<div className="step flex-grow-1">
+                          <div className="step-icon-wrap">
+                            <div className="step-icon">
                               <i style={{ opacity: "0.4" }}>
                               <MdDeliveryDining />
                               </i>
                             </div>
                           </div>
-                          <h4 class="step-title text-center" style={{ opacity: "0.4" }}>
+                          <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
                           Đang giao
                           </h4>
-                        </div>) : (!data.proccessingInfo.deliveredAt ? <div class="step completed flex-grow-1">
-                            <div class="step-icon-wrap">
-                              <div class="step-icon">
+                        </div>) : (!data.proccessingInfo.deliveredAt ? <div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
                                 <i>
                                 <MdDeliveryDining />
                                 </i>
                               </div>
                             </div>
-                            <h4 class="step-title text-center">
+                            <h4 className="step-title text-center">
                             Đang giao
                               <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
                                 {format(
@@ -182,15 +182,15 @@ const OrderDetail = ({ data }) => {
                                 )}
                               </p>
                             </h4>
-                          </div> : <div class="step completed flex-grow-1">
-                            <div class="step-icon-wrap">
-                              <div class="step-icon">
+                          </div> : <div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
                                 <i>
                                 <MdDeliveryDining />
                                 </i>
                               </div>
                             </div>
-                            <h4 class="step-title text-center">
+                            <h4 className="step-title text-center">
                             Đơn hàng đã nhận
                               <p className="mt-1" style={{ opacity: "0.6", fontSize: "12px" }}>
                                 {format(
@@ -202,26 +202,26 @@ const OrderDetail = ({ data }) => {
                           </div>)}
 
                         
-                                  {!data.proccessingInfo.reviewAt ? ( <div class="step flex-grow-1">
-                          <div class="step-icon-wrap  ">
-                            <div class="step-icon">
+                                  {!data.proccessingInfo.reviewAt ? ( <div className="step flex-grow-1">
+                          <div className="step-icon-wrap  ">
+                            <div className="step-icon">
                               <i style={{ opacity: "0.4"}}>
                                 <FaRegStar />
                               </i>
                             </div>
                           </div>
-                          <h4 class="step-title text-center" style={{ opacity: "0.4" }}>
+                          <h4 className="step-title text-center" style={{ opacity: "0.4" }}>
                            Đánh giá
                           </h4>
-                        </div>) : (<div class="step completed flex-grow-1">
-                            <div class="step-icon-wrap">
-                              <div class="step-icon">
+                        </div>) : (<div className="step completed flex-grow-1">
+                            <div className="step-icon-wrap">
+                              <div className="step-icon">
                                 <i>
                                 <FaRegStar />
                                 </i>
                               </div>
                             </div>
-                            <h4 class="step-title text-center">
+                            <h4 className="step-title text-center">
                             Đã đánh giá
                              
                             </h4>
@@ -264,7 +264,7 @@ const OrderDetail = ({ data }) => {
                   <div>{data.deliveryAddress.fullAddress}</div>
                 </div>
               </div>
-              <div class="border-left border-dark">
+              <div className="border-left border-dark">
                 <div className="d-flex flex-column pt-1 pl-4">
                   {data.shipment?.details.length > 0 ? (
                     <>
@@ -347,9 +347,9 @@ const OrderDetail = ({ data }) => {
                   </div>
                 </div>
               </CardHeader>
-              {data.products.map((product) => {
+              {data.products.map((product,i) => {
                 return (
-                  <CardBody className="py-0">
+                  <CardBody key={i} className="py-0">
                     <div className="d-flex align-items-center justify-content-between mt-3">
                       <div className="d-flex align-items-center justify-content-center">
                         <img

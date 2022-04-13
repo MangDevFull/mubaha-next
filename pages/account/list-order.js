@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState } from "react";
 import { getSession, useSession } from "next-auth/react";
 import {
   Row,
@@ -11,7 +11,6 @@ import {
   Modal,
   ModalFooter,
   ModalHeader,
-  ModalTitle,
   ModalBody,
   Form,
   FormGroup,
@@ -21,8 +20,6 @@ import {
 import Link from "next/link";
 import Layout from "@/components/profile/Layout.js";
 import OrderItem from "@/components/list-order/OrderItem.js";
-import { AiOutlineSearch, AiOutlineQuestionCircle } from "react-icons/ai";
-import { FaStore, FaShuttleVan, FaRegMoneyBillAlt } from "react-icons/fa";
 import { MdNotificationImportant } from "react-icons/md";
 
 const reasons = [
@@ -49,11 +46,6 @@ const reasons = [
 ];
 
 const ListOrder = ({ data }) => {
-  // console.log("data",data)
-  // data.docs.forEach((order, i) => {
-  //   console.log("order", order);
-  //   console.log("i", i)
-  // })
 
   const { data: session } = useSession();
   const [listOrder, setListOrder] = useState(data.docs);
