@@ -33,7 +33,19 @@ export default function FilterLayoutComponent({ data }) {
   const [rating, setRating] = useState(data.rating)
   const [order, setOrder] = useState(data.order)
   const [sortBy, setSortBy] = useState(data.sortBy)
-
+  const clearSearch = () =>{
+    setSortBy("")
+    setPriceMin("")
+    setPriceMax("")
+    setBrand("")
+    setCateID("")
+    setLocation("")
+    setRating("")
+    setOrder("")
+    router.push({
+      query: {limit:limit, page:cuurentPage}
+    },undefined)
+  }
   const handleLimit = (limit) => {
     setLimit(limit)
   }
@@ -292,7 +304,7 @@ export default function FilterLayoutComponent({ data }) {
       <FilterPage
         sm="3"
         sidebarView={sidebarView} hanldeBrand={hanldeBrand} handleLocation={handleLocation}
-        hanldeCategory={hanldeCategory}
+        hanldeCategory={hanldeCategory} clearSearch={clearSearch}
         closeSidebar={() => openCloseSidebar(sidebarView)} hanldePrice={hanldePrice} text={text}
         hanldeRating={hanldeRating}
       />

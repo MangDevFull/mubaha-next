@@ -9,6 +9,7 @@ const Brand = dynamic(() => import('@/components/filterOptions//Brand'))
 const Skeleton = dynamic(() => import('@/components/filterOptions/SkeletonFilterOption'))
 const FilterPage = ({ sm, sidebarView, closeSidebar, hanldeBrand,location,
      hanldePrice ,hanldeRating,hanldeCategory}) => {
+         
     const { data, error } = useSWR(`${process.env.API_LOCATION_URL}/${location}/filters`, fetcher)
     if(error) {
         console.error(error)
