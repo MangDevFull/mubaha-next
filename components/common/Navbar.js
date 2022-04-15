@@ -41,24 +41,26 @@ export default function NavBar({ navClose, closeNav }) {
               locationArray.map((val, i) => {
                 if (val == "VN") {
                   return (
-                    <>
+       
                       <li role="button" key={i}>
                         <div className="lable-nav">hot</div>
-                        <Link href={`location/${val}`}>
+                        <Link href={`../location/${val}`} passHref> 
                           <a className="nav-link">{location[val]}</a>
-                        </Link>
+                          </Link>
                       </li>
-                    </>
+        
                   )
                 } else {
                   return (
-                    <>
+             
+                   
                       <li role="button" key={i}>
-                      <Link href={`location/${val}`}>
+                      <Link href={`../location/${val}`} passHref> 
                         <a className="nav-link">{location[val]}</a>
                         </Link>
                       </li>
-                    </>
+                    
+     
                   )
                 }
               })
