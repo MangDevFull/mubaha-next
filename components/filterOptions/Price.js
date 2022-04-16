@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button, Badge } from "reactstrap";
 import NumberFormat from "react-number-format";
 import styles from "@/styles/filter.module.css";
 import priceOptins from "@/enums/priceOptions.enum";
-const Price = ({ hanldePrice }) => {
+const Price = ({ hanldePrice,clear }) => {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
+  useEffect(()=>{
+    setMin(0)
+    setMax(0);
+  },[clear])
   const hanldeMinPrice = (e) => {
     setMin(parseInt(e.value) || "");
   };
@@ -51,6 +55,7 @@ const Price = ({ hanldePrice }) => {
                 thousandSeparator="."
                 placeholder="Từ"
                 decimalSeparator=","
+                value={min}
                 className={`w-100 ${styles.inputPrice}`}
                 onValueChange={(e) => hanldeMinPrice(e)}
               />
@@ -61,6 +66,7 @@ const Price = ({ hanldePrice }) => {
                 placeholder="Đến"
                 onValueChange={(e) => hanldeMaxPrice(e)}
                 thousandSeparator="."
+                value={max}
                 decimalSeparator=","
                 className={`w-100 ${styles.inputPrice}`}
               />

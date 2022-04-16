@@ -291,7 +291,7 @@ const Checkout = ({ data }) => {
         router.push("/account/list-order");
       }, 3000);
     } else {
-      console.log(data);
+alert(data.message)
     }
   };
   const handleCloseCreateAdd = () => {

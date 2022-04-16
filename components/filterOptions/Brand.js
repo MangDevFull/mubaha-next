@@ -1,6 +1,25 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Collapse, Input,Label } from "reactstrap";
-const Brand = ({hanldeBrand,brands}) => {
+const Brand = ({hanldeBrand,brands,clear}) => {
+  const [arr,setArr] = useState(brands.map(b=>{
+return{
+  ...b,
+  isSelected : false
+}
+  }))
+  useEffect(() => {
+    const a = arr.map(stock =>{
+      return {
+        ...stock,
+        isSelected: false
+      }
+    })
+    setArr([...a])
+   }, [clear]);
+  const handleCheck=(i)=>{
+    arr[i].isSelected = true;
+    setArr([...arr])
+  }
   const [isOpen, setIsOpen] = useState(true);
   const toggleBrand = () => setIsOpen(!isOpen);
   return (
@@ -12,9 +31,9 @@ const Brand = ({hanldeBrand,brands}) => {
       <div className="collection-collapse-block-content">
             <div className="collection-brand-filter">
                   {
-                    brands.length > 0
+                    arr.length > 0
                     ?
-                    brands.map((value, i) =>{
+                    arr.map((value, i) =>{
                     return(
                       <div key={i} className="custom-control custom-checkbox collection-filter-checkbox" >
                     <Input
@@ -22,7 +41,7 @@ const Brand = ({hanldeBrand,brands}) => {
                       className="custom-control-input"
                       value={value.brand._id}
                       id={`brand${i}`}
-                      onChange={hanldeBrand}
+                      onChange={(e)=>{handleCheck(i),hanldeBrand(e)}}
                     />
                     <Label className="custom-control-label" htmlFor={`brand${i}`}>
                         {value.brand.name}

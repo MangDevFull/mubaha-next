@@ -1,5 +1,5 @@
 import SearchLayout from "@/components/SearchLayout"
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect,useEffect } from "react";
 import FilterPage from "@/components/location/FilterLocationSearch"
 import ProductList from "@/components/location/ProductList.js"
 import _ from 'lodash'
@@ -7,6 +7,7 @@ import sortByType from "@/enums/sortByType.enum.js";
 import orderType from "@/enums/sortOrderType.enum.js"
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useRouter } from 'next/router'
+import Head from "next/head"
 export default function SearchLocation({data}){
   const router = useRouter()
   const [sidebarView, setSidebarView] = useState(false);
@@ -32,6 +33,11 @@ export default function SearchLocation({data}){
   const [order, setOrder] = useState(data.order)
   const [sortBy, setSortBy] = useState(data.sortBy)
 
+  useEffect(() => {
+    setProduct(data.produtcs.docs)
+    setLocation(data.location)
+  },[data])
+  
   const handleLimit = (limit) => {
     setLimit(limit)
   }
@@ -233,6 +239,9 @@ export default function SearchLocation({data}){
   }
   return(
     <>
+    <Head>
+      <title>Tìm kiếm theo kho hàng</title>
+    </Head>
      <FilterPage
         sm="3"
         sidebarView={sidebarView} hanldeBrand={hanldeBrand}
@@ -257,6 +266,7 @@ SearchLocation.getLayout = function getLayout(page) {
 };
 export async function getServerSideProps(ctx) {
   const { limit, page, maxPrice, minPrice, brands,cat, country,rating,order,sortBy} = ctx.query
+  console.log("country",country)
   let searchQuery = `limit=${limit || 20}&page=${page || 1}`
 
   if (cat) {
@@ -282,7 +292,6 @@ export async function getServerSideProps(ctx) {
   }
    const res = await fetch(`${process.env.API_LOCATION_URL}/${country}?${searchQuery}`)
   const data = await res.json()
-  console.log("data",data)
   return { props: { data: { produtcs: data.data, maxPrice: maxPrice || "", 
   minPrice: minPrice || "", brands: brands || "", cat:cat || "",
   rating:rating ||"" ,sortBy:sortBy || "",order:order || "",location : country || ""} } }
