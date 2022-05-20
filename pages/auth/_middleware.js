@@ -9,6 +9,6 @@ export async function middleware(req) {
     const url = req.nextUrl.clone();
     url.pathname = "/";
     if (token) return NextResponse.rewrite(url);
-    return NextResponse.next();
   }
+  return NextResponse.next();
 }
