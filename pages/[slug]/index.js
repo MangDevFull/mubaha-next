@@ -106,7 +106,7 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
   useEffect(() => {
     if (detailProduct.variants.length > 0) {
       setPriceProduct(null);
-      setDiscount(null)
+      setDiscount(null);
     } else {
       setPriceProduct(detailProduct.price);
       setDiscount(detailProduct.discount);
@@ -255,34 +255,19 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
       <Head>
         <title>{detailProduct.name} | Mubaha</title>
         <meta name="title" content={detailProduct.name | "Mubaha"} />
-        <meta
-          name="description"
-          content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"
-        />
+        <meta name="description" content={detailProduct.description} />
         {/* <!-- Open Graph / Facebook --> */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://metatags.io/" />
-        <meta property="og:title" content="Meta Tags — Preview, Edit and Generate" />
-        <meta
-          property="og:description"
-          content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"
-        />
-        <meta
-          property="og:image"
-          content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
-        />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:title" content={detailProduct.name} />
+        <meta property="og:description" content={detailProduct.description} />
+        <meta property="og:image" content={detailProduct.media.featuredImage} />
         {/* <!-- Twitter --> */}
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://metatags.io/" />
-        <meta property="twitter:title" content="Meta Tags — Preview, Edit and Generate" />
-        <meta
-          property="twitter:description"
-          content="With Meta Tags you can edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter and more!"
-        />
-        <meta
-          property="twitter:image"
-          content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
-        />
+        <meta property="twitter:url" content={window.location.href} />
+        <meta property="twitter:title" content={detailProduct.name} />
+        <meta property="twitter:description" content={detailProduct.description} />
+        <meta property="twitter:image" content={detailProduct.media.featuredImage} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" key="viewport" />
       </Head>
       <div className="breadcrumb-section">
@@ -353,10 +338,10 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                         >
                           {detailProduct.variants
                             ? detailProduct.media.data.map((item, index) => (
-                              <div key={index}>
-                                <Media src={`${item.path}`} className="img-fluid" />
-                              </div>
-                            ))
+                                <div key={index}>
+                                  <Media src={`${item.path}`} className="img-fluid" />
+                                </div>
+                              ))
                             : ""}
                         </Slider>
                       </Col>
@@ -429,9 +414,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                             style={
                                               selectedVariant === variant._id
                                                 ? {
-                                                  border: "1px solid #ffa200",
-                                                  color: "#ffa200",
-                                                }
+                                                    border: "1px solid #ffa200",
+                                                    color: "#ffa200",
+                                                  }
                                                 : {}
                                             }
                                             key={variant._id}
@@ -444,8 +429,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                               style={
                                                 selectedVariant === variant._id
                                                   ? {
-                                                    display: "block",
-                                                  }
+                                                      display: "block",
+                                                    }
                                                   : {}
                                               }
                                               className={`selected-indicator ${styles.tickImage}`}
@@ -467,9 +452,9 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                             style={
                                               selectedVariant === variant._id
                                                 ? {
-                                                  border: "1px solid #ffa200",
-                                                  color: "#ffa200",
-                                                }
+                                                    border: "1px solid #ffa200",
+                                                    color: "#ffa200",
+                                                  }
                                                 : {}
                                             }
                                             key={variant._id}
@@ -482,8 +467,8 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                                               style={
                                                 selectedVariant === variant._id
                                                   ? {
-                                                    display: "block",
-                                                  }
+                                                      display: "block",
+                                                    }
                                                   : {}
                                               }
                                               className={`selected-indicator ${styles.tickImage}`}
@@ -536,18 +521,19 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                               </div>
                             )}
                           </div>
-                          <Modal
-                            isOpen={visible}
-                          >
+                          <Modal isOpen={visible}>
                             <ModalBody className="my-5">
-                            <div className="text-center">
-                              <img width="100" height="100" src="/assets/icon/success-popup.svg" />
-                            </div>
-                            <div className="text-center mt-3">
-                              <p>
-                                Sản phẩm đã được thêm vào Giỏ hàng
-                              </p>
-                            </div></ModalBody>
+                              <div className="text-center">
+                                <img
+                                  width="100"
+                                  height="100"
+                                  src="/assets/icon/success-popup.svg"
+                                />
+                              </div>
+                              <div className="text-center mt-3">
+                                <p>Sản phẩm đã được thêm vào Giỏ hàng</p>
+                              </div>
+                            </ModalBody>
                           </Modal>
 
                           <div
@@ -758,9 +744,11 @@ export default function ProductDetail({ detailProduct, relatedProducts, newProdu
                 <div className="theme-card">
                   <h5 className="title-border">Sản phẩm mới</h5>
                   <Slider slidesPerRow={5} className="offer-slider slide-1">
-                    {newProducts ? newProducts.map((product) => {
-                      return <SideProductCart key={product._id} product={product} />;
-                    }) : null}
+                    {newProducts
+                      ? newProducts.map((product) => {
+                          return <SideProductCart key={product._id} product={product} />;
+                        })
+                      : null}
                   </Slider>
                 </div>
               </Col>
